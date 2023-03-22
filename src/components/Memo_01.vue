@@ -21,14 +21,15 @@ export default {
         });
 
         const add = ()=>{
+            const content = prompt("내용을 입력해주세요.");
             //state.data.push("추가된 메모 내용");
-            axios.post("/api/memos").then((res)=>{
-                console.log(res.data);
+            axios.post("/api/memos", {content}).then((res)=>{
+                state.data = res.data;
             })
         }
 
         axios.get("/api/memos").then((res) => {
-            console.log(res.data);
+            state.data = res.data;
         })
         return {state, add};
     },
