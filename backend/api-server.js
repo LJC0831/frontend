@@ -2,12 +2,13 @@ const express = require('express')
 const app = express()
 const port = 3000
 const bodyParser = require("body-parser");
-
-const memos = ["메모내용1", "메모내용2", "메모내용3"];
+const database = require("./database");
+const memos = [];
 app.use(bodyParser.json());
 
-app.get('/api/memos', (req, res) => {
-    res.send(memos);
+app.get('/api/memos', async (req, res) => {
+    const result = await database.run("SELECT * FROM board.memos");
+    res.send(result);
 });
 app.post('/api/memos', (req, res) => {
 
