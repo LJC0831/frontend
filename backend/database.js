@@ -18,6 +18,7 @@ module.exports = {
             conn.query(query)
                 .then((rows) => {
                     resolve(rows);
+                    conn.end();
                 })
             
                 .catch(err => {

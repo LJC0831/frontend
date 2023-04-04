@@ -38,6 +38,7 @@ export default {
         }
 
         const search01 = ()=>{
+            state.data = [];
             axios.get("/api/memos").then((res) => {
             state.data = res.data;
         })
