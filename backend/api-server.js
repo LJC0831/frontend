@@ -10,10 +10,10 @@ app.get('/api/memos', async (req, res) => {
     const result = await database.run("SELECT * FROM board.memos");
     res.send(result);
 });
-app.post('/api/memos', (req, res) => {
-
-    memos.push(req.body.content);
-    res.send(memos);
+app.post('/api/memos', async(req, res) => {
+    await database.run(`INSERT INTO board.memos (content) value ('${req.body.content}')`);
+    const result = await database.run("SELECT * FROM board.memos");
+    res.send(result);
 });
 
 app.put('/api/memos/:idx', (req, res) => {
