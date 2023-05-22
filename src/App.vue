@@ -8,5 +8,5 @@
 import Ground from "./components/Ground_01.vue" /* eslint-disable */
 export default {
   components:{Ground} 
-}
+} 
 </script>
