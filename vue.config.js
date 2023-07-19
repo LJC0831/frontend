@@ -3,7 +3,7 @@ module.exports = {
         proxy:{
             "/api":{
                 //target:"http://localhost:3000"
-                target:"https://port-0-backend-nodejs-4ztg2lljzdtfme.exp0.cloudtype.app/"
+                target:"https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app/"
             }
         }
     },
