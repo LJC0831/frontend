@@ -24,7 +24,7 @@ export default {
         const add = ()=>{
             const content = prompt("내용을 입력해주세요.");
 
-            axios.get("/api/memos", {content}).then((res)=>{
+            axios.post("/api/memos", {content}).then((res)=>{
                 state.data = res.data;
             })
         }
