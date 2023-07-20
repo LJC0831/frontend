@@ -53,7 +53,7 @@ export default {
                 return;
             } else {
                 const password = prompt("내용을 삭제하려면 비밀번호를 입력하세요. 힌트) 생일 4자 ");
-                if (password == "0831") {
+                if (password === "0831") {
                     api.delete(`/api/memos/${checkedIds.join(',')}`).then((res) => {
                          state.data = res.data;
                      });
@@ -63,7 +63,7 @@ export default {
                 }
                 
             }  
-        }
+        };
 
         const edit = (id)=>{
             const content = prompt("내용을 입력해주세요", state.data.find(d=>d.id === id).content);
