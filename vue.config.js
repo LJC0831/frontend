@@ -1,4 +1,17 @@
 module.exports = {
+    configureWebpack: (config) => {
+        if (process.env.NODE_ENV === 'production') {
+          config.devServer = {
+            proxy: {
+              '/api': {
+                target: 'https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app',
+                changeOrigin: true,
+              },
+            },
+          };
+        }
+      },
+      
     devServer:{
         proxy:{
             "/api":{
