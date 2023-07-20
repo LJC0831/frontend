@@ -2,16 +2,20 @@
     <div class="memo">
         <div class = "act">
             <button class="btn btn-primary" @click="search01()">조회 </button>&nbsp;
-            <button class="btn btn-primary" @click="add()">+ 추가</button>
+            <button class="btn btn-primary" @click="add()">+ 추가</button>&nbsp;
+            <button class="btn btn-primary" @click="del()">- 삭제</button>
         </div>
         <ul>
-            <li v-for="d in state.data" :key="d.id" @click="edit(d.id)">{{ d.content }}</li>
+            <li v-for="d in state.data" :key="d.id" @click="edit(d.id)">
+                <input type="checkbox" v-model="d.checked" @click.stop />
+                {{ d.content }}
+            </li>
         </ul>
-
     </div>
 </template> 
 
 <script>
+/* eslint-disable */
 import {reactive} from "vue";
 import axios from "axios";
 export default {
@@ -26,19 +30,50 @@ export default {
         });
 
         const add = ()=>{
-            const content = prompt("내용을 입력해주세요.");
+            const password = prompt("내용을 추가하려면 비밀번호를 입력하세요. 힌트) 생일 4자 ");
+            if (password == "0831") {
+                const content = prompt("내용을 입력해주세요.");
 
-            api.post("/api/memos", {content}).then((res)=>{
-                state.data = res.data;
-            })
+                if(content != null){
+                    api.post("/api/memos", {content}).then((res)=>{
+                    state.data = res.data;
+                    })
+                }
+            } else {
+                alert("비밀번호가 틀립니다.");
+            }
+            
+        }
+
+        const del = ()=>{
+            const checkedIds = state.data.filter((d) => d.checked).map((d) => d.id);
+
+            if (checkedIds.length === 0) {
+                alert("삭제할 항목을 선택해주세요.");
+                return;
+            } else {
+                const password = prompt("내용을 삭제하려면 비밀번호를 입력하세요. 힌트) 생일 4자 ");
+                if (password == "0831") {
+                    api.delete(`/api/memos/${checkedIds.join(',')}`).then((res) => {
+                         state.data = res.data;
+                     });
+                    state.data.forEach((d) => (d.checked = false)); // 체크항목 초기화
+                } else {
+                    alert("비밀번호가 틀립니다.");
+                }
+                
+            }  
         }
 
         const edit = (id)=>{
             const content = prompt("내용을 입력해주세요", state.data.find(d=>d.id === id).content);
-
-            api.put("/api/memos/" + id, {content}).then((res)=>{
+            if(content != null){
+                api.put("/api/memos/" + id, {content}).then((res)=>{
                 state.data = res.data;
-            })
+                })
+            }
+
+            
         }
 
         const search01 = ()=>{
@@ -51,7 +86,7 @@ export default {
         api.get("/api/memos").then((res) => {
             state.data = res.data;
         })
-        return {state, add, edit, search01};
+        return {state, add, edit, search01, del};
     },
 }
 </script>
