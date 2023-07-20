@@ -1,6 +1,7 @@
 <template>
     <div class="memo">
         <div class = "act">
+            <input type="text" v-model="searchKeyword" @keyup.enter="search01()" placeholder="검색어를 입력하세요."/>&nbsp;
             <button class="btn btn-primary" @click="search01()">조회 </button>&nbsp;
             <button class="btn btn-primary" @click="add()">+ 추가</button>&nbsp;
             <button class="btn btn-primary" @click="del()">- 삭제</button>
@@ -18,6 +19,7 @@
 /* eslint-disable */
 import {reactive} from "vue";
 import axios from "axios";
+import { ref } from 'vue';
 export default {
     
     setup() {
@@ -75,18 +77,17 @@ export default {
 
             
         }
-
+        const searchKeyword = ref(""); // 검색어를 위한 반응형 변수
         const search01 = ()=>{
             state.data = [];
-            api.get("/api/memos").then((res) => {
-            console.log("search01실행")
+            api.get("/api/memos", { params: { q: searchKeyword.value } }).then((res) => {
             state.data = res.data;
         })
         }
         api.get("/api/memos").then((res) => {
             state.data = res.data;
         })
-        return {state, add, edit, search01, del};
+        return {state, searchKeyword, add, edit, search01, del};
     },
 }
 </script>
