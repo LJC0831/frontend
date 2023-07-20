@@ -15,8 +15,12 @@
 import {reactive} from "vue";
 import axios from "axios";
 export default {
-
+    
     setup() {
+        const api = axios.create({
+        baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
+        });
+        
         const state = reactive({
             data : [],
         });
@@ -24,7 +28,7 @@ export default {
         const add = ()=>{
             const content = prompt("내용을 입력해주세요.");
 
-            axios.post("/api/memos", {content}).then((res)=>{
+            api.post("/api/memos", {content}).then((res)=>{
                 state.data = res.data;
             })
         }
@@ -32,19 +36,19 @@ export default {
         const edit = (id)=>{
             const content = prompt("내용을 입력해주세요", state.data.find(d=>d.id === id).content);
 
-            axios.put("/api/memos/" + id, {content}).then((res)=>{
+            api.put("/api/memos/" + id, {content}).then((res)=>{
                 state.data = res.data;
             })
         }
 
         const search01 = ()=>{
             state.data = [];
-            axios.get("/api/memos").then((res) => {
+            api.get("/api/memos").then((res) => {
             console.log("search01실행")
             state.data = res.data;
         })
         }
-        axios.get("/api/memos").then((res) => {
+        api.get("/api/memos").then((res) => {
             state.data = res.data;
         })
         return {state, add, edit, search01};
