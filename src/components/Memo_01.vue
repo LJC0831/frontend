@@ -39,7 +39,7 @@ export default {
 
         const search01 = ()=>{
             state.data = [];
-            axios.get("https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app/api/memos").then((res) => {
+            axios.get("/api/memos").then((res) => {
             console.log("search01실행")
             state.data = res.data;
         })
