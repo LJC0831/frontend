@@ -15,11 +15,12 @@
         <!-- 로그인 모달 -->
         <div v-if="showLoginModal" class="login-modal">
           <div class="login-form">
-            <label for="username">사용자 이름:</label>
-            <input type="text" v-model="username" id="username" />
-            <label for="password">비밀번호:</label>
-            <input type="password" v-model="password" id="password" />
-            <button @click="login">로그인</button>
+            <label for="username">아이디 :</label>&nbsp;
+            <input type="text" v-model="username" id="username" />&nbsp;
+            <label for="password">비밀번호: </label>&nbsp;
+            <input type="password" v-model="password" id="password" />&nbsp;
+            <button @click="login">로그인</button>&nbsp;
+            <button @click="cancel">취소</button>&nbsp;
           </div>
           <div class="close-button" @click="showLoginModal = false">X</div>
         </div>
@@ -28,6 +29,9 @@
   </template>
   
   <script>
+  /* eslint-disable */
+  import axios from "axios";
+  import {reactive} from "vue";
   export default {
     data() {
       return {
@@ -37,12 +41,37 @@
       };
     },
     methods: {
-      login() {
-        // 로그인 로직 추가
-        // 예: 사용자 이름과 비밀번호를 검사하고 인증 후 로그인 처리
-        // 이후에 isLoggedIn 변수를 true로 설정하고, 서버와 통신하여 로그인 상태를 관리할 수 있습니다.
-      },
-    },
+            login() {
+              const api = axios.create({
+              baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
+              });
+
+              const state = reactive({
+                  data : [],
+              });
+
+              api.post("/api/user", {username: this.username, password: this.password}).then((res)=>{
+                if (res.data.message === "로그인 성공") {
+                  alert("로그인에 성공했습니다!");
+                  this.showLoginModal = false; // 로그인 성공 시 모달 닫기
+                  this.username = ""; // 입력한 사용자 이름 초기화
+                  this.password = ""; // 입력한 비밀번호 초기화
+                } else {
+                  alert("아이디 또는 비밀번호가 올바르지 않습니다.");
+                }
+              }) 
+              .catch((error) => {
+                console.error("로그인 오류:", error);
+                alert("서버 오류로 인해 로그인에 실패하였습니다.");
+              });
+            },
+
+            cancel() {
+              this.showLoginModal = false; // 취소 버튼 클릭 시 모달 닫기
+              this.username = ""; // 입력한 사용자 이름 초기화
+              this.password = ""; // 입력한 비밀번호 초기화
+            },
+          },
   };
   </script>
   

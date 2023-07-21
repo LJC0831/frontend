@@ -3,13 +3,14 @@
         <div class = "act">
             <input type="text" v-model="searchKeyword" @keyup.enter="search01()" placeholder="검색어를 입력하세요."/>&nbsp;
             <button class="btn btn-primary" @click="search01()">조회 </button>&nbsp;
-            <button class="btn btn-primary" @click="add()">+ 추가</button>&nbsp;
-            <button class="btn btn-primary" @click="del()">- 삭제</button>
+            <button class="btn btn-success" @click="add()">+ 추가</button>&nbsp;
+            <button class="btn btn-danger" @click="del()">- 삭제</button>
         </div>
         <ul>
             <li v-for="d in state.data" :key="d.id" @click="edit(d.id)">
                 <input type="checkbox" v-model="d.checked" @click.stop />
                 {{ d.content }}
+                <span class="author">작성자 : {{ d.user_id }}</span>
             </li>
         </ul>
     </div>
@@ -115,5 +116,11 @@ export default {
     text-align: right;
 }
 
+.author {
+    float: right; /* 우측 정렬을 위해 float 사용 */
+    font-size: 12px; /* 작성자 정보의 글자 크기 조정 */
+    color: #888; /* 작성자 정보 글자 색상 설정 */
+    margin-top: 5px; /* 작성자 정보와 컨텐츠 사이 간격 조정 */
+}
 
 </style>
