@@ -3,13 +3,16 @@
       
       <div class="login-container">
         <div class="header-name"> Memo App </div>
-        <div class="login-button" @click="showLoginModal = true">
+        <div v-if="!isLoggedIn" class="login-button" @click="showLoginModal = true">
           <!-- 로그인 이미지를 추가하세요 -->
           <img
             class="login-image"
             src="/경로/로그인이미지.jpg"
             alt="로그인"
           />
+        </div>
+        <div v-if="isLoggedIn" class="login-button" @click="logout">
+        로그아웃
         </div>
   
         <!-- 로그인 모달 -->
@@ -60,6 +63,9 @@
                   // 토큰을 Vuex에 저장
                   this.setToken(res.data.token);
 
+                  // 토큰을 로컬 스토리지에 저장
+                  localStorage.setItem("token", res.data.token);
+
                   this.showLoginModal = false; // 로그인 성공 시 모달 닫기
                   this.username = ""; // 입력한 사용자 이름 초기화
                   this.password = ""; // 입력한 비밀번호 초기화
@@ -69,6 +75,20 @@
                 console.error("로그인 오류:", error);
                 alert("아이디 패스워드가 틀립니다. ");
               });
+            },
+            logout() {
+                  // 로그아웃 처리 로직
+                  // 로컬 스토리지에서 토큰 제거
+                  localStorage.removeItem("token");
+                  // 로그인 상태를 false로 변경
+                  this.isLoggedIn = false;
+                },
+            created() {
+              // 페이지가 로드될 때 로컬 스토리지에 토큰이 있는지 확인하여 로그인 상태를 설정
+              const token = localStorage.getItem("token");
+              if (token) {
+                this.isLoggedIn = true;
+              }
             },
 
             cancel() {
