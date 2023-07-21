@@ -56,13 +56,11 @@
                   this.showLoginModal = false; // 로그인 성공 시 모달 닫기
                   this.username = ""; // 입력한 사용자 이름 초기화
                   this.password = ""; // 입력한 비밀번호 초기화
-                } else {
-                  alert("아이디 또는 비밀번호가 올바르지 않습니다.");
-                }
+                } 
               }) 
               .catch((error) => {
                 console.error("로그인 오류:", error);
-                alert("서버 오류로 인해 로그인에 실패하였습니다.");
+                alert("아이디 패스워드가 틀립니다. ");
               });
             },
 
