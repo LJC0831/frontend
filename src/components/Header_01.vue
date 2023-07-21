@@ -32,6 +32,8 @@
   /* eslint-disable */
   import axios from "axios";
   import {reactive} from "vue";
+  import { mapActions } from 'vuex'
+
   export default {
     data() {
       return {
@@ -41,6 +43,7 @@
       };
     },
     methods: {
+            ...mapActions(["setToken"]),
             login() {
               const api = axios.create({
               baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
@@ -53,6 +56,10 @@
               api.post("/api/user", {username: this.username, password: this.password}).then((res)=>{
                 if (res.data.message === "로그인 성공") {
                   alert("로그인에 성공했습니다!");
+
+                  // 토큰을 Vuex에 저장
+                  this.setToken(res.data.token);
+                  
                   this.showLoginModal = false; // 로그인 성공 시 모달 닫기
                   this.username = ""; // 입력한 사용자 이름 초기화
                   this.password = ""; // 입력한 비밀번호 초기화
