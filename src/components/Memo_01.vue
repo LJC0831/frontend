@@ -1,9 +1,9 @@
 <template>
     <div class="memo">
         <div class = "act">
-            <input type="text" v-model="searchKeyword" @keyup.enter="search01()" placeholder="검색어를 입력하세요."/>&nbsp;
-            <button class="btn btn-primary" @click="search01()">조회 </button>&nbsp;
-            <button class="btn btn-success" @click="add()">+ 추가</button>&nbsp;
+            <input type="text" v-model="searchKeyword" @keyup.enter="search01()" placeholder="검색어를 입력하세요."/>
+            <button class="btn btn-primary" @click="search01()">조회 </button>
+            <button class="btn btn-success" @click="add()">+ 추가</button>
             <button class="btn btn-danger" @click="del()">- 삭제</button>
         </div>
         <ul>
@@ -120,6 +120,29 @@ export default {
     font-size: 12px; /* 작성자 정보의 글자 크기 조정 */
     color: #888; /* 작성자 정보 글자 색상 설정 */
     margin-top: 5px; /* 작성자 정보와 컨텐츠 사이 간격 조정 */
+}
+
+/* 화면 크기가 768px 이하인 경우 버튼들을 세로로 정렬 */
+@media (max-width: 768px) {
+  .act {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  /* 버튼들을 각각 한 줄씩 표시 */
+  .act button {
+    display: block;
+  }
+}
+
+/* 화면 크기가 769px 이상인 경우 버튼들을 가로로 정렬 */
+@media (min-width: 769px) {
+  .act {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
 }
 
 </style>
