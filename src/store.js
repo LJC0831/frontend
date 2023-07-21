@@ -1,32 +1,28 @@
-// store.js
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore } from 'vuex';
 
-Vue.use(Vuex)
-
-const store = new Vuex.Store({
+const store = createStore({
   state: {
     token: null
   },
   mutations: {
     setToken(state, token) {
-      state.token = token
+      state.token = token;
     },
     clearToken(state) {
-      state.token = null
+      state.token = null;
     }
   },
   actions: {
     setToken({ commit }, token) {
-      commit('setToken', token)
+      commit('setToken', token);
     },
     clearToken({ commit }) {
-      commit('clearToken')
+      commit('clearToken');
     }
   },
   getters: {
     getToken: state => state.token
   }
-})
+});
 
-export default store
+export default store;

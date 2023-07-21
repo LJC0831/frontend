@@ -32,7 +32,7 @@
   /* eslint-disable */
   import axios from "axios";
   import {reactive} from "vue";
-  import { mapActions } from 'vuex'
+  import { mapActions } from 'vuex';
 
   export default {
     data() {
@@ -59,7 +59,7 @@
 
                   // 토큰을 Vuex에 저장
                   this.setToken(res.data.token);
-                  
+
                   this.showLoginModal = false; // 로그인 성공 시 모달 닫기
                   this.username = ""; // 입력한 사용자 이름 초기화
                   this.password = ""; // 입력한 비밀번호 초기화
