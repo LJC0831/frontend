@@ -18,11 +18,10 @@
 
 <script>
 /* eslint-disable */
-import {reactive} from "vue";
-import axios from "axios";
-import { ref } from 'vue';
+import { reactive, ref, toRefs } from 'vue';
+import axios from 'axios';
+import { useStore } from 'vuex';
 export default {
-    
     setup() {
         const api = axios.create({
         baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
@@ -33,19 +32,18 @@ export default {
         });
 
         const add = ()=>{
-            const password = prompt("내용을 추가하려면 비밀번호를 입력하세요. 힌트) 생일 4자 ");
-            if (password == "0831") {
-                const content = prompt("내용을 입력해주세요.");
-
-                if(content != null){
-                    api.post("/api/memos", {content}).then((res)=>{
-                    state.data = res.data;
-                    })
-                }
-            } else {
-                alert("비밀번호가 틀립니다.");
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('로그인 후에 메모를 추가할 수 있습니다.');
+                return;
             }
-            
+            const content = prompt("내용을 입력해주세요.");
+
+            if(content != null){
+                api.post("/api/memos", {content}).then((res)=>{
+                state.data = res.data;
+                })
+            }
         }
 
         const del = ()=>{
@@ -90,7 +88,8 @@ export default {
         })
         return {state, searchKeyword, add, edit, search01, del};
     },
-}
+
+};
 </script>
 
 <style scroped>
