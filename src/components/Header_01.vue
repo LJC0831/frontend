@@ -1,33 +1,31 @@
 <template>
     <header>
-      
       <div class="login-container">
         <div class="header-name"> Memo App </div>
-        <div v-if="!isLoggedIn" class="login-button" @click="showLoginModal = true">
-          <!-- 로그인 이미지를 추가하세요 -->
-          <img
-            class="login-image"
-            src="/경로/로그인이미지.jpg"
-            alt="로그인"
-          />
-        </div>
-        <div v-if="isLoggedIn" class="login-button" @click="logout">
-        로그아웃
+        <div class="login-button-container">
+          <div v-if="!isLoggedIn" class="login-button" @click="showLoginModal = true">
+            <!-- 로그인 이미지 대신 일반 버튼으로 변경 -->
+            <button class="login-btn">로그인</button>
+          </div>
+          <div v-if="isLoggedIn" class="logout-button" @click="logout">
+            로그아웃
+          </div>
         </div>
   
         <!-- 로그인 모달 -->
         <div v-if="showLoginModal" class="login-modal">
-          <div class="login-form">
-            <label for="username">아이디 :</label>&nbsp;
-            <input type="text" v-model="username" id="username" />&nbsp;
-            <label for="password">비밀번호: </label>&nbsp;
-            <input type="password" v-model="password" id="password" />&nbsp;
-            <button @click="login">로그인</button>&nbsp;
-            <button @click="cancel">취소</button>&nbsp;
-          </div>
-          <div class="close-button" @click="showLoginModal = false">X</div>
+        <div class="login-form">
+          <h2>로그인</h2>
+          <label for="username">아이디 :</label>&nbsp;
+          <input type="text" v-model="username" id="username" />&nbsp;
+          <label for="password">비밀번호: </label>&nbsp;
+          <input type="password" v-model="password" id="password" />&nbsp;
+          <button @click="login">로그인</button>&nbsp;
+          <button @click="cancel">취소</button>&nbsp;
         </div>
+        <div class="close-button" @click="showLoginModal = false">X</div>
       </div>
+    </div>
     </header>
   </template>
   
@@ -43,6 +41,7 @@
         showLoginModal: false,
         username: "",
         password: "",
+        isLoggedIn: false, // 로그인 상태를 저장하는 데이터 속성
       };
     },
     methods: {
@@ -69,6 +68,7 @@
                   this.showLoginModal = false; // 로그인 성공 시 모달 닫기
                   this.username = ""; // 입력한 사용자 이름 초기화
                   this.password = ""; // 입력한 비밀번호 초기화
+                  window.location.reload()
                 } 
               }) 
               .catch((error) => {
@@ -82,21 +82,22 @@
                   localStorage.removeItem("token");
                   // 로그인 상태를 false로 변경
                   this.isLoggedIn = false;
-                },
-            created() {
-              // 페이지가 로드될 때 로컬 스토리지에 토큰이 있는지 확인하여 로그인 상태를 설정
-              const token = localStorage.getItem("token");
-              if (token) {
-                this.isLoggedIn = true;
-              }
             },
-
             cancel() {
               this.showLoginModal = false; // 취소 버튼 클릭 시 모달 닫기
               this.username = ""; // 입력한 사용자 이름 초기화
               this.password = ""; // 입력한 비밀번호 초기화
             },
           },
+
+
+    created() {
+        // 페이지가 로드될 때 로컬 스토리지에 토큰이 있는지 확인하여 로그인 상태를 설정
+        const token = localStorage.getItem("token");
+        if (token) {
+          this.isLoggedIn = true;
+        }
+      },
   };
   </script>
   
@@ -108,50 +109,96 @@
     background: #f7f7f7;
   }
   
-  .login-container {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
-  
-  .login-button {
-    margin-left: auto; /* 이미지 버튼을 오른쪽으로 이동 */
-    cursor: pointer; /* 버튼 모양을 나타내기 위해 커서 모양 변경 */
-  }
-  
-  .login-image {
-    width: 30px;
-    height: 30px;
-    /* 원하는 이미지 크기에 맞게 조절 */
-  }
-  
-  /* 로그인 모달 스타일 */
   .login-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .login-form {
-    background: #fff;
-    padding: 20px;
-    border-radius: 5px;
-  }
-  
-  .close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-form h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.login-form label {
+  display: block;
+  font-weight: bold;
+}
+
+.login-form input {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-form button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-form button:hover {
+  background-color: #0056b3;
+}
+
+.login-btn {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background-color: #0056b3;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  color: #333;
+}
 
   .header-name {
-    margin-left: auto; /* 이미지 버튼을 오른쪽으로 이동 */
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  text-transform: uppercase;
+  text-align: center;
   }
+
+.login-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.login-button-container {
+  display: flex;
+  align-items: center;
+}
+
   </style>
