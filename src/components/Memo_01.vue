@@ -4,7 +4,7 @@
             <input type="text" v-model="searchKeyword" @keyup.enter="search01()" placeholder="검색어를 입력하세요."/>
             <button class="btn btn-primary" @click="search01()">조회 </button>
             <button class="btn btn-success" @click="add()">+ 추가</button>
-            <button class="btn btn-danger" @click="del()">- 삭제</button>
+            <button class="btn btn-danger" @click="del()" v-if="showDelete">- 삭제</button>
         </div>
         <ul>
             <li v-for="d in state.data" :key="d.id" @click="edit(d.id)">
@@ -18,9 +18,8 @@
 
 <script>
 /* eslint-disable */
-import { reactive, ref, toRefs } from 'vue';
+import { reactive, ref, watch } from 'vue';
 import axios from 'axios';
-import { useStore } from 'vuex';
 export default {
     setup() {
         const api = axios.create({
@@ -30,6 +29,8 @@ export default {
         const state = reactive({
             data : [],
         });
+
+        const showDelete = ref(false); // 삭제 버튼 가시성을 제어하는 변수
 
         const add = ()=>{
             const token = localStorage.getItem('token');
@@ -46,6 +47,7 @@ export default {
             }
         }
 
+        //삭제처리
         const del = ()=>{
             const checkedIds = state.data.filter((d) => d.checked).map((d) => d.id);
 
@@ -53,19 +55,21 @@ export default {
                 alert("삭제할 항목을 선택해주세요.");
                 return;
             } else {
-                const password = prompt("내용을 삭제하려면 비밀번호를 입력하세요. 힌트) 생일 4자 ");
-                if (password === "0831") {
-                    api.delete(`/api/memos/${checkedIds.join(',')}`).then((res) => {
-                         state.data = res.data;
-                     });
-                    state.data.forEach((d) => (d.checked = false)); // 체크항목 초기화
-                } else {
-                    alert("비밀번호가 틀립니다.");
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    alert('로그인을 해주세요.');
+                    return; // 토큰이 없을 경우 처리
                 }
+                api.get("/api/userInfo", { headers: { Authorization: `Bearer ${token}` } })
+                api.delete(`/api/memos/${checkedIds.join(',')}`).then((res) => {
+                        state.data = res.data;
+                    });
+                state.data.forEach((d) => (d.checked = false)); // 체크항목 초기화
+                
                 
             }  
         };
-
+        // 수정
         const edit = (id)=>{
             const content = prompt("내용을 입력해주세요", state.data.find(d=>d.id === id).content);
             if(content != null){
@@ -76,6 +80,7 @@ export default {
 
             
         }
+        // 조회
         const searchKeyword = ref(""); // 검색어를 위한 반응형 변수
         const search01 = ()=>{
             state.data = [];
@@ -83,10 +88,15 @@ export default {
             state.data = res.data;
         })
         }
+        // 조회default
         api.get("/api/memos").then((res) => {
             state.data = res.data;
         })
-        return {state, searchKeyword, add, edit, search01, del};
+        // 삭제버튼 활성화
+        watch(() => state.data.map((d) => d.checked),(checkedList) => {
+            showDelete.value = checkedList.some((checked) => checked);
+        });   
+        return {state, searchKeyword, add, edit, search01, del, showDelete };
     },
 
 };
