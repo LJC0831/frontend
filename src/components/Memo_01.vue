@@ -20,6 +20,7 @@
 /* eslint-disable */
 import { reactive, ref, watch } from 'vue';
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 export default {
     setup() {
         const api = axios.create({
@@ -31,7 +32,7 @@ export default {
         });
 
         const showDelete = ref(false); // 삭제 버튼 가시성을 제어하는 변수
-
+        // 추가
         const add = ()=>{
             const token = localStorage.getItem('token');
             if (!token) {
@@ -41,7 +42,9 @@ export default {
             const content = prompt("내용을 입력해주세요.");
 
             if(content != null){
-                api.post("/api/memos", {content}).then((res)=>{
+                const decodedToken = jwtDecode(token);
+                username = decodedToken.username;
+                api.post("/api/memos", {content, username}).then((res)=>{
                 state.data = res.data;
                 })
             }
