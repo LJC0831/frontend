@@ -1,10 +1,15 @@
 <template>
     <div class="memo">
         <div class = "act">
+            <label class="check-all">
+                <input type="checkbox" v-model="selectAll" @change="handleSelectAll" />
+                전체 선택
+            </label>
             <input type="text" v-model="searchKeyword" @keyup.enter="search01()" placeholder="검색어를 입력하세요."/>
             <button class="btn btn-primary" @click="search01()">조회 </button>
             <button class="btn btn-success" @click="add()">+ 추가</button>
             <button class="btn btn-danger" @click="del()" v-if="showDelete">- 삭제</button>
+            
         </div>
         <ul>
             <li v-for="d in state.data" :key="d.id" @click="edit(d.id)">
@@ -23,6 +28,13 @@ import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 export default {
     setup() {
+        
+        const selectAll = ref(false); // 전체 선택 체크박스 상태를 제어하는 변수
+        const handleSelectAll = () => {
+        // 전체 선택 체크박스가 클릭되었을 때 모든 메모 항목의 체크 상태를 변경
+        state.data.forEach((d) => (d.checked = selectAll.value));
+        };
+
         const api = axios.create({
         baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
         });
@@ -43,7 +55,7 @@ export default {
 
             if(content != null){
                 const decodedToken = jwtDecode(token);
-                username = decodedToken.username;
+                const username = decodedToken.username;
                 api.post("/api/memos", {content, username}).then((res)=>{
                 state.data = res.data;
                 })
@@ -59,8 +71,9 @@ export default {
                 return;
             } else {
                 const token = localStorage.getItem('token');
-                if (!token) {
-                    alert('로그인을 해주세요.');
+                const username = decodedToken.username;
+                if (username != "root") {
+                    alert('관리자만 삭제 가능합니다');
                     return; // 토큰이 없을 경우 처리
                 }
                 api.get("/api/userInfo", { headers: { Authorization: `Bearer ${token}` } })
@@ -99,14 +112,19 @@ export default {
         watch(() => state.data.map((d) => d.checked),(checkedList) => {
             showDelete.value = checkedList.some((checked) => checked);
         });   
-        return {state, searchKeyword, add, edit, search01, del, showDelete };
+        return {state, searchKeyword, add, edit, search01, del, showDelete, selectAll, handleSelectAll};
     },
 
 };
 </script>
 
 <style scroped>
-
+.memo {
+    flex: 1;
+    padding: 20px;
+    max-height: 700px;
+    overflow-y: auto; /* 스크롤이 생기도록 설정 */
+}
 .memo ul {
     border-top:1px solid #eee;
     list-style:none;
@@ -133,6 +151,10 @@ export default {
     font-size: 12px; /* 작성자 정보의 글자 크기 조정 */
     color: #888; /* 작성자 정보 글자 색상 설정 */
     margin-top: 5px; /* 작성자 정보와 컨텐츠 사이 간격 조정 */
+}
+
+.check-all {
+  margin-right: auto; /* 전체 선택 체크박스를 가장 왼쪽으로 이동 */
 }
 
 /* 화면 크기가 768px 이하인 경우 버튼들을 세로로 정렬 */
