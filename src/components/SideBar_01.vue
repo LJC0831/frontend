@@ -1,7 +1,9 @@
 <template>
   <div>
     <!-- 메뉴 항목들 -->
-    <button @click="toggleSidebar">{{ sidebarOpen ? '메뉴열기' : '메뉴닫기' }}</button>
+    <button @click="toggleSidebar">
+      <i class="fas" :class="sidebarOpen ? 'fa-times' : 'fa-bars'"></i>
+    </button>
     <div class="sidebar" :class="{ 'open': sidebarOpen }">
         <div class="menu-item"  v-if="!sidebarOpen" @click="handleMenuClick('테스트1')">전체 글 보기</div>
         <div class="menu-item"  v-if="!sidebarOpen" @click="handleMenuClick('테스트2')">문의하기</div>
