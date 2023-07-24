@@ -2,7 +2,7 @@
   <div>
     <!-- 메뉴 항목들 -->
     <button @click="toggleSidebar">
-      <i class="fas" :class="sidebarOpen ? 'fa-times' : 'fa-bars'"></i>
+      <i class="fas" :class="sidebarOpen ? 'fa-bars' : 'fa-times'"></i>
     </button>
     <div class="sidebar" :class="{ 'open': sidebarOpen }">
         <div class="menu-item"  v-if="!sidebarOpen" @click="handleMenuClick('테스트1')">전체 글 보기</div>
@@ -34,7 +34,7 @@ export default {
 
 <style scoped>
 .sidebar {
-  width: 200px;
+  width: 150px;
   height: 780px;
   background-color: #f0f0f0;
   padding: 10px;
