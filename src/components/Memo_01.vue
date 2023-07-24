@@ -10,14 +10,25 @@
             <button class="btn btn-success" @click="add()">+ 추가</button>
             <button class="btn btn-danger" @click="del()" v-if="showDelete">- 삭제</button>
             
-        </div>
+        </div>      
         <ul>
-            <li v-for="d in state.data" :key="d.id" @click="edit(d.id)">
+            <li v-for="d in state.data" :key="d.id" @click="openEditModal(d.id)">
                 <input type="checkbox" v-model="d.checked" @click.stop />
                 {{ d.content }}
                 <span class="author">작성자 : {{ d.user_id }}</span>
             </li>
         </ul>
+         <!-- 모달 창 -->
+      <div v-if="showModal" class="modal">
+        <div class="modal-content">
+          <h3>메모 수정</h3>
+          <input v-model="editedContent" placeholder="내용을 입력하세요." />
+          <div class="modal-buttons">
+            <button @click="editMemo(editingMemoId)" :disabled="isNotEditable">수정</button>
+            <button @click="cancel">취소</button>
+          </div>
+        </div>
+      </div>
     </div>
 </template> 
 
@@ -71,6 +82,7 @@ export default {
                 return;
             } else {
                 const token = localStorage.getItem('token');
+                const decodedToken = jwtDecode(token);
                 const username = decodedToken.username;
                 if (username != "root") {
                     alert('관리자만 삭제 가능합니다');
@@ -86,16 +98,45 @@ export default {
             }  
         };
         // 수정
-        const edit = (id)=>{
-            const content = prompt("내용을 입력해주세요", state.data.find(d=>d.id === id).content);
-            if(content != null){
-                api.put("/api/memos/" + id, {content}).then((res)=>{
-                state.data = res.data;
-                })
-            }
-
+        // 수정 버튼을 클릭할 때 호출되는 함수
+        const isNotEditable = ref(false); // 수정 버튼 비활성화 여부를 제어하는 변수
+        const showModal = ref(false);
+        const editedContent = ref('');
+        const editingMemoId = ref(null); // 수정 중인 메모의 id 저장
+        const openEditModal = (id) => {
+            const memo = state.data.find(d => d.id === id);
             
-        }
+            // 로컬 스토리지에서 JWT 토큰 가져오기
+            const token = localStorage.getItem('token');
+            if (token == null){
+                alert('로그인해주세요.');
+                return;
+            }
+            const decodedToken = jwtDecode(token);
+            const userIdFromToken = decodedToken.username; // 사용자 아이디 추출
+            if (memo.user_id !== userIdFromToken) {
+                isNotEditable.value = true;
+            } else {
+                isNotEditable.value = false;
+            }
+            //memo.user_id
+            editedContent.value = memo.content;
+            editingMemoId.value = id; // 수정 중인 메모의 id 설정
+            showModal.value = true;
+        };
+        // 수정 확인 버튼을 클릭할 때 호출되는 함수
+        const editMemo = () => {
+            const id = editingMemoId.value; // 수정 중인 메모의 id 가져오기
+            const content = editedContent.value;
+            api.put("/api/memos/" + id, { content }).then((res) => {
+                state.data = res.data;
+                showModal.value = false;
+            });
+        };
+        const cancel = () => {
+            showModal.value = false;
+        };
+
         // 조회
         const searchKeyword = ref(""); // 검색어를 위한 반응형 변수
         const search01 = ()=>{
@@ -112,7 +153,10 @@ export default {
         watch(() => state.data.map((d) => d.checked),(checkedList) => {
             showDelete.value = checkedList.some((checked) => checked);
         });   
-        return {state, searchKeyword, add, edit, search01, del, showDelete, selectAll, handleSelectAll};
+        return {state, searchKeyword, add, search01, del, showDelete, selectAll, handleSelectAll, openEditModal, editMemo, showModal, editedContent,
+                cancel
+
+        };
     },
 
 };
@@ -178,6 +222,35 @@ export default {
     justify-content: flex-end;
     gap: 10px;
   }
+}
+
+/* 모달 스타일 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.modal-buttons button {
+  margin-left: 10px;
 }
 
 </style>
