@@ -52,6 +52,7 @@
                 <textarea v-model="editedContent" id="editedContent" rows="5" placeholder="내용을 입력하세요."></textarea>
             </div>
             <div class="modal-buttons">
+                <button @click="deleteMemo(editingMemoId)" :disabled="isNotEditable">삭제하기</button>
                 <button @click="editMemo(editingMemoId)" :disabled="isNotEditable">수정하기</button>
                 <button @click="cancel">취소</button>
             </div>
@@ -68,7 +69,7 @@ import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 export default {
     setup() {
-        
+        const file_no = ref('');
         const selectAll = ref(false); // 전체 선택 체크박스 상태를 제어하는 변수
         const handleSelectAll = () => {
         // 전체 선택 체크박스가 클릭되었을 때 모든 메모 항목의 체크 상태를 변경
@@ -82,6 +83,16 @@ export default {
         const state = reactive({
             data : [],
         });
+        // 공통
+        const doValid = ()=>{
+            // 로컬 스토리지에서 JWT 토큰 가져오기
+            const token = localStorage.getItem('token');
+            if (token == null){
+                alert('로그인해주세요.');
+                return false;
+            }
+            return true;
+        }
 
         const showDelete = ref(false); // 삭제 버튼 가시성을 제어하는 변수
         // 추가
@@ -90,26 +101,23 @@ export default {
         const newContent = ref(''); // 새 메모 내용
         const add = ()=>{
             // 추가 팝업 표시
+            if(!doValid()) return;//validate 체크
             showAddModal.value = true;
         }
 
         const addMemo = () => {
             // 유효성 검사: 제목과 내용이 모두 비어있으면 추가하지 않음
-            const token = localStorage.getItem('token');
-            if (!token) {
-                alert('로그인 후에 메모를 추가할 수 있습니다.');
-                return;
-            }
+            if(!doValid()) return;//validate 체크
             if (!newSubject.value.trim() || !newContent.value.trim()) {
                 alert('제목과 내용을 모두 입력하세요.');
                 return;
             }
-
             // 새 메모 추가 API 호출
+            const token = localStorage.getItem('token');
             const decodedToken = jwtDecode(token);
             const username = decodedToken.username;
             api
-                .post('/api/memos', { subject: newSubject.value, content: newContent.value, username })
+                .post('/api/memos', { subject: newSubject.value, file_no: file_no.value, content: newContent.value, username })
                 .then((res) => {
                 state.data = res.data;
                 // 추가 팝업 닫기
@@ -117,6 +125,7 @@ export default {
                 // 입력 필드 초기화
                 newSubject.value = '';
                 newContent.value = '';
+                alert('저장되었습니다.');
                 });
         };
 
@@ -140,13 +149,14 @@ export default {
                 const decodedToken = jwtDecode(token);
                 const username = decodedToken.username;
                 if (username != "root") {
-                    alert('관리자만 삭제 가능합니다');
+                    alert('전체 삭제는 관리자만 삭제 가능합니다');
                     return; // 토큰이 없을 경우 처리
                 }
                 api.get("/api/userInfo", { headers: { Authorization: `Bearer ${token}` } })
                 api.delete(`/api/memos/${checkedIds.join(',')}`).then((res) => {
                         state.data = res.data;
                     });
+                alert('삭제처리 되었습니다.');
                 state.data.forEach((d) => (d.checked = false)); // 체크항목 초기화
                 
                 
@@ -158,18 +168,17 @@ export default {
         const showModal = ref(false);
         const editedSubject = ref(''); // Added for the subject input field
         const editedContent = ref('');
-        const editingMemoId = ref(null); // 수정 중인 메모의 id 저장
+        const editingMemoId = ref(null); // 수정, 삭제 중인 메모의 id 저장
         const openEditModal = (id) => {
             const memo = state.data.find(d => d.id === id);
             
             // 로컬 스토리지에서 JWT 토큰 가져오기
+            if(!doValid()) return;//validate 체크
+
             const token = localStorage.getItem('token');
-            if (token == null){
-                alert('로그인해주세요.');
-                return;
-            }
             const decodedToken = jwtDecode(token);
             const userIdFromToken = decodedToken.username; // 사용자 아이디 추출
+
             if (memo.user_id !== userIdFromToken) {
                 isNotEditable.value = true;
             } else {
@@ -187,12 +196,24 @@ export default {
             const content = editedContent.value;
             api.put("/api/memos/" + id, { subject, content }).then((res) => {
                 state.data = res.data;
+                alert('수정 되었습니다.');
+                showModal.value = false;
+            });
+        };
+        // 삭제
+        const deleteMemo = () => {
+            if(!doValid()) return;//validate 체크
+            const id = editingMemoId.value; // 수정 중인 메모의 id 가져오기
+            api.delete("/api/memos/" + id).then((res) => {
+                state.data = res.data;
+                alert('삭제처리 되었습니다.');
                 showModal.value = false;
             });
         };
         const cancel = () => {
             showModal.value = false;
         };
+        
 
         // 조회
         const searchKeyword = ref(""); // 검색어를 위한 반응형 변수
@@ -215,10 +236,16 @@ export default {
             // 선택된 파일을 FormData 객체에 추가
             const formData = new FormData();
             formData.append("file", file);
-
             // 파일 업로드 요청
-            api.post('/api/upload', formData)
-                .then((response) => {
+            api.post('/api/upload', formData, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`, // 토큰을 요청 헤더에 추가
+                },
+                params: {
+                    memoId: editingMemoId.value, // 현재 수정 중인 메모의 ID를 서버에 전달
+                },
+            }).then((response) => {
+                    file_no.value = response.data.fileId;
                     alert('업로드 하였습니다.');
                 // 파일 업로드 성공 시 처리할 로직을 여기에 작성합니다.
                 // 예: 성공 메시지 출력, 업로드 결과를 다른 동작에 활용 등
@@ -233,8 +260,8 @@ export default {
         watch(() => state.data.map((d) => d.checked),(checkedList) => {
             showDelete.value = checkedList.some((checked) => checked);
         });   
-        return {state, searchKeyword, add, search01, del, showDelete, selectAll, handleSelectAll, openEditModal, editMemo, showModal, editedContent,
-                cancel, editedSubject, add, showAddModal, newSubject, newContent, addMemo, cancelAdd, fileUploadRef, handleFileUpload,
+        return {state, searchKeyword, add, search01, del, showDelete, selectAll, handleSelectAll, openEditModal, editMemo, showModal, editedContent, editingMemoId,
+                cancel, editedSubject, add, showAddModal, newSubject, newContent, addMemo, cancelAdd, fileUploadRef, handleFileUpload, deleteMemo, doValid
 
         };
     },
