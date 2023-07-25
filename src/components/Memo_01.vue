@@ -21,7 +21,7 @@
          <!-- 모달 창 -->
         <div v-if="showAddModal" class="modal">
             <div class="modal-content">
-            <h3>새로운 메모 추가</h3>
+            <h3>글 작성하기</h3>
             <div class="form-group">
                 <label for="newSubject">제목:</label>
                 <input v-model="newSubject" id="newSubject" placeholder="제목을 입력하세요." />
@@ -42,7 +42,7 @@
         </div>
         <div v-if="showModal" class="modal">
             <div class="modal-content">
-            <h3>메모 수정</h3>
+            <h3>글 수정하기</h3>
             <div class="form-group">
                 <label for="editedSubject">제목 :</label>
                 <input v-model="editedSubject" id="editedSubject" placeholder="제목을 입력하세요."/>
