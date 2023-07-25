@@ -14,21 +14,46 @@
         <ul>
             <li v-for="d in state.data" :key="d.id" @click="openEditModal(d.id)">
                 <input type="checkbox" v-model="d.checked" @click.stop />
-                {{ d.content }}
+                {{ d.subject }}
                 <span class="author">작성자 : {{ d.user_id }}</span>
             </li>
         </ul>
          <!-- 모달 창 -->
-      <div v-if="showModal" class="modal">
-        <div class="modal-content">
-          <h3>메모 수정</h3>
-          <input v-model="editedContent" placeholder="내용을 입력하세요." />
-          <div class="modal-buttons">
-            <button @click="editMemo(editingMemoId)" :disabled="isNotEditable">수정</button>
-            <button @click="cancel">취소</button>
-          </div>
+        <div v-if="showAddModal" class="modal">
+            <div class="modal-content">
+            <h3>새로운 메모 추가</h3>
+            <div class="form-group">
+                <label for="newSubject">제목:</label>
+                <input v-model="newSubject" id="newSubject" placeholder="제목을 입력하세요." />
+            </div>
+            <div class="form-group">
+                <label for="newContent">내용:</label>
+                <textarea v-model="newContent" id="newContent" rows="5" placeholder="내용을 입력하세요."></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button @click="addMemo" :disabled="isNewMemoNotValid">작성하기</button>
+                <button @click="cancelAdd">취소</button>
+            </div>
+            </div>
+        </div>
+        <div v-if="showModal" class="modal">
+            <div class="modal-content">
+            <h3>메모 수정</h3>
+            <div class="form-group">
+                <label for="editedSubject">제목 :</label>
+                <input v-model="editedSubject" id="editedSubject" placeholder="제목을 입력하세요."/>
+            </div>
+            <div class="form-group">
+                <label for="editedContent">내용 :</label>
+                <textarea v-model="editedContent" id="editedContent" rows="5" placeholder="내용을 입력하세요."></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button @click="editMemo(editingMemoId)" :disabled="isNotEditable">수정하기</button>
+                <button @click="cancel">취소</button>
+            </div>
         </div>
       </div>
+      <!-- 모달 창 END -->
     </div>
 </template> 
 
@@ -56,22 +81,48 @@ export default {
 
         const showDelete = ref(false); // 삭제 버튼 가시성을 제어하는 변수
         // 추가
+        const showAddModal = ref(false); // 추가 팝업 표시 여부
+        const newSubject = ref(''); // 새 메모 제목
+        const newContent = ref(''); // 새 메모 내용
         const add = ()=>{
+            // 추가 팝업 표시
+            showAddModal.value = true;
+        }
+
+        const addMemo = () => {
+            // 유효성 검사: 제목과 내용이 모두 비어있으면 추가하지 않음
             const token = localStorage.getItem('token');
             if (!token) {
                 alert('로그인 후에 메모를 추가할 수 있습니다.');
                 return;
             }
-            const content = prompt("내용을 입력해주세요.");
-
-            if(content != null){
-                const decodedToken = jwtDecode(token);
-                const username = decodedToken.username;
-                api.post("/api/memos", {content, username}).then((res)=>{
-                state.data = res.data;
-                })
+            if (!newSubject.value.trim() || !newContent.value.trim()) {
+                alert('제목과 내용을 모두 입력하세요.');
+                return;
             }
-        }
+
+            // 새 메모 추가 API 호출
+            const decodedToken = jwtDecode(token);
+            const username = decodedToken.username;
+            api
+                .post('/api/memos', { subject: newSubject.value, content: newContent.value, username })
+                .then((res) => {
+                state.data = res.data;
+                // 추가 팝업 닫기
+                showAddModal.value = false;
+                // 입력 필드 초기화
+                newSubject.value = '';
+                newContent.value = '';
+                });
+        };
+
+        const cancelAdd = () => {
+            // 추가 팝업 닫기
+            showAddModal.value = false;
+            // 입력 필드 초기화
+            newSubject.value = '';
+            newContent.value = '';
+        };
 
         //삭제처리
         const del = ()=>{
@@ -101,6 +152,7 @@ export default {
         // 수정 버튼을 클릭할 때 호출되는 함수
         const isNotEditable = ref(false); // 수정 버튼 비활성화 여부를 제어하는 변수
         const showModal = ref(false);
+        const editedSubject = ref(''); // Added for the subject input field
         const editedContent = ref('');
         const editingMemoId = ref(null); // 수정 중인 메모의 id 저장
         const openEditModal = (id) => {
@@ -119,7 +171,7 @@ export default {
             } else {
                 isNotEditable.value = false;
             }
-            //memo.user_id
+            editedSubject.value = memo.subject; // Set the subject value
             editedContent.value = memo.content;
             editingMemoId.value = id; // 수정 중인 메모의 id 설정
             showModal.value = true;
@@ -127,8 +179,9 @@ export default {
         // 수정 확인 버튼을 클릭할 때 호출되는 함수
         const editMemo = () => {
             const id = editingMemoId.value; // 수정 중인 메모의 id 가져오기
+            const subject = editedSubject.value;
             const content = editedContent.value;
-            api.put("/api/memos/" + id, { content }).then((res) => {
+            api.put("/api/memos/" + id, { subject, content }).then((res) => {
                 state.data = res.data;
                 showModal.value = false;
             });
@@ -154,7 +207,7 @@ export default {
             showDelete.value = checkedList.some((checked) => checked);
         });   
         return {state, searchKeyword, add, search01, del, showDelete, selectAll, handleSelectAll, openEditModal, editMemo, showModal, editedContent,
-                cancel
+                cancel, editedSubject, add, showAddModal, newSubject, newContent, addMemo, cancelAdd,
 
         };
     },
@@ -239,18 +292,51 @@ export default {
 
 .modal-content {
   background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  max-width: 800px; /* 최대 너비 설정 */
+  width: 100%; /* 너비 100% 설정 */
 }
 
 .modal-buttons {
   display: flex;
   justify-content: flex-end;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .modal-buttons button {
   margin-left: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
+.modal h3 {
+  margin-top: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.modal-buttons button:hover {
+  background-color: #f5f5f5;
+}
+
+/* Adjust the form-group style */
+.form-group {
+  margin-bottom: 15px;
+}
+
+/* Make the content textarea wider */
+#editedContent, #newContent {
+  width: 100%;
+}
+
+#editedSubject, #newSubject {
+    width: 100%;
+}
 </style>
