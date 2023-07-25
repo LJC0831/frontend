@@ -27,6 +27,10 @@
                 <input v-model="newSubject" id="newSubject" placeholder="제목을 입력하세요." />
             </div>
             <div class="form-group">
+                <label for="fileUpload">파일 업로드 :</label>&nbsp;
+                <input type="file" @change="handleFileUpload" id="fileUpload" ref="fileUploadRef"/>
+            </div>
+            <div class="form-group">
                 <label for="newContent">내용:</label>
                 <textarea v-model="newContent" id="newContent" rows="5" placeholder="내용을 입력하세요."></textarea>
             </div>
@@ -202,12 +206,35 @@ export default {
         api.get("/api/memos").then((res) => {
             state.data = res.data;
         })
+        // 파일업로드
+        const fileUploadRef = ref(null); // 파일 업로드 요소를 위한 ref
+
+        const handleFileUpload = () => {
+            const file = fileUploadRef.value.files[0]; // 선택된 파일 가져오기
+
+            // 선택된 파일을 FormData 객체에 추가
+            const formData = new FormData();
+            formData.append("file", file);
+
+            // 파일 업로드 요청
+            api.post('/api/upload', formData)
+                .then((response) => {
+                    alert('업로드 하였습니다.');
+                // 파일 업로드 성공 시 처리할 로직을 여기에 작성합니다.
+                // 예: 성공 메시지 출력, 업로드 결과를 다른 동작에 활용 등
+                })
+                .catch((error) => {
+                    alert('업로드 실패입니다.');
+                // 파일 업로드 실패 시 처리할 로직을 여기에 작성합니다.
+                // 예: 오류 메시지 출력 등
+                });
+        };
         // 삭제버튼 활성화
         watch(() => state.data.map((d) => d.checked),(checkedList) => {
             showDelete.value = checkedList.some((checked) => checked);
         });   
         return {state, searchKeyword, add, search01, del, showDelete, selectAll, handleSelectAll, openEditModal, editMemo, showModal, editedContent,
-                cancel, editedSubject, add, showAddModal, newSubject, newContent, addMemo, cancelAdd,
+                cancel, editedSubject, add, showAddModal, newSubject, newContent, addMemo, cancelAdd, fileUploadRef, handleFileUpload,
 
         };
     },
