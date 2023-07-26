@@ -3,6 +3,9 @@
       <div class="login-container">
         <div class="header-name"> Memo App </div>
         <div class="login-button-container">
+          <div v-if="!isLoggedIn" class="signup-button" @click="showSignupModal = true">
+            <button class="signup-btn">회원가입</button>&nbsp;
+          </div>
           <div v-if="!isLoggedIn" class="login-button" @click="showLoginModal = true">
             <!-- 로그인 이미지 대신 일반 버튼으로 변경 -->
             <button class="login-btn">로그인</button>
@@ -25,6 +28,21 @@
         </div>
         <div class="close-button" @click="showLoginModal = false">X</div>
       </div>
+      <!-- 회원가입 모달 -->
+      <div v-if="showSignupModal" class="login-modal">
+        <div class="login-form">
+          <h2>회원가입</h2>
+          <label for="newUsername">아이디 :</label>&nbsp;
+          <input type="text" v-model="newUsername" id="newUsername" />&nbsp;
+          <label for="newPassword">비밀번호: </label>&nbsp;
+          <input type="password" v-model="newPassword" id="newPassword" />&nbsp;
+          <label for="newName">이름: </label>&nbsp; 
+          <input type="text" v-model="newName" id="newName" />&nbsp; 
+          <button @click="signup">회원가입</button>&nbsp;
+          <button @click="cancelSignup">취소</button>&nbsp;
+        </div>
+        <div class="close-button" @click="showSignupModal = false">X</div>
+      </div>
     </div>
     </header>
   </template>
@@ -39,8 +57,12 @@
     data() {
       return {
         showLoginModal: false,
+        showSignupModal: false, // 회원가입 모달 표시 여부
         username: "",
         password: "",
+        newUsername: "", // 회원가입용 새 아이디
+        newPassword: "", // 회원가입용 새 비밀번호
+        newName: "",
         isLoggedIn: false, // 로그인 상태를 저장하는 데이터 속성
       };
     },
@@ -88,8 +110,17 @@
               this.username = ""; // 입력한 사용자 이름 초기화
               this.password = ""; // 입력한 비밀번호 초기화
             },
+            signup() {
+              // 회원가입 로직 처리
+              // ...
+            },
+            cancelSignup() {
+              this.showSignupModal = false;
+              this.newUsername = "";
+              this.newPassword = "";
+              this.newName = "";
+            },
           },
-
 
     created() {
         // 페이지가 로드될 때 로컬 스토리지에 토큰이 있는지 확인하여 로그인 상태를 설정
@@ -161,7 +192,7 @@
   background-color: #0056b3;
 }
 
-.login-btn {
+.login-btn, .signup-btn {
   padding: 8px 16px;
   background-color: #007bff;
   color: #ffffff;
