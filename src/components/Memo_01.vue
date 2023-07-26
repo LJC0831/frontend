@@ -26,10 +26,10 @@
                 <label for="newSubject">제목:</label>
                 <input v-model="newSubject" id="newSubject" placeholder="제목을 입력하세요." />
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="fileUpload">파일 업로드 :</label>&nbsp;
                 <input type="file" @change="handleFileUpload" id="fileUpload" ref="fileUploadRef"/>
-            </div>
+            </div> -->
             <div class="form-group">
                 <label for="newContent">내용:</label>
                 <textarea v-model="newContent" id="newContent" rows="5" placeholder="내용을 입력하세요."></textarea>
@@ -46,17 +46,6 @@
             <div class="form-group">
                 <label for="editedSubject">제목 :</label>
                 <input v-model="editedSubject" id="editedSubject" placeholder="제목을 입력하세요."/>
-            </div>
-            <div class="form-group">
-                <label for="editedFile">파일 업로드 :</label>&nbsp;
-                <div v-if="state.uploadedFile">
-                    <a :href="`/api/download/${state.uploadedFile}`" target="_blank" download>
-                        업로드된 파일 다운로드
-                    </a>
-                </div>
-                <div v-else>
-                    <span>업로드된 파일 없음</span>
-                </div>
             </div>
             <div class="form-group">
                 <label for="editedContent">내용 :</label>
