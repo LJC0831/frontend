@@ -14,7 +14,7 @@
         <ul>
             <li v-for="d in state.data" :key="d.id" @click="openEditModal(d.id)">
                 <input type="checkbox" v-model="d.checked" @click.stop />
-                {{ d.subject }}
+                <span class="memo-subject fw-bold">{{ d.subject }}</span>
                 <span class="author">작성자 : {{ d.user_id }}  {{ d.formatted_date }}</span>
             </li>
         </ul>
@@ -314,7 +314,7 @@ export default {
 .author {
     float: right; /* 우측 정렬을 위해 float 사용 */
     font-size: 12px; /* 작성자 정보의 글자 크기 조정 */
-    color: #888; /* 작성자 정보 글자 색상 설정 */
+    color: #6c757d; /* 작성자 정보 글자 색상 설정 */
     margin-top: 5px; /* 작성자 정보와 컨텐츠 사이 간격 조정 */
 }
 
@@ -407,4 +407,18 @@ export default {
 #editedSubject, #newSubject {
     width: 100%;
 }
+
+.memo-subject {
+  padding: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif;
+  background-color: ivory;
+  transition: background-color 0.3s ease;
+}
+
+.memo-subject:hover {
+  background-color: #f8f9fa; /* Light gray on hover */
+}
+
 </style>
