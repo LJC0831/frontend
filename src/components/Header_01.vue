@@ -32,8 +32,8 @@
       <div v-if="showSignupModal" class="login-modal">
         <div class="login-form">
           <h2>회원가입</h2>
-          <label for="newUsername">아이디 :</label>&nbsp;
-          <input type="text" v-model="newUsername" id="newUsername" />&nbsp;
+          <label for="newUserId">아이디 :</label>&nbsp;
+          <input type="text" v-model="newUserId" id="newUserId" />&nbsp;
           <label for="newPassword">비밀번호: </label>&nbsp;
           <input type="password" v-model="newPassword" id="newPassword" />&nbsp;
           <label for="newName">이름: </label>&nbsp; 
@@ -60,7 +60,7 @@
         showSignupModal: false, // 회원가입 모달 표시 여부
         username: "",
         password: "",
-        newUsername: "", // 회원가입용 새 아이디
+        newUserId: "", // 회원가입용 새 아이디
         newPassword: "", // 회원가입용 새 비밀번호
         newName: "",
         isLoggedIn: false, // 로그인 상태를 저장하는 데이터 속성
@@ -70,9 +70,9 @@
             ...mapActions(["setToken"]),
             login() {
               const api = axios.create({
-              baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
+                baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
+                //baseURL: "http://localhost:3000",
               });
-
               const state = reactive({
                   data : [],
               });
@@ -111,12 +111,31 @@
               this.password = ""; // 입력한 비밀번호 초기화
             },
             signup() {
+              debugger
               // 회원가입 로직 처리
-              // ...
+              const api = axios.create({
+                baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
+              });
+              api.post("/api/signup", {
+                  userId: this.newUserId,
+                  password: this.newPassword,
+                  name: this.newName, // Send the user's name to the server
+                })
+                .then((res) => {
+                  alert("회원가입에 성공했습니다!");
+                  this.showSignupModal = false;
+                  this.newUserId = "";
+                  this.newPassword = "";
+                  this.newName = "";
+                })
+                .catch((error) => {
+                  console.error("회원가입 오류:", error);
+                  alert(" 이미 사용 중인 아이디입니다.");
+                });
             },
             cancelSignup() {
               this.showSignupModal = false;
-              this.newUsername = "";
+              this.newUserId = "";
               this.newPassword = "";
               this.newName = "";
             },
