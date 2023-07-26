@@ -48,6 +48,15 @@
                 <input v-model="editedSubject" id="editedSubject" placeholder="제목을 입력하세요."/>
             </div>
             <div class="form-group">
+                <label for="editedFile">업로드된 파일:</label>
+                <div v-if="state.uploadedFile">
+                    <img :src="state.uploadedFile" alt="업로드된 파일" style="max-width: 200px;" />
+                </div>
+                <div v-else>
+                    <span>업로드된 파일 없음</span>
+                </div>
+            </div>
+            <div class="form-group">
                 <label for="editedContent">내용 :</label>
                 <textarea v-model="editedContent" id="editedContent" rows="5" placeholder="내용을 입력하세요."></textarea>
             </div>
@@ -82,6 +91,7 @@ export default {
         
         const state = reactive({
             data : [],
+            uploadedFile: null, // 업로드된 파일 데이터를 저장하기 위한 변수
         });
         // 공통
         const doValid = ()=>{
@@ -89,7 +99,8 @@ export default {
             const token = localStorage.getItem('token');
             if (token == null){
                 alert('로그인해주세요.');
-                return false;
+                location.reload();
+                return;
             }
             return true;
         }
@@ -145,6 +156,8 @@ export default {
                 alert("삭제할 항목을 선택해주세요.");
                 return;
             } else {
+                // 추가 팝업 표시
+                if(!doValid()) return;//validate 체크
                 const token = localStorage.getItem('token');
                 const decodedToken = jwtDecode(token);
                 const username = decodedToken.username;
@@ -187,6 +200,15 @@ export default {
             editedSubject.value = memo.subject; // Set the subject value
             editedContent.value = memo.content;
             editingMemoId.value = id; // 수정 중인 메모의 id 설정
+            
+            if (memo.file_id) {
+                // 파일 번호가 존재하면 서버로부터 파일 데이터를 가져옵니다.
+                api.get(`/api/file/${memo.file_id}`).then((response) => {
+                state.uploadedFile = response.data.file_addr; // 파일 데이터를 state.uploadedFile에 저장합니다.
+                });
+            } else {
+                state.uploadedFile = null; // 파일이 없으면 null로 초기화합니다.
+            }  
             showModal.value = true;
         };
         // 수정 확인 버튼을 클릭할 때 호출되는 함수
