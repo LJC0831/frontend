@@ -15,7 +15,7 @@
             <li v-for="d in state.data" :key="d.id" @click="openEditModal(d.id)">
                 <input type="checkbox" v-model="d.checked" @click.stop />
                 {{ d.subject }}
-                <span class="author">작성자 : {{ d.user_id }}</span>
+                <span class="author">작성자 : {{ d.user_id }}  {{ d.formatted_date }}</span>
             </li>
         </ul>
          <!-- 모달 창 -->
