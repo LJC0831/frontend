@@ -119,7 +119,7 @@ export default {
   background-color: #333;
   padding: 10px;
   position: fixed;
-  top: 15%;
+  top: 12%;
   left: 0;
   transition: transform 0.3s ease;
   transform: translateX(-100%);
