@@ -260,9 +260,7 @@ export default {
             // 선택된 파일을 FormData 객체에 추가
             const formData = new FormData();
             formData.append("file", file);
-            // 파일명을 인코딩하여 FormData에 추가
-            const encodedFileName = encodeURIComponent(file.name);
-            formData.append("fileName", encodedFileName);
+            formData.append("fileName", encodeURIComponent(file.name)); // 파일명을 인코딩하여 formData에 추가
             // 파일 업로드 요청
             api.post('/api/upload', formData, {
                 headers: {
