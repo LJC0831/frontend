@@ -50,7 +50,7 @@
             <div class="form-group">
                 <label for="editedFile">파일 업로드 :</label>&nbsp;
                 <div v-if="state.uploadedFile">
-                    <a :href="`https://web-frontend-rt92alk916cxb.sel4.cloudtype.app//uploads/${state.uploadedFile}`" target="_blank" download>
+                    <a :href="`https://web-frontend-rt92alk916cxb.sel4.cloudtype.app/uploads/${state.uploadedFile}`" target="_blank" download>
                         업로드된 파일 다운로드
                     </a>
                 </div>
