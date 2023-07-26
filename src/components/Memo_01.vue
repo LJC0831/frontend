@@ -287,7 +287,7 @@ export default {
 .memo {
     flex: 1;
     padding: 20px;
-    max-height: 700px;
+    max-height: 760px;
     overflow-y: auto; /* 스크롤이 생기도록 설정 */
 }
 .memo ul {
