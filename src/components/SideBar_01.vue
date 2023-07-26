@@ -1,27 +1,32 @@
 <template>
   <div>
     <!-- 메뉴 항목들 -->
-    <button @click="toggleSidebar">
-      <i class="fas" :class="sidebarOpen ? 'fa-bars' : 'fa-times'"></i>
+    <button @click="toggleSidebar" class="sidebar-toggle-btn">
+      <i :class="sidebarOpen ? 'fas fa-times' : 'fas fa-bars'"></i>
     </button>
     <div class="sidebar" :class="{ 'open': sidebarOpen }">
-        <div class="menu-item"  v-if="!sidebarOpen" @click="handleMenuClick('테스트1')">전체 글 보기</div>
-        <div class="menu-item"  v-if="!sidebarOpen" @click="handleMenuClick('테스트2')">문의하기</div>
-        <div class="menu-item"  v-if="!sidebarOpen" @click="handleMenuClick('테스트3')">Q&A</div>
+      <div v-for="(menu, index) in menus" :key="index" class="menu-item" @click="handleMenuClick(menu.name)">
+        {{ menu.label }}
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-        sidebarOpen: false, // 사이드바의 초기 상태는 열린 상태로 설정
-        };
-    },
+  data() {
+    return {
+      sidebarOpen: false,
+      menus: [
+        { name: '테스트1', label: '전체 글 보기' },
+        { name: '테스트2', label: '문의하기' },
+        { name: '테스트3', label: 'Q&A' },
+      ],
+    };
+  },
   methods: {
     toggleSidebar() {
-      this.sidebarOpen = !this.sidebarOpen; // 상태를 토글하여 사이드바 접기/열기
+      this.sidebarOpen = !this.sidebarOpen;
     },
     handleMenuClick(menuName) {
       alert(`선택한 메뉴: ${menuName}`);
@@ -34,30 +39,44 @@ export default {
 
 <style scoped>
 .sidebar {
-  width: 150px;
-  height: 780px;
-  background-color: #f0f0f0;
+  width: 200px;
+  height: 90%;
+  background-color: #333; /* 변경: 더 어두운 배경색 */
   padding: 10px;
-  flex: 0 0 200px; /* 사이드바 너비 설정 */
-  transition: width 0.3s ease; /* 사이드바 접고/열 때 애니메이션 적용 */
+  position: fixed;
+  top: 14%;
+  left: 0;
+  z-index: 999;
+  transition: transform 0.3s ease;
+  transform: translateX(-100%);
 }
+
 .open {
-  width: 0; /* 사이드바 접을 때 너비를 0으로 설정하여 감추기 */
+  transform: translateX(0);
+}
+
+.sidebar-toggle-btn {
+  background-color: #444; /* 변경: 더 어두운 토글 버튼 배경색 */
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 18px;
 }
 
 .menu-item {
   cursor: pointer;
   margin-bottom: 10px;
   padding: 10px;
-  background-color: #eaeaea;
+  background-color: #555; /* 변경: 더 어두운 메뉴 배경색 */
   border-radius: 5px;
   text-align: center;
   font-weight: bold;
-  color: #333;
+  color: #fff; /* 변경: 흰색 텍스트 색상 */
   transition: background-color 0.3s ease;
 }
 
 .menu-item:hover {
-  background-color: #d0d0d0;
+  background-color: #777; /* 변경: 더 밝은 호버 배경색 */
 }
 </style>
