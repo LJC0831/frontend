@@ -52,8 +52,8 @@
                 <textarea v-model="editedContent" id="editedContent" rows="5" placeholder="내용을 입력하세요."></textarea>
             </div>
             <div class="modal-buttons">
-                <button @click="deleteMemo(editingMemoId)" :disabled="isNotEditable">삭제하기</button>
-                <button @click="editMemo(editingMemoId)" :disabled="isNotEditable">수정하기</button>
+                <button @click="deleteMemo(editingMemoId)" :disabled="isNotEditable" v-show="isNotEditable">삭제하기</button>
+                <button @click="editMemo(editingMemoId)" :disabled="isNotEditable" v-show="isNotEditable">수정하기</button>
                 <button @click="cancel">취소</button>
             </div>
         </div>
@@ -182,7 +182,7 @@ export default {
             const token = localStorage.getItem('token');
             const decodedToken = jwtDecode(token);
             const userIdFromToken = decodedToken.username; // 사용자 아이디 추출
-
+            debugger
             if (memo.user_id !== userIdFromToken) {
                 isNotEditable.value = true;
             } else {
