@@ -111,6 +111,23 @@ export default {
   pointer-events: none; /* 사이드바가 열렸을 때 포인터 이벤트를 받지 않도록 설정 */
 }
 
+/* 화면 크기가 768px 이하인 경우 버튼들을 세로로 정렬 */
+@media (max-width: 768px) {
+  .sidebar {
+  width: 150px;
+  height: 78.5%;
+  background-color: #333;
+  padding: 10px;
+  position: fixed;
+  top: 15%;
+  left: 0;
+  transition: transform 0.3s ease;
+  transform: translateX(-100%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+  pointer-events: none; /* 사이드바가 열렸을 때 포인터 이벤트를 받지 않도록 설정 */
+  }
+}
+
 .open {
   transform: translateX(0);
 }
