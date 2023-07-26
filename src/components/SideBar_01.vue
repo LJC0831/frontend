@@ -2,15 +2,16 @@
   <div>
     <!-- 메뉴 항목들 -->
     <div class="sidebar-toggle-container">
-      <button @click="toggleSidebar" class="sidebar-toggle-btn">
+      <button @click="toggleSidebar" class="sidebar-toggle-btn" :class="{ 'open': sidebarOpen }">
         <i :class="sidebarOpen ? 'fas fa-times' : 'fas fa-bars'"></i>
       </button>
-      <div class="sidebar-expand" :style="{ width: sidebarOpen ? '200px' : '0' }"></div>
     </div>
     <div class="sidebar" :class="{ 'open': sidebarOpen }">
       <div v-for="(menu, index) in menus" :key="index" class="menu-item" @click="handleMenuClick(menu.name)">
         {{ menu.label }}
       </div>
+    </div>
+    <div class="content" :style="{ marginLeft: sidebarOpen ? '150px' : '10px' }">
     </div>
   </div>
 </template>
@@ -46,12 +47,18 @@ export default {
 }
 
 .sidebar-toggle-btn {
-  background-color: #444;
+  background-color: #333;
   color: #fff;
   border: none;
   cursor: pointer;
   padding: 10px;
   font-size: 18px;
+  border-radius: 0; /* 네모 버튼으로 변경 */
+  transition: background-color 0.3s ease;
+}
+
+.sidebar-toggle-btn.open {
+  background-color: #777; /* 버튼 열릴 때 배경색 변경 */
 }
 
 .sidebar-expand {
@@ -63,7 +70,7 @@ export default {
 
 .sidebar {
   width: 150px;
-  height: 90%;
+  height: 67%;
   background-color: #333;
   padding: 10px;
   position: fixed;
@@ -72,6 +79,7 @@ export default {
   z-index: 999;
   transition: transform 0.3s ease;
   transform: translateX(-100%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
 }
 
 .open {
@@ -92,5 +100,9 @@ export default {
 
 .menu-item:hover {
   background-color: #777;
+}
+
+.content {
+  transition: margin-left 0.3s ease;
 }
 </style>
