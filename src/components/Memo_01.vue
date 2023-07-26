@@ -52,8 +52,8 @@
                 <textarea v-model="editedContent" id="editedContent" rows="5" placeholder="내용을 입력하세요."></textarea>
             </div>
             <div class="modal-buttons">
-                <button @click="deleteMemo(editingMemoId)" :disabled="isNotEditable" v-show="isNotEditable">삭제하기</button>
-                <button @click="editMemo(editingMemoId)" :disabled="isNotEditable" v-show="isNotEditable">수정하기</button>
+                <button @click="deleteMemo(editingMemoId)" :disabled="isNotEditable">삭제하기</button>
+                <button @click="editMemo(editingMemoId)" :disabled="isNotEditable">수정하기</button>
                 <button @click="cancel">취소</button>
             </div>
         </div>
@@ -275,7 +275,7 @@ export default {
             showDelete.value = checkedList.some((checked) => checked);
         });   
         return {state, searchKeyword, add, search01, del, showDelete, selectAll, handleSelectAll, openEditModal, editMemo, showModal, editedContent, editingMemoId,
-                cancel, editedSubject, add, showAddModal, newSubject, newContent, addMemo, cancelAdd, fileUploadRef, handleFileUpload, deleteMemo, doValid
+                cancel, editedSubject, add, showAddModal, newSubject, newContent, addMemo, cancelAdd, fileUploadRef, handleFileUpload, deleteMemo, doValid, isNotEditable
 
         };
     },
