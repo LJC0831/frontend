@@ -1,9 +1,12 @@
 <template>
   <div>
     <!-- 메뉴 항목들 -->
-    <button @click="toggleSidebar" class="sidebar-toggle-btn">
-      <i :class="sidebarOpen ? 'fas fa-times' : 'fas fa-bars'"></i>
-    </button>
+    <div class="sidebar-toggle-container">
+      <button @click="toggleSidebar" class="sidebar-toggle-btn">
+        <i :class="sidebarOpen ? 'fas fa-times' : 'fas fa-bars'"></i>
+      </button>
+      <div class="sidebar-expand" :style="{ width: sidebarOpen ? '200px' : '0' }"></div>
+    </div>
     <div class="sidebar" :class="{ 'open': sidebarOpen }">
       <div v-for="(menu, index) in menus" :key="index" class="menu-item" @click="handleMenuClick(menu.name)">
         {{ menu.label }}
@@ -30,18 +33,38 @@ export default {
     },
     handleMenuClick(menuName) {
       alert(`선택한 메뉴: ${menuName}`);
-      // 여기에 선택한 메뉴에 따른 추가 로직을 작성할 수 있습니다.
-      // 예를 들어 선택한 메뉴에 따라 API 호출이나 뷰 내용 변경 등을 할 수 있습니다.
     },
   },
 };
 </script>
 
 <style scoped>
+.sidebar-toggle-container {
+  display: flex;
+  align-items: center;
+  margin-top: -1px; /* 상단 여백 조정 */
+}
+
+.sidebar-toggle-btn {
+  background-color: #444;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 18px;
+}
+
+.sidebar-expand {
+  flex: 1;
+  height: 100%;
+  transition: width 0.3s ease;
+  background-color: transparent;
+}
+
 .sidebar {
-  width: 200px;
+  width: 150px;
   height: 90%;
-  background-color: #333; /* 변경: 더 어두운 배경색 */
+  background-color: #333;
   padding: 10px;
   position: fixed;
   top: 14%;
@@ -55,28 +78,19 @@ export default {
   transform: translateX(0);
 }
 
-.sidebar-toggle-btn {
-  background-color: #444; /* 변경: 더 어두운 토글 버튼 배경색 */
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  padding: 10px;
-  font-size: 18px;
-}
-
 .menu-item {
   cursor: pointer;
   margin-bottom: 10px;
   padding: 10px;
-  background-color: #555; /* 변경: 더 어두운 메뉴 배경색 */
+  background-color: #555;
   border-radius: 5px;
   text-align: center;
   font-weight: bold;
-  color: #fff; /* 변경: 흰색 텍스트 색상 */
+  color: #fff;
   transition: background-color 0.3s ease;
 }
 
 .menu-item:hover {
-  background-color: #777; /* 변경: 더 밝은 호버 배경색 */
+  background-color: #777;
 }
 </style>

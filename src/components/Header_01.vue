@@ -156,7 +156,7 @@
     text-align: center;
     padding: 25px;
     border-bottom: 1px solid #eee;
-    background: #f7f7f7;
+    background: #333;
   }
   
   .login-modal {
@@ -236,7 +236,7 @@
   .header-name {
   font-size: 20px;
   font-weight: bold;
-  color: #333;
+  color: #ffffff;
   text-transform: uppercase;
   text-align: center;
   }
