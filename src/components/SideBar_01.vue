@@ -77,7 +77,7 @@ export default {
   position: fixed;
   top: 14%;
   left: 0;
-  z-index: 999;
+  z-index: -1;
   transition: transform 0.3s ease;
   transform: translateX(-100%);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
