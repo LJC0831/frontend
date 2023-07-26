@@ -11,7 +11,7 @@
             <button class="login-btn">로그인</button>
           </div>
           <div v-if="isLoggedIn" class="logout-button" @click="logout">
-            로그아웃
+            <button class="logout-btn">로그아웃</button>
           </div>
         </div>
   
@@ -211,7 +211,7 @@
   background-color: #0056b3;
 }
 
-.login-btn, .signup-btn {
+.login-btn, .signup-btn, .logout-btn {
   padding: 8px 16px;
   background-color: #007bff;
   color: #ffffff;
