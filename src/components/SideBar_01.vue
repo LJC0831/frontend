@@ -44,6 +44,7 @@ export default {
   display: flex;
   align-items: center;
   margin-top: -1px; /* 상단 여백 조정 */
+  z-index: 1000; /* 사이드바 토글 버튼이 사이드바 위에 표시되도록 설정 */
 }
 
 .sidebar-toggle-btn {
