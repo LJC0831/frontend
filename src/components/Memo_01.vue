@@ -48,9 +48,11 @@
                 <input v-model="editedSubject" id="editedSubject" placeholder="제목을 입력하세요."/>
             </div>
             <div class="form-group">
-                <label for="editedFile">업로드된 파일:</label>
+                <label for="editedFile">파일 업로드 :</label>&nbsp;
                 <div v-if="state.uploadedFile">
-                    <img :src="state.uploadedFile" alt="업로드된 파일" style="max-width: 200px;" />
+                    <a :href="`app/uploads/${state.uploadedFile}`" target="_blank" download>
+                        업로드된 파일 다운로드
+                    </a>
                 </div>
                 <div v-else>
                     <span>업로드된 파일 없음</span>
