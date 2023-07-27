@@ -127,11 +127,11 @@ export default {
 @media (max-width: 768px) {
   .sidebar {
   width: 150px;
-  height: 78.5%;
+  height: 100%;
   background-color: #333;
   padding: 10px;
   position: fixed;
-  top: 12%;
+  top: 1%;
   left: 0;
   transition: transform 0.3s ease;
   transform: translateX(-100%);
