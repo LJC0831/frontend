@@ -12,20 +12,28 @@
       </div>
     </div>
     <div class="content" :style="{ marginLeft: sidebarOpen ? '150px' : '10px' }">
+      <!-- Memo_01.vue 컴포넌트 보여주기 -->
+      <Basic v-if="selectedMenu === 'basicVue'" />
+      <Memo_01 v-if="selectedMenu === 'memoVue'" />
     </div>
   </div>
 </template>
 
 <script>
+/* eslint-disable */
+import Memo_01 from "./Memo_01.vue";
+import Basic from "./Basic_logo.vue";
 export default {
+  props: ['menuSelected'], // 부모 컴포넌트로부터 menuSelected 프롭을 받음
   data() {
     return {
-      sidebarOpen: true,
+      sidebarOpen: false,
       menus: [
-        { name: '테스트1', label: '소개 글 보기' },
-        { name: '테스트2', label: '글 작성' },
+        { name: 'basicVue', label: '소개 글 보기' },
+        { name: 'memoVue', label: '글 작성' },
         { name: '테스트3', label: 'Q&A' },
       ],
+      selectedMenu: '', // 선택된 메뉴를 저장할 변수 추가
     };
   },
   methods: {
@@ -46,8 +54,12 @@ export default {
       });
     },
     handleMenuClick(menuName) {
-      alert(`선택한 메뉴: ${menuName}`);
+      this.selectedMenu = menuName;
+      this.$emit('menuSelected', menuName);
     },
+  },
+  components: {
+      Memo_01, // Memo_01 컴포넌트 등록
   },
 };
 </script>
@@ -150,6 +162,7 @@ export default {
 
 .content {
   transition: margin-left 0.3s ease;
+  width: 100%;
   pointer-events: auto; /* 사이드바가 열렸을 때 포인터 이벤트를 받도록 설정 */
 }
 </style>
