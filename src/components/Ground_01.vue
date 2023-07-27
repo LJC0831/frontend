@@ -44,11 +44,21 @@ export default {
   flex-direction: column;
   min-height: 100vh;
 }
+
+
 .content {
   flex: 1; /* content가 남은 공간을 모두 차지하도록 설정 (Basic_logo가 전체 화면으로 표시됨) */
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: -1;
+}
+
+/* 화면 크기가 768px 이하인 경우 버튼들을 세로로 정렬 */
+@media (max-width: 768px) {
+  .main-container {
+  display: flex; /* 사이드바와 메모 컴포넌트를 가로로 배치 */
+  }
 }
 
 </style>
