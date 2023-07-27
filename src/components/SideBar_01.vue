@@ -131,7 +131,7 @@ export default {
   background-color: #333;
   padding: 10px;
   position: fixed;
-  top: 1%;
+  top: 100px;
   left: 0;
   transition: transform 0.3s ease;
   transform: translateX(-100%);
