@@ -274,6 +274,7 @@ watch(() => state.data.map((d) => d.checked),(checkedList) => {
     flex: 1;
     padding: 20px;
     width:100%;
+    min-width:1250px;
     max-height: 760px;
     overflow-y: auto; /* 스크롤이 생기도록 설정 */
 }
