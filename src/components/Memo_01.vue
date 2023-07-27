@@ -304,7 +304,6 @@ watch(() => state.data.map((d) => d.checked),(checkedList) => {
     float: right; /* 우측 정렬을 위해 float 사용 */
     font-size: 12px; /* 작성자 정보의 글자 크기 조정 */
     color: #6c757d; /* 작성자 정보 글자 색상 설정 */
-    margin-top: 5px; /* 작성자 정보와 컨텐츠 사이 간격 조정 */
     white-space: nowrap;
 }
 
@@ -326,6 +325,9 @@ watch(() => state.data.map((d) => d.checked),(checkedList) => {
     display: block;
   }
   .author {
+    float: left;
+    white-space: nowrap;
+    color: #6c757d;
     font-size: 10px; /* 작성자 정보 글자 크기 조정 */
   }
 
