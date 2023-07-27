@@ -157,6 +157,7 @@
     padding: 25px;
     border-bottom: 1px solid #eee;
     background: #333;
+    height: 100px;
   }
   
   .login-modal {
@@ -239,6 +240,7 @@
   color: #ffffff;
   text-transform: uppercase;
   text-align: center;
+  
   }
 
 .login-container {

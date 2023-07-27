@@ -29,12 +29,6 @@
     margin-top: 100px;
   }
   
-  .logo {
-    width: 150px;
-    height: 150px;
-    margin-bottom: 20px;
-  }
-  
   h2 {
     font-size: 36px;
     color: #333;
