@@ -7,10 +7,10 @@
       <div class="content">
         <!-- Memo_01.vue 컴포넌트 보여주기 -->
         <Memo_01 v-if="selectedMenu === 'memoVue'" />
-        <!-- Basic_logo.vue의 selectedMenu 프롭 넘겨주기 -->
         <Basic_logo v-if="selectedMenu === ''" />
         <Basic_logo v-if="selectedMenu === 'basicVue'" />
       </div>
+        
     </div>
     <Footer/>
   </div>
@@ -54,6 +54,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: -1;
 }
 
 </style>

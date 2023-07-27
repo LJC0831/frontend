@@ -9,7 +9,6 @@
             <button class="btn btn-primary" @click="search01()">조회 </button>
             <button class="btn btn-success" @click="add()">+ 추가</button>
             <button class="btn btn-danger" @click="del()" v-if="showDelete">- 삭제</button>
-            
         </div>      
         <ul>
             <li v-for="d in state.data" :key="d.id" @click="openEditModal(d.id)">
@@ -62,30 +61,40 @@
     </div>
 </template> 
 
-<script>
+<script setup>
 /* eslint-disable */
 import { reactive, ref, watch } from 'vue';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
-export default {
-    setup() {
-        const file_no = ref('');
-        const selectAll = ref(false); // 전체 선택 체크박스 상태를 제어하는 변수
-        const handleSelectAll = () => {
+const file_no = ref('');
+const selectAll = ref(false); // 전체 선택 체크박스 상태를 제어하는 변수
+const showDelete = ref(false); // 삭제 버튼 가시성을 제어하는 변수
+const showAddModal = ref(false); // 추가 팝업 표시 여부
+const newSubject = ref(''); // 새 메모 제목
+const newContent = ref(''); // 새 메모 내용
+const isNotEditable = ref(false); // 수정 버튼 비활성화 여부를 제어하는 변수
+const showModal = ref(false);
+const editedSubject = ref(''); // Added for the subject input field
+const editedContent = ref('');
+const editingMemoId = ref(null); // 수정, 삭제 중인 메모의 id 저장
+const fileUploadRef = ref(null); // 파일 업로드 요소를 위한 ref
+
+const handleSelectAll = () => {
         // 전체 선택 체크박스가 클릭되었을 때 모든 메모 항목의 체크 상태를 변경
         state.data.forEach((d) => (d.checked = selectAll.value));
         };
 
-        const api = axios.create({
-        baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
-        });
-        
-        const state = reactive({
-            data : [],
-            uploadedFile: null, // 업로드된 파일 데이터를 저장하기 위한 변수
-        });
-        // 공통
-        const doValid = ()=>{
+const api = axios.create({
+    baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
+});
+
+const state = reactive({
+    data : [],
+    uploadedFile: null, // 업로드된 파일 데이터를 저장하기 위한 변수
+});
+
+// 공통
+const doValid = ()=>{
             // 로컬 스토리지에서 JWT 토큰 가져오기
             const token = localStorage.getItem('token');
             if (token == null){
@@ -95,52 +104,45 @@ export default {
             }
             return true;
         }
-
-        const showDelete = ref(false); // 삭제 버튼 가시성을 제어하는 변수
-        // 추가
-        const showAddModal = ref(false); // 추가 팝업 표시 여부
-        const newSubject = ref(''); // 새 메모 제목
-        const newContent = ref(''); // 새 메모 내용
-        const add = ()=>{
+//추가
+const add = ()=>{
             // 추가 팝업 표시
             if(!doValid()) return;//validate 체크
             showAddModal.value = true;
         }
+const addMemo = () => {
+    // 유효성 검사: 제목과 내용이 모두 비어있으면 추가하지 않음
+    if(!doValid()) return;//validate 체크
+    if (!newSubject.value.trim() || !newContent.value.trim()) {
+        alert('제목과 내용을 모두 입력하세요.');
+        return;
+    }
+    // 새 메모 추가 API 호출
+    const token = localStorage.getItem('token');
+    const decodedToken = jwtDecode(token);
+    const username = decodedToken.username;
+    api
+        .post('/api/memos', { subject: newSubject.value, file_no: file_no.value, content: newContent.value, username })
+        .then((res) => {
+        state.data = res.data;
+        // 추가 팝업 닫기
+        showAddModal.value = false;
+        // 입력 필드 초기화
+        newSubject.value = '';
+        newContent.value = '';
+        alert('저장되었습니다.');
+        });
+};
 
-        const addMemo = () => {
-            // 유효성 검사: 제목과 내용이 모두 비어있으면 추가하지 않음
-            if(!doValid()) return;//validate 체크
-            if (!newSubject.value.trim() || !newContent.value.trim()) {
-                alert('제목과 내용을 모두 입력하세요.');
-                return;
-            }
-            // 새 메모 추가 API 호출
-            const token = localStorage.getItem('token');
-            const decodedToken = jwtDecode(token);
-            const username = decodedToken.username;
-            api
-                .post('/api/memos', { subject: newSubject.value, file_no: file_no.value, content: newContent.value, username })
-                .then((res) => {
-                state.data = res.data;
-                // 추가 팝업 닫기
-                showAddModal.value = false;
-                // 입력 필드 초기화
-                newSubject.value = '';
-                newContent.value = '';
-                alert('저장되었습니다.');
-                });
-        };
-
-        const cancelAdd = () => {
+const cancelAdd = () => {
             // 추가 팝업 닫기
             showAddModal.value = false;
             // 입력 필드 초기화
             newSubject.value = '';
             newContent.value = '';
         };
-
-        //삭제처리
-        const del = ()=>{
+//삭제처리
+const del = ()=>{
             const checkedIds = state.data.filter((d) => d.checked).map((d) => d.id);
 
             if (checkedIds.length === 0) {
@@ -166,14 +168,8 @@ export default {
                 
             }  
         };
-        // 수정
-        // 수정 버튼을 클릭할 때 호출되는 함수
-        const isNotEditable = ref(false); // 수정 버튼 비활성화 여부를 제어하는 변수
-        const showModal = ref(false);
-        const editedSubject = ref(''); // Added for the subject input field
-        const editedContent = ref('');
-        const editingMemoId = ref(null); // 수정, 삭제 중인 메모의 id 저장
-        const openEditModal = (id) => {
+// 수정
+const openEditModal = (id) => {
             const memo = state.data.find(d => d.id === id);
             
             // 로컬 스토리지에서 JWT 토큰 가져오기
@@ -202,8 +198,8 @@ export default {
             }  
             showModal.value = true;
         };
-        // 수정 확인 버튼을 클릭할 때 호출되는 함수
-        const editMemo = () => {
+// 수정 확인 버튼을 클릭할 때 호출되는 함수
+const editMemo = () => {
             const id = editingMemoId.value; // 수정 중인 메모의 id 가져오기
             const subject = editedSubject.value;
             const content = editedContent.value;
@@ -213,8 +209,8 @@ export default {
                 showModal.value = false;
             });
         };
-        // 삭제
-        const deleteMemo = () => {
+// 삭제
+const deleteMemo = () => {
             if(!doValid()) return;//validate 체크
             const id = editingMemoId.value; // 수정 중인 메모의 id 가져오기
             api.delete("/api/memos/" + id).then((res) => {
@@ -223,27 +219,23 @@ export default {
                 showModal.value = false;
             });
         };
-        const cancel = () => {
-            showModal.value = false;
-        };
-        
-
-        // 조회
-        const searchKeyword = ref(""); // 검색어를 위한 반응형 변수
+const cancel = () => {
+    showModal.value = false;
+};
+// 조회
+const searchKeyword = ref(""); // 검색어를 위한 반응형 변수
         const search01 = ()=>{
             state.data = [];
             api.get("/api/memos", { params: { q: searchKeyword.value } }).then((res) => {
             state.data = res.data;
         })
         }
-        // 조회default
-        api.get("/api/memos").then((res) => {
-            state.data = res.data;
-        })
-        // 파일업로드
-        const fileUploadRef = ref(null); // 파일 업로드 요소를 위한 ref
-
-        const handleFileUpload = () => {
+// 조회default
+api.get("/api/memos").then((res) => {
+    state.data = res.data;
+})
+// 파일업로드      
+const handleFileUpload = () => {
             const file = fileUploadRef.value.files[0]; // 선택된 파일 가져오기
 
             // 선택된 파일을 FormData 객체에 추가
@@ -270,23 +262,18 @@ export default {
                 // 예: 오류 메시지 출력 등
                 });
         };
-        // 삭제버튼 활성화
-        watch(() => state.data.map((d) => d.checked),(checkedList) => {
+// 삭제버튼 활성화
+watch(() => state.data.map((d) => d.checked),(checkedList) => {
             showDelete.value = checkedList.some((checked) => checked);
         });   
-        return {state, searchKeyword, add, search01, del, showDelete, selectAll, handleSelectAll, openEditModal, editMemo, showModal, editedContent, editingMemoId,
-                cancel, editedSubject, add, showAddModal, newSubject, newContent, addMemo, cancelAdd, fileUploadRef, handleFileUpload, deleteMemo, doValid, isNotEditable
 
-        };
-    },
-
-};
 </script>
 
 <style scroped>
 .memo {
     flex: 1;
     padding: 20px;
+    width:100%;
     max-height: 760px;
     overflow-y: auto; /* 스크롤이 생기도록 설정 */
 }
@@ -333,6 +320,9 @@ export default {
   /* 버튼들을 각각 한 줄씩 표시 */
   .act button {
     display: block;
+  }
+  .memo {
+    width:100%
   }
 }
 
