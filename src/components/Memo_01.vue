@@ -349,10 +349,10 @@ watch(() => state.data.map((d) => d.checked),(checkedList) => {
   background-color: ivory;
   transition: background-color 0.3s ease;
 }
-    .memo li {
-    margin: 5px 0;
-    width:450px;
-    }
+.memo li {
+margin: 5px 0;
+width:450px;
+}
     
 }
 
