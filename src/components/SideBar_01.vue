@@ -99,7 +99,7 @@ export default {
 
 .sidebar {
   width: 150px;
-  height: 78.5%;
+  height: 100%;
   background-color: #333;
   padding: 10px;
   position: fixed;
