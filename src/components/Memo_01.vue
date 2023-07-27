@@ -1,20 +1,23 @@
 <template>
     <div class="memo">
         <div class = "act">
-            <label class="check-all">
-                <input type="checkbox" v-model="selectAll" @change="handleSelectAll" />
-                전체 선택
-            </label>
             <input type="text" v-model="searchKeyword" @keyup.enter="search01()" placeholder="검색어를 입력하세요."/>
             <button class="btn btn-primary" @click="search01()">조회 </button>
             <button class="btn btn-success" @click="add()">+ 추가</button>
             <button class="btn btn-danger" @click="del()" v-if="showDelete">- 삭제</button>
         </div>      
+        <label class="check-all">
+                <input type="checkbox" v-model="selectAll" @change="handleSelectAll" />
+                전체 선택
+            </label>
         <ul>
             <li v-for="d in state.data" :key="d.id" @click="openEditModal(d.id)">
-                <input type="checkbox" v-model="d.checked" @click.stop />
-                <span class="memo-subject fw-bold">{{ d.subject }}</span>
-                <span class="author">작성자 : {{ d.user_id }}  {{ d.formatted_date }}</span>
+                <div class="subject-wrapper">
+                    <input type="checkbox" v-model="d.checked" @click.stop />
+                    <span class="memo-subject fw-bold">{{ d.subject }}</span>
+                </div>
+                    <span class="author">작성자 : {{ d.user_id }}  {{ d.formatted_date }}</span>
+                
             </li>
         </ul>
          <!-- 모달 창 -->
@@ -178,7 +181,6 @@ const openEditModal = (id) => {
             const token = localStorage.getItem('token');
             const decodedToken = jwtDecode(token);
             const userIdFromToken = decodedToken.username; // 사용자 아이디 추출
-            debugger
             if (memo.user_id !== userIdFromToken) {
                 isNotEditable.value = true;
             } else {
@@ -273,7 +275,6 @@ watch(() => state.data.map((d) => d.checked),(checkedList) => {
 .memo {
     flex: 1;
     padding: 20px;
-    width:100%;
     min-width:768px;
     max-height: 760px;
     overflow-y: auto; /* 스크롤이 생기도록 설정 */
@@ -304,6 +305,7 @@ watch(() => state.data.map((d) => d.checked),(checkedList) => {
     font-size: 12px; /* 작성자 정보의 글자 크기 조정 */
     color: #6c757d; /* 작성자 정보 글자 색상 설정 */
     margin-top: 5px; /* 작성자 정보와 컨텐츠 사이 간격 조정 */
+    white-space: nowrap;
 }
 
 .check-all {
@@ -317,14 +319,41 @@ watch(() => state.data.map((d) => d.checked),(checkedList) => {
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    width: 400px;
   }
   /* 버튼들을 각각 한 줄씩 표시 */
   .act button {
     display: block;
   }
-  .memo {
-    width:100%
+  .author {
+    font-size: 10px; /* 작성자 정보 글자 크기 조정 */
   }
+
+  .form-group {
+  margin-bottom: 10px; /* Reduce the margin to save space */
+  }
+  #editedContent,
+  #newContent {
+    width: 100%;
+    resize: vertical; /* Allow vertical resizing of the textarea */
+  }
+  #editedSubject,
+    #newSubject {
+    width: 100%;
+    }
+  .memo-subject {
+  font-size: 12px; /* 제목 글자 크기 조정 */
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif;
+  background-color: ivory;
+  transition: background-color 0.3s ease;
+}
+    .memo li {
+    margin: 5px 0;
+    width:450px;
+    }
+    
 }
 
 /* 화면 크기가 769px 이상인 경우 버튼들을 가로로 정렬 */
@@ -406,6 +435,14 @@ watch(() => state.data.map((d) => d.checked),(checkedList) => {
   font-family: 'Montserrat', sans-serif;
   background-color: ivory;
   transition: background-color 0.3s ease;
+}
+
+.subject-wrapper {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 1000px; /* 최대 너비 설정 */
 }
 
 .memo-subject:hover {
