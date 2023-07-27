@@ -15,6 +15,7 @@
       <!-- Memo_01.vue 컴포넌트 보여주기 -->
       <Basic v-if="selectedMenu === 'basicVue'" />
       <Memo_01 v-if="selectedMenu === 'memoVue'" />
+      <Memo_01 v-if="selectedMenu === 'QAVue'" />
     </div>
   </div>
 </template>
@@ -31,7 +32,7 @@ export default {
       menus: [
         { name: 'basicVue', label: '소개 글 보기' },
         { name: 'memoVue', label: '글 작성' },
-        { name: '테스트3', label: 'Q&A' },
+        { name: 'QAVue', label: 'Q&A' },
       ],
       selectedMenu: '', // 선택된 메뉴를 저장할 변수 추가
     };

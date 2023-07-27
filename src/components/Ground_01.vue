@@ -7,8 +7,9 @@
       <div class="content">
         <!-- Memo_01.vue 컴포넌트 보여주기 -->
         <Memo_01 v-if="selectedMenu === 'memoVue'" />
-        <Basic_logo v-if="selectedMenu === ''" />
+        <main01 v-if="selectedMenu === ''" />
         <Basic_logo v-if="selectedMenu === 'basicVue'" />
+        <main01 v-if="selectedMenu === 'QAVue'" />
       </div>
         
     </div>
@@ -23,8 +24,9 @@ import Footer from "./Footer_01.vue";
 import Basic_logo from "./Basic_logo.vue";
 import Memo from "./Memo_01.vue";
 import Sidebar from "./SideBar_01"; // 사이드바 컴포넌트를 import 합니다.
+import main01 from "./main_01.vue"
 export default {
-  components:{Header, Footer, Sidebar, Basic_logo, Memo},
+  components:{Header, Footer, Sidebar, Basic_logo, Memo, main01},
   data() {
     return {
       selectedMenu: '', // 선택된 메뉴를 저장할 변수 추가
