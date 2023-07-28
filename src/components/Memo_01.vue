@@ -69,6 +69,7 @@
 import { reactive, ref, watch } from 'vue';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
+import { debounce } from 'lodash';
 const file_no = ref('');
 const selectAll = ref(false); // 전체 선택 체크박스 상태를 제어하는 변수
 const showDelete = ref(false); // 삭제 버튼 가시성을 제어하는 변수
@@ -226,12 +227,12 @@ const cancel = () => {
 };
 // 조회
 const searchKeyword = ref(""); // 검색어를 위한 반응형 변수
-        const search01 = ()=>{
+        const search01 = debounce(() => {
             state.data = [];
             api.get("/api/memos", { params: { q: searchKeyword.value } }).then((res) => {
             state.data = res.data;
-        })
-        }
+        });
+        }, 500); 
 // 조회default
 api.get("/api/memos").then((res) => {
     state.data = res.data;
