@@ -49,7 +49,7 @@
   </div>
 </template>
 
-<style scroped>
+<style scoped>
 /* 부트스트랩 클래스 및 커스텀 스타일 작성 */
 /* 상단 섹션 스타일 */
 .position-relative {

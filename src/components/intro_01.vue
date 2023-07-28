@@ -1,57 +1,55 @@
 <template>
-    <main>
-
-<div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-indicators">
-    <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-    <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-    <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-  </div>
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
-
-      <div class="container">
-        <div class="carousel-caption text-start">
-          <h1>Example headline.</h1>
-          <p>Some representative placeholder content for the first slide of the carousel.</p>
-          <p><a class="btn btn-lg btn-primary" href="#">Sign up today</a></p>
+  <main>
+    <div id="myCarousel" class="carousel slide">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="슬라이드 1"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="슬라이드 2"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="슬라이드 3"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
+          <!-- container1 내용 -->
+          <div v-if="showContainer1" class="carousel-container carousel-caption text-start">
+            <h1>예시 제목.</h1>
+            <p>캐러셀의 첫 번째 슬라이드를 대표하는 임시 콘텐츠입니다.</p>
+            <p><a class="btn btn-lg btn-primary" href="#">오늘 가입하세요</a></p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
+          <!-- container2 내용 -->
+          <div v-if="showContainer2" class="carousel-container carousel-caption">
+            <h1>또 다른 예시 제목.</h1>
+            <p>캐러셀의 두 번째 슬라이드를 대표하는 임시 콘텐츠입니다.</p>
+            <p><a class="btn btn-lg btn-primary" href="#">더 알아보기</a></p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
+          <!-- container3 내용 -->
+          <div v-if="showContainer3" class="carousel-container carousel-caption text-end">
+            <h1>마지막으로, 이것도 하나 더.</h1>
+            <p>이 캐러셀의 세 번째 슬라이드를 대표하는 임시 콘텐츠입니다.</p>
+            <p><a class="btn btn-lg btn-primary" href="#">갤러리 둘러보기</a></p>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="carousel-item">
-      <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
+      <!-- 추가: carousel-control-prev, carousel-control-next 버튼 -->
+      <div class="carousel-buttons">
+        <!-- 이전 버튼 (첫 번째 슬라이드로 이동) -->
+        <button @click="showPrevContainer" class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide-to="2">
+          <span class="carousel-control-prev-icon"></span>
+          <span class="visually-hidden">이전</span>
+        </button>
 
-      <div class="container">
-        <div class="carousel-caption">
-          <h1>Another example headline.</h1>
-          <p>Some representative placeholder content for the second slide of the carousel.</p>
-          <p><a class="btn btn-lg btn-primary" href="#">Learn more</a></p>
-        </div>
+        <!-- 다음 버튼 (두 번째 슬라이드로 이동) -->
+        <button @click="showNextContainer" class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide-to="1">
+          <span class="carousel-control-next-icon"></span>
+          <span class="visually-hidden">다음</span>
+        </button>
       </div>
     </div>
-    <div class="carousel-item">
-      <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
-
-      <div class="container">
-        <div class="carousel-caption text-end">
-          <h1>One more for good measure.</h1>
-          <p>Some representative placeholder content for the third slide of this carousel.</p>
-          <p><a class="btn btn-lg btn-primary" href="#">Browse gallery</a></p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
-
 
 <!-- Marketing messaging and featurettes
 ================================================== -->
@@ -131,17 +129,47 @@
   <!-- /END THE FEATURETTES -->
 
 </div><!-- /.container -->
-
-
-<!-- FOOTER -->
-<footer class="container">
-  <p class="float-end"><a href="#">Back to top</a></p>
-  <p>&copy; 2017–2023 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-</footer>
 </main>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      showContainer1: true,
+      showContainer2: false,
+      showContainer3: false,
+    };
+  },
+  methods: {
+    showNextContainer() {
+      if (this.showContainer1) {
+        this.showContainer1 = false;
+        this.showContainer2 = true;
+      } else if (this.showContainer2) {
+        this.showContainer2 = false;
+        this.showContainer3 = true;
+      } else {
+        this.showContainer3 = false;
+        this.showContainer1 = true;
+      }
+    },
+    showPrevContainer() {
+      if (this.showContainer1) {
+        this.showContainer1 = false;
+        this.showContainer3 = true;
+      } else if (this.showContainer2) {
+        this.showContainer2 = false;
+        this.showContainer1 = true;
+      } else {
+        this.showContainer3 = false;
+        this.showContainer2 = true;
+      }
+    },
+  },
+};
+</script>
 
-  <style scroped>
+<style scoped>
   .bd-placeholder-img {
     font-size: 1.125rem;
     text-anchor: middle;
@@ -149,6 +177,67 @@
     -moz-user-select: none;
     user-select: none;
   }
+
+  .carousel-inner img {
+  width: 100%;
+  height: auto;
+}
+.carousel-caption {
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.carousel-caption h1 {
+  font-size: 2rem;
+  
+  margin-bottom: 10px;
+}
+
+.carousel-caption p {
+  font-size: 1.2rem;
+}
+
+.featurette-image {
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.featurette-heading {
+  color: #007bff;
+}
+
+/* col-lg-4 요소 정렬과 간격 조정 */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.row .col-lg-4 {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.row .col-lg-4 img {
+  margin-bottom: 10px;
+}
+
+.row .col-lg-4 h2 {
+  font-size: 1.8rem;
+}
+
+.row .col-lg-4 p {
+  font-size: 1.1rem;
+}
+
+/* 인디케이터, 이전/다음 버튼, 네비게이션 숨기기 */
+.carousel-indicators,
+.nav-scroller {
+  display: none;
+}
+
+
 
   @media (min-width: 768px) {
     .bd-placeholder-img-lg {

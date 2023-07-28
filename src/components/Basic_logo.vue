@@ -19,7 +19,7 @@
   };
   </script>
   
-  <style scroped>
+  <style scoped>
   .hello-world {
     display: flex;
     flex-direction: column;

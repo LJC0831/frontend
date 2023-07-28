@@ -1,5 +1,5 @@
 <template>
-    <footer class="footer-container"><b>※ 내용 클릭 시 내용수정 가능</b> 2023 memo app. All rights reserved</footer>
+    <footer class="footer-container"> 2023 memo app. All rights reserved</footer>
   </template>
   
   <style scoped>

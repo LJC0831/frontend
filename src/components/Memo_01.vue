@@ -271,7 +271,7 @@ watch(() => state.data.map((d) => d.checked),(checkedList) => {
 
 </script>
 
-<style scroped>
+<style scoped>
 .memo {
     flex: 1;
     padding: 20px;
