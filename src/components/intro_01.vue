@@ -1,13 +1,13 @@
 <template>
   <main style="margin-top: 50px;">
-    <div id="myCarousel" class="carousel slide">
+    <div id="myCarousel" class="carousel slide"> 
       <div class="carousel-indicators">
         <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="슬라이드 1"></button>
         <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="슬라이드 2"></button>
         <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="슬라이드 3"></button>
       </div>
       <div class="carousel-inner">
-        <div class="carousel-item active">
+        <div class="carousel-item active"  style="height: 400px;">
           <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
           <!-- container1 내용 -->
           <div v-if="showContainer1" class="carousel-container carousel-caption text-start">
@@ -16,7 +16,7 @@
             <p><a class="btn btn-lg btn-primary" href="#">오늘 가입하세요</a></p>
           </div>
         </div>
-        <div class="carousel-item">
+        <div class="carousel-item"  style="height: 400px;">
           <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
           <!-- container2 내용 -->
           <div v-if="showContainer2" class="carousel-container carousel-caption">
@@ -25,7 +25,7 @@
             <p><a class="btn btn-lg btn-primary" href="#">더 알아보기</a></p>
           </div>
         </div>
-        <div class="carousel-item">
+        <div class="carousel-item"  style="height: 400px;">
           <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
           <!-- container3 내용 -->
           <div v-if="showContainer3" class="carousel-container carousel-caption text-end">
