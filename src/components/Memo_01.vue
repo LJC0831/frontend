@@ -300,6 +300,13 @@ watch(() => state.data.map((d) => d.checked),(checkedList) => {
     text-align: right;
 }
 
+.act button {
+  padding: 5px 10px;
+  font-size: 12px;
+  min-width: 80px; /* Set the minimum width for the button */
+  max-width: 100px; /* Set the maximum width for the button */
+}
+
 .author {
     float: right; /* 우측 정렬을 위해 float 사용 */
     font-size: 12px; /* 작성자 정보의 글자 크기 조정 */
