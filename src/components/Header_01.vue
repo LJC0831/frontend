@@ -1,7 +1,9 @@
 <template>
     <header>
       <div class="login-container">
-        <div class="header-name"> MEMO App </div>
+        <div class="login-container">
+        <div class="header-name" @click="refreshPage">MEMO App</div>
+      </div>
         <div class="login-button-container">
           <div v-if="!isLoggedIn" class="signup-button" @click="showSignupModal = true">
             <button class="signup-btn">회원가입</button>&nbsp;
@@ -68,6 +70,10 @@
     },
     methods: {
             ...mapActions(["setToken"]),
+            refreshPage() {
+              // 페이지 새로고침
+              window.location.reload();
+            },
             login() {
               const api = axios.create({
                 baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
