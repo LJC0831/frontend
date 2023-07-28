@@ -13,9 +13,9 @@
     </div>
     <div class="content" :style="{ marginLeft: sidebarOpen ? '150px' : '10px' }">
       <!-- Memo_01.vue 컴포넌트 보여주기 -->
-      <Basic v-if="selectedMenu === 'basicVue'" />
+      <Intro v-if="selectedMenu === 'introVue'" />
       <Memo_01 v-if="selectedMenu === 'memoVue'" />
-      <Memo_01 v-if="selectedMenu === 'QAVue'" />
+      <Basic v-if="selectedMenu === 'QAVue'" />
     </div>
   </div>
 </template>
@@ -24,13 +24,14 @@
 /* eslint-disable */
 import Memo_01 from "./Memo_01.vue";
 import Basic from "./Basic_logo.vue";
+import Intro from "./intro_01.vue";
 export default {
   props: ['menuSelected'], // 부모 컴포넌트로부터 menuSelected 프롭을 받음
   data() {
     return {
       sidebarOpen: false,
       menus: [
-        { name: 'basicVue', label: '소개 글 보기' },
+        { name: 'introVue', label: '소개 글 보기' },
         { name: 'memoVue', label: '글 작성' },
         { name: 'QAVue', label: 'Q&A' },
       ],
