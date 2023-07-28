@@ -1,11 +1,6 @@
 <template>
   <main style="margin-top: 50px;">
     <div id="myCarousel" class="carousel slide"> 
-      <div class="carousel-indicators">
-        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="슬라이드 1"></button>
-        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="슬라이드 2"></button>
-        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="슬라이드 3"></button>
-      </div>
       <div class="carousel-inner">
         <div class="carousel-item active"  style="height: 400px;">
           <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
@@ -38,14 +33,14 @@
       <!-- 추가: carousel-control-prev, carousel-control-next 버튼 -->
       <div class="carousel-buttons">
         <!-- 이전 버튼 (첫 번째 슬라이드로 이동) -->
-        <button @click="showPrevContainer" class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide-to="2">
-          <span class="carousel-control-prev-icon"></span>
+        <button @click="showPrevContainer" class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="visually-hidden">이전</span>
         </button>
 
         <!-- 다음 버튼 (두 번째 슬라이드로 이동) -->
-        <button @click="showNextContainer" class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide-to="1">
-          <span class="carousel-control-next-icon"></span>
+        <button @click="showNextContainer" class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">다음</span>
         </button>
       </div>
@@ -131,7 +126,7 @@
 </div><!-- /.container -->
 </main>
 </template>
-<script>
+<script scoped>
 export default {
   data() {
     return {
@@ -230,14 +225,6 @@ export default {
 .row .col-lg-4 p {
   font-size: 1.1rem;
 }
-
-/* 인디케이터, 이전/다음 버튼, 네비게이션 숨기기 */
-.carousel-indicators,
-.nav-scroller {
-  display: none;
-}
-
-
 
   @media (min-width: 768px) {
     .bd-placeholder-img-lg {
