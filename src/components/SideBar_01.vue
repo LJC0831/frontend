@@ -13,9 +13,11 @@
     </div>
     <div class="content" :style="{ marginLeft: sidebarOpen ? '150px' : '10px' }">
       <!-- Memo_01.vue 컴포넌트 보여주기 -->
+      <main01 v-if="selectedMenu === ''" />
       <Intro v-if="selectedMenu === 'introVue'" />
       <Memo_01 v-if="selectedMenu === 'memoVue'" />
       <Basic v-if="selectedMenu === 'QAVue'" />
+      
     </div>
   </div>
 </template>
@@ -25,15 +27,18 @@
 import Memo_01 from "./Memo_01.vue";
 import Basic from "./Basic_logo.vue";
 import Intro from "./intro_01.vue";
+import main01 from "./main_01.vue"
 export default {
   props: ['menuSelected'], // 부모 컴포넌트로부터 menuSelected 프롭을 받음
   data() {
     return {
       sidebarOpen: false,
       menus: [
+        { name: '', label: '메인화면' },
         { name: 'introVue', label: '소개 글 보기' },
         { name: 'memoVue', label: '글 작성' },
         { name: 'QAVue', label: 'Q&A' },
+        
       ],
       selectedMenu: '', // 선택된 메뉴를 저장할 변수 추가
     };
@@ -62,6 +67,8 @@ export default {
   },
   components: {
       Memo_01, // Memo_01 컴포넌트 등록
+      Intro,
+      main01,
   },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <main style="margin-top: 50px;">
+  <main style="margin-top: 50px; margin-left: 100px;">
     <div id="myCarousel" class="carousel slide"> 
       <div class="carousel-inner">
         <div class="carousel-item active"  style="height: 400px;">
@@ -7,7 +7,7 @@
           <!-- container1 내용 -->
           <div v-if="showContainer1" class="carousel-container carousel-caption text-start">
             <h1>예시 제목.</h1>
-            <p>첫 번째 슬라이드를 대표하는 임시 콘텐츠입니다.</p>
+            <p>첫 번째 슬라1이드를 대표하는 임시 콘텐츠입니다.</p>
             <p><a class="btn btn-lg btn-primary" href="#">오늘 가입하세요</a></p>
           </div>
         </div>
@@ -137,6 +137,7 @@ export default {
   },
   methods: {
     showNextContainer() {
+      alert('');
       if (this.showContainer1) {
         this.showContainer1 = false;
         this.showContainer2 = true;
@@ -149,6 +150,7 @@ export default {
       }
     },
     showPrevContainer() {
+      alert('');
       if (this.showContainer1) {
         this.showContainer1 = false;
         this.showContainer3 = true;

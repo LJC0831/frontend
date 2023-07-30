@@ -22,12 +22,10 @@
 import Header from "./Header_01.vue";
 import Footer from "./Footer_01.vue";
 import Basic_logo from "./Basic_logo.vue";
-import Memo from "./Memo_01.vue";
-import Intro from "./intro_01.vue";
 import Sidebar from "./SideBar_01"; // 사이드바 컴포넌트를 import 합니다.
 import main01 from "./main_01.vue"
 export default {
-  components:{Header, Footer, Sidebar, Basic_logo, Memo, main01, Intro},
+  components:{Header, Footer, Sidebar, Basic_logo},
   data() {
     return {
       selectedMenu: '', // 선택된 메뉴를 저장할 변수 추가

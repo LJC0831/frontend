@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <!-- Header Section -->
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
       <div class="col-md-5 p-lg-5 mx-auto my-5">
@@ -52,6 +52,9 @@
 <style scoped>
 /* 부트스트랩 클래스 및 커스텀 스타일 작성 */
 /* 상단 섹션 스타일 */
+.main{
+  margin-left: 200px;
+}
 .position-relative {
   overflow: hidden;
 }
