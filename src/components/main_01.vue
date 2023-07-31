@@ -1,11 +1,13 @@
 <template>
   <div class="main">
     <!-- Header Section -->
-    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
-      <div class="col-md-5 p-lg-5 mx-auto my-5">
-        <h1 class="display-4 fw-normal">Punny headline</h1>
-        <p class="lead fw-normal">And an even wittier subheading to boot. Jumpstart your marketing efforts with this example based on Apple’s marketing pages.</p>
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light header-section">
+      <div class="col-md-5 p-lg-5 mx-auto my-5 header-content">
+        <div class="header-text">
+        <h1 class="display-4 fw-normal">Page headline</h1>
+        <p class="lead fw-normal" >This is a responsive application created with the VUE3 environment.</p>
         <a class="btn btn-outline-secondary" href="#">Coming soon</a>
+      </div>
       </div>
       <div class="product-device shadow-sm d-none d-md-block"></div>
       <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
@@ -52,12 +54,31 @@
 <style scoped>
 /* 모바일 */
 @media (max-width: 768px) {
-
+  .header-section{
+   width:100%;
+  }
 }
+
+@media (min-width: 768px) {
+    .header-section{
+    min-width: 1300px;
+    }
+  }
+
+.header-text {
+  display: block; /* 블록 요소로 만듭니다. */
+  margin-top: 110px; /* 원하는 간격을 지정합니다. */
+}
+
 /* 부트스트랩 클래스 및 커스텀 스타일 작성 */
 /* 상단 섹션 스타일 */
 .position-relative {
   overflow: hidden;
+  /* 이미지 파일 경로를 수정해주세요 */
+  background-image: url("@/assets/main_img.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 .p-lg-5 {
   padding: 3rem !important;
