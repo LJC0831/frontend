@@ -1,5 +1,5 @@
 <template>
-  <main style="margin-top: 50px; margin-left: 100px;">
+  <main>
     <div id="myCarousel" class="carousel slide"> 
       <div class="carousel-inner">
         <div class="carousel-item active"  style="height: 400px;">
@@ -167,6 +167,10 @@ export default {
 </script>
 
 <style scoped>
+  .main{
+    margin-top: 50px; 
+    margin-left: 100px;
+  }
   .bd-placeholder-img {
     font-size: 1.125rem;
     text-anchor: middle;
@@ -229,6 +233,10 @@ export default {
 }
 
   @media (min-width: 768px) {
+    .main{
+      margin-top: 0px; 
+      margin-left: 0px;
+   }
     .bd-placeholder-img-lg {
       font-size: 3.5rem;
     }
