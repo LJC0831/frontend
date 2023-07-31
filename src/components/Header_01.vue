@@ -51,9 +51,8 @@
   
   <script>
   /* eslint-disable */
-  import axios from "axios";
-  import {reactive} from "vue";
   import { mapActions } from 'vuex';
+  import loginMethods from '../scripts/login.js';
 
   export default {
     data() {
@@ -70,40 +69,32 @@
     },
     methods: {
             ...mapActions(["setToken"]),
+            ...loginMethods.methods,
             refreshPage() {
               // 페이지 새로고침
               window.location.reload();
             },
             login() {
-              const api = axios.create({
-                baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
-                //baseURL: "http://localhost:3000",
-              });
-              const state = reactive({
-                  data : [],
-              });
+              loginMethods.methods.login( this.username, this.password,(res) => {
+                      alert("로그인에 성공했습니다!");
+                      // 토큰을 Vuex에 저장
+                    this.setToken(res.data.token);
 
-              api.post("/api/user", {username: this.username, password: this.password}).then((res)=>{
-                if (res.data.message === "로그인 성공") {
-                  alert("로그인에 성공했습니다!");
+                    // 토큰을 로컬 스토리지에 저장
+                    localStorage.setItem("token", res.data.token);
 
-                  // 토큰을 Vuex에 저장
-                  this.setToken(res.data.token);
-
-                  // 토큰을 로컬 스토리지에 저장
-                  localStorage.setItem("token", res.data.token);
-
-                  this.showLoginModal = false; // 로그인 성공 시 모달 닫기
-                  this.username = ""; // 입력한 사용자 이름 초기화
-                  this.password = ""; // 입력한 비밀번호 초기화
-                  window.location.reload()
-                } 
-              }) 
-              .catch((error) => {
-                console.error("로그인 오류:", error);
-                alert("아이디 패스워드가 틀립니다. ");
-              });
-            },
+                    this.showLoginModal = false; // 로그인 성공 시 모달 닫기
+                    this.username = ""; // 입력한 사용자 이름 초기화
+                    this.password = ""; // 입력한 비밀번호 초기화
+                    window.location.reload()
+                  },
+                  (error) => {
+                    console.error("로그인 오류:", error);
+                    alert("아이디 패스워드가 틀립니다. ");
+                  }
+                );
+              },
+           
             logout() {
                   // 로그아웃 처리 로직
                   // 로컬 스토리지에서 토큰 제거
@@ -117,27 +108,23 @@
               this.password = ""; // 입력한 비밀번호 초기화
             },
             signup() {
-              debugger
-              // 회원가입 로직 처리
-              const api = axios.create({
-                baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
-              });
-              api.post("/api/signup", {
-                  userId: this.newUserId,
-                  password: this.newPassword,
-                  name: this.newName, // Send the user's name to the server
-                })
-                .then((res) => {
+              loginMethods.methods.signup(
+                this.newUserId,
+                this.newPassword,
+                this.newName,
+                (res) => {
                   alert("회원가입에 성공했습니다!");
                   this.showSignupModal = false;
                   this.newUserId = "";
                   this.newPassword = "";
                   this.newName = "";
-                })
-                .catch((error) => {
+                },
+                (error) => {
+                  // 에러 콜백
                   console.error("회원가입 오류:", error);
                   alert(" 이미 사용 중인 아이디입니다.");
-                });
+                }
+              );
             },
             cancelSignup() {
               this.showSignupModal = false;
