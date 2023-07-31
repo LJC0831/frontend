@@ -4,31 +4,26 @@
       <div class="carousel-inner">
         <div class="carousel-item active"  style="height: 400px;">
           <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
+          
           <!-- container1 내용 -->
           <div v-if="showContainer1" class="carousel-container carousel-caption text-start">
-            <h1>예시 제목.</h1>
-            <p>첫 번째 슬라1이드를 대표하는 임시 콘텐츠입니다.</p>
+            <h1>메인화면</h1>
+            <p>페이지를 대표하는 콘텐츠입니다. </p>
             <p><a class="btn btn-lg btn-primary" href="#">오늘 가입하세요</a></p>
           </div>
         </div>
-        <div class="carousel-item"  style="height: 400px;">
-          <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
           <!-- container2 내용 -->
           <div v-if="showContainer2" class="carousel-container carousel-caption">
             <h1>또 다른 예시 제목.</h1>
             <p>캐러셀의 두 번째 슬라이드를 대표하는 임시 콘텐츠입니다.</p>
             <p><a class="btn btn-lg btn-primary" href="#">더 알아보기</a></p>
           </div>
-        </div>
-        <div class="carousel-item"  style="height: 400px;">
-          <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
           <!-- container3 내용 -->
           <div v-if="showContainer3" class="carousel-container carousel-caption text-end">
             <h1>마지막으로, 이것도 하나 더.</h1>
             <p>이 캐러셀의 세 번째 슬라이드를 대표하는 임시 콘텐츠입니다.</p>
             <p><a class="btn btn-lg btn-primary" href="#">갤러리 둘러보기</a></p>
           </div>
-        </div>
       </div>
       <!-- 추가: carousel-control-prev, carousel-control-next 버튼 -->
       <div class="carousel-buttons">
@@ -127,6 +122,7 @@
 </main>
 </template>
 <script scoped>
+/* eslint-disable */
 export default {
   data() {
     return {
@@ -137,7 +133,7 @@ export default {
   },
   methods: {
     showNextContainer() {
-      alert('');
+      debugger;
       if (this.showContainer1) {
         this.showContainer1 = false;
         this.showContainer2 = true;
@@ -150,18 +146,17 @@ export default {
       }
     },
     showPrevContainer() {
-      alert('');
-      if (this.showContainer1) {
-        this.showContainer1 = false;
-        this.showContainer3 = true;
-      } else if (this.showContainer2) {
-        this.showContainer2 = false;
-        this.showContainer1 = true;
-      } else {
-        this.showContainer3 = false;
-        this.showContainer2 = true;
-      }
-    },
+        if (this.showContainer1) {
+          this.showContainer1 = false;
+          this.showContainer3 = true;
+        } else if (this.showContainer2) {
+          this.showContainer2 = false;
+          this.showContainer1 = true;
+        } else {
+          this.showContainer3 = false;
+          this.showContainer2 = true;
+        }
+      },
   },
 };
 </script>
@@ -171,6 +166,7 @@ export default {
     margin-top: 50px; 
     margin-left: 100px;
   }
+ 
   .bd-placeholder-img {
     font-size: 1.125rem;
     text-anchor: middle;
@@ -187,7 +183,6 @@ export default {
   padding: 20px;
   border-radius: 10px;
 }
-
 .carousel-caption h1 {
   font-size: 2rem;
   
@@ -245,40 +240,5 @@ export default {
     }
   }
 
-  .b-example-divider {
-    height: 3rem;
-    background-color: rgba(0, 0, 0, .1);
-    border: solid rgba(0, 0, 0, .15);
-    border-width: 1px 0;
-    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-  }
-
-  .b-example-vr {
-    flex-shrink: 0;
-    width: 1.5rem;
-    height: 100vh;
-  }
-
-  .bi {
-    vertical-align: -.125em;
-    fill: currentColor;
-  }
-
-  .nav-scroller {
-    position: relative;
-    z-index: 2;
-    height: 2.75rem;
-    overflow-y: hidden;
-  }
-
-  .nav-scroller .nav {
-    display: flex;
-    flex-wrap: nowrap;
-    padding-bottom: 1rem;
-    margin-top: -1px;
-    overflow-x: auto;
-    text-align: center;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-  }
+ 
 </style>
