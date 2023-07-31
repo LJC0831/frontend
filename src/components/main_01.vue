@@ -51,16 +51,11 @@
 
 <style scoped>
 /* 모바일 */
-@media (min-width: 768px) {
-  .main{
-  margin-left: 0px;
-}
+@media (max-width: 768px) {
+
 }
 /* 부트스트랩 클래스 및 커스텀 스타일 작성 */
 /* 상단 섹션 스타일 */
-.main{
-  margin-left: 200px;
-}
 .position-relative {
   overflow: hidden;
 }
