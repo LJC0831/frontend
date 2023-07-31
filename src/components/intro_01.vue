@@ -2,28 +2,34 @@
   <main class="main1">
     <div id="myCarousel" class="carousel slide"> 
       <div class="carousel-inner">
-        <div class="carousel-item active"  style="height: 400px;">
-          <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
+        <div class="carousel-item active"  style="height: 500px;">
+          <div class="carousel-image" style="background-color: #777; padding: 10px; height: 100%;"></div>
           
           <!-- container1 내용 -->
-          <div v-if="showContainer1" class="carousel-container carousel-caption text-start">
-            <h1>메인화면</h1>
-            <p>페이지를 대표하는 콘텐츠입니다. </p>
-            <p><a class="btn btn-lg btn-primary" href="#">오늘 가입하세요</a></p>
-          </div>
+          <transition name="slide">
+            <div v-if="showContainer1" class="carousel-container carousel-caption text-start">
+              <h1>회사 슬로건</h1>
+              <p>원하시는 회사소개 및 내용을 입력해주시면 됩니다. </p>
+              <p><a class="btn btn-lg btn-primary" href="#">오늘 가입하세요</a></p>
+            </div>
+          </transition>
         </div>
           <!-- container2 내용 -->
-          <div v-if="showContainer2" class="carousel-container carousel-caption">
-            <h1>또 다른 예시 제목.</h1>
-            <p>캐러셀의 두 번째 슬라이드를 대표하는 임시 콘텐츠입니다.</p>
-            <p><a class="btn btn-lg btn-primary" href="#">더 알아보기</a></p>
-          </div>
+          <transition name="slide">
+            <div v-if="showContainer2" class="carousel-container carousel-caption">
+              <h1>또 다른 예시 제목.</h1>
+              <p>캐러셀의 두 번째 슬라이드를 대표하는 임시 콘텐츠입니다.</p>
+              <p><a class="btn btn-lg btn-primary" href="#">더 알아보기</a></p>
+            </div>
+          </transition>
           <!-- container3 내용 -->
-          <div v-if="showContainer3" class="carousel-container carousel-caption text-end">
-            <h1>마지막으로, 이것도 하나 더.</h1>
-            <p>이 캐러셀의 세 번째 슬라이드를 대표하는 임시 콘텐츠입니다.</p>
-            <p><a class="btn btn-lg btn-primary" href="#">갤러리 둘러보기</a></p>
-          </div>
+          <transition name="slide">
+            <div v-if="showContainer3" class="carousel-container carousel-caption text-end">
+              <h1>마지막으로, 이것도 하나 더.</h1>
+              <p>이 캐러셀의 세 번째 슬라이드를 대표하는 임시 콘텐츠입니다.</p>
+              <p><a class="btn btn-lg btn-primary" href="#">갤러리 둘러보기</a></p>
+            </div>
+          </transition>
       </div>
       <!-- 추가: carousel-control-prev, carousel-control-next 버튼 -->
       <div class="carousel-buttons">
@@ -166,6 +172,14 @@ export default {
     margin-top: 50px; 
     margin-left: 100px;
   }
+  .carousel-image{
+    overflow: hidden;
+  /* 이미지 파일 경로를 수정해주세요 */
+  background-image: url("@/assets/content1.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  }
  
   .bd-placeholder-img {
     font-size: 1.125rem;
@@ -225,6 +239,26 @@ export default {
 
 .row .col-lg-4 p {
   font-size: 1.1rem;
+}
+
+.carousel-buttons button.carousel-control-prev,
+.carousel-buttons button.carousel-control-next {
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+}
+
+.carousel-buttons button.carousel-control-prev:hover,
+.carousel-buttons button.carousel-control-next:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* 슬라이드 애니메이션 */
+.slide-enter-active, .slide-leave-active {
+  transition: transform 0.1s;
+}
+
+.slide-enter, .slide-leave-to /* .slide-leave-active in <2.1.8 */ {
+  transform: translateX(100%);
 }
 
 @media (max-width: 768px) {
