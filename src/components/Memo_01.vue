@@ -103,7 +103,6 @@ const doValid = ()=>{
             const token = localStorage.getItem('token');
             if (token == null){
                 alert('로그인해주세요.');
-                location.reload();
                 return;
             }
             return true;

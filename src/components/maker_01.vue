@@ -13,6 +13,7 @@
   </template>
   
   <script>
+  /* eslint-disable */
   export default {
     data() {
       return {
@@ -28,6 +29,20 @@
   </script>
   
   <style scoped>
+
+  /* 모바일 */
+@media (max-width: 768px) {
+  .hello-world{
+   width:100%;
+  }
+}
+
+@media (min-width: 768px) {
+    .hello-world{
+    margin-left: 500px;
+    }
+  }
+
   .hello-world {
     display: flex;
     flex-direction: column;

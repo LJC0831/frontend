@@ -9,9 +9,8 @@
         <main01 v-if="selectedMenu === ''" /> 
         <Memo_01 v-if="selectedMenu === 'memoVue'" />
         <Intro v-if="selectedMenu === 'introVue'" />
-        <Basic_logo v-if="selectedMenu === 'QAVue'" />
+        <maker_01 v-if="selectedMenu === 'maker_01'" />
       </div>
-        
     </div>
     <Footer/>
   </div>
@@ -21,10 +20,9 @@
 /* eslint-disable */ 
 import Header from "./Header_01.vue";
 import Footer from "./Footer_01.vue";
-import Basic_logo from "./Basic_logo.vue";
 import Sidebar from "./SideBar_01"; // 사이드바 컴포넌트를 import 합니다.
 export default {
-  components:{Header, Footer, Sidebar, Basic_logo},
+  components:{Header, Footer, Sidebar},
   data() {
     return {
       selectedMenu: '', // 선택된 메뉴를 저장할 변수 추가
