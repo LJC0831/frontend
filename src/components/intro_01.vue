@@ -13,7 +13,7 @@
               <p><a class="btn btn-lg btn-primary" href="#">오늘 가입하세요</a></p>
             </div>
           </transition>
-        </div>
+        </div> 
           <!-- container2 내용 -->
           <transition name="slide">
             <div v-if="showContainer2" class="carousel-container carousel-caption">
