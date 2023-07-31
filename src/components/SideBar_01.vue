@@ -25,9 +25,8 @@
 <script>
 /* eslint-disable */
 import Memo_01 from "./Memo_01.vue";
-import Basic from "./Basic_logo.vue";
 import Intro from "./intro_01.vue";
-import main01 from "./main_01.vue"
+import main01 from "./main_01.vue";
 export default {
   props: ['menuSelected'], // 부모 컴포넌트로부터 menuSelected 프롭을 받음
   data() {
