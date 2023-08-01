@@ -1,7 +1,7 @@
 <template>
     <div class="memo">
         <div class = "act">
-            <input type="text" v-model="searchKeyword" @keyup.enter="search01()" placeholder="검색어를 입력하세요."/>
+            <input type="text" v-model="searchKeyword" @keyup.enter="search01()" placeholder="Search"/>
             <button class="btn btn-primary" @click="search01()">조회 </button>
             <button class="btn btn-success" @click="add()">+ 추가</button>
             <button class="btn btn-danger" @click="del()" v-if="showDelete">- 삭제</button>

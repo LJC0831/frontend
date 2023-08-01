@@ -7,7 +7,8 @@
         제작자 : LJC <br/>
         깃허브 놀러오세요
       </p> 
-      <a class="btn btn-primary cta-button" href="https://github.com/LJC0831" target="_blank">git 이동</a>
+      <a class="btn btn-primary cta-button" href="https://github.com/LJC0831" target="_blank"><i class="bi bi-github"></i> 이동</a>
+      
     </div>
   </template>
   
@@ -49,6 +50,12 @@
     margin-top: 100px;
     
   }
+
+  .bi bi-github{
+    font-size: 22px;
+    line-height: 22px;
+    color:#333;
+}
   .logo {
   max-width: 150px;
   margin-bottom: 20px;
