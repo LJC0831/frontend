@@ -30,7 +30,7 @@
             </div>
             <div class="form-group">
                 <label for="fileUpload">파일 업로드 :</label>&nbsp;
-                <input type="file" @change="handleFileUpload" id="fileUpload" ref="fileUploadRef"/>
+                <input type="file" @change="handleFileUpload" id="fileUpload" ref="fileUploadRef" max="10485760"/>
             </div> 
             <div class="form-group">
                 <label for="newContent">내용:</label>
@@ -60,7 +60,7 @@
             </div>
             <div class="form-group">
                 <label for="fileUpload">파일 업로드 :</label>&nbsp;
-                <input type="file" @change="handleFileUpload" id="fileUpload" ref="fileUploadRef" v-if="!state.uploadedFile" />
+                <input type="file" @change="handleFileUpload" id="fileUpload" ref="fileUploadRef" max="10485760" v-if="!state.uploadedFile" />
             </div>
             <div class="modal-buttons">
                 <button @click="deleteMemo(editingMemoId)" :disabled="isNotEditable">삭제하기</button>
