@@ -56,7 +56,7 @@
             <!-- 파일 업로드 보여주기 -->
             <div v-if="state.uploadedFile">
                 <label>현재 업로드된 파일:</label>
-                <a :href="state.uploadedFile" target="_blank">{{ state.uploadedFile }}</a>
+                <a :href="getDownloadLink()" target="_blank">{{ state.uploadedFile }}</a>
             </div>
             <div class="form-group">
                 <label for="fileUpload">파일 업로드 :</label>&nbsp;
@@ -90,6 +90,7 @@ const showModal = ref(false);
 const editedSubject = ref(''); // Added for the subject input field
 const editedContent = ref('');
 const editingMemoId = ref(null); // 수정, 삭제 중인 메모의 id 저장
+const editingFileId = ref(null); // 수정, 삭제 중인 업로드파일 id 저장
 const fileUploadRef = ref(null); // 파일 업로드 요소를 위한 ref
 
 const handleSelectAll = () => {
@@ -200,9 +201,10 @@ const openEditModal = (id) => {
             editedContent.value = memo.content;
             editingMemoId.value = id; // 수정 중인 메모의 id 설정
             if (memo.file_id) {
+                editingFileId.value = memo.file_id;
                 // 파일 번호가 존재하면 서버로부터 파일 데이터를 가져옵니다.
                 api.get(`/api/file/${memo.file_id}`).then((response) => {
-                state.uploadedFile = response.data.file; // 파일 데이터를 state.uploadedFile에 저장합니다.
+                state.uploadedFile = response.data; // 파일 데이터를 state.uploadedFile에 저장합니다.
                 });
             } else {
                 state.uploadedFile = null; // 파일이 없으면 null로 초기화합니다.
@@ -275,6 +277,11 @@ const handleFileUpload = () => {
                 // 예: 오류 메시지 출력 등
                 });
         };
+// 파일다운로드
+const getDownloadLink = () => {
+// 다운로드 링크 생성
+    return `/api/file/download/${editingFileId.value}`;
+  }
 // 삭제버튼 활성화
 watch(() => state.data.map((d) => d.checked),(checkedList) => {
             showDelete.value = checkedList.some((checked) => checked);
