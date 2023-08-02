@@ -53,6 +53,15 @@
                 <label for="editedContent">내용 :</label>
                 <textarea v-model="editedContent" id="editedContent" rows="5" placeholder="내용을 입력하세요."></textarea>
             </div>
+            <!-- 파일 업로드 보여주기 -->
+            <div v-if="state.uploadedFile">
+                <label>현재 업로드된 파일:</label>
+                <a :href="state.uploadedFile" target="_blank">{{ state.uploadedFile }}</a>
+            </div>
+            <div class="form-group">
+                <label for="fileUpload">파일 업로드 :</label>&nbsp;
+                <input type="file" @change="handleFileUpload" id="fileUpload" ref="fileUploadRef" v-if="!state.uploadedFile" />
+            </div>
             <div class="modal-buttons">
                 <button @click="deleteMemo(editingMemoId)" :disabled="isNotEditable">삭제하기</button>
                 <button @click="editMemo(editingMemoId)" :disabled="isNotEditable">수정하기</button>
@@ -190,11 +199,10 @@ const openEditModal = (id) => {
             editedSubject.value = memo.subject; // Set the subject value
             editedContent.value = memo.content;
             editingMemoId.value = id; // 수정 중인 메모의 id 설정
-            
             if (memo.file_id) {
                 // 파일 번호가 존재하면 서버로부터 파일 데이터를 가져옵니다.
                 api.get(`/api/file/${memo.file_id}`).then((response) => {
-                state.uploadedFile = response.data.file_addr; // 파일 데이터를 state.uploadedFile에 저장합니다.
+                state.uploadedFile = response.data.file; // 파일 데이터를 state.uploadedFile에 저장합니다.
                 });
             } else {
                 state.uploadedFile = null; // 파일이 없으면 null로 초기화합니다.
@@ -258,7 +266,6 @@ const handleFileUpload = () => {
             }).then((response) => {
                     file_no.value = response.data.fileId;
                     alert('업로드 하였습니다.');
-                    alert(file_no.value);
                 // 파일 업로드 성공 시 처리할 로직을 여기에 작성합니다.
                 // 예: 성공 메시지 출력, 업로드 결과를 다른 동작에 활용 등
                 })
