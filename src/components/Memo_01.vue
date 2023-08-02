@@ -28,10 +28,10 @@
                 <label for="newSubject">제목:</label>
                 <input v-model="newSubject" id="newSubject" placeholder="제목을 입력하세요." />
             </div>
-            <!-- <div class="form-group">
+            <div class="form-group">
                 <label for="fileUpload">파일 업로드 :</label>&nbsp;
                 <input type="file" @change="handleFileUpload" id="fileUpload" ref="fileUploadRef"/>
-            </div> -->
+            </div> 
             <div class="form-group">
                 <label for="newContent">내용:</label>
                 <textarea v-model="newContent" id="newContent" rows="5" placeholder="내용을 입력하세요."></textarea>
@@ -90,6 +90,7 @@ const handleSelectAll = () => {
 
 const api = axios.create({
     baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
+    //baseURL: "http://localhost:3000",
 });
 
 const state = reactive({
