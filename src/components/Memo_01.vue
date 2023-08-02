@@ -240,11 +240,13 @@ api.get("/api/memos").then((res) => {
 // 파일업로드      
 const handleFileUpload = () => {
             const file = fileUploadRef.value.files[0]; // 선택된 파일 가져오기
+            const timestamp = Date.now();
+            const uniqueFileName = `${timestamp}_${file.name}`;
 
             // 선택된 파일을 FormData 객체에 추가
             const formData = new FormData();
             formData.append("file", file);
-            formData.append("fileName", encodeURIComponent(file.name)); // 파일명을 인코딩하여 formData에 추가
+            formData.append("fileName", encodeURIComponent(uniqueFileName)); // 파일명을 인코딩하여 formData에 추가
             // 파일 업로드 요청
             api.post('/api/upload', formData, {
                 headers: {
@@ -256,6 +258,7 @@ const handleFileUpload = () => {
             }).then((response) => {
                     file_no.value = response.data.fileId;
                     alert('업로드 하였습니다.');
+                    alert(file_no.value);
                 // 파일 업로드 성공 시 처리할 로직을 여기에 작성합니다.
                 // 예: 성공 메시지 출력, 업로드 결과를 다른 동작에 활용 등
                 })
