@@ -10,7 +10,7 @@
             <!-- 로그인 이미지 대신 일반 버튼으로 변경 -->
             <button class="login-btn">로그인</button>
           </div>
-          <div v-if="isLoggedIn" class="user-profile-button" @click="isUserProfileModalVisible = true">
+          <div v-if="isLoggedIn" class="user-profile-button" @click="profileSearch()">
             <img src="@/assets/profile-user.png" alt="내 정보" class="profile-img" />
           </div>
           <div v-if="isLoggedIn" class="logout-button" @click="logout">
@@ -72,6 +72,7 @@
   /* eslint-disable */
   import { mapActions } from 'vuex';
   import loginMethods from '../scripts/login.js';
+  import jwtDecode from 'jwt-decode';
 
   export default {
     data() {
@@ -107,7 +108,7 @@
                     this.showLoginModal = false; // 로그인 성공 시 모달 닫기
                     this.username = ""; // 입력한 사용자 이름 초기화
                     this.password = ""; // 입력한 비밀번호 초기화
-                    window.location.reload()
+                    window.location.reload();
                   },
                   (error) => {
                     console.error("로그인 오류:", error);
@@ -123,14 +124,30 @@
                   // 로그인 상태를 false로 변경
                   this.isLoggedIn = false;
             },
-            // 내정보수정
-            showUserProfileModal() {
-              this.isUserProfileModalVisible = true; // 데이터 속성을 수정하여 팝업이 뜨도록 변경
-              this.editedName = this.newName; // 프로필 수정 시 기존 값으로 초기화
-            },
-            //내정보 팝업 닫기
-            closeUserProfileModal() {
-              this.isUserProfileModalVisible = false; // 데이터 속성을 수정하여 팝업을 닫도록 변경
+            // 내정보 조회
+            profileSearch(){
+              const token = localStorage.getItem('token');
+              if(token == null) {
+                alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
+                return;
+              }
+              const decodedToken = jwtDecode(token);
+              const userid = decodedToken.username; // 사용자 아이디 추출
+
+              loginMethods.methods.profileSearch(
+                userid,
+                (res) => {
+                  debugger;
+                  //res.data
+                  this.editedName = res.data[0].user_nm
+                  this.isUserProfileModalVisible = true;
+                },
+                (error) => {
+                  // 에러 콜백
+                  console.error("프로필 조회 오류", error);
+                }
+              );
+              
             },
             // 내정보 수정
             saveUserProfile() {
@@ -141,13 +158,11 @@
               }
               const decodedToken = jwtDecode(token);
               const userid = decodedToken.username; // 사용자 아이디 추출
-              debugger;
               loginMethods.methods.profileAdj(
-                this.userid,
-                this.editName,
+                userid,
+                this.editedName,
                 (res) => {
                   alert("수정완료 되었습니다.");
-                  this.editName = "";
                   this.isUserProfileModalVisible = false; // 데이터 속성을 수정하여 팝업을 닫도록 변경
                 },
                 (error) => {
@@ -160,7 +175,6 @@
               
             },
             cancelUserProfile() {
-              this.editedName = "";
               this.isUserProfileModalVisible = false; // 데이터 속성을 수정하여 팝업을 닫도록 변경
             },
             cancel() {
@@ -310,10 +324,14 @@
 }
 .profile-img {
   width: 35px;
-  height: 35px;
-  background-color: #ccc;
-  margin-right: 5px;
-  cursor: pointer;
+    height: 35px;
+    background-color: #ffffff;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 50%; /* Add the border-radius property to create a circular profile picture */
+    object-fit: cover;
 }
+
+
 
   </style>
