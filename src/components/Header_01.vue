@@ -137,12 +137,28 @@
               }
               const decodedToken = jwtDecode(token);
               const userid = decodedToken.username; // 사용자 아이디 추출
-
               loginMethods.methods.profileSearch(
                 userid,
                 (res) => {
                   //res.data
-                  this.editedName = res.data[0].user_nm
+                  this.editedName = res.data[0].user_nm;
+                  // 이미지 URL 받아오기
+                  if(res.data[0].img_id){
+                    try {
+                      loginMethods.methods.profileImgURL(
+                        res.data[0].img_id,
+                          (res) => {
+                            this.profilePicture = res.data.imageUrl;
+                          },
+                          (error) => {
+                            // 에러 콜백
+                            console.error("프로필 이미지 조회 오류:", error);
+                          }
+                        );
+                    } catch (error) {
+                      console.error('이미지 URL 조회 오류:', error);
+                    }
+                  }
                   this.isUserProfileModalVisible = true;
                 },
                 (error) => {
