@@ -1,9 +1,7 @@
 <template>
     <header>
       <div class="login-container">
-        <div class="login-container">
         <div class="header-name" @click="refreshPage">MEMO App</div>
-      </div>
         <div class="login-button-container">
           <div v-if="!isLoggedIn" class="signup-button" @click="showSignupModal = true">
             <button class="signup-btn">회원가입</button>&nbsp;
@@ -11,6 +9,9 @@
           <div v-if="!isLoggedIn" class="login-button" @click="showLoginModal = true">
             <!-- 로그인 이미지 대신 일반 버튼으로 변경 -->
             <button class="login-btn">로그인</button>
+          </div>
+          <div v-if="isLoggedIn" class="user-profile-button" @click="isUserProfileModalVisible = true">
+            <img src="@/assets/profile-user.png" alt="내 정보" class="profile-img" />
           </div>
           <div v-if="isLoggedIn" class="logout-button" @click="logout">
             <button class="logout-btn">로그아웃</button>
@@ -45,6 +46,24 @@
         </div>
         <div class="close-button" @click="showSignupModal = false">X</div>
       </div>
+      <!-- 내 정보 모달 -->
+        <div v-if="isUserProfileModalVisible" class="login-modal">
+          <div class="login-form">
+            <h2>내 정보</h2>
+            <!-- 프로필 사진 추가 -->
+            <div class="profile-picture-container">
+              <img :src="profilePicture" alt="프로필 사진" class="profile-picture" />
+              <input type="file" @change="onProfilePictureChange" accept="image/*" />
+            </div>
+            
+            <label for="editName">이름:</label>&nbsp;
+            <input type="text" v-model="editedName" id="editName" />&nbsp;
+
+            <button @click="saveUserProfile">저장</button>&nbsp;
+            <button @click="cancelUserProfile">취소</button>&nbsp;
+          </div>
+          <div class="close-button" @click="closeUserProfileModal">X</div>
+        </div>
     </div>
     </header>
   </template>
@@ -65,6 +84,8 @@
         newPassword: "", // 회원가입용 새 비밀번호
         newName: "",
         isLoggedIn: false, // 로그인 상태를 저장하는 데이터 속성
+        isUserProfileModalVisible: false, // 내정보 모달 표시 여부 추가
+        editedName: "",
       };
     },
     methods: {
@@ -101,6 +122,23 @@
                   localStorage.removeItem("token");
                   // 로그인 상태를 false로 변경
                   this.isLoggedIn = false;
+            },
+            // 내정보수정
+            showUserProfileModal() {
+              this.isUserProfileModalVisible = true; // 데이터 속성을 수정하여 팝업이 뜨도록 변경
+              this.editedName = this.newName; // 프로필 수정 시 기존 값으로 초기화
+            },
+            //내정보 팝업 닫기
+            closeUserProfileModal() {
+              this.isUserProfileModalVisible = false; // 데이터 속성을 수정하여 팝업을 닫도록 변경
+            },
+            // 내정보 수정
+            saveUserProfile() {
+              this.isUserProfileModalVisible = false; // 데이터 속성을 수정하여 팝업을 닫도록 변경
+            },
+            cancelUserProfile() {
+              this.editedName = "";
+              this.isUserProfileModalVisible = false; // 데이터 속성을 수정하여 팝업을 닫도록 변경
             },
             cancel() {
               this.showLoginModal = false; // 취소 버튼 클릭 시 모달 닫기
@@ -235,7 +273,7 @@
   color: #ffffff;
   text-transform: uppercase;
   text-align: center;
-  
+  cursor: pointer;
   }
 
 .login-container {
@@ -246,6 +284,13 @@
 .login-button-container {
   display: flex;
   align-items: center;
+}
+.profile-img {
+  width: 35px;
+  height: 35px;
+  background-color: #ccc;
+  margin-right: 5px;
+  cursor: pointer;
 }
 
   </style>
