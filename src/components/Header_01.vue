@@ -134,7 +134,30 @@
             },
             // 내정보 수정
             saveUserProfile() {
-              this.isUserProfileModalVisible = false; // 데이터 속성을 수정하여 팝업을 닫도록 변경
+              const token = localStorage.getItem('token');
+              if(token == null) {
+                alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
+                return;
+              }
+              const decodedToken = jwtDecode(token);
+              const userid = decodedToken.username; // 사용자 아이디 추출
+              debugger;
+              loginMethods.methods.profileAdj(
+                this.userid,
+                this.editName,
+                (res) => {
+                  alert("수정완료 되었습니다.");
+                  this.editName = "";
+                  this.isUserProfileModalVisible = false; // 데이터 속성을 수정하여 팝업을 닫도록 변경
+                },
+                (error) => {
+                  // 에러 콜백
+                  console.error("회원가입 오류:", error);
+                  alert(" 이미 사용 중인 아이디입니다.");
+                }
+              );
+              
+              
             },
             cancelUserProfile() {
               this.editedName = "";
