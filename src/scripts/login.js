@@ -34,17 +34,17 @@ export default {
         .then(successCallback)
         .catch(errorCallback);
     },
-    profileAdj(userid, username, successCallback, errorCallback) {
+    profileAdj(userid, username, file_no, successCallback, errorCallback) {
       const api = axios.create({
         baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
       });
       api.post("/api/profileAdj", {
         userId: userid,
         username: username,
+        file_no: file_no,
       })
         .then(successCallback)
         .catch(errorCallback);
     },
-
   },
 };

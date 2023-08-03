@@ -53,7 +53,7 @@
             <!-- 프로필 사진 추가 -->
             <div class="profile-picture-container">
               <img :src="profilePicture" alt="프로필 사진" class="profile-picture" />
-              <input type="file" @change="onProfilePictureChange" accept="image/*" />
+              <input type="file" @change="handleFileUpload" accept="image/*" />
             </div>
             
             <label for="editName">이름:</label>&nbsp;
@@ -73,6 +73,7 @@
   import { mapActions } from 'vuex';
   import loginMethods from '../scripts/login.js';
   import jwtDecode from 'jwt-decode';
+  import axios from 'axios';
 
   export default {
     data() {
@@ -86,7 +87,10 @@
         newName: "",
         isLoggedIn: false, // 로그인 상태를 저장하는 데이터 속성
         isUserProfileModalVisible: false, // 내정보 모달 표시 여부 추가
-        editedName: "",
+        editedName: "", 
+        profilePicture: null,
+        file_no: null,
+        maxFileSize: 1024 * 1024, // 1MB (메가바이트)
       };
     },
     methods: {
@@ -137,7 +141,6 @@
               loginMethods.methods.profileSearch(
                 userid,
                 (res) => {
-                  debugger;
                   //res.data
                   this.editedName = res.data[0].user_nm
                   this.isUserProfileModalVisible = true;
@@ -161,6 +164,7 @@
               loginMethods.methods.profileAdj(
                 userid,
                 this.editedName,
+                this.file_no,
                 (res) => {
                   alert("수정완료 되었습니다.");
                   this.isUserProfileModalVisible = false; // 데이터 속성을 수정하여 팝업을 닫도록 변경
@@ -174,8 +178,49 @@
               
               
             },
+            // 파일업로드      
+            handleFileUpload(event){
+              const file = event.target.files[0];
+
+               // 파일 크기 확인
+              if (file && file.size > this.maxFileSize) {
+                alert("이미지 크기가 너무 큽니다. 1MB 이하의 이미지를 선택해주세요.");
+                return;
+              }
+              const reader = new FileReader();
+
+              reader.onloadend = () => {
+                this.profilePicture = reader.result; // Update the profilePicture data property with the uploaded image
+              };
+
+              if (file) {
+                reader.readAsDataURL(file);
+                const timestamp = Date.now();
+                const uniqueFileName = `${timestamp}_${file.name}`;
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append("fileName", encodeURIComponent(uniqueFileName)); // 파일명을 인코딩하여 formData에 추가
+                const api = axios.create({
+                  baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
+                  //baseURL: "http://localhost:3000",
+                });
+                // 파일 업로드 요청
+                api.post('/api/upload', formData, {
+                  headers: {
+                      Authorization: `Bearer ${localStorage.getItem('token')}`, // 토큰을 요청 헤더에 추가
+                  },
+                  }).then((response) => {
+                          this.file_no = response.data.fileId;
+                          alert('업로드 하였습니다.');
+                      // 파일 업로드 성공 시 처리할 로직을 여기에 작성합니다.
+                      // 예: 성공 메시지 출력, 업로드 결과를 다른 동작에 활용 등
+                      })
+              }
+            },
+
+            // 데이터 속성을 수정하여 팝업을 닫도록 변경
             cancelUserProfile() {
-              this.isUserProfileModalVisible = false; // 데이터 속성을 수정하여 팝업을 닫도록 변경
+              this.isUserProfileModalVisible = false; 
             },
             cancel() {
               this.showLoginModal = false; // 취소 버튼 클릭 시 모달 닫기
