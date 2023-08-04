@@ -16,6 +16,7 @@
   <script>
   /* eslint-disable */
   import io from 'socket.io-client';
+  import jwtDecode from 'jwt-decode';
   
   export default {
     data() {
@@ -27,7 +28,7 @@
     created() {
       // Socket.IO 클라이언트를 초기화하고 서버에 연결합니다.
       //this.socket = io('http://localhost:3000', {
-        this.socket = io('https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app/', {
+      this.socket = io('https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app', {
         withCredentials: true, // 쿠키와 인증 정보를 전송할 수 있도록 설정 (선택 사항)
       });
   
@@ -38,8 +39,15 @@
     },
     methods: {
       sendMessage() {
+        const token = localStorage.getItem('token');
         if (this.newMessage.trim() === '') return;
         // 새 메시지를 서버로 보냅니다.
+        debugger;
+        if(token == null) {
+          alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
+          // 페이지 새로고침
+          return;
+        }
         this.socket.emit('message', this.newMessage);
         this.newMessage = '';
       },
