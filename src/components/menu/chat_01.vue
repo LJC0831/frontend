@@ -1,28 +1,34 @@
 <template>
-    <div class="chat-container">
-      <div class="chat-header">채팅방</div>
-      <div class="chat-messages">
-        <div v-for="(message, index) in messages" :key="index" class="message">
-          {{ message }}
-        </div>
-      </div>
-      <div class="chat-input">
-        <input type="text" v-model="newMessage" @keyup.enter="sendMessage" placeholder="메시지를 입력하세요..." />
-        <button @click="sendMessage" class="send-button">전송</button>
+  <div class="chat-container">
+    <div class="chat-header">채팅방</div>
+    <div class="chat-messages">
+      <div v-for="(message, index) in messages" :key="index" class="message">
+        <img v-if="!profilePicture" src="@/assets/profile-user.png" alt="내 정보" class="profile-image" />
+        <img v-if="profilePicture" class="profile-image" :src="message.profilePicture" alt="프로필 사진" />
+        <span class="message-content">{{ message.editedName }} : {{ message.message }}</span>
       </div>
     </div>
-  </template>
+    <div class="chat-input">
+      <input type="text" v-model="newMessage" @keyup.enter="sendMessage" placeholder="메시지를 입력하세요..." />
+      <button @click="sendMessage" class="send-button">전송</button>
+    </div>
+  </div>
+</template>
   
   <script>
   /* eslint-disable */
   import io from 'socket.io-client';
   import jwtDecode from 'jwt-decode';
-  
+  import loginMethods from '../../scripts/login.js';
+
   export default {
     data() {
       return {
         messages: [],
-        newMessage: '',
+        newMessage : '',
+        editedName : "", 
+        file_no : null,
+        profilePicture: null,
       };
     },
     created() {
@@ -36,20 +42,67 @@
       this.socket.on('message', (message) => {
         this.messages.push(message);
       });
+
+      //프로필정보조회
+      this.profileSearch();
     },
     methods: {
+      // 메세지 보내기
       sendMessage() {
         const token = localStorage.getItem('token');
         if (this.newMessage.trim() === '') return;
         // 새 메시지를 서버로 보냅니다.
-        debugger;
         if(token == null) {
           alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
           // 페이지 새로고침
           return;
         }
-        this.socket.emit('message', this.newMessage);
+        const messageObject = {
+          editedName: this.editedName,
+          message: this.newMessage,
+          profilePicture: this.profilePicture
+        };
+        this.socket.emit('message', messageObject);
         this.newMessage = '';
+      },
+
+      // 내정보 조회
+      profileSearch(){
+        const token = localStorage.getItem('token');
+        if(token == null) {
+          alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
+          // 페이지 새로고침
+          return;
+        }
+        const decodedToken = jwtDecode(token);
+        const userid = decodedToken.username; // 사용자 아이디 추출
+        loginMethods.methods.profileSearch(userid, (res) => {
+            this.editedName = res.data[0].user_nm;
+            // 이미지 URL 받아오기
+            if(res.data[0].img_id){
+              this.file_no = res.data[0].img_id;
+              try {
+                loginMethods.methods.profileImgURL(
+                  res.data[0].img_id,
+                    (res) => {
+                      this.profilePicture = res.data.imageUrl;
+                    },
+                    (error) => {
+                      // 에러 콜백
+                      console.error("프로필 이미지 조회 오류:", error);
+                    }
+                  );
+              } catch (error) {
+                console.error('이미지 URL 조회 오류:', error);
+              }
+            }     
+              },
+              (error) => {
+                // 에러 콜백
+                console.error("프로필 조회 오류", error);
+              }
+            );
+        
       },
     },
   };
@@ -127,5 +180,13 @@ input[type="text"] {
 
 .send-button:hover {
   background-color: #0056b3;
+}
+
+.profile-image{
+  border-radius: 50%; /* 원형태로 보여주기 위해 반지름을 50%로 설정 */
+    width: 100x;
+    height: 50px;
+    object-fit: cover; /* 이미지 비율 유지 */
+    border: 2px solid #ccc;
 }
   </style>
