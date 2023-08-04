@@ -10,8 +10,9 @@
             <!-- 로그인 이미지 대신 일반 버튼으로 변경 -->
             <button class="login-btn">로그인</button>
           </div>
-          <div v-if="isLoggedIn" class="user-profile-button" @click="profileSearch()">
-            <img src="@/assets/profile-user.png" alt="내 정보" class="profile-img" />
+          <div v-if="isLoggedIn" class="user-profile-button" @click="profileSearch('')">
+            <img v-if="!profilePicture" src="@/assets/profile-user.png" alt="내 정보" class="profile-img" />
+            <img v-if="profilePicture" :src="profilePicture" alt="프로필 사진" class="profile-img" />
           </div>
           <div v-if="isLoggedIn" class="logout-button" @click="logout">
             <button class="logout-btn">로그아웃</button>
@@ -131,7 +132,7 @@
                   this.isLoggedIn = false;
             },
             // 내정보 조회
-            profileSearch(){
+            profileSearch(job){
               const token = localStorage.getItem('token');
               if(token == null) {
                 alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
@@ -159,7 +160,10 @@
                           console.error('이미지 URL 조회 오류:', error);
                         }
                       }
-                      this.isUserProfileModalVisible = true;
+                      if(job != "load"){
+                        this.isUserProfileModalVisible = true;
+                      }
+                      
                     },
                     (error) => {
                       // 에러 콜백
@@ -281,6 +285,7 @@
         if (token) {
           this.isLoggedIn = true;
         }
+        this.profileSearch("load");
       },
   };
   </script>
