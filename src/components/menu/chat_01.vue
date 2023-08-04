@@ -26,7 +26,7 @@
     },
     created() {
       // Socket.IO 클라이언트를 초기화하고 서버에 연결합니다.
-      this.socket = io('http://localhost:3000');
+      this.socket = io('https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app/');
   
       // 서버로부터 메시지를 받으면 채팅 화면에 메시지를 표시합니다.
       this.socket.on('message', (message) => {
