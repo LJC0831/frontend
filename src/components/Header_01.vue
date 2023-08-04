@@ -51,12 +51,13 @@
           <div class="login-form">
             <h2>내 정보</h2>
             <!-- 프로필 사진 추가 -->
+            <label>프로필사진</label>&nbsp;
             <div class="profile-picture-container">
               <img :src="profilePicture" alt="프로필 사진" class="profile-picture" />
-              <input type="file" @change="handleFileUpload" accept="image/*" />
             </div>
-            
-            <label for="editName">이름:</label>&nbsp;
+            <input v-if="!profilePicture || isEditingProfilePicture" type="file" @change="handleFileUpload" accept="image/*" />
+            <button v-if="profilePicture && !isEditingProfilePicture" @click="startEditingProfilePicture">프로필사진편집</button>
+            <label for="editName">이름:</label>
             <input type="text" v-model="editedName" id="editName" />&nbsp;
 
             <button @click="saveUserProfile">저장</button>&nbsp;
@@ -90,6 +91,7 @@
         editedName: "", 
         profilePicture: null,
         file_no: null,
+        isEditingProfilePicture: false, // 프로필사진수정여부
         maxFileSize: 1024 * 1024, // 1MB (메가바이트)
       };
     },
@@ -133,39 +135,37 @@
               const token = localStorage.getItem('token');
               if(token == null) {
                 alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
-                return;
+                // 페이지 새로고침
+                window.location.reload();
               }
               const decodedToken = jwtDecode(token);
               const userid = decodedToken.username; // 사용자 아이디 추출
-              loginMethods.methods.profileSearch(
-                userid,
-                (res) => {
-                  //res.data
+              loginMethods.methods.profileSearch(userid, (res) => {
                   this.editedName = res.data[0].user_nm;
                   // 이미지 URL 받아오기
                   if(res.data[0].img_id){
-                    try {
-                      loginMethods.methods.profileImgURL(
-                        res.data[0].img_id,
-                          (res) => {
-                            this.profilePicture = res.data.imageUrl;
-                          },
-                          (error) => {
-                            // 에러 콜백
-                            console.error("프로필 이미지 조회 오류:", error);
-                          }
-                        );
-                    } catch (error) {
-                      console.error('이미지 URL 조회 오류:', error);
+                        try {
+                          loginMethods.methods.profileImgURL(
+                            res.data[0].img_id,
+                              (res) => {
+                                this.profilePicture = res.data.imageUrl;
+                              },
+                              (error) => {
+                                // 에러 콜백
+                                console.error("프로필 이미지 조회 오류:", error);
+                              }
+                            );
+                        } catch (error) {
+                          console.error('이미지 URL 조회 오류:', error);
+                        }
+                      }
+                      this.isUserProfileModalVisible = true;
+                    },
+                    (error) => {
+                      // 에러 콜백
+                      console.error("프로필 조회 오류", error);
                     }
-                  }
-                  this.isUserProfileModalVisible = true;
-                },
-                (error) => {
-                  // 에러 콜백
-                  console.error("프로필 조회 오류", error);
-                }
-              );
+                  );
               
             },
             // 내정보 수정
@@ -177,13 +177,11 @@
               }
               const decodedToken = jwtDecode(token);
               const userid = decodedToken.username; // 사용자 아이디 추출
-              loginMethods.methods.profileAdj(
-                userid,
-                this.editedName,
-                this.file_no,
+              loginMethods.methods.profileAdj( userid, this.editedName, this.file_no,
                 (res) => {
                   alert("수정완료 되었습니다.");
                   this.isUserProfileModalVisible = false; // 데이터 속성을 수정하여 팝업을 닫도록 변경
+                  this.isEditingProfilePicture = false;
                 },
                 (error) => {
                   // 에러 콜백
@@ -194,7 +192,11 @@
               
               
             },
-            // 파일업로드      
+            //프로필사진 편집여부
+            startEditingProfilePicture() {
+              this.isEditingProfilePicture = true;
+            },
+            // 프로필사진 업로드      
             handleFileUpload(event){
               const file = event.target.files[0];
 
@@ -237,12 +239,14 @@
             // 데이터 속성을 수정하여 팝업을 닫도록 변경
             cancelUserProfile() {
               this.isUserProfileModalVisible = false; 
+              this.isEditingProfilePicture = false;
             },
             cancel() {
               this.showLoginModal = false; // 취소 버튼 클릭 시 모달 닫기
               this.username = ""; // 입력한 사용자 이름 초기화
               this.password = ""; // 입력한 비밀번호 초기화
             },
+            // 회원가입처리
             signup() {
               loginMethods.methods.signup(
                 this.newUserId,
@@ -262,6 +266,7 @@
                 }
               );
             },
+            //회원가입팝업닫기
             cancelSignup() {
               this.showSignupModal = false;
               this.newUserId = "";
@@ -392,6 +397,26 @@
     border-radius: 50%; /* Add the border-radius property to create a circular profile picture */
     object-fit: cover;
 }
+
+.profile-picture-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 수평 가운데 정렬 */
+    margin-bottom: 20px;
+  }
+
+  .profile-picture {
+    border-radius: 50%; /* 원형태로 보여주기 위해 반지름을 50%로 설정 */
+    width: 100px;
+    height: 100px;
+    object-fit: cover; /* 이미지 비율 유지 */
+    border: 2px solid #ccc;
+  }
+
+  .profile-picture-container input[type="file"] {
+    display: inline-block;
+    margin-left: 10px;
+  }
 
 
 
