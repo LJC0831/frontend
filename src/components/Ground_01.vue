@@ -10,6 +10,7 @@
         <Memo_01 v-if="selectedMenu === 'memoVue'" />
         <Intro v-if="selectedMenu === 'introVue'" />
         <maker_01 v-if="selectedMenu === 'maker_01'" />
+        <chat_01 v-if="selectedMenu === 'chat_01'" />
       </div>
     </div>
     <Footer/>

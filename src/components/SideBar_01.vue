@@ -17,7 +17,7 @@
       <Intro v-if="selectedMenu === 'introVue'" />
       <Memo_01 v-if="selectedMenu === 'memoVue'" />
       <maker_01 v-if="selectedMenu === 'maker_01'" />
-      
+      <chat_01 v-if="selectedMenu === 'chat_01'" />
     </div>
   </div>
 </template>
@@ -28,6 +28,7 @@ import Memo_01 from "./Memo_01.vue";
 import Intro from "./intro_01.vue";
 import main01 from "./main_01.vue";
 import maker_01 from "./maker_01.vue";
+import chat_01 from "./menu/chat_01.vue";
 export default {
   props: ['menuSelected'], // 부모 컴포넌트로부터 menuSelected 프롭을 받음
   data() {
@@ -36,9 +37,9 @@ export default {
       menus: [
         { name: '', label: '메인화면' },
         { name: 'introVue', label: '소개 글 보기' },
+        { name: 'chat_01', label: '대화하기' },
         { name: 'memoVue', label: '글 작성' },
         { name: 'maker_01', label: '제작자정보' },
-        
       ],
       selectedMenu: '', // 선택된 메뉴를 저장할 변수 추가
     };
@@ -70,6 +71,7 @@ export default {
       Intro,
       main01,
       maker_01,
+      chat_01,
   },
 };
 </script>
