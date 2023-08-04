@@ -137,7 +137,7 @@
               if(token == null) {
                 alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
                 // 페이지 새로고침
-                window.location.reload();
+                return;
               }
               const decodedToken = jwtDecode(token);
               const userid = decodedToken.username; // 사용자 아이디 추출
