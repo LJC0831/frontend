@@ -37,14 +37,21 @@
       this.socket = io('https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app', {
         withCredentials: true, // 쿠키와 인증 정보를 전송할 수 있도록 설정 (선택 사항)
       });
-  
       // 서버로부터 메시지를 받으면 채팅 화면에 메시지를 표시합니다.
       this.socket.on('message', (message) => {
         this.messages.push(message);
       });
 
+      // 서버로부터 최근 메시지를 받을 때 호출되는 콜백 함수
+      this.socket.on('messageHistory', (messages) => {
+        // 받은 채팅 메시지들을 화면에 표시하는 로직
+        this.messages = messages;
+      });
+
       //프로필정보조회
       this.profileSearch();
+      // 서버에 최근 메시지를 요청합니다.
+      this.socket.emit('getLatestMessages');
     },
     methods: {
       // 메세지 보내기
@@ -57,8 +64,11 @@
           // 페이지 새로고침
           return;
         }
+        const decodedToken = jwtDecode(token);
+        const userid = decodedToken.username; // 사용자 아이디 추출
         const messageObject = {
           editedName: this.editedName,
+          user_id: userid,
           message: this.newMessage,
           profilePicture: this.profilePicture
         };
@@ -68,10 +78,9 @@
 
       // 내정보 조회
       profileSearch(){
-        const token = localStorage.getItem('token');
+       const token = localStorage.getItem('token');
         if(token == null) {
           alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
-          // 페이지 새로고침
           return;
         }
         const decodedToken = jwtDecode(token);
@@ -143,7 +152,7 @@
 .chat-messages {
   flex: 1;
   padding: 10px;
-  max-height: 400px;
+  max-height: 800px;
   overflow-y: auto;
 }
 
