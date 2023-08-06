@@ -142,6 +142,7 @@
               const decodedToken = jwtDecode(token);
               const userid = decodedToken.username; // 사용자 아이디 추출
               loginMethods.methods.profileSearch(userid, (res) => {
+                  debugger;
                   this.editedName = res.data[0].user_nm;
                   // 이미지 URL 받아오기
                   if(res.data[0].img_id){
@@ -182,7 +183,8 @@
               }
               const decodedToken = jwtDecode(token);
               const userid = decodedToken.username; // 사용자 아이디 추출
-              loginMethods.methods.profileAdj( userid, this.editedName, this.file_no,
+              debugger;
+              loginMethods.methods.profileAdj( userid, this.editedName, this.file_no, this.profilePicture,
                 (res) => {
                   alert("수정완료 되었습니다.");
                   this.isUserProfileModalVisible = false; // 데이터 속성을 수정하여 팝업을 닫도록 변경
