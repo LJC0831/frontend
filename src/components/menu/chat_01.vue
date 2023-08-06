@@ -3,8 +3,8 @@
     <div class="chat-header">채팅방</div>
     <div class="chat-messages">
       <div v-for="(message, index) in messages" :key="index" class="message">
-        <img v-if="!profilePicture" src="@/assets/profile-user.png" alt="내 정보" class="profile-image" />
-        <img v-if="profilePicture" class="profile-image" :src="message.profilePicture" alt="프로필 사진" />
+        <img v-if="!message.profilePicture" src="@/assets/profile-user.png" alt="내 정보" class="profile-image" />
+        <img v-if="message.profilePicture" class="profile-image" :src="message.profilePicture" alt="프로필 사진" />
         <span class="message-content">{{ message.editedName }} : {{ message.message }}</span>
       </div>
     </div>
