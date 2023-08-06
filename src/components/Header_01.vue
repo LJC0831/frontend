@@ -142,7 +142,6 @@
               const decodedToken = jwtDecode(token);
               const userid = decodedToken.username; // 사용자 아이디 추출
               loginMethods.methods.profileSearch(userid, (res) => {
-                  debugger;
                   this.editedName = res.data[0].user_nm;
                   // 이미지 URL 받아오기
                   if(res.data[0].img_id){
@@ -183,7 +182,25 @@
               }
               const decodedToken = jwtDecode(token);
               const userid = decodedToken.username; // 사용자 아이디 추출
-              debugger;
+
+              // 이미지 URL 받아오기
+              if(this.file_no){
+                    try {
+                      loginMethods.methods.profileImgURL(
+                        this.file_no,
+                          (res) => {
+                            debugger;
+                            this.profilePicture = res.data.imageUrl;
+                          },
+                          (error) => {
+                            // 에러 콜백
+                            console.error("프로필 이미지 조회 오류:", error);
+                          }
+                        );
+                    } catch (error) {
+                      console.error('이미지 URL 조회 오류:', error);
+                    }
+                  }
               loginMethods.methods.profileAdj( userid, this.editedName, this.file_no, this.profilePicture,
                 (res) => {
                   alert("수정완료 되었습니다.");
