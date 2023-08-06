@@ -1,7 +1,7 @@
 <template>
   <div class="chat-container">
     <div class="chat-header">채팅방</div>
-    <div class="chat-messages">
+    <div class="chat-messages" ref="chatContainer">
       <div v-for="(message, index) in messages" :key="index" class="message">
         <img v-if="!message.profilePicture" src="@/assets/profile-user.png" alt="내 정보" class="profile-image" />
         <img v-if="message.profilePicture" class="profile-image" :src="message.profilePicture" alt="프로필 사진" />
@@ -74,6 +74,19 @@
         };
         this.socket.emit('message', messageObject);
         this.newMessage = '';
+        this.$nextTick(() => {
+          setTimeout(() => {
+              this.scrollToBottom();
+            }, 50);
+        });
+      },
+      scrollToBottom() {
+        debugger;
+        // chatContainer ref를 이용하여 DOM 요소에 접근
+        const chatContainer = this.$refs.chatContainer;
+
+        // 스크롤을 아래로 이동
+        chatContainer.scrollTop = chatContainer.scrollHeight;
       },
 
       // 내정보 조회
@@ -114,6 +127,12 @@
         
       },
     },
+    watch: {
+      messages(newMessages, oldMessages) {
+        // 메시지 배열이 갱신될 때마다 스크롤을 제일 아래로 이동
+        this.$nextTick(this.scrollToBottom);
+      },
+    },
   };
   </script>
   
@@ -132,8 +151,7 @@
 @media (min-width: 768px) {
     .chat-container{
     min-width: 1500px;
-    min-height: 800px;
-    height: 100%;
+    max-height: 800px;
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif;
