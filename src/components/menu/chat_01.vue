@@ -29,6 +29,7 @@
         editedName : "", 
         file_no : null,
         profilePicture: null,
+        chatContainer: null,
       };
     },
     created() {
@@ -40,12 +41,22 @@
       // 서버로부터 메시지를 받으면 채팅 화면에 메시지를 표시합니다.
       this.socket.on('message', (message) => {
         this.messages.push(message);
+        this.$nextTick(() => {
+          this.scrollToBottom();
+        });
       });
 
       // 서버로부터 최근 메시지를 받을 때 호출되는 콜백 함수
       this.socket.on('messageHistory', (messages) => {
         // 받은 채팅 메시지들을 화면에 표시하는 로직
         this.messages = messages;
+        // chatContainer 요소의 레퍼런스를 가져옵니다.
+        this.$nextTick(() => {
+          this.chatContainer = this.$refs.chatContainer;
+
+          // 최근 메시지를 받은 후에 스크롤을 아래로 이동합니다.
+          this.scrollToBottom();
+        });
       });
 
       //프로필정보조회
@@ -81,12 +92,10 @@
         });
       },
       scrollToBottom() {
-        debugger;
-        // chatContainer ref를 이용하여 DOM 요소에 접근
-        const chatContainer = this.$refs.chatContainer;
-
-        // 스크롤을 아래로 이동
-        chatContainer.scrollTop = chatContainer.scrollHeight;
+        // chatContainer 요소가 렌더링되지 않은 경우에 대한 예외 처리
+        if (this.chatContainer) {
+          this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
+        }
       },
 
       // 내정보 조회
