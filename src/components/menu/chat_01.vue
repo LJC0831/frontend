@@ -50,6 +50,7 @@
       // 서버로부터 메시지를 받으면 채팅 화면에 메시지를 표시합니다.
       this.socket.on('message', (message) => {
         this.messages.push(message);
+        debugger;
         this.$nextTick(() => {
           this.scrollToBottom();
         });
@@ -94,8 +95,24 @@
     methods: {
       //날짜 포맷
       formatDate(dateTime) {
-        const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-        const formattedDate = new Date(dateTime).toLocaleDateString('ko-KR', options);
+        // 주어진 dateTime을 Date 객체로 변환
+          const originalDate = new Date(dateTime);
+
+        // 3시간을 밀리초 단위로 변환하여 더하고 새로운 Date 객체 생성
+        const adjustedDate = new Date(originalDate.getTime() + (3 * 60 * 60 * 1000));
+
+        // 변환된 날짜를 원하는 포맷으로 포맷팅
+        const options = {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          timeZone: 'Asia/Seoul' // 대한민국 타임존
+        };
+        const formattedDate = adjustedDate.toLocaleString('ko-KR', options);
+
         return formattedDate;
       },
       // 메세지 보내기
@@ -122,14 +139,14 @@
           return;
         }
 
-
         const decodedToken = jwtDecode(token);
         const userid = decodedToken.username; // 사용자 아이디 추출
         const messageObject = {
           editedName: this.editedName,
           user_id: userid,
           message: this.newMessage,
-          profilePicture: this.profilePicture
+          profilePicture: this.profilePicture,
+          ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
         };
         this.socket.emit('message', messageObject);
         this.newMessage = '';
@@ -151,7 +168,6 @@
         if (chatContainer.scrollTop === 0 && !this.loadingPreviousMessages && this.shouldMaintainScroll) {
           this.loadingPreviousMessages = true;
           try {
-            debugger;
             const oldestMessageTime = this.messages[0].ins_ymdhms;
             this.socket.emit('getPreviousMessages', oldestMessageTime);
           } catch (error) {
