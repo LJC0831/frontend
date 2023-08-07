@@ -39,12 +39,11 @@ export default {
         .then(successCallback)
         .catch(errorCallback);
     },
-    profileAdj(userid, username, file_no, profilePicture, successCallback, errorCallback) {
+    profileAdj(userid, username, file_no, successCallback, errorCallback) {
       api.post("/api/profileAdj", {
         userId: userid,
         username: username,
-        file_no: file_no,
-        profilePicture: profilePicture
+        file_no: file_no
       })
         .then(successCallback)
         .catch(errorCallback);
