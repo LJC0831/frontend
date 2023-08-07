@@ -37,6 +37,8 @@
         loadingPreviousMessages: false, // 이전 채팅 내역 로딩 상태
         shouldMaintainScroll: true, // 스크롤을 유지할지 여부를 나타내는 변수
         oldestMessageTime: null,   //이전메세지 시간
+        lastMessageTimestamps: [], // 최근 8개 메시지의 타임스탬프를 저장합니다.
+        messageCount: 0, // 최근 10초 내에 보낸 메시지의 수를 저장합니다.
       };
     },
     created() {
@@ -106,6 +108,21 @@
           // 페이지 새로고침
           return;
         }
+        // 도배체크
+        const now = new Date();
+        this.lastMessageTimestamps.push(now);
+
+        // 10초 이전의 타임스탬프 제거
+        const tenSecondsAgo = new Date(now - 10000);
+        this.lastMessageTimestamps = this.lastMessageTimestamps.filter(timestamp => timestamp > tenSecondsAgo);
+
+        if (this.lastMessageTimestamps.length >= 8) {
+          // 사용자가 최근 10초 내에 8개 이상의 메시지를 보냄
+          alert('메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
+          return;
+        }
+
+
         const decodedToken = jwtDecode(token);
         const userid = decodedToken.username; // 사용자 아이디 추출
         const messageObject = {
