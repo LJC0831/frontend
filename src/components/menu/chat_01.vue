@@ -5,7 +5,11 @@
       <div v-for="(message, index) in messages" :key="index" class="message">
         <img v-if="!message.profilePicture" src="@/assets/profile-user.png" alt="내 정보" class="profile-image" />
         <img v-if="message.profilePicture" class="profile-image" :src="message.profilePicture" alt="프로필 사진" />
-        <span class="message-content">{{ message.editedName }} : {{ message.message }}</span>
+        <span class="message-name">{{ message.editedName }} </span>
+        <div class="message-bubble" :class="{ 'my-message': message.message }">
+          <span class="message-text">{{ message.message }}</span>
+        </div>
+        <span class="message-date">{{ formatDate(message.ins_ymdhms) }}</span>
       </div>
     </div>
     <div class="chat-input">
@@ -65,6 +69,12 @@
       this.socket.emit('getLatestMessages');
     },
     methods: {
+      //날짜 포맷
+      formatDate(dateTime) {
+        const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        const formattedDate = new Date(dateTime).toLocaleDateString('en-US', options);
+        return formattedDate;
+      },
       // 메세지 보내기
       sendMessage() {
         const token = localStorage.getItem('token');
@@ -225,4 +235,48 @@ input[type="text"] {
     object-fit: cover; /* 이미지 비율 유지 */
     border: 2px solid #ccc;
 }
+
+.message-bubble {
+  background-color: #f0f0f0;
+  border-radius: 16px;
+  padding: 10px;
+  display: inline-block;
+  max-width: 70%;
+}
+
+.my-message {
+  background-color: #87CEEB;
+  color: white;
+  align-self: flex-end;
+}
+.message-content {
+  font-size: 14px; /* 작은 글씨체 크기 */
+  color: #888; /* 연한 색상 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
+  margin-left: 10px;
+}
+
+.message-name {
+  margin-right: 8px; /* 이름과 메시지 사이 간격 */
+  font-weight: bold; /* 볼드체 */
+}
+
+.message-date {
+  font-size: 12px; /* 날짜 글씨체 크기 */
+  color: #bbb; /* 연한 색상 */
+}
+
+.message-text {
+  font-size: 14px;
+  color: #333;
+}
+
+.profile-image {
+  flex-shrink: 0;
+  width: 40px;
+}
+
   </style>
