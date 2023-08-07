@@ -189,7 +189,6 @@
                       loginMethods.methods.profileImgURL(
                         this.file_no,
                           (res) => {
-                            debugger;
                             this.profilePicture = res.data.imageUrl;
                           },
                           (error) => {
@@ -201,8 +200,10 @@
                       console.error('이미지 URL 조회 오류:', error);
                     }
                   }
-              loginMethods.methods.profileAdj( userid, this.editedName, this.file_no, this.profilePicture,
+                  debugger;
+              loginMethods.methods.profileAdj( userid, this.editedName, this.file_no,
                 (res) => {
+                  debugger;
                   alert("수정완료 되었습니다.");
                   this.isUserProfileModalVisible = false; // 데이터 속성을 수정하여 팝업을 닫도록 변경
                   this.isEditingProfilePicture = false;
