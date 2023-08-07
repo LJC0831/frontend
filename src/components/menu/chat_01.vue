@@ -1,7 +1,7 @@
 <template>
   <div class="chat-container">
     <div class="chat-header">채팅방</div>
-    <div class="chat-messages" ref="chatContainer">
+    <div class="chat-messages" ref="chatContainer" @scroll="checkScrollPosition">
       <div v-for="(message, index) in messages" :key="index" class="message">
         <img v-if="!message.profilePicture" src="@/assets/profile-user.png" alt="내 정보" class="profile-image" />
         <img v-if="message.profilePicture" class="profile-image" :src="message.profilePicture" alt="프로필 사진" />
@@ -34,6 +34,9 @@
         file_no : null,
         profilePicture: null,
         chatContainer: null,
+        loadingPreviousMessages: false, // 이전 채팅 내역 로딩 상태
+        shouldMaintainScroll: true, // 스크롤을 유지할지 여부를 나타내는 변수
+        oldestMessageTime: null,   //이전메세지 시간
       };
     },
     created() {
@@ -62,6 +65,24 @@
           this.scrollToBottom();
         });
       });
+      // 스크롤 올릴떄 이전내역 가져오기
+      this.socket.on('previousMessages', (previousMessages) => {
+        // 받아온 이전 채팅 내역을 messages 배열의 앞쪽에 추가
+        this.messages.unshift(...previousMessages);
+
+        // 이전 채팅 내역을 받아온 후 스크롤 위치를 조정
+        this.$nextTick(() => {
+          if (this.chatContainer) {
+            // 스크롤을 유지하도록 조정
+            if (this.shouldMaintainScroll) {
+              //this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
+              this.chatContainer.scrollTop = 10;
+            } else {
+              this.shouldMaintainScroll = true; // 스크롤 유지 변수를 다시 활성화
+            }
+          }
+        });
+      });
 
       //프로필정보조회
       this.profileSearch();
@@ -72,7 +93,7 @@
       //날짜 포맷
       formatDate(dateTime) {
         const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-        const formattedDate = new Date(dateTime).toLocaleDateString('en-US', options);
+        const formattedDate = new Date(dateTime).toLocaleDateString('ko-KR', options);
         return formattedDate;
       },
       // 메세지 보내기
@@ -105,6 +126,22 @@
         // chatContainer 요소가 렌더링되지 않은 경우에 대한 예외 처리
         if (this.chatContainer) {
           this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
+        }
+      },
+      
+      async checkScrollPosition() {
+        const chatContainer = this.$refs.chatContainer;
+        if (chatContainer.scrollTop === 0 && !this.loadingPreviousMessages && this.shouldMaintainScroll) {
+          this.loadingPreviousMessages = true;
+          try {
+            debugger;
+            const oldestMessageTime = this.messages[0].ins_ymdhms;
+            this.socket.emit('getPreviousMessages', oldestMessageTime);
+          } catch (error) {
+            console.error('이전 채팅 조회 오류:', error);
+          } finally {
+            this.loadingPreviousMessages = false;
+          } 
         }
       },
 
@@ -155,7 +192,7 @@
   };
   </script>
   
-  <style scoped>
+<style scoped>
 
 @media (min-width: 768px) {
     .chat-container{
