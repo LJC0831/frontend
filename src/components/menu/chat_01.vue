@@ -157,16 +157,6 @@
   
   <style scoped>
 
-@media (max-width: 768px) {
-  .chat-container{
-    width:100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    font-family: Arial, sans-serif;
-  }
-}
-
 @media (min-width: 768px) {
     .chat-container{
     min-width: 1500px;
@@ -279,4 +269,74 @@ input[type="text"] {
   width: 40px;
 }
 
+@media (max-width: 768px) {
+    .chat-container{
+      width:100%;
+      height: 100%;
+      display: flex;
+      width:500px;
+      flex-direction: column;
+      font-family: Arial, sans-serif;
+    }
+    .chat-messages {
+      max-height: none;
+      overflow-y: auto;
+    }
+
+    .chat-input {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .profile-image{
+    border-radius: 50%; /* 원형태로 보여주기 위해 반지름을 50%로 설정 */
+      width: 60x;
+      height: 50px;
+      object-fit: cover; /* 이미지 비율 유지 */
+      border: 2px solid #ccc;
+  }
+
+  .message-bubble {
+    background-color: #f0f0f0;
+    border-radius: 16px;
+    padding: 10px;
+    display: inline-block;
+    max-width: 70%;
+  }
+
+  .my-message {
+    background-color: #87CEEB;
+    color: white;
+    align-self: flex-end;
+  }
+  .message-content {
+    font-size: 12px; /* 작은 글씨체 크기 */
+    color: #888; /* 연한 색상 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+    margin-left: 10px;
+  }
+
+  .message-name {
+    margin-right: 8px; /* 이름과 메시지 사이 간격 */
+    font-weight: bold; /* 볼드체 */
+  }
+
+  .message-date {
+    font-size: 10px; /* 날짜 글씨체 크기 */
+    color: #bbb; /* 연한 색상 */
+  }
+
+  .message-text {
+    font-size: 12px;
+    color: #333;
+  }
+
+  .profile-image {
+    flex-shrink: 0;
+    width: 40px;
+  }
+}
   </style>
