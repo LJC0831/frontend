@@ -294,6 +294,7 @@ input[type="text"] {
 .message-date {
   font-size: 12px; /* 날짜 글씨체 크기 */
   color: #bbb; /* 연한 색상 */
+  margin-left: 10px;
 }
 
 .message-text {
@@ -364,6 +365,7 @@ input[type="text"] {
   .message-date {
     font-size: 10px; /* 날짜 글씨체 크기 */
     color: #bbb; /* 연한 색상 */
+    margin-left: 10px;
   }
 
   .message-text {
