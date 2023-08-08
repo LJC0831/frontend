@@ -64,7 +64,10 @@
             <label for="editName">이름:</label>
             <input type="text" v-model="editedName" id="editName" />&nbsp;
 
-            <button @click="saveUserProfile">저장</button>&nbsp;
+            <button @click="saveUserProfile" :disabled="loading">
+              <span v-if="!loading">저장</span>
+              <span v-else>로딩 중...</span>
+            </button>&nbsp;
             <button @click="cancelUserProfile">취소</button>&nbsp;
           </div>
           <div class="close-button" @click="closeUserProfileModal">X</div>
@@ -203,10 +206,8 @@
                       console.error('이미지 URL 조회 오류:', error);
                     }
                   }
-                  debugger;
               loginMethods.methods.profileAdj( userid, this.editedName, this.file_no,
                 (res) => {
-                  debugger;
                   alert("수정완료 되었습니다.");
                   this.isUserProfileModalVisible = false; // 데이터 속성을 수정하여 팝업을 닫도록 변경
                   this.isEditingProfilePicture = false;
@@ -238,7 +239,7 @@
               reader.onloadend = () => {
                 this.profilePicture = reader.result; // Update the profilePicture data property with the uploaded image
               };
-
+              this.loading = true;
               if (file) {
                 reader.readAsDataURL(file);
                 const timestamp = Date.now();
@@ -258,10 +259,12 @@
                   }).then((response) => {
                           this.file_no = response.data.fileId;
                           alert('업로드 하였습니다.');
+                          this.loading = false;
                       // 파일 업로드 성공 시 처리할 로직을 여기에 작성합니다.
                       // 예: 성공 메시지 출력, 업로드 결과를 다른 동작에 활용 등
                       })
               }
+              
             },
 
             // 데이터 속성을 수정하여 팝업을 닫도록 변경
