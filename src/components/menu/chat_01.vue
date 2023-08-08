@@ -226,7 +226,8 @@
 
 @media (min-width: 768px) {
     .chat-container{
-    min-width: 1500px;
+    width:100%;
+    min-width:1300px;
     max-height: 800px;
     display: flex;
     flex-direction: column;
