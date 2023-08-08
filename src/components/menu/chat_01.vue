@@ -1,6 +1,9 @@
 <template>
   <div class="chat-container">
     <div class="chat-header">채팅방</div>
+    <div v-if="loading" class="loading-overlay">
+        <img src="../../assets/loading.gif" alt="loading" class="loading-image">
+      </div>
     <div class="chat-messages" ref="chatContainer" @scroll="checkScrollPosition">
       <div v-for="(message, index) in messages" :key="index" class="message">
         <img v-if="!message.profilePicture" src="@/assets/profile-user.png" alt="내 정보" class="profile-image" />
@@ -29,6 +32,7 @@
     data() {
       return {
         messages: [],
+        loading: false,
         newMessage : '',
         editedName : "", 
         file_no : null,
@@ -50,7 +54,6 @@
       // 서버로부터 메시지를 받으면 채팅 화면에 메시지를 표시합니다.
       this.socket.on('message', (message) => {
         this.messages.push(message);
-        debugger;
         this.$nextTick(() => {
           this.scrollToBottom();
         });
@@ -58,6 +61,7 @@
 
       // 서버로부터 최근 메시지를 받을 때 호출되는 콜백 함수
       this.socket.on('messageHistory', (messages) => {
+        this.loading = true;
         // 받은 채팅 메시지들을 화면에 표시하는 로직
         this.messages = messages;
         // chatContainer 요소의 레퍼런스를 가져옵니다.
@@ -66,10 +70,13 @@
 
           // 최근 메시지를 받은 후에 스크롤을 아래로 이동합니다.
           this.scrollToBottom();
+          //this.loading = false;
         });
+        this.loading = false;
       });
       // 스크롤 올릴떄 이전내역 가져오기
       this.socket.on('previousMessages', (previousMessages) => {
+        this.loading = true;
         // 받아온 이전 채팅 내역을 messages 배열의 앞쪽에 추가
         this.messages.unshift(...previousMessages);
 
@@ -85,6 +92,11 @@
             }
           }
         });
+        
+        setTimeout(() => {
+          this.loading = false;
+         }, 300); // 300ms(0.3초) 후에 실행됩니다.
+        
       });
 
       //프로필정보조회
@@ -408,5 +420,27 @@ input[type="text"] {
     flex-shrink: 0;
     width: 40px;
   }
+
+  .loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+}
+
+.loading-image {
+  max-width: 100px; /* 이미지의 최대 너비 설정 */
+  max-height: 100px; /* 이미지의 최대 높이 설정 */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 }
   </style>
