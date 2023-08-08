@@ -29,6 +29,7 @@
     data() {
       return {
         messages: [],
+        onlineUsers: [], //접속유저
         newMessage : '',
         editedName : "", 
         file_no : null,
@@ -57,9 +58,11 @@
       });
 
       // 서버로부터 최근 메시지를 받을 때 호출되는 콜백 함수
-      this.socket.on('messageHistory', (messages) => {
+      this.socket.on('messageHistory', data  => {
+        debugger;
         // 받은 채팅 메시지들을 화면에 표시하는 로직
-        this.messages = messages;
+        this.messages = data.messages;
+        this.onlineUsers = data.onlineUsers;
         // chatContainer 요소의 레퍼런스를 가져옵니다.
         this.$nextTick(() => {
           this.chatContainer = this.$refs.chatContainer;
