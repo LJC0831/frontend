@@ -27,7 +27,10 @@
           <input type="text" v-model="username" id="username" />&nbsp;
           <label for="password">비밀번호: </label>&nbsp;
           <input type="password" v-model="password" id="password" />&nbsp;
-          <button @click="login">로그인</button>&nbsp;
+          <button @click="login" :disabled="loading">
+            <span v-if="!loading">로그인</span>
+            <span v-else>로딩 중...</span>
+          </button>&nbsp;
           <button @click="cancel">취소</button>&nbsp;
         </div>
         <div class="close-button" @click="showLoginModal = false">X</div>
@@ -80,6 +83,7 @@
   export default {
     data() {
       return {
+        loading: false,
         showLoginModal: false,
         showSignupModal: false, // 회원가입 모달 표시 여부
         username: "",
@@ -104,6 +108,7 @@
               window.location.reload();
             },
             login() {
+              this.loading = true; //로딩 상태 활성화
               loginMethods.methods.login( this.username, this.password,(res) => {
                       alert("로그인에 성공했습니다!");
                       // 토큰을 Vuex에 저장
@@ -122,6 +127,7 @@
                     alert("아이디 패스워드가 틀립니다. ");
                   }
                 );
+                this.loading = false; // 로딩 상태 비활성화
               },
            
             logout() {
@@ -134,44 +140,41 @@
             // 내정보 조회
             profileSearch(job){
               const token = localStorage.getItem('token');
-              if(token == null) {
-                alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
-                // 페이지 새로고침
-                return;
-              }
-              const decodedToken = jwtDecode(token);
-              const userid = decodedToken.username; // 사용자 아이디 추출
-              loginMethods.methods.profileSearch(userid, (res) => {
-                  this.editedName = res.data[0].user_nm;
-                  // 이미지 URL 받아오기
-                  if(res.data[0].img_id){
-                    this.file_no = res.data[0].img_id;
-                    try {
-                      loginMethods.methods.profileImgURL(
-                        res.data[0].img_id,
-                          (res) => {
-                            this.profilePicture = res.data.imageUrl;
-                          },
-                          (error) => {
-                            // 에러 콜백
-                            console.error("프로필 이미지 조회 오류:", error);
-                          }
-                        );
-                    } catch (error) {
-                      console.error('이미지 URL 조회 오류:', error);
+              if(token != null) {
+                const decodedToken = jwtDecode(token);
+                const userid = decodedToken.username; // 사용자 아이디 추출
+                
+                loginMethods.methods.profileSearch(userid, (res) => {
+                    this.editedName = res.data[0].user_nm;
+                    // 이미지 URL 받아오기
+                    if(res.data[0].img_id){
+                      this.file_no = res.data[0].img_id;
+                      try {
+                        loginMethods.methods.profileImgURL(
+                          res.data[0].img_id,
+                            (res) => {
+                              this.profilePicture = res.data.imageUrl;
+                            },
+                            (error) => {
+                              // 에러 콜백
+                              console.error("프로필 이미지 조회 오류:", error);
+                            }
+                          );
+                      } catch (error) {
+                        console.error('이미지 URL 조회 오류:', error);
+                      }
                     }
-                  }
-                    if(job != "load"){
-                      this.isUserProfileModalVisible = true;
-                    }
-                      
-                    },
-                    (error) => {
-                      // 에러 콜백
-                      console.error("프로필 조회 오류", error);
-                    }
-                  );
-              
+                      if(job != "load"){
+                        this.isUserProfileModalVisible = true;
+                      }
+                        
+                      },
+                      (error) => {
+                        // 에러 콜백
+                        console.error("프로필 조회 오류", error);
+                      }
+                    );
+                }
             },
             // 내정보 수정
             saveUserProfile() {
