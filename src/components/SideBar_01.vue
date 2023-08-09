@@ -38,7 +38,7 @@ export default {
         { name: '', label: '메인화면' },
         { name: 'introVue', label: '소개 글 보기' },
         { name: 'chat_01', label: '대화하기' },
-        { name: 'memoVue', label: '글 작성' },
+        { name: 'memoVue', label: '문의하기' },
         { name: 'maker_01', label: '제작자정보' },
       ],
       selectedMenu: '', // 선택된 메뉴를 저장할 변수 추가
