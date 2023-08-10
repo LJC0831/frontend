@@ -264,10 +264,9 @@
 }
 
 .message {
-  margin-bottom: 5px;
   padding: 8px;
   border-radius: 5px;
-  background-color: #f0f0f0;
+  /*background-color: #f0f0f0; */
 }
 
 .chat-input {
@@ -330,7 +329,8 @@ input[type="text"] {
 }
 
 .message-name {
-  margin-right: 8px; /* 이름과 메시지 사이 간격 */
+  margin-left: 10px;
+  margin-right: 15px; /* 이름과 메시지 사이 간격 */
   font-weight: bold; /* 볼드체 */
 }
 
@@ -401,6 +401,7 @@ input[type="text"] {
   }
 
   .message-name {
+    margin-left: 5px;
     margin-right: 8px; /* 이름과 메시지 사이 간격 */
     font-weight: bold; /* 볼드체 */
   }
