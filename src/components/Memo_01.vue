@@ -37,7 +37,10 @@
                 <textarea v-model="newContent" id="newContent" rows="5" placeholder="내용을 입력하세요."></textarea>
             </div>
             <div class="modal-buttons">
-                <button @click="addMemo" :disabled="isNewMemoNotValid">작성하기</button>
+                <button @click="addMemo" :disabled="loading">
+                    <span v-if="!loading">작성하기</span>
+                    <span v-else>로딩 중...</span>
+                </button>
                 <button @click="cancelAdd">취소</button>
             </div>
             </div>
@@ -57,6 +60,7 @@
             <div v-if="state.uploadedFile">
                 <label>현재 업로드된 파일:</label>
                 <a :href="getDownloadLink()" target="_blank">{{ state.uploadedFile }}</a>
+                <button @click="dropUploadFile()" :disabled="isNotEditable">삭제하기</button>
             </div>
             <div class="form-group">
                 <label for="fileUpload">파일 업로드 :</label>&nbsp;
@@ -92,6 +96,7 @@ const editedContent = ref('');
 const editingMemoId = ref(null); // 수정, 삭제 중인 메모의 id 저장
 const editingFileId = ref(null); // 수정, 삭제 중인 업로드파일 id 저장
 const fileUploadRef = ref(null); // 파일 업로드 요소를 위한 ref
+const loading = ref(false); // 로딩여부
 
 const handleSelectAll = () => {
         // 전체 선택 체크박스가 클릭되었을 때 모든 메모 항목의 체크 상태를 변경
@@ -249,39 +254,53 @@ api.get("/api/memos").then((res) => {
 })
 // 파일업로드      
 const handleFileUpload = () => {
-            const file = fileUploadRef.value.files[0]; // 선택된 파일 가져오기
-            const timestamp = Date.now();
-            const uniqueFileName = `${timestamp}_${file.name}`;
+        const file = fileUploadRef.value.files[0]; // 선택된 파일 가져오기
+        const timestamp = Date.now();
+        const uniqueFileName = `${timestamp}_${file.name}`;
 
-            // 선택된 파일을 FormData 객체에 추가
-            const formData = new FormData();
-            formData.append("file", file);
-            formData.append("fileName", encodeURIComponent(uniqueFileName)); // 파일명을 인코딩하여 formData에 추가
-            // 파일 업로드 요청
-            api.post('/api/upload', formData, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`, // 토큰을 요청 헤더에 추가
-                },
-                params: {
-                    memoId: editingMemoId.value, // 현재 수정 중인 메모의 ID를 서버에 전달
-                },
-            }).then((response) => {
-                    file_no.value = response.data.fileId;
-                    alert('업로드 하였습니다.');
-                // 파일 업로드 성공 시 처리할 로직을 여기에 작성합니다.
-                // 예: 성공 메시지 출력, 업로드 결과를 다른 동작에 활용 등
-                })
-                .catch((error) => {
-                    alert('업로드 실패입니다.');
-                // 파일 업로드 실패 시 처리할 로직을 여기에 작성합니다.
-                // 예: 오류 메시지 출력 등
-                });
-        };
+        // 선택된 파일을 FormData 객체에 추가
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("fileName", encodeURIComponent(uniqueFileName)); // 파일명을 인코딩하여 formData에 추가
+        // 파일 업로드 요청
+        loading.value = true;
+        api.post('/api/upload', formData, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`, // 토큰을 요청 헤더에 추가
+            },
+            params: {
+                memoId: editingMemoId.value, // 현재 수정 중인 메모의 ID를 서버에 전달
+            },
+        }).then((response) => {
+                file_no.value = response.data.fileId;
+                alert('업로드 하였습니다.');
+                loading.value = false;
+            // 파일 업로드 성공 시 처리할 로직을 여기에 작성합니다.
+            // 예: 성공 메시지 출력, 업로드 결과를 다른 동작에 활용 등
+            })
+            .catch((error) => {
+                alert('업로드 실패입니다.');
+                loading.value = false;
+            // 파일 업로드 실패 시 처리할 로직을 여기에 작성합니다.
+            // 예: 오류 메시지 출력 등
+            });
+
+    };
 // 파일다운로드
 const getDownloadLink = () => {
 // 다운로드 링크 생성
     return `/api/file/download/${editingFileId.value}`;
   }
+// 업로드파일 삭제
+const dropUploadFile = () => {
+    debugger;
+    api.get(`/api/file/delete/${editingFileId.value}`, ).then((response) => {
+                    alert('삭제하였습니다.');
+                })
+                .catch((error) => {
+                    alert('파일 삭제 실패입니다.');
+                });
+};
 // 삭제버튼 활성화
 watch(() => state.data.map((d) => d.checked),(checkedList) => {
             showDelete.value = checkedList.some((checked) => checked);
