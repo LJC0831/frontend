@@ -111,7 +111,7 @@
           const originalDate = new Date(dateTime);
 
         // 3시간을 밀리초 단위로 변환하여 더하고 새로운 Date 객체 생성
-        const adjustedDate = new Date(originalDate.getTime() + (3 * 60 * 60 * 1000));
+        const adjustedDate = new Date(originalDate.getTime() - (9 * 60 * 60 * 1000));
 
         // 변환된 날짜를 원하는 포맷으로 포맷팅
         const options = {
@@ -314,7 +314,7 @@ input[type="text"] {
 }
 
 .my-message {
-  background-color: #87CEEB;
+  background-color: lightskyblue;
   color: white;
   align-self: flex-end;
 }
