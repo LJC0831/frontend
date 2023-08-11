@@ -264,6 +264,8 @@
 }
 
 .message {
+  display: flex;
+  align-items: center; /* 수직 가운데 정렬 */
   padding: 8px;
   border-radius: 5px;
   /*background-color: #f0f0f0; */
@@ -303,6 +305,8 @@ input[type="text"] {
     height: 50px;
     object-fit: cover; /* 이미지 비율 유지 */
     border: 2px solid #ccc;
+    height: 100%; /* 부모 컨테이너의 높이에 맞게 설정 */
+  margin-right: 10px;
 }
 
 .message-bubble {
@@ -332,6 +336,8 @@ input[type="text"] {
   margin-left: 10px;
   margin-right: 15px; /* 이름과 메시지 사이 간격 */
   font-weight: bold; /* 볼드체 */
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .message-date {
