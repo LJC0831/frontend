@@ -1,5 +1,5 @@
 <template>
-  <div @touchend="handleTouchEnd">
+  <div>
     <!-- 메뉴 항목들 -->
     <div class="sidebar-toggle-container">
       <button @click="toggleSidebar" class="sidebar-toggle-btn" :class="{ 'open': sidebarOpen }">
@@ -31,17 +31,6 @@ import maker_01 from "./maker_01.vue";
 import chat_01 from "./menu/chat_01.vue";
 export default {
   props: ['menuSelected'], // 부모 컴포넌트로부터 menuSelected 프롭을 받음
-  mounted() {
-    // 터치 이벤트 리스너 등록
-    document.addEventListener('touchstart', this.handleTouchStart);
-    document.addEventListener('touchmove', this.handleTouchMove);
-  },
-
-  beforeDestroy() {
-    // 컴포넌트가 파괴되기 전에 리스너 해제
-    document.removeEventListener('touchstart', this.handleTouchStart);
-    document.removeEventListener('touchmove', this.handleTouchMove);
-  },
   data() {
     return {
       sidebarOpen: false,
@@ -53,8 +42,6 @@ export default {
         { name: 'maker_01', label: '제작자정보' },
       ],
       selectedMenu: '', // 선택된 메뉴를 저장할 변수 추가
-      touchStartX: null,
-      touchMoveX: null,
     };
   },
   methods: {
@@ -77,28 +64,6 @@ export default {
     handleMenuClick(menuName) {
       this.selectedMenu = menuName;
       this.$emit('menuSelected', menuName);
-    },
-    // 터치 시작 이벤트 처리
-    handleTouchStart(event) {
-      this.touchStartX = event.touches[0].clientX;
-      this.touchMoveX = this.touchStartX;
-    },
-
-    // 터치 이동 이벤트 처리
-    handleTouchMove(event) {
-      this.touchMoveX = event.touches[0].clientX;
-    },
-
-    // 터치 종료 이벤트 처리 및 사이드바 접힘 처리
-    handleTouchEnd(event) {
-      if (this.touchStartX !== null && this.touchMoveX !== null) {
-        const deltaX = this.touchMoveX - this.touchStartX;
-        if (deltaX > 50 && this.sidebarOpen) {
-          this.toggleSidebar();
-        }
-      }
-      this.touchStartX = null;
-      this.touchMoveX = null;
     },
   },
   components: {
