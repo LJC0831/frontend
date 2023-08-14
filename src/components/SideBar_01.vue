@@ -64,6 +64,10 @@ export default {
     handleMenuClick(menuName) {
       this.selectedMenu = menuName;
       this.$emit('menuSelected', menuName);
+      // 화면 크기가 768px 이하인 경우  this.sidebarOpen = false 처리하고싶어
+      if (window.innerWidth <= 768) {
+        this.sidebarOpen = false;
+      }
     },
   },
   components: {
