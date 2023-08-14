@@ -361,7 +361,7 @@ input[type="text"] {
       width:100%;
       height: 100%;
       display: flex;
-      width:500px;
+      width:450px;
       flex-direction: column;
       font-family: Arial, sans-serif;
     }
@@ -448,6 +448,9 @@ input[type="text"] {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
+  }
+  .send-button {
+  margin-left: 0px;
+  }
 }
   </style>
