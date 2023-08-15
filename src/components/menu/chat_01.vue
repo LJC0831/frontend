@@ -134,6 +134,7 @@
         // 새 메시지를 서버로 보냅니다.
         if(token == null) {
           alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
+          window.location.reload();
           // 페이지 새로고침
           return;
         }
