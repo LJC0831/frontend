@@ -118,8 +118,10 @@ const doValid = ()=>{
             // 로컬 스토리지에서 JWT 토큰 가져오기
             const token = localStorage.getItem('token');
             if (token == null){
-                alert('로그인해주세요.');
-                return;
+                alert('세션이 종료되었습니다. 로그인해주세요.');
+                // 페이지 새로고침
+                 window.location.reload();
+                 return;
             }
             return true;
         }
