@@ -358,12 +358,11 @@ input[type="text"] {
 
 @media (max-width: 768px) {
     .chat-container{
-      width:100%;
-      height: 100%;
-      display: flex;
-      width:450px;
-      flex-direction: column;
-      font-family: Arial, sans-serif;
+    width:100%;
+    max-height: 700px;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
     }
     .chat-messages {
       max-height: none;
