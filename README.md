@@ -1,7 +1,9 @@
 # frontend
 메모장 입력 수정 삭제 연습
 
-![image](https://github.com/LJC0831/frontend/assets/121738554/00f3473b-9a2c-45b4-bad1-20c6a09e1ba6)
+메인화면
+![image](https://github.com/LJC0831/frontend/assets/121738554/e3d140e9-b264-40a3-b213-0b661b311255)
+
 
 
 개발환경
