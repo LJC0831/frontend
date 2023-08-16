@@ -269,7 +269,8 @@
   align-items: center; /* 수직 가운데 정렬 */
   padding: 8px;
   border-radius: 5px;
-  /*background-color: #f0f0f0; */
+  background-color: #f0f0f0; 
+  margin: 5px;
 }
 
 .chat-input {
