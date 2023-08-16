@@ -354,7 +354,10 @@ input[type="text"] {
 
 .profile-image {
   flex-shrink: 0;
-  width: 40px;
+  max-width: 40px;
+  max-height: 40px;
+  min-width: 40px;
+  min-height: 40px;
 }
 
 @media (max-width: 768px) {
@@ -377,10 +380,12 @@ input[type="text"] {
 
     .profile-image{
     border-radius: 50%; /* 원형태로 보여주기 위해 반지름을 50%로 설정 */
-      width: 60x;
-      height: 50px;
       object-fit: cover; /* 이미지 비율 유지 */
       border: 2px solid #ccc;
+      max-width: 40px;
+      max-height: 40px;
+      min-width: 40px;
+      min-height: 40px;
   }
 
   .message-bubble {
@@ -410,6 +415,8 @@ input[type="text"] {
     margin-left: 5px;
     margin-right: 8px; /* 이름과 메시지 사이 간격 */
     font-weight: bold; /* 볼드체 */
+    min-width: 50px;
+    vertical-align: middle;
   }
 
   .message-date {
