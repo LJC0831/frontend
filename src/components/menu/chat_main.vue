@@ -20,17 +20,20 @@
     <div class="container">
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <div class="col" v-for="(room, index) in chatRooms" :key="index" @click="enterChatRoom(room)">
+        <div class="col" v-for="(chatRooms, index) in chatRooms" :key="index" @click="enterChatRoom(chatRooms.id)">
           <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ chatRooms.subject }}</text></svg>
             <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <p class="card-text">
+                <span class="chatromm-subject">{{ chatRooms.subject }}</span>
+                <span class="chatromm-user_id">{{ chatRooms.ins_user_id }}</span>
+              </p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
                   <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
                 </div>
-                <small class="text-body-secondary">9 mins</small>
+                <small class="text-body-secondary">{{ chatRooms.formatted_date }}</small>
               </div>
             </div>
           </div>
@@ -60,9 +63,8 @@ const api = axios.create({
       };
     },
     methods: {
-      enterChatRoom(room) {
-        // Here, you can navigate to the chat room using Vue Router or perform other actions
-        console.log(`Entering ${room.name}`);
+      enterChatRoom(chat_id) {
+        debugger;
       },
       search01: debounce(function(){
         api.get("/api/chat/search").then((res) => {
@@ -147,5 +149,9 @@ const api = axios.create({
       }
       .bd-mode-toggle {
         z-index: 1500;
+      }
+
+      .chatromm-user_id{
+        float: right;
       }
 </style>
