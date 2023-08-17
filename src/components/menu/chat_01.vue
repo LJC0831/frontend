@@ -241,7 +241,7 @@
     .chat-container{
     width:100%;
     min-width:1300px;
-    max-height: 800px;
+    max-height: 700px;
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif;
