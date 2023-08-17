@@ -13,6 +13,7 @@
             <p>
               <input type="text" v-model="searchKeyword" @keyup.enter="search01()" placeholder="Search" class="search-input" />&nbsp;
               <button class="btn btn-primary search-button" @click="search01()">조회</button>
+              <button class="btn btn-success create-button" @click="createChatRoom()">방 만들기</button>
             </p>
           </div>
         </div>
@@ -71,6 +72,7 @@ export default {
     };
   },
   methods: {
+    //채팅방 open
     openChatRoom(chat_id,pwd) {
       if(pwd ==! null){
         const enteredPassword = prompt('비밀번호를 입력하세요:');
@@ -89,6 +91,7 @@ export default {
     exit() {
       this.selectedChatId = null;
     },
+    //조회
     search01: debounce(async function () {
       try {
         const response = await api.get("/api/chat/search");
@@ -109,6 +112,11 @@ export default {
         console.error("검색 오류:", error);
       }
     }, 500),
+    // 방만들기
+    createChatRoom(){
+      alert('아직은 관리자만 개설가능합니다.');
+    },
+    //imgurl조회
     async getFileUrl(fileNo) {
       try {
         const response = await new Promise((resolve, reject) => {
@@ -175,6 +183,17 @@ export default {
     max-width: 100%;
     height: 225px;
     object-fit: cover;
+  }
+
+  .create-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #2ecc71;
+    font-size: 14px;
+    color: #fff;
+    cursor: pointer;
+    margin-left: 10px;
   }
 
 </style>
