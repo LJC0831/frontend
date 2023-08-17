@@ -184,8 +184,11 @@
         if (chatContainer.scrollTop === 0 && !this.loadingPreviousMessages && this.shouldMaintainScroll) {
           this.loadingPreviousMessages = true;
           try {
-            const oldestMessageTime = this.messages[0].ins_ymdhms;
-            this.socket.emit('getPreviousMessages', oldestMessageTime);
+            const oldestMessage = {
+              oldestMessageTime: this.messages[0].ins_ymdhms,
+              chatId:this.selectedChatId,
+            };
+            this.socket.emit('getPreviousMessages', oldestMessage);
           } catch (error) {
             console.error('이전 채팅 조회 오류:', error);
           } finally {
