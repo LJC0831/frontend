@@ -21,7 +21,7 @@
       <div class="album py-5 bg-body-tertiary">
         <div class="container">
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4" id="chat_main_img">
-            <div class="col" v-for="(chatRooms, index) in chatRooms" :key="index" @click="openChatRoom(chatRooms.id)">
+            <div class="col" v-for="(chatRooms, index) in chatRooms" :key="index" @click="openChatRoom(chatRooms.id,chatRooms.pwd)">
               <div class="card shadow-sm">
                 <div class="card-img-top">
                   <img v-if="chatRooms.file_no !== null" :src="chatRooms.imageUrl" alt="Chat Room Thumbnail" style="max-width: 100%; height: 225px;" />
@@ -72,8 +72,20 @@ export default {
     };
   },
   methods: {
-    openChatRoom(chat_id) {
-      this.selectedChatId = chat_id;
+    openChatRoom(chat_id,pwd) {
+      if(pwd ==! null){
+        const enteredPassword = prompt('비밀번호를 입력하세요:');
+        if (enteredPassword !== null) { 
+          if (enteredPassword === pwd) {
+            this.selectedChatId = chat_id;
+          } else {
+            alert('비밀번호가 일치하지 않습니다.');
+          }
+        }
+      } else {
+        this.selectedChatId = chat_id;
+      }
+      
     },
     exit() {
       this.selectedChatId = null;
