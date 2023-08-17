@@ -1,6 +1,6 @@
 <template>
-  <main>
-  <section class="py-5 text-center container">
+  <ChatRoom01 v-if="selectedChatId !== null" :chatId="selectedChatId" />
+  <section class="py-5 text-center container" v-if="selectedChatId === null">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
         <h1 class="fw-light">자유로운 채팅방</h1>
@@ -20,7 +20,7 @@
     <div class="container">
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <div class="col" v-for="(chatRooms, index) in chatRooms" :key="index" @click="enterChatRoom(chatRooms.id)">
+        <div class="col" v-for="(chatRooms, index) in chatRooms" :key="index" @click="openChatRoom(chatRooms.id)">
           <div class="card shadow-sm">
             <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ chatRooms.subject }}</text></svg>
             <div class="card-body">
@@ -42,13 +42,13 @@
       </div>
     </div>
   </div>
-</main>
 </template>
   
 <script>
 /* eslint-disable */
 import { debounce } from 'lodash';
 import axios from 'axios';
+import ChatRoom01 from './chat_01.vue';
 
 // axios 인스턴스 생성
 const api = axios.create({
@@ -56,15 +56,21 @@ const api = axios.create({
   //baseURL: "http://localhost:3000",
 });
   export default {
+    components: {
+      ChatRoom01,
+  },
     data() {
       return {
         searchKeyword: '', // 검색어를 담을 변수 추가
         chatRooms: [],
+        selectedChatId: null,
       };
     },
     methods: {
-      enterChatRoom(chat_id) {
-        debugger;
+      openChatRoom(chat_id) {
+        
+        this.selectedChatId = chat_id;
+        //this.$emit('open-chat-room', chat_id); //이벤트발생
       },
       search01: debounce(function(){
         api.get("/api/chat/search").then((res) => {
