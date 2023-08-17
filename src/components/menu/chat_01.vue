@@ -29,6 +29,9 @@
   import loginMethods from '../../scripts/login.js';
 
   export default {
+    props: {
+      selectedChatId: String, // 전달되는 chatId의 타입
+    },
     data() {
       return {
         messages: [],
