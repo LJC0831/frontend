@@ -1,6 +1,10 @@
 <template>
-  <ChatRoom01 v-if="selectedChatId !== null" :chatId="selectedChatId" />
-  <section class="py-5 text-center container" v-if="selectedChatId === null">
+  <div class ="chat-main" v-if="selectedChatId !== null">
+  <ChatRoom01 :chatId="selectedChatId" />
+  <button class="btn btn-primary" id ="btn-exit" @click="exit()">나가기</button>
+ </div>
+  <div class = "chat-room" v-if="selectedChatId === null">
+  <section class="py-5 text-center container">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
         <h1 class="fw-light">자유로운 채팅방</h1>
@@ -38,10 +42,10 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
+</div>
 </template>
   
 <script>
@@ -67,10 +71,13 @@ const api = axios.create({
       };
     },
     methods: {
-      openChatRoom(chat_id) {
+      openChatRoom(chat_id) { //채팅방 open
         
         this.selectedChatId = chat_id;
         //this.$emit('open-chat-room', chat_id); //이벤트발생
+      },
+      exit(){ //채팅방 나가기
+        this.selectedChatId = null;
       },
       search01: debounce(function(){
         api.get("/api/chat/search").then((res) => {
@@ -158,6 +165,10 @@ const api = axios.create({
       }
 
       .chatromm-user_id{
+        float: right;
+      }
+
+      #btn-exit{
         float: right;
       }
 </style>
