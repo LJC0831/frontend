@@ -40,8 +40,8 @@ export default {
       menus: [
         { name: '', label: '메인화면' },
         { name: 'introVue', label: '소개 글 보기' },
-        { name: 'chat_main', label: '채팅목록' },
-        { name: 'chat_01', label: '대화하기' },
+        { name: 'chat_main', label: '채팅방' },
+       /* { name: 'chat_01', label: '대화하기' },*/
         { name: 'memoVue', label: '문의하기' },
         { name: 'maker_01', label: '제작자정보' },
       ],
