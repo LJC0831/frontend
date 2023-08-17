@@ -1,8 +1,9 @@
 <template>
-  <div class ="chat-main" v-if="selectedChatId !== null">
-  <ChatRoom01 :selectedChatId=selectedChatId />
-  <button class="btn btn-primary" id ="btn-exit" @click="exit()">나가기</button>
- </div>
+  <div>
+    <div class ="chat-main" v-if="selectedChatId !== null">
+      <ChatRoom01 :selectedChatId=selectedChatId />
+      <button class="btn btn-primary" id ="btn-exit" @click="exit()">나가기</button>
+  </div>
   <div class = "chat-room" v-if="selectedChatId === null">
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
@@ -44,6 +45,7 @@
         </div>
       </div>
     </div>
+  </div>
   </div>
 </div>
 </template>

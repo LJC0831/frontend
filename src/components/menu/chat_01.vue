@@ -105,7 +105,8 @@
       //프로필정보조회
       this.profileSearch();
       // 서버에 최근 메시지를 요청합니다.
-      this.socket.emit('getLatestMessages');
+      const chatId = this.selectedChatId;
+      this.socket.emit('getLatestMessages',chatId);
     },
     methods: {
       //날짜 포맷
@@ -162,6 +163,7 @@
           user_id: userid,
           message: this.newMessage,
           profilePicture: this.profilePicture,
+          chatId: this.selectedChatId,
           ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
         };
         this.socket.emit('message', messageObject);
