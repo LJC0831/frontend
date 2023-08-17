@@ -2,7 +2,7 @@
   <div>
     <div class="chat-main" v-if="selectedChatId !== null">
       <ChatRoom01 :selectedChatId="selectedChatId" />
-      <button class="btn btn-primary" id="btn-exit" @click="exit()">나가기</button>
+      <button class="btn btn-primary search-button" id="btn-exit" @click="exit()">나가기</button>
     </div>
     <div class="chat-room" v-if="selectedChatId === null">
       <section class="chat-section">
@@ -195,5 +195,11 @@ export default {
     cursor: pointer;
     margin-left: 10px;
   }
+  #btn-exit{
+    float: right;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+
 
 </style>

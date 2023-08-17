@@ -248,7 +248,7 @@
 @media (min-width: 768px) {
     .chat-container{
     width:100%;
-    min-width:1300px;
+    min-width:1400px;
     max-height: 700px;
     display: flex;
     flex-direction: column;
@@ -259,7 +259,7 @@
 
 
 .chat-header {
-  background-color: #007bff;
+  background-color: #6200ff;
   color: #fff;
   padding: 10px;
   border-radius: 10px 10px 0 0;
@@ -298,7 +298,7 @@ input[type="text"] {
 .send-button {
   margin-left: 10px;
   padding: 8px 16px;
-  background-color: #007bff;
+  background-color: #6200ff;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -367,6 +367,11 @@ input[type="text"] {
   max-height: 40px;
   min-width: 40px;
   min-height: 40px;
+}
+.chat-title {
+  font-size: 24px;
+  color: white;
+  margin: 0;
 }
 
 @media (max-width: 768px) {
