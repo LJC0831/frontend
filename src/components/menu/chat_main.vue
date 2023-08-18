@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="chat-main" v-if="selectedChatId !== null">
-      <ChatRoom01 :selectedChatId="selectedChatId" />
+      <ChatRoom01 :selectedChatId="selectedChatId" :selectSubject="selectSubject"/>
       <button class="btn btn-primary search-button" id="btn-exit" @click="exit()">나가기</button>
     </div>
     <div class="chat-room" v-if="selectedChatId === null">
@@ -22,7 +22,7 @@
       <div class="album py-5 bg-body-tertiary">
         <div class="container">
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4" id="chat_main_img">
-            <div class="col" v-for="(chatRooms, index) in chatRooms" :key="index" @click="openChatRoom(chatRooms.id,chatRooms.pwd)">
+            <div class="col" v-for="(chatRooms, index) in chatRooms" :key="index" @click="openChatRoom(chatRooms.id,chatRooms.pwd,chatRooms.subject)">
               <div class="card shadow-sm">
                 <div class="card-img-top">
                   <img v-if="chatRooms.file_no !== null" :src="chatRooms.imageUrl" alt="Chat Room Thumbnail" class="thumbnail-image" />
@@ -69,22 +69,25 @@ export default {
       searchKeyword: '',
       chatRooms: [],
       selectedChatId: null,
+      selectSubject:null,
     };
   },
   methods: {
     //채팅방 open
-    openChatRoom(chat_id,pwd) {
+    openChatRoom(chat_id, pwd, subject) {
       if(pwd ==! null){
         const enteredPassword = prompt('비밀번호를 입력하세요:');
         if (enteredPassword !== null) { 
           if (enteredPassword === pwd) {
             this.selectedChatId = chat_id;
+            this.selectSubject = subject;
           } else {
             alert('비밀번호가 일치하지 않습니다.');
           }
         }
       } else {
         this.selectedChatId = chat_id;
+        this.selectSubject = subject;
       }
       
     },

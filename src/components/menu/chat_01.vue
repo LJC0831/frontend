@@ -1,6 +1,6 @@
 <template>
   <div class="chat-container">
-    <div class="chat-header">채팅방</div>
+    <div class="chat-header">{{ selectSubject }}</div>
     <div v-if="loading" class="loading-overlay">
         <img src="../../assets/loading.gif" alt="loading" class="loading-image">
       </div>
@@ -32,6 +32,7 @@
   export default {
     props: {
       selectedChatId: String, // 전달되는 chatId의 타입
+      selectSubject: String,
     },
     data() {
       return {
