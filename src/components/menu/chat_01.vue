@@ -17,7 +17,8 @@
     </div>
     <div class="chat-input">
       <input type="text" v-model="newMessage" @keyup.enter="sendMessage" placeholder="메시지를 입력하세요..." />
-      <button @click="sendMessage" class="send-button">전송</button>
+      <button @click="sendMessage" v-if="!loading" class="send-button">전송</button>
+      <button @click="sendMessage" v-if="loading" class="send-button">Loading...</button>
     </div>
   </div>
 </template>
