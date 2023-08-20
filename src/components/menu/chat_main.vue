@@ -22,7 +22,7 @@
       <div class="album py-5 bg-body-tertiary">
         <div class="container">
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4" id="chat_main_img">
-            <div class="col" v-for="(chatRooms, index) in chatRooms" :key="index" @click="openChatRoom(chatRooms.id,chatRooms.pwd,chatRooms.subject)">
+            <div class="col" v-for="(chatRooms, index) in chatRooms" :key="index" @click="openChatRoom(chatRooms)">
               <div class="card shadow-sm">
                 <div class="card-img-top">
                   <img v-if="chatRooms.file_no !== null" :src="chatRooms.imageUrl" alt="Chat Room Thumbnail" class="thumbnail-image" />
@@ -74,7 +74,36 @@ export default {
   },
   methods: {
     //채팅방 open
-    openChatRoom(chat_id, pwd, subject) {
+    openChatRoom(chatRooms) {
+      const pwd = chatRooms.pwd;
+      const chat_id = chatRooms.id;
+      const subject = chatRooms.subject;
+      //const userIds = chatRooms.user_id;
+      //const checkFlag = false;
+
+      //const token = localStorage.getItem('token');
+      // if(token == null) {
+      //     alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
+      //     window.location.reload();
+      //     // 페이지 새로고침
+      //     return;
+      //   }
+      // const decodedToken = jwtDecode(token);
+      // const userid = decodedToken.username; // 사용자 아이디 추출
+
+      //const userIdsArray = userIdsString.split(',');
+
+      // for (const userId of userIdsArray){
+      //   if(userId === userid){
+      //     checkFlag = true;
+      //   }
+      // }
+
+      // if(!checkFlag){
+      //   alert('입장할 수 없습니다. 방장에게 초대를 받으세요');
+      //   return;
+      // }
+
       if(pwd ==! null){
         const enteredPassword = prompt('비밀번호를 입력하세요:');
         if (enteredPassword !== null) { 
@@ -97,7 +126,9 @@ export default {
     //조회
     search01: debounce(async function () {
       try {
+        debugger;
         const response = await api.get("/api/chat/search");
+        debugger; 
         this.chatRooms = response.data;
 
         for (const chatRoom of this.chatRooms) {
