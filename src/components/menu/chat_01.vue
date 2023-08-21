@@ -17,10 +17,15 @@
         <div class="message-bubble" :class="{ 'my-message': message.message }">
           <span class="message-text">{{ message.message }}</span>
         </div>
+        <div v-if="message.chat_type === 'image'" class="message-bubble image-bubble">
+          <img v-if="message.chat_type === 'image'" :src="message.chatimageUrl" alt="이미지" class="message-image"/>
+          
+        </div>
         <span class="message-date">{{ formatDate(message.ins_ymdhms) }}</span>
       </div>
     </div>
     <div class="chat-input">
+      <input type="file" ref="imageInput" @change="handleImageUpload" />
       <input type="text" v-model="newMessage" @keyup.enter="sendMessage" placeholder="메시지를 입력하세요..." />
       <button @click="sendMessage" v-if="!loading" class="send-button">전송</button>
       <button @click="sendMessage" v-if="loading" class="send-button">Loading...</button>
@@ -53,6 +58,7 @@
   import io from 'socket.io-client';
   import jwtDecode from 'jwt-decode';
   import loginMethods from '../../scripts/login.js';
+  import axios from 'axios';
 
   export default {
     props: {
@@ -76,6 +82,8 @@
         messageCount: 0, // 최근 10초 내에 보낸 메시지의 수를 저장합니다.
         showModal: false, // 모달 표시 여부
         userPicture:[], // 참가유저들 사진
+        maxFileSize: 1024 * 1024, // 1MB (메가바이트)
+        chatimageUrl: null, // 이미지 URL을 저장할 객체
       };
     },
     created() {
@@ -194,7 +202,10 @@
           editedName: this.editedName,
           user_id: userid,
           message: this.newMessage,
+          chat_type: 'text', // 이미지 타입
+          chat_file_id: null,
           profilePicture: this.profilePicture,
+          chatimageUrl:this.chatimageUrl,
           chatId: this.selectedChatId,
           ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
         };
@@ -206,6 +217,84 @@
             }, 50);
         });
       },
+      // 이미지 메세지
+      handleImageUpload() {
+        const imageInput = this.$refs.imageInput;
+        const file = imageInput.files[0];
+
+        // 파일 크기 확인
+        if (file && file.size > this.maxFileSize) {
+                alert("이미지 크기가 너무 큽니다. 1MB 이하의 이미지를 선택해주세요.");
+                return;
+           }
+        const reader = new FileReader();
+        if (file) {
+          reader.readAsDataURL(file);
+          const timestamp = Date.now();
+          const uniqueFileName = `${timestamp}_${file.name}`;
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append("fileName", encodeURIComponent(uniqueFileName)); // 파일명을 인코딩하여 formData에 추가
+          const api = axios.create({
+                  baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
+                  //baseURL: "http://localhost:3000",
+                });
+          // 파일 업로드 요청
+          this.loading = true;
+          api.post('/api/upload', formData, {
+                  headers: {
+                      Authorization: `Bearer ${localStorage.getItem('token')}`, // 토큰을 요청 헤더에 추가
+                  },
+                  }).then((response) => {
+                          this.sendImageMessage(response.data.fileId);
+                          this.loading = false;
+                      // 파일 업로드 성공 시 처리할 로직을 여기에 작성합니다.
+                      // 예: 성공 메시지 출력, 업로드 결과를 다른 동작에 활용 등
+                      })
+        }
+      },
+      // 이미지 메세지 전송
+      async sendImageMessage(chat_file_id) {
+        const token = localStorage.getItem('token');
+        if (token == null) {
+          alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
+          window.location.reload();
+          return;
+        }
+        const now = new Date();
+        this.lastMessageTimestamps.push(now);
+
+        // 10초 이전의 타임스탬프 제거
+        const tenSecondsAgo = new Date(now - 10000);
+        this.lastMessageTimestamps = this.lastMessageTimestamps.filter(timestamp => timestamp > tenSecondsAgo);
+
+        if (this.lastMessageTimestamps.length >= 8) {
+          alert('메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
+          return;
+        }
+
+        const decodedToken = jwtDecode(token);
+        const userid = decodedToken.username;
+        const messageObject = {
+          editedName: this.editedName,
+          user_id: userid,
+          message: '', // 이미지 데이터를 메시지로 첨부
+          chat_type: 'image', // 이미지 타입
+          chat_file_id: chat_file_id,
+          profilePicture: this.profilePicture,
+          chatimageUrl:this.chatimageUrl,
+          chatId: this.selectedChatId,
+          ins_ymdhms: now - 10800000,
+        };
+
+        this.socket.emit('message', messageObject);
+        this.newMessage = '';
+        this.$nextTick(() => {
+          setTimeout(() => {
+            this.scrollToBottom();
+          }, 50);
+        });
+      },
       toggleSearch() {
           this.showModal = true; // 모달 토글
           this.getImageUrl(this.selectUser);
@@ -213,6 +302,7 @@
       closeModal() {
           this.showModal = false; // 모달 닫기
       },
+
       //접속유저 프로필사진 가져오기
       async getImageUrl(userArray) {
         try {
@@ -439,6 +529,12 @@ input[type="text"] {
   color: white;
   margin: 0;
 }
+.message-image {
+  max-width: 100%;
+  max-height: 200px; /* 이미지의 최대 높이 설정 */
+  object-fit: contain; /* 이미지를 가득 차게 표시 */
+  border: 1px solid #ccc;
+}
 
 /* 모달 스타일 */
 .modal {
@@ -540,7 +636,7 @@ input[type="text"] {
       min-height: 40px;
   }
 
-  .message-bubble {
+  .message-bubble.image-bubble {
     background-color: #f0f0f0;
     border-radius: 16px;
     padding: 10px;
