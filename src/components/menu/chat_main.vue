@@ -24,12 +24,12 @@
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4" id="chat_main_img">
             <div class="col" v-for="(chatRooms, index) in chatRooms" :key="index" @click="openChatRoom(chatRooms)">
               <div class="card shadow-sm">
-                <div class="card-img-top">
-                  <img v-if="chatRooms.file_no !== null" :src="chatRooms.imageUrl" alt="Chat Room Thumbnail" class="thumbnail-image" />
-                  <svg v-else class="bd-placeholder-img" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#55595c" /><text x="40%" y="50%" fill="#eceeef" dy=".3em">사진없음</text></svg>
-                </div>
                 <div class="card-body">
                   <p class="card-text">
+                    <span>
+                      <img v-if="chatRooms.file_no !== null" :src="chatRooms.imageUrl" class="thumbnail-image" />
+                      <img v-if="chatRooms.file_no === null" src="@/assets/profile-user.png" class="thumbnail-image" />
+                    </span>
                     <span class="chatromm-subject">{{ chatRooms.subject }}</span>
                   </p>
                   <div class="d-flex justify-content-between align-items-center">
@@ -196,6 +196,7 @@ export default {
     color: #333;
     font-weight: bold;
     margin-bottom: 10px;
+    margin-left: 5px;
   }
 
   .chat-description {
@@ -225,9 +226,12 @@ export default {
   }
 
   .thumbnail-image {
-    max-width: 100%;
-    height: 225px;
-    object-fit: cover;
+    flex-shrink: 0;
+    max-width: 40px;
+    max-height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: 50%;
   }
 
   .create-button {
