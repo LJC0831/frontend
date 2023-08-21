@@ -40,7 +40,7 @@
           <input type="text" class="chat_input_invite" v-model="inviteUserId" placeholder="아이디 입력..." >
           <button class="chat_invite" @click="InviteUser()">초대하기</button>
         </span>
-        <button class="chat_exit" @click="exitUser()">추방하기</button>
+        <button class="chat_exit" @click="exitUser()">방나가기</button>
         <button class="modal_close" @click="closeModal">닫기</button>
         
       </div>
@@ -485,6 +485,7 @@ input[type="text"] {
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
+  margin-bottom: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
