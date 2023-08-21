@@ -30,9 +30,19 @@
       <div class="modal-content">
         <h2>접속 중인 대상자 목록</h2>
         <ul>
-          <li v-for="(selectUser, index) in selectUser" :key="index">{{ selectUser }}</li>
+          <li v-for="(selectUser, index) in selectUser" :key="index">
+            <img v-if="userPicture[selectUser]" class="profile-image" :src="userPicture[selectUser]" width="100" height="100" alt="프로필 사진" /> 
+            <img v-if="!userPicture[selectUser]" class="profile-image" src="@/assets/profile-user.png" width="100" height="100" alt="프로필 사진" /> 
+            {{ selectUser }}
+          </li>
         </ul>
-        <button @click="closeModal">닫기</button>
+        <span>
+          <input type="text" class="chat_input_invite" v-model="inviteUserId" placeholder="아이디 입력..." >
+          <button class="chat_invite" @click="InviteUser()">초대하기</button>
+        </span>
+        <button class="chat_exit" @click="exitUser()">추방하기</button>
+        <button class="modal_close" @click="closeModal">닫기</button>
+        
       </div>
     </div>
   </div>
@@ -65,6 +75,7 @@
         lastMessageTimestamps: [], // 최근 8개 메시지의 타임스탬프를 저장합니다.
         messageCount: 0, // 최근 10초 내에 보낸 메시지의 수를 저장합니다.
         showModal: false, // 모달 표시 여부
+        userPicture:[], // 참가유저들 사진
       };
     },
     created() {
@@ -107,7 +118,6 @@
           if (this.chatContainer) {
             // 스크롤을 유지하도록 조정
             if (this.shouldMaintainScroll) {
-              //this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
               this.chatContainer.scrollTop = 10;
             } else {
               this.shouldMaintainScroll = true; // 스크롤 유지 변수를 다시 활성화
@@ -122,7 +132,10 @@
       });
 
       //프로필정보조회
-      this.profileSearch();
+      const token = localStorage.getItem('token');
+      const decodedToken = jwtDecode(token);
+      const userid = decodedToken.username; // 사용자 아이디 추출
+      this.profileSearch(userid);
       // 서버에 최근 메시지를 요청합니다.
       const chatId = this.selectedChatId;
       this.socket.emit('getLatestMessages',chatId);
@@ -194,11 +207,43 @@
         });
       },
       toggleSearch() {
-        debugger;
           this.showModal = true; // 모달 토글
+          this.getImageUrl(this.selectUser);
         },
       closeModal() {
           this.showModal = false; // 모달 닫기
+      },
+      //접속유저 프로필사진 가져오기
+      async getImageUrl(userArray) {
+        try {
+          for (const user of userArray) {
+            const profileSearchResponse = await new Promise((resolve, reject) => {
+              loginMethods.methods.profileSearch(user, (res) => {
+                resolve(res);
+              });
+            });
+            if (profileSearchResponse.data[0].img_id) {
+              this.file_no = profileSearchResponse.data[0].img_id;
+
+              try {
+                const profileImgResponse = await new Promise((resolve, reject) => {
+                  loginMethods.methods.profileImgURL(profileSearchResponse.data[0].img_id, (res) => {
+                    resolve(res);
+                  });
+                });
+
+                this.userPicture[user] = profileImgResponse.data.imageUrl;
+              } catch (error) {
+                console.error("프로필 이미지 조회 오류:", error);
+                this.userPicture[user] = null;
+              }
+            } else {
+              this.userPicture[user] = null;
+            }
+          }
+        } catch (error) {
+          console.error("프로필 조회 오류:", error);
+        }
       },
       scrollToBottom() {
         // chatContainer 요소가 렌더링되지 않은 경우에 대한 예외 처리
@@ -226,12 +271,8 @@
       },
 
       // 내정보 조회
-      profileSearch(){
-       const token = localStorage.getItem('token');
-        if(token != null) {
-          const decodedToken = jwtDecode(token);
-          const userid = decodedToken.username; // 사용자 아이디 추출
-          loginMethods.methods.profileSearch(userid, (res) => {
+      profileSearch(user_id){
+        loginMethods.methods.profileSearch(user_id, (res) => {
             this.editedName = res.data[0].user_nm;
             // 이미지 URL 받아오기
             if(res.data[0].img_id){
@@ -259,7 +300,6 @@
             );
         }
       },
-    },
     watch: {
       messages(newMessages, oldMessages) {
         // 메시지 배열이 갱신될 때마다 스크롤을 제일 아래로 이동
@@ -439,7 +479,7 @@ input[type="text"] {
   font-size: 18px;
 }
 
-.modal button {
+.modal_close,  .chat_invite{
   background-color: #6200ff;
   color: #fff;
   border: none;
@@ -451,6 +491,23 @@ input[type="text"] {
 
 .modal button:hover {
   background-color: #0056b3;
+}
+
+.chat_input_invite{
+  width: 65%;
+}
+.chat_invite {
+  width: 30%;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+.chat_exit {
+  background-color: brown;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  border: none;
+  transition: background-color 0.3s;
 }
 /* 모달 스타일 */
 
