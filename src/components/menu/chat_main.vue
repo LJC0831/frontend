@@ -27,8 +27,8 @@
                 <div class="card-body">
                   <p class="card-text">
                     <span>
-                      <img v-if="chatRooms.file_no !== null" :src="chatRooms.imageUrl" class="thumbnail-image" />
-                      <img v-if="chatRooms.file_no === null" src="@/assets/profile-user.png" class="thumbnail-image" />
+                      <img v-if="chatRooms.profile_id !== null" :src="chatRooms.imageUrl" class="thumbnail-image" />
+                      <img v-if="chatRooms.profile_id === null" src="@/assets/profile-user.png" class="thumbnail-image" />
                     </span>
                     <span class="chatromm-subject">{{ chatRooms.subject }}</span>
                   </p>
@@ -137,9 +137,9 @@ export default {
         this.chatRooms = response.data;
 
         for (const chatRoom of this.chatRooms) {
-          if (chatRoom.file_no !== null) {
+          if (chatRoom.profile_id !== null) {
             try {
-              const imageUrl = await this.getFileUrl(chatRoom.file_no);
+              const imageUrl = await this.getFileUrl(chatRoom.profile_id);
               chatRoom.imageUrl = imageUrl;
             } catch (error) {
               console.error("이미지 URL 조회 오류:", error);
