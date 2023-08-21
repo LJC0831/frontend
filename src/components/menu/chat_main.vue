@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="chat-main" v-if="selectedChatId !== null">
-      <ChatRoom01 :selectedChatId="selectedChatId" :selectSubject="selectSubject"/>
+      <ChatRoom01 :selectedChatId="selectedChatId" :selectSubject="selectSubject" :selectUser="selectUser"/>
       <button class="btn btn-primary search-button" id="btn-exit" @click="exit()">나가기</button>
     </div>
     <div class="chat-room" v-if="selectedChatId === null">
@@ -72,6 +72,7 @@ export default {
       chatRooms: [],
       selectedChatId: null,
       selectSubject:null,
+      selectUser:[],
       checkFlag:false,
     };
   },
@@ -99,7 +100,6 @@ export default {
 
 
       for (const userId of userIdsArray){
-        debugger;
         if(userId === userid  && chat_type==="1" ){
           this.checkFlag = true;
         }
@@ -115,6 +115,7 @@ export default {
           if (enteredPassword === pwd) {
             this.selectedChatId = chat_id;
             this.selectSubject = subject;
+            this.selectUser = userIdsArray;
           } else {
             alert('비밀번호가 일치하지 않습니다.');
           }
@@ -122,6 +123,7 @@ export default {
       } else {
         this.selectedChatId = chat_id;
         this.selectSubject = subject;
+        this.selectUser = userIdsArray;
       }
       
     },
@@ -131,8 +133,6 @@ export default {
     //조회
     search01: debounce(async function () {
       try {
-        debugger;
-        
         const response = await api.get("/api/chat/search",{ params: { q: this.searchKeyword } });
         this.chatRooms = response.data;
 

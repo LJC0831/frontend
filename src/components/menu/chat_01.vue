@@ -1,6 +1,11 @@
 <template>
   <div class="chat-container">
-    <div class="chat-header">{{ selectSubject }}</div>
+    <div class="chat-header">
+        <span>{{ selectSubject }}</span>
+        <span style="float: right;">
+            <i :class="'fas fa-bars'" @click="toggleSearch()"></i>
+        </span>
+    </div>
     <div v-if="loading" class="loading-overlay">
         <img src="../../assets/loading.gif" alt="loading" class="loading-image">
       </div>
@@ -20,6 +25,16 @@
       <button @click="sendMessage" v-if="!loading" class="send-button">전송</button>
       <button @click="sendMessage" v-if="loading" class="send-button">Loading...</button>
     </div>
+    <!-- 모달 창 -->
+    <div v-if="showModal" class="modal">
+      <div class="modal-content">
+        <h2>접속 중인 대상자 목록</h2>
+        <ul>
+          <li v-for="(selectUser, index) in selectUser" :key="index">{{ selectUser }}</li>
+        </ul>
+        <button @click="closeModal">닫기</button>
+      </div>
+    </div>
   </div>
 </template>
   
@@ -33,6 +48,7 @@
     props: {
       selectedChatId: String, // 전달되는 chatId의 타입
       selectSubject: String,
+      selectUser: String,
     },
     data() {
       return {
@@ -48,6 +64,7 @@
         oldestMessageTime: null,   //이전메세지 시간
         lastMessageTimestamps: [], // 최근 8개 메시지의 타임스탬프를 저장합니다.
         messageCount: 0, // 최근 10초 내에 보낸 메시지의 수를 저장합니다.
+        showModal: false, // 모달 표시 여부
       };
     },
     created() {
@@ -175,6 +192,13 @@
               this.scrollToBottom();
             }, 50);
         });
+      },
+      toggleSearch() {
+        debugger;
+          this.showModal = true; // 모달 토글
+        },
+      closeModal() {
+          this.showModal = false; // 모달 닫기
       },
       scrollToBottom() {
         // chatContainer 요소가 렌더링되지 않은 경우에 대한 예외 처리
@@ -375,6 +399,60 @@ input[type="text"] {
   color: white;
   margin: 0;
 }
+
+/* 모달 스타일 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* 모달을 다른 요소 위에 표시하기 위해 높은 z-index 설정 */
+}
+
+.modal-content {
+  background-color: #fff; /* 배경을 흰색으로 설정 */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+  width: 80%; /* 모달 창 너비 조절 */
+  max-width: 400px; /* 최대 너비 설정 */
+  color: #333; /* 글자를 검정색으로 설정 */
+}
+
+.modal h2 {
+  margin-top: 0;
+  font-size: 24px;
+}
+
+.modal ul {
+  list-style: none;
+  padding: 0;
+}
+
+.modal li {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.modal button {
+  background-color: #6200ff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.modal button:hover {
+  background-color: #0056b3;
+}
+/* 모달 스타일 */
 
 @media (max-width: 768px) {
     .chat-container{
