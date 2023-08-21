@@ -248,7 +248,22 @@ export default {
     float: right;
     transition: background-color 0.3s, color 0.3s;
   }
+
+  .col{
+    margin-bottom: 10px;
+  }
   
+  @media (max-width: 768px) {
+    .create-button {
+      border: none;
+      border-radius: 5px;
+      background-color: #2ecc71;
+      font-size: 14px;
+      color: #fff;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+  }
 
 
 </style>
