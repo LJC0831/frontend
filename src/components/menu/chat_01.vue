@@ -241,7 +241,7 @@
       async uploadImageToServer(file) {
         const formData = new FormData();
         formData.append('file', file);
-
+        debugger;
         try {
           const response = await axios.post('/api/upload', formData, {
             headers: {
