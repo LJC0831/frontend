@@ -20,15 +20,18 @@
         <div v-if="message.chat_type === 'image'" class="message-bubble image-bubble">
           <img v-if="message.chat_type === 'image'" :src="message.chatimageUrl" alt="이미지" class="message-image" @click="openImageModal(message.chatimageUrl)"/>
         </div>
+        <div v-else-if="message.chat_type === 'file'" class="message-bubble file-bubble">
+          <a :href="message.message" target="_blank">다운로드</a>
+        </div>
         <span class="message-date">{{ formatDate(message.ins_ymdhms) }}</span>
       </div>
     </div>
     <div class="chat-input">
-      <input type="text" v-model="newMessage" @paste="handleImagePaste" @keyup.enter="sendMessage" placeholder="메시지를 입력하세요..." />
+      <input type="text" v-model="newMessage" @paste="handleImagePaste" @keyup.enter="sendMessage" @keydown.shift.enter="handleShiftEnter" placeholder="메시지를 입력하세요..." />
       <label for="imageInput" class="upload-button" style="margin-top: 9px;">
         <img src="../../assets/uploadIKon.png" alt="첨부 아이콘" style="width:40px"/>
       </label>
-      <input type="file" id="imageInput" ref="imageInput" @change="handleImageUpload" class="hidden-input"/>
+      <input type="file" id="imageInput" ref="imageInput" @change="handleUpload" class="hidden-input"/>
       <button @click="sendMessage" v-if="!loading" class="send-button">전송</button>
       <button @click="sendMessage" v-if="loading" class="send-button">Loading...</button>
     </div>
@@ -106,7 +109,6 @@
       });
       // 서버로부터 메시지를 받으면 채팅 화면에 메시지를 표시합니다.
       this.socket.on('message', (message) => {
-        debugger;
         if (message.chatId === this.selectedChatId) {
           this.messages.push(message);
           this.$nextTick(() => {
@@ -188,6 +190,13 @@
 
         return formattedDate;
       },
+      handleShiftEnter(event) {
+        if (event.shiftKey) {
+          this.newMessage += "\n"; // 줄바꿈 문자를 추가
+          console.log("Shift+Enter pressed");
+          console.log("newMessage:", this.newMessage);
+        }
+      },
       // 메세지 보내기
       sendMessage() {
         const token = localStorage.getItem('token');
@@ -265,8 +274,8 @@
           console.error('이미지 업로드 오류:', error);
         }
       },
-      // 이미지 메세지
-      handleImageUpload() {
+      // 업로드메세지
+      handleUpload() {
         const imageInput = this.$refs.imageInput;
         const file = imageInput.files[0];
 
@@ -280,6 +289,7 @@
           reader.readAsDataURL(file);
           const timestamp = Date.now();
           const uniqueFileName = `${timestamp}_${file.name}`;
+          const originalFileName = `${file.name}`;
           const formData = new FormData();
           formData.append('file', file);
           formData.append("fileName", encodeURIComponent(uniqueFileName)); // 파일명을 인코딩하여 formData에 추가
@@ -289,17 +299,66 @@
                 });
           // 파일 업로드 요청
           this.loading = true;
+          // 이미지 파일 확장자들의 배열
+          const imageExtensions = ["jpg", "jpeg", "png", "gif"];
+          const fileExtension = uniqueFileName.slice(((uniqueFileName.lastIndexOf(".") - 1) >>> 0) + 2).toLowerCase();
+          const isImageFile = imageExtensions.includes(fileExtension);
           api.post('/api/upload', formData, {
                   headers: {
                       Authorization: `Bearer ${localStorage.getItem('token')}`, // 토큰을 요청 헤더에 추가
                   },
                   }).then((response) => {
-                          this.chatImgurl(response.data.fileId);
+                          if(isImageFile){
+                            this.chatImgurl(response.data.fileId);
+                          } else {
+                            this.chatfileUrl(response.data.fileId, originalFileName);
+                          }
                           this.loading = false;
                       // 파일 업로드 성공 시 처리할 로직을 여기에 작성합니다.
                       // 예: 성공 메시지 출력, 업로드 결과를 다른 동작에 활용 등
                       })
         }
+      },
+      // 파일 메세지 전송1
+      async chatfileUrl(chat_file_id, originalFileName) {
+        const token = localStorage.getItem('token');
+        if (token == null) {
+          alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
+          window.location.reload();
+          return;
+        }
+        const now = new Date();
+        this.lastMessageTimestamps.push(now);
+
+        // 10초 이전의 타임스탬프 제거
+        const tenSecondsAgo = new Date(now - 10000);
+        this.lastMessageTimestamps = this.lastMessageTimestamps.filter(timestamp => timestamp > tenSecondsAgo);
+
+        if (this.lastMessageTimestamps.length >= 8) {
+          alert('메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
+          return;
+        }
+        const decodedToken = jwtDecode(token);
+        const userid = decodedToken.username;
+        const messageObject = {
+          editedName: this.editedName,
+          user_id: userid,
+          message: `/api/file/download/${chat_file_id}`, // 이미지 데이터를 메시지로 첨부
+          chat_type: 'file', // 이미지 타입
+          chat_file_id: chat_file_id,
+          profilePicture: this.profilePicture,
+          chatimageUrl: null,
+          chatId: this.selectedChatId,
+          ins_ymdhms: now - 10800000,
+        };
+
+        this.socket.emit('message', messageObject);
+        this.newMessage = '';
+        this.$nextTick(() => {
+          setTimeout(() => {
+            this.scrollToBottom();
+          }, 50);
+        });
       },
       // 이미지 메세지 전송1
       async chatImgurl(chat_file_id) {
