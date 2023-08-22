@@ -83,7 +83,6 @@
         showModal: false, // 모달 표시 여부
         userPicture:[], // 참가유저들 사진
         maxFileSize: 1024 * 1024, // 1MB (메가바이트)
-        chatimageUrl: null, // 이미지 URL을 저장할 객체
       };
     },
     created() {
@@ -205,7 +204,7 @@
           chat_type: 'text', // 이미지 타입
           chat_file_id: null,
           profilePicture: this.profilePicture,
-          chatimageUrl:this.chatimageUrl,
+          chatimageUrl:null,
           chatId: this.selectedChatId,
           ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
         };
@@ -246,15 +245,24 @@
                       Authorization: `Bearer ${localStorage.getItem('token')}`, // 토큰을 요청 헤더에 추가
                   },
                   }).then((response) => {
-                          this.sendImageMessage(response.data.fileId);
+                          this.chatImgurl(response.data.fileId);
                           this.loading = false;
                       // 파일 업로드 성공 시 처리할 로직을 여기에 작성합니다.
                       // 예: 성공 메시지 출력, 업로드 결과를 다른 동작에 활용 등
                       })
         }
       },
+      async chatImgurl(chat_file_id) {
+        loginMethods.methods.profileImgURL(chat_file_id,(res) => {
+                      this.sendImageMessage(chat_file_id, res.data.imageUrl);
+                    },
+                    (error) => { // 에러 콜백
+                      console.error("프로필 이미지 조회 오류:", error);
+                    }
+        );
+      },
       // 이미지 메세지 전송
-      async sendImageMessage(chat_file_id) {
+      async sendImageMessage(chat_file_id, chatimageUrl) {
         const token = localStorage.getItem('token');
         if (token == null) {
           alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
@@ -272,7 +280,6 @@
           alert('메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
           return;
         }
-
         const decodedToken = jwtDecode(token);
         const userid = decodedToken.username;
         const messageObject = {
@@ -282,7 +289,7 @@
           chat_type: 'image', // 이미지 타입
           chat_file_id: chat_file_id,
           profilePicture: this.profilePicture,
-          chatimageUrl:this.chatimageUrl,
+          chatimageUrl:chatimageUrl,
           chatId: this.selectedChatId,
           ins_ymdhms: now - 10800000,
         };
