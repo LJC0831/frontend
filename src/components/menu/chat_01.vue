@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="chat-input">
-      <input type="text" v-model="newMessage" @keyup.enter="sendMessage" placeholder="메시지를 입력하세요..." />
+      <input type="text" v-model="newMessage" @paste="handleImagePaste" @keyup.enter="sendMessage" placeholder="메시지를 입력하세요..." />
       <label for="imageInput" class="upload-button" style="margin-top: 9px;">
         <img src="../../assets/uploadIKon.png" alt="첨부 아이콘" style="width:40px"/>
       </label>
@@ -226,6 +226,34 @@
               this.scrollToBottom();
             }, 50);
         });
+      },
+      // 이미지 붙여넣기 event
+      handleImagePaste(event) {
+        const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+        for (const item of items) {
+          if (item.type.indexOf("image") !== -1) {
+            const file = item.getAsFile();
+            this.uploadImageToServer(file);
+          }
+        }
+      },
+      // 이미지 붙여넣기 작업
+      async uploadImageToServer(file) {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+          const response = await axios.post('/api/upload', formData, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          });
+
+          const chat_file_id = response.data.fileId;
+          this.chatImgurl(chat_file_id);
+        } catch (error) {
+          console.error('이미지 업로드 오류:', error);
+        }
       },
       // 이미지 메세지
       handleImageUpload() {
