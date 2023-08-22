@@ -229,7 +229,6 @@
       },
       // 이미지 붙여넣기 event
       handleImagePaste(event) {
-        debugger;
         const items = (event.clipboardData || event.originalEvent.clipboardData).items;
         for (const item of items) {
           if (item.type.indexOf("image") !== -1) {
@@ -242,7 +241,6 @@
       async uploadImageToServer(file) {
         const formData = new FormData();
         formData.append('file', file);
-        debugger;
         try {
           const api = axios.create({
                   baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
