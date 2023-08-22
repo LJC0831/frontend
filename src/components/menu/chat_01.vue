@@ -25,8 +25,11 @@
       </div>
     </div>
     <div class="chat-input">
-      <input type="file" ref="imageInput" @change="handleImageUpload" />
       <input type="text" v-model="newMessage" @keyup.enter="sendMessage" placeholder="메시지를 입력하세요..." />
+      <label for="imageInput" class="upload-button" style="margin-top: 9px;">
+        <img src="../../assets/uploadIKon.png" alt="첨부 아이콘" style="width:40px"/>
+      </label>
+      <input type="file" id="imageInput" ref="imageInput" @change="handleImageUpload" class="hidden-input"/>
       <button @click="sendMessage" v-if="!loading" class="send-button">전송</button>
       <button @click="sendMessage" v-if="loading" class="send-button">Loading...</button>
     </div>
@@ -543,6 +546,9 @@ input[type="text"] {
   object-fit: contain; /* 이미지를 가득 차게 표시 */
   border: 1px solid #ccc;
 }
+.hidden-input {
+  display: none;
+}
 
 /* 모달 스타일 */
 .modal {
@@ -715,5 +721,6 @@ input[type="text"] {
   .send-button {
   margin-left: 0px;
   }
+
 }
   </style>
