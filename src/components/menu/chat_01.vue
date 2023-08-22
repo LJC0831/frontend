@@ -106,7 +106,8 @@
       });
       // 서버로부터 메시지를 받으면 채팅 화면에 메시지를 표시합니다.
       this.socket.on('message', (message) => {
-        if (message.chatId === this.currentChatId) {
+        debugger;
+        if (message.chatId === this.selectedChatId) {
           this.messages.push(message);
           this.$nextTick(() => {
             this.scrollToBottom();
