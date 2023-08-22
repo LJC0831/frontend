@@ -18,8 +18,7 @@
           <span class="message-text">{{ message.message }}</span>
         </div>
         <div v-if="message.chat_type === 'image'" class="message-bubble image-bubble">
-          <img v-if="message.chat_type === 'image'" :src="message.chatimageUrl" alt="이미지" class="message-image"/>
-          
+          <img v-if="message.chat_type === 'image'" :src="message.chatimageUrl" alt="이미지" class="message-image" @click="openImageModal(message.chatimageUrl)"/>
         </div>
         <span class="message-date">{{ formatDate(message.ins_ymdhms) }}</span>
       </div>
@@ -51,6 +50,13 @@
         <button class="chat_exit" @click="exitUser()">방나가기</button>
         <button class="modal_close" @click="closeModal">닫기</button>
         
+      </div>
+    </div>
+    <!-- 이미지url 모달 창 -->
+    <div v-if="isImageModalOpen" class="modal">
+      <div class="modal-content2">
+        <img :src="selectedImage" alt="확대 이미지" class="enlarged-image">
+        <button class="modal_close" @click="closeImageModal">닫기</button>
       </div>
     </div>
   </div>
@@ -86,6 +92,8 @@
         showModal: false, // 모달 표시 여부
         userPicture:[], // 참가유저들 사진
         maxFileSize: 10 * 1024 * 1024, // 10MB (메가바이트)
+        isImageModalOpen: false,
+        selectedImage: '',
       };
     },
     created() {
@@ -305,6 +313,17 @@
             this.scrollToBottom();
           }, 50);
         });
+      },
+      // 이미지 모달 열기
+      openImageModal(imageUrl) {
+        this.selectedImage = imageUrl;
+        this.isImageModalOpen = true;
+      },
+
+      // 이미지 모달 닫기
+      closeImageModal() {
+        this.selectedImage = '';
+        this.isImageModalOpen = false;
       },
       toggleSearch() {
           this.showModal = true; // 모달 토글
@@ -573,6 +592,14 @@ input[type="text"] {
   max-width: 400px; /* 최대 너비 설정 */
   color: #333; /* 글자를 검정색으로 설정 */
 }
+.modal-content2 {
+  background-color: #fff; /* 배경을 흰색으로 설정 */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+  width: 99%; /* 모달 창 너비 조절 */
+  color: #333; /* 글자를 검정색으로 설정 */
+}
 
 .modal h2 {
   margin-top: 0;
@@ -598,6 +625,7 @@ input[type="text"] {
   margin-bottom: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  float: right;
 }
 
 .modal button:hover {
@@ -619,6 +647,13 @@ input[type="text"] {
   margin-bottom: 10px;
   border: none;
   transition: background-color 0.3s;
+}
+.enlarged-image {
+  max-width: 100%; /* 이미지 최대 너비 설정 */
+  max-height: 80vh; /* 이미지 최대 높이 설정 (화면 높이의 80%) */
+  object-fit: contain; /* 이미지의 비율 유지하며 채우기 */
+  margin: 0 auto; /* 가운데 정렬 */
+  display: block; /* 블록 요소로 설정하여 가로 중앙 정렬을 위함 */
 }
 /* 모달 스타일 */
 
