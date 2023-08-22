@@ -244,6 +244,10 @@
         formData.append('file', file);
         debugger;
         try {
+          const api = axios.create({
+                  baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
+                  //baseURL: "http://localhost:3000",
+                });
           const response = await api.post('/api/upload', formData, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
