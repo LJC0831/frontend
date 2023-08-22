@@ -82,7 +82,7 @@
         messageCount: 0, // 최근 10초 내에 보낸 메시지의 수를 저장합니다.
         showModal: false, // 모달 표시 여부
         userPicture:[], // 참가유저들 사진
-        maxFileSize: 1024 * 1024, // 1MB (메가바이트)
+        maxFileSize: 10 * 1024 * 1024, // 10MB (메가바이트)
       };
     },
     created() {
