@@ -244,7 +244,7 @@
         formData.append('file', file);
         debugger;
         try {
-          const response = await axios.post('/api/upload', formData, {
+          const response = await api.post('/api/upload', formData, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
             },
