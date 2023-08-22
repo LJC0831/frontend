@@ -107,10 +107,10 @@
         // chatContainer 요소의 레퍼런스를 가져옵니다.
         this.$nextTick(() => {
           this.chatContainer = this.$refs.chatContainer;
-
           // 최근 메시지를 받은 후에 스크롤을 아래로 이동합니다.
-          this.scrollToBottom();
-          //this.loading = false;
+          setTimeout(() => {
+            this.scrollToBottom();
+          }, 300); // 300ms(0.3초) 후에 실행됩니다.
         });
         this.loading = false;
       });
@@ -125,7 +125,7 @@
           if (this.chatContainer) {
             // 스크롤을 유지하도록 조정
             if (this.shouldMaintainScroll) {
-              this.chatContainer.scrollTop = 10;
+              this.chatContainer.scrollTop = 10; 
             } else {
               this.shouldMaintainScroll = true; // 스크롤 유지 변수를 다시 활성화
             }
@@ -252,6 +252,7 @@
                       })
         }
       },
+      // 이미지 메세지 전송1
       async chatImgurl(chat_file_id) {
         loginMethods.methods.profileImgURL(chat_file_id,(res) => {
                       this.sendImageMessage(chat_file_id, res.data.imageUrl);
@@ -261,7 +262,7 @@
                     }
         );
       },
-      // 이미지 메세지 전송
+      // 이미지 메세지 전송2
       async sendImageMessage(chat_file_id, chatimageUrl) {
         const token = localStorage.getItem('token');
         if (token == null) {
