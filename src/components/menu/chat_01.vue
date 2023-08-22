@@ -106,10 +106,12 @@
       });
       // 서버로부터 메시지를 받으면 채팅 화면에 메시지를 표시합니다.
       this.socket.on('message', (message) => {
-        this.messages.push(message);
-        this.$nextTick(() => {
-          this.scrollToBottom();
-        });
+        if (message.chatId === this.currentChatId) {
+          this.messages.push(message);
+          this.$nextTick(() => {
+            this.scrollToBottom();
+          });
+        }
       });
 
       // 서버로부터 최근 메시지를 받을 때 호출되는 콜백 함수
