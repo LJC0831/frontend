@@ -69,6 +69,7 @@
   import loginMethods from '../../scripts/login.js';
   import axios from 'axios';
 
+
   export default {
     props: {
       selectedChatId: String, // 전달되는 chatId의 타입
@@ -94,6 +95,7 @@
         maxFileSize: 10 * 1024 * 1024, // 10MB (메가바이트)
         isImageModalOpen: false,
         selectedImage: '',
+        scrollPosition: null, //현재스크롤위치
       };
     },
     created() {
@@ -136,13 +138,15 @@
           if (this.chatContainer) {
             // 스크롤을 유지하도록 조정
             if (this.shouldMaintainScroll) {
-              this.chatContainer.scrollTop = 10; 
+              this.scrollPosition = (this.scrollPosition + this.chatContainer.scrollHeight) / 2;
+              this.chatContainer.scrollTop = this.scrollPosition; 
+              this.scrollPosition = null;
             } else {
               this.shouldMaintainScroll = true; // 스크롤 유지 변수를 다시 활성화
             }
           }
         });
-        
+
         setTimeout(() => {
           this.loading = false;
          }, 300); // 300ms(0.3초) 후에 실행됩니다.
