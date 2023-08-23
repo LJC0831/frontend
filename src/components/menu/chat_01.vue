@@ -15,7 +15,7 @@
         <img v-if="message.profilePicture" class="profile-image" :src="message.profilePicture" alt="프로필 사진" />
         <span class="message-name">{{ message.editedName }} </span>
         <div class="message-bubble" :class="{ 'my-message': message.message }">
-          <span class="message-text">{{ message.message }}</span>
+          <span class="message-text" v-html="formatMessage(message.message)"></span>
         </div>
         <div v-if="message.chat_type === 'image'" class="message-bubble image-bubble">
           <img v-if="message.chat_type === 'image'" :src="message.chatimageUrl" alt="이미지" class="message-image" @click="openImageModal(message.chatimageUrl)"/>
@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="chat-input">
-      <input type="text" v-model="newMessage" @paste="handleImagePaste" @keyup.enter="sendMessage" placeholder="메시지를 입력하세요..." />
+      <textarea  v-model="newMessage" style="width: 92%;" @paste="handleImagePaste" @keyup.enter="sendMessage" placeholder="메시지를 입력하세요..." />
       <label for="imageInput" class="upload-button" style="margin-top: 9px;">
         <img src="../../assets/uploadIKon.png" alt="첨부 아이콘" style="width:40px"/>
       </label>
@@ -168,6 +168,10 @@
       this.socket.emit('getLatestMessages',chatId);
     },
     methods: {
+      //메세지 줄바꿈처리
+      formatMessage(message) {
+        return message.replace(/\n/g, '<br>');
+      },
       //날짜 포맷
       formatDate(dateTime) {
         // 주어진 dateTime을 Date 객체로 변환
@@ -192,6 +196,7 @@
       },
       // 메세지 보내기
       sendMessage() {
+
         const token = localStorage.getItem('token');
         if (this.newMessage.trim() === '') return;
         // 새 메시지를 서버로 보냅니다.
@@ -201,41 +206,44 @@
           // 페이지 새로고침
           return;
         }
-        // 도배체크
-        const now = new Date();
-        this.lastMessageTimestamps.push(now);
+        if (!event.shiftKey) { //쉬프트 엔터 시 줄바꿈
+          // 도배체크
+          debugger;
+          const now = new Date();
+          this.lastMessageTimestamps.push(now);
 
-        // 10초 이전의 타임스탬프 제거
-        const tenSecondsAgo = new Date(now - 10000);
-        this.lastMessageTimestamps = this.lastMessageTimestamps.filter(timestamp => timestamp > tenSecondsAgo);
+          // 10초 이전의 타임스탬프 제거
+          const tenSecondsAgo = new Date(now - 10000);
+          this.lastMessageTimestamps = this.lastMessageTimestamps.filter(timestamp => timestamp > tenSecondsAgo);
 
-        if (this.lastMessageTimestamps.length >= 8) {
-          // 사용자가 최근 10초 내에 8개 이상의 메시지를 보냄
-          alert('메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
-          return;
-        }
-        this.loading = true;
-        const decodedToken = jwtDecode(token);
-        const userid = decodedToken.username; // 사용자 아이디 추출
-        const messageObject = {
-          editedName: this.editedName,
-          user_id: userid,
-          message: this.newMessage,
-          chat_type: 'text', // 이미지 타입
-          chat_file_id: null,
-          profilePicture: this.profilePicture,
-          chatimageUrl:null,
-          chatId: this.selectedChatId,
-          ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
-        };
-        this.newMessage = '';
-        this.socket.emit('message', messageObject);
-        this.loading = false;
-        this.$nextTick(() => {
-          setTimeout(() => {
-              this.scrollToBottom();
-            }, 50);
-        });
+          if (this.lastMessageTimestamps.length >= 8) {
+            // 사용자가 최근 10초 내에 8개 이상의 메시지를 보냄
+            alert('메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
+            return;
+          }
+          this.loading = true;
+          const decodedToken = jwtDecode(token);
+          const userid = decodedToken.username; // 사용자 아이디 추출
+          const messageObject = {
+            editedName: this.editedName,
+            user_id: userid,
+            message: this.newMessage,
+            chat_type: 'text', // 이미지 타입
+            chat_file_id: null,
+            profilePicture: this.profilePicture,
+            chatimageUrl:null,
+            chatId: this.selectedChatId,
+            ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
+          };
+          this.newMessage = '';
+          this.socket.emit('message', messageObject);
+          this.loading = false;
+          this.$nextTick(() => {
+            setTimeout(() => {
+                this.scrollToBottom();
+              }, 50);
+          });
+          }
       },
       // 이미지 붙여넣기 event
       handleImagePaste(event) {
@@ -634,7 +642,7 @@ input[type="text"] {
 }
 
 .message-text {
-  font-size: 14px;
+  font-size: 12px;
   color: #333;
 }
 
