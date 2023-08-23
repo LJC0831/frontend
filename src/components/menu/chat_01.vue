@@ -72,7 +72,6 @@
   import loginMethods from '../../scripts/login.js';
   import axios from 'axios';
 
-
   export default {
     props: {
       selectedChatId: String, // 전달되는 chatId의 타입
@@ -100,14 +99,23 @@
         selectedImage: '',
         scrollPosition: null, //현재스크롤위치
         previousNotification :false, //알람처리변수
+        userSockets: [],
       };
     },
     created() {
+      const login_token = localStorage.getItem('token');
+      const decoded_Token = jwtDecode(login_token);
+      const user_id = decoded_Token.username;
       // Socket.IO 클라이언트를 초기화하고 서버에 연결합니다.
       //this.socket = io('http://localhost:3000', {
       this.socket = io('https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app', {
         withCredentials: true, // 쿠키와 인증 정보를 전송할 수 있도록 설정 (선택 사항)
+        query:{
+          userId:user_id, //로그인유저
+        }
       });
+      this.manageUserSocket(user_id, this.socket);
+
       // 서버로부터 메시지를 받으면 채팅 화면에 메시지를 표시합니다.
       this.socket.on('message', (message) => {
         if (message.chatId === this.selectedChatId) {
@@ -176,6 +184,16 @@
       this.socket.emit('getLatestMessages',chatId);
     },
     methods: {
+      //소켓유저확인
+      manageUserSocket(userId, socket){
+        debugger;
+        if (this.userSockets[userId]) {
+          // 이미 해당 사용자의 연결이 존재하면 연결을 종료합니다.
+          this.userSockets[userId].disconnect();
+        }
+        // 새로운 웹소켓 연결을 저장합니다.
+        this.userSockets[userId] = socket;
+      },
       //메세지 줄바꿈처리
       formatMessage(message) {
         return message.replace(/\n/g, '<br>');
