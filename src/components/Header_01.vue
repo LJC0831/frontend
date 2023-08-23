@@ -27,7 +27,7 @@
           <input type="text" v-model="username" id="username" />&nbsp;
           <label for="password">비밀번호: </label>&nbsp;
           <input type="password" v-model="password" id="password" />&nbsp;
-          <button @click="login" :disabled="loading">
+          <button ref="loginButton" @click="login"  @keydown.enter="login" :disabled="loading">
             <span v-if="!loading">로그인</span>
             <span v-else>로딩 중...</span>
           </button>&nbsp;
@@ -110,10 +110,13 @@
               // 페이지 새로고침
               window.location.reload();
             },
+            // 모달이 열릴 때 로그인 버튼으로 포커스를 이동
+            focusLoginButton() {
+              this.$refs.loginButton.focus();
+            },
             login() {
               this.loading = true; //로딩 상태 활성화
               loginMethods.methods.login( this.username, this.password,(res) => {
-                      alert("로그인에 성공했습니다!");
                       // 토큰을 Vuex에 저장
                     this.setToken(res.data.token);
 
@@ -124,13 +127,13 @@
                     this.username = ""; // 입력한 사용자 이름 초기화
                     this.password = ""; // 입력한 비밀번호 초기화
                     window.location.reload();
+                    alert("로그인에 성공했습니다!");
                   },
                   (error) => {
                     console.error("로그인 오류:", error);
                     alert("아이디 패스워드가 틀립니다. ");
                   }
                 );
-                this.loading = false; // 로딩 상태 비활성화
               },
            
             logout() {
@@ -314,6 +317,16 @@
         }
         this.profileSearch("load");
       },
+      watch: {
+          // showLoginModal 데이터 변경 감지
+          showLoginModal(newValue) {
+            if (newValue) {
+              this.$nextTick(() => {
+                this.focusLoginButton(); // 모달이 열릴 때 버튼으로 포커스 이동
+              });
+            }
+          },
+        }
   };
   </script>
   
