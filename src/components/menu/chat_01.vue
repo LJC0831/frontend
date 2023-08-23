@@ -11,7 +11,7 @@
       </div>
     <div class="chat-messages" ref="chatContainer" @scroll="checkScrollPosition">
       <div v-for="(message, index) in messages" :key="index" class="message">
-        <img v-if="!message.profilePicture" src="@/assets/profile-user.png" alt="내 정보" class="profile-image" />
+        <img v-if="!message.profilePicture" src="../../assets/profile-user.png" alt="내 정보" class="profile-image" />
         <img v-if="message.profilePicture" class="profile-image" :src="message.profilePicture" alt="프로필 사진" />
         <span class="message-name">{{ message.editedName }} </span>
         <div class="message-bubble" :class="{ 'my-message': message.message }">
@@ -127,7 +127,7 @@
             const userid = decodedToken.username;
             if(message.user_id === userid){
               this.previousMessage = message.message;
-              this.showNotification(message.message); // 새 메시지 알림 표시
+              this.showNotification(message.message,message.profilePicture); // 새 메시지 알림 표시
             }
           });
         }
@@ -186,7 +186,6 @@
     methods: {
       //소켓유저확인
       manageUserSocket(userId, socket){
-        debugger;
         if (this.userSockets[userId]) {
           // 이미 해당 사용자의 연결이 존재하면 연결을 종료합니다.
           this.userSockets[userId].disconnect();
@@ -221,7 +220,7 @@
         return formattedDate;
       },
       // 브라우저 알림 생성
-      showNotification(message) {
+      showNotification(message, imgUrl) {
         if (this.previousNotification) {
           return; // 이미 알림이 떠 있는 경우 함수 종료
         }
@@ -232,7 +231,7 @@
 
               const notification = new Notification('새로운 채팅', {
                 body: message,
-                icon: ''
+                icon: imgUrl
               });
               this.previousNotification = notification;
               // 2초 뒤에 알림 닫기
