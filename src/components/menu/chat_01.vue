@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="chat-input">
-      <input type="text" v-model="newMessage" @paste="handleImagePaste" @keyup.enter="sendMessage" @keydown.shift.enter="handleShiftEnter" placeholder="메시지를 입력하세요..." />
+      <input type="text" v-model="newMessage" @paste="handleImagePaste" @keyup.enter="sendMessage" placeholder="메시지를 입력하세요..." />
       <label for="imageInput" class="upload-button" style="margin-top: 9px;">
         <img src="../../assets/uploadIKon.png" alt="첨부 아이콘" style="width:40px"/>
       </label>
@@ -190,13 +190,6 @@
 
         return formattedDate;
       },
-      handleShiftEnter(event) {
-        if (event.shiftKey) {
-          this.newMessage += "\n"; // 줄바꿈 문자를 추가
-          console.log("Shift+Enter pressed");
-          console.log("newMessage:", this.newMessage);
-        }
-      },
       // 메세지 보내기
       sendMessage() {
         const token = localStorage.getItem('token');
@@ -239,6 +232,7 @@
         this.socket.emit('message', messageObject);
         this.loading = false;
         this.$nextTick(() => {
+          this.newMessage = '';
           setTimeout(() => {
               this.scrollToBottom();
             }, 50);
