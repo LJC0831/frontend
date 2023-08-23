@@ -113,6 +113,7 @@
           this.messages.push(message);
           this.$nextTick(() => {
             this.scrollToBottom();
+            this.showNotification(message.message); // 새 메시지 알림 표시
           });
         }
       });
@@ -194,9 +195,21 @@
 
         return formattedDate;
       },
+      // 브라우저 알림 생성
+      showNotification(message) {
+        if ('Notification' in window) {
+          Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+              new Notification('새로운 채팅', {
+                body: message,
+                icon: ''
+              });
+            }
+          });
+        }
+      },
       // 메세지 보내기
       sendMessage() {
-
         const token = localStorage.getItem('token');
         if (this.newMessage.trim() === '') return;
         // 새 메시지를 서버로 보냅니다.
@@ -208,7 +221,6 @@
         }
         if (!event.shiftKey) { //쉬프트 엔터 시 줄바꿈
           // 도배체크
-          debugger;
           const now = new Date();
           this.lastMessageTimestamps.push(now);
 
