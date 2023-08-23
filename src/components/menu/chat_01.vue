@@ -209,6 +209,7 @@
           return;
         }
         // 도배체크
+        this.loading = true;
         const now = new Date();
         this.lastMessageTimestamps.push(now);
 
@@ -237,7 +238,7 @@
         };
         this.newMessage = '';
         this.socket.emit('message', messageObject);
-        
+        this.loading = false;
         this.$nextTick(() => {
           setTimeout(() => {
               this.scrollToBottom();
