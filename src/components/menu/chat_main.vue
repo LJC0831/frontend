@@ -28,9 +28,10 @@
                   <p class="card-text">
                     <span>
                       <img v-if="chatRooms.profile_id !== null" :src="chatRooms.imageUrl" class="thumbnail-image" />
-                      <img v-if="chatRooms.profile_id === null" src="@/assets/profile-user.png" class="thumbnail-image" />
+                      <img v-if="chatRooms.profile_id === null" src="../../assets/profile-user.png" class="thumbnail-image" />
                     </span>
                     <span class="chatromm-subject">{{ chatRooms.subject }}</span>
+                    <span><img v-if="chatRooms.pwd !== null" src="../../assets/pwdIkon.jpg" /></span>
                   </p>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
