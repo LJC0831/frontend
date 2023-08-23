@@ -235,8 +235,9 @@
           chatId: this.selectedChatId,
           ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
         };
-        this.socket.emit('message', messageObject);
         this.newMessage = '';
+        this.socket.emit('message', messageObject);
+        
         this.$nextTick(() => {
           setTimeout(() => {
               this.scrollToBottom();
