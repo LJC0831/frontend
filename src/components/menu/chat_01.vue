@@ -99,6 +99,7 @@
         isImageModalOpen: false,
         selectedImage: '',
         scrollPosition: null, //현재스크롤위치
+        previousNotification :false, //알람처리변수
       };
     },
     created() {
@@ -113,7 +114,13 @@
           this.messages.push(message);
           this.$nextTick(() => {
             this.scrollToBottom();
-            this.showNotification(message.message); // 새 메시지 알림 표시
+            const token = localStorage.getItem('token');
+            const decodedToken = jwtDecode(token);
+            const userid = decodedToken.username;
+            if(message.user_id === userid){
+              this.previousMessage = message.message;
+              this.showNotification(message.message); // 새 메시지 알림 표시
+            }
           });
         }
       });
@@ -197,15 +204,27 @@
       },
       // 브라우저 알림 생성
       showNotification(message) {
+        if (this.previousNotification) {
+          return; // 이미 알림이 떠 있는 경우 함수 종료
+        }
         if ('Notification' in window) {
           Notification.requestPermission().then(permission => {
             if (permission === 'granted') {
-              new Notification('새로운 채팅', {
+              this.previousNotification = true;
+
+              const notification = new Notification('새로운 채팅', {
                 body: message,
                 icon: ''
               });
-            }
+              this.previousNotification = notification;
+              // 2초 뒤에 알림 닫기
+            setTimeout(() => {
+               notification.close();
+               this.previousNotification = false; // 알림이 닫힘을 표시
+                }, 2000);
+               }
           });
+          
         }
       },
       // 메세지 보내기
