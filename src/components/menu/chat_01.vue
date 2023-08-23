@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="chat-input">
-      <textarea  v-model="newMessage" style="width: 92%;" @paste="handleImagePaste" @keyup.enter="sendMessage" placeholder="메시지를 입력하세요..." />
+      <textarea  v-model="newMessage" style="width: 92%;" @paste="handleImagePaste" @keydown="handleKeyDown" placeholder="메시지를 입력하세요..." />
       <label for="imageInput" class="upload-button" style="margin-top: 9px;">
         <img src="../../assets/uploadIKon.png" alt="첨부 아이콘" style="width:40px"/>
       </label>
@@ -193,6 +193,14 @@
         // 새로운 웹소켓 연결을 저장합니다.
         this.userSockets[userId] = socket;
       },
+    //채팅전송(엔터처리)
+    handleKeyDown(event) {
+      if (event.key === "Enter" && !event.shiftKey) {
+        // Enter 키가 눌렸고 Shift 키가 눌리지 않았을 때만 전송
+        event.preventDefault(); // 기본 동작(줄바꿈) 방지
+        this.sendMessage();
+      }
+    },
       //메세지 줄바꿈처리
       formatMessage(message) {
         return message.replace(/\n/g, '<br>');
