@@ -209,7 +209,6 @@
           return;
         }
         // 도배체크
-        this.loading = true;
         const now = new Date();
         this.lastMessageTimestamps.push(now);
 
@@ -222,7 +221,7 @@
           alert('메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
           return;
         }
-
+        this.loading = true;
         const decodedToken = jwtDecode(token);
         const userid = decodedToken.username; // 사용자 아이디 추출
         const messageObject = {
