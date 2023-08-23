@@ -21,7 +21,7 @@
           <img v-if="message.chat_type === 'image'" :src="message.chatimageUrl" alt="이미지" class="message-image" @click="openImageModal(message.chatimageUrl)"/>
         </div>
         <div v-else-if="message.chat_type === 'file'" class="message-bubble file-bubble">
-          <a :href="message.message" target="_blank">다운로드</a>
+          <a :href="message.chatimageUrl" target="_blank">다운로드</a>
         </div>
         <span class="message-date">{{ formatDate(message.ins_ymdhms) }}</span>
       </div>
@@ -232,7 +232,6 @@
         this.socket.emit('message', messageObject);
         this.loading = false;
         this.$nextTick(() => {
-          this.newMessage = '';
           setTimeout(() => {
               this.scrollToBottom();
             }, 50);
@@ -338,11 +337,11 @@
         const messageObject = {
           editedName: this.editedName,
           user_id: userid,
-          message: `/api/file/download/${chat_file_id}`, // 이미지 데이터를 메시지로 첨부
+          message: originalFileName, // 이미지 데이터를 메시지로 첨부
           chat_type: 'file', // 이미지 타입
           chat_file_id: chat_file_id,
           profilePicture: this.profilePicture,
-          chatimageUrl: null,
+          chatimageUrl: `/api/file/download/${chat_file_id}`,
           chatId: this.selectedChatId,
           ins_ymdhms: now - 10800000,
         };
