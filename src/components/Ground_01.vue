@@ -13,17 +13,18 @@
         <chat_01 v-if="selectedMenu === 'chat_01'" />
       </div>
     </div>
-    <Footer/>
+    <!-- <Footer/> -->
   </div>
 </template>
 
 <script>
 /* eslint-disable */ 
 import Header from "./Header_01.vue";
-import Footer from "./Footer_01.vue";
+//import Footer from "./Footer_01.vue";
 import Sidebar from "./SideBar_01"; // 사이드바 컴포넌트를 import 합니다.
 export default {
-  components:{Header, Footer, Sidebar},
+  components:{Header, Sidebar},
+  //components:{Header, Footer, Sidebar},
   data() {
     return {
       selectedMenu: '', // 선택된 메뉴를 저장할 변수 추가
