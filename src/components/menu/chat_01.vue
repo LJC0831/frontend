@@ -700,7 +700,7 @@ input[type="text"] {
 .message-bubble {
   background-color: #f0f0f0;
   border-radius: 16px;
-  padding: 10px;
+  padding: 7px;
   display: inline-block;
   max-width: 70%;
 }
