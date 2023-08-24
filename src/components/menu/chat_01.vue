@@ -635,8 +635,6 @@
     }
   }
 
-
-
 .chat-header {
   background-color: #6200ff;
   color: #fff;
@@ -709,15 +707,6 @@ input[type="text"] {
   background-color: lightskyblue;
   color: white;
   align-self: flex-end;
-}
-.message-content {
-  font-size: 14px; /* 작은 글씨체 크기 */
-  color: #888; /* 연한 색상 */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-grow: 1;
-  margin-left: 10px;
 }
 
 .message-name {
@@ -889,15 +878,6 @@ input[type="text"] {
     background-color: #87CEEB;
     color: white;
     align-self: flex-end;
-  }
-  .message-content {
-    font-size: 12px; /* 작은 글씨체 크기 */
-    color: #888; /* 연한 색상 */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-grow: 1;
-    margin-left: 10px;
   }
 
   .message-name {
