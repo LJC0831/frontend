@@ -125,7 +125,7 @@
             const token = localStorage.getItem('token');
             const decodedToken = jwtDecode(token);
             const userid = decodedToken.username;
-            if(message.user_id === userid){
+            if(message.user_id !== userid){
               this.previousMessage = message.message;
               this.showNotification(message.message,message.profilePicture); // 새 메시지 알림 표시
             }
