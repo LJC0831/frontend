@@ -267,7 +267,7 @@
         if (this.newMessage.trim() === '') return;
         // 새 메시지를 서버로 보냅니다.
         if(token == null) {
-          alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
+          this.showToast('로그인 세션이 종료되었습니다. 재로그인해주세요.');
           window.location.reload();
           // 페이지 새로고침
           return;
@@ -283,7 +283,7 @@
 
           if (this.lastMessageTimestamps.length >= 8) {
             // 사용자가 최근 10초 내에 8개 이상의 메시지를 보냄
-            alert('메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
+            this.showToast('메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
             return;
           }
           this.loading = true;
@@ -348,8 +348,8 @@
 
         // 파일 크기 확인
         if (file && file.size > this.maxFileSize) {
-                alert("이미지 크기가 너무 큽니다. 1MB 이하의 이미지를 선택해주세요.");
-                return;
+            this.showToast('이미지 크기가 너무 큽니다. 1MB 이하의 이미지를 선택해주세요.');
+            return;
            }
         const reader = new FileReader();
         if (file) {
@@ -390,7 +390,7 @@
       async chatfileUrl(chat_file_id, originalFileName) {
         const token = localStorage.getItem('token');
         if (token == null) {
-          alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
+          this.showToast('로그인 세션이 종료되었습니다. 재로그인해주세요.');
           window.location.reload();
           return;
         }
@@ -402,7 +402,7 @@
         this.lastMessageTimestamps = this.lastMessageTimestamps.filter(timestamp => timestamp > tenSecondsAgo);
 
         if (this.lastMessageTimestamps.length >= 8) {
-          alert('메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
+          this.showToast('메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
           return;
         }
         const decodedToken = jwtDecode(token);
@@ -441,7 +441,7 @@
       async sendImageMessage(chat_file_id, chatimageUrl) {
         const token = localStorage.getItem('token');
         if (token == null) {
-          alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
+          this.showToast('로그인 세션이 종료되었습니다. 재로그인해주세요.');
           window.location.reload();
           return;
         }
@@ -453,7 +453,7 @@
         this.lastMessageTimestamps = this.lastMessageTimestamps.filter(timestamp => timestamp > tenSecondsAgo);
 
         if (this.lastMessageTimestamps.length >= 8) {
-          alert('메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
+          this.showToast('메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
           return;
         }
         const decodedToken = jwtDecode(token);
