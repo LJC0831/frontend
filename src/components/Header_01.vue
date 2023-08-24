@@ -24,9 +24,9 @@
         <div class="login-form">
           <h2>로그인</h2>
           <label for="username">아이디 :</label>&nbsp;
-          <input type="text" v-model="username" id="username" />&nbsp;
+          <input type="text" v-model="username" id="username" @keydown.enter="login"/>&nbsp;
           <label for="password">비밀번호: </label>&nbsp;
-          <input type="password" v-model="password" id="password" />&nbsp;
+          <input type="password" v-model="password" id="password" @keydown.enter="login"/>&nbsp;
           <button ref="loginButton" @click="login"  @keydown.enter="login" :disabled="loading">
             <span v-if="!loading">로그인</span>
             <span v-else>로딩 중...</span>
