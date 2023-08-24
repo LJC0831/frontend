@@ -27,7 +27,9 @@
       </div>
     </div>
     <div class="chat-input">
-      <textarea  v-model="newMessage" style="width: 92%;" @paste="handleImagePaste" @keydown="handleKeyDown" placeholder="메시지를 입력하세요..." />
+      <textarea  v-model="newMessage" 
+      style="width: 92%; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); padding: 10px; resize: none;"
+      @paste="handleImagePaste" @keydown="handleKeyDown" placeholder="메시지를 입력하세요..." />
       <label for="imageInput" class="upload-button" style="margin-top: 9px;">
         <img src="../../assets/uploadIKon.png" alt="첨부 아이콘" style="width:40px"/>
       </label>
@@ -637,7 +639,6 @@ input[type="text"] {
 }
 
 .send-button {
-  margin-left: 10px;
   padding: 8px 16px;
   background-color: #6200ff;
   color: #fff;
