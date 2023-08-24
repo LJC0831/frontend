@@ -132,6 +132,7 @@
                   (error) => {
                     console.error("로그인 오류:", error);
                     alert("아이디 패스워드가 틀립니다. ");
+                    this.loading = false; //로딩 상태 활성화
                   }
                 );
               },
