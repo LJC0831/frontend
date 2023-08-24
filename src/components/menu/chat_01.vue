@@ -18,15 +18,19 @@
       <div v-for="(message, index) in messages" :key="index" class="message">
         <img v-if="!message.profilePicture" src="../../assets/profile-user.png" alt="내 정보" class="profile-image" />
         <img v-if="message.profilePicture" class="profile-image" :src="message.profilePicture" alt="프로필 사진" />
-        <span class="message-name">{{ message.editedName }} </span>
-        <div class="message-bubble" :class="{ 'my-message': message.message }">
-          <span class="message-text" v-html="formatMessage(message.message)"></span>
-        </div>
-        <div v-if="message.chat_type === 'image'" class="message-bubble image-bubble">
-          <img v-if="message.chat_type === 'image'" :src="message.chatimageUrl" alt="이미지" class="message-image" @click="openImageModal(message.chatimageUrl)"/>
-        </div>
-        <div v-else-if="message.chat_type === 'file'" class="message-bubble file-bubble">
-          <a :href="message.chatimageUrl" target="_blank">다운로드</a>
+        <div class="message-container">
+          <div class="message-content">
+          <span class="message-name">{{ message.editedName }} </span>
+            <div class="message-bubble" :class="{ 'my-message': message.message }">
+              <span class="message-text" v-html="formatMessage(message.message)"></span>
+            </div>
+            <div v-if="message.chat_type === 'image'" class="message-bubble image-bubble">
+              <img v-if="message.chat_type === 'image'" :src="message.chatimageUrl" alt="이미지" class="message-image" @click="openImageModal(message.chatimageUrl)"/>
+            </div>
+            <div v-else-if="message.chat_type === 'file'" class="message-bubble file-bubble">
+              <a :href="message.chatimageUrl" target="_blank">다운로드</a>
+            </div>
+          </div>
         </div>
         <span class="message-date">{{ formatDate(message.ins_ymdhms) }}</span>
       </div>
@@ -626,15 +630,24 @@
 
 @media (min-width: 768px) {
     .chat-container{
-    width:100%;
     min-width:1400px;
-    max-height: 700px;
+    max-height: 800px;
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif;
     }
   }
-
+.message-container{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* 이름을 왼쪽으로 정렬 */
+  
+}
+.message-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
 .chat-header {
   background-color: #6200ff;
   color: #fff;
@@ -643,9 +656,7 @@
 }
 
 .chat-messages {
-  flex: 1;
   padding: 10px;
-  max-height: 800px;
   overflow-y: auto;
 }
 
@@ -700,8 +711,9 @@ input[type="text"] {
   border-radius: 16px;
   padding: 7px;
   display: inline-block;
-  max-width: 70%;
+  margin-top: 5px;
 }
+
 
 .my-message {
   background-color: lightskyblue;
@@ -710,9 +722,8 @@ input[type="text"] {
 }
 
 .message-name {
-  margin-left: 10px;
-  margin-right: 15px; /* 이름과 메시지 사이 간격 */
   font-weight: bold; /* 볼드체 */
+  font-size: 12px;
   display: inline-block;
   vertical-align: middle;
 }
