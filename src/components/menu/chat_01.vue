@@ -541,6 +541,7 @@
         if (chatContainer.scrollTop === 0 && !this.loadingPreviousMessages && this.shouldMaintainScroll) {
           this.loadingPreviousMessages = true;
           try {
+            debugger;
             const oldestMessage = {
               oldestMessageTime: this.messages[0].ins_ymdhms,
               chatId:this.selectedChatId,
@@ -553,8 +554,11 @@
           } 
         }
         
+        const ins_ymdhms = new Date(this.messages[0].ins_ymdhms);
+        const adjustDate = new Date(ins_ymdhms.getTime() - (9 * 60 * 60 * 1000)); //한국시간적용
+
         const today = new Date().toLocaleDateString();
-        const messageDate = new Date(this.messages[0].ins_ymdhms).toLocaleDateString();
+        const messageDate = new Date(adjustDate).toLocaleDateString();
         // 토스트(메세지시간)
         if (!this.isShowingToast && messageDate !== today) {
           this.isShowingToast = true;
