@@ -21,7 +21,8 @@
         <div class="message-container">
           <div class="message-content">
           <span class="message-name">{{ message.editedName }} </span>
-            <div class="message-bubble" :class="{ 'my-message': message.message }">
+            <div class="message-bubble" :class="{ 'my-message': message.user_id !== this.loginUserId 
+                                                , 'yellow-background': message.user_id === this.loginUserId }">
               <span class="message-text" v-html="formatMessage(message.message)"></span>
             </div>
             <div v-if="message.chat_type === 'image'" class="message-bubble image-bubble">
@@ -114,12 +115,14 @@
         previousNotification :false, //알람처리변수
         userSockets: [],//소켓
         isShowingToast: false, // 토스트 메시지 표시 중 여부
+        loginUserId:null, //로그인유저
       };
     },
     created() {
       const login_token = localStorage.getItem('token');
       const decoded_Token = jwtDecode(login_token);
       const user_id = decoded_Token.username;
+      this.loginUserId = user_id;
       // Socket.IO 클라이언트를 초기화하고 서버에 연결합니다.
       //this.socket = io('http://localhost:3000', {
       this.socket = io('https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app', {
@@ -136,10 +139,7 @@
           this.messages.push(message);
           this.$nextTick(() => {
             this.scrollToBottom();
-            const token = localStorage.getItem('token');
-            const decodedToken = jwtDecode(token);
-            const userid = decodedToken.username;
-            if(message.user_id !== userid){
+            if(message.user_id !== this.loginUserId){
               this.previousMessage = message.message;
               this.showNotification(message.message,message.profilePicture); // 새 메시지 알림 표시
             }
@@ -188,11 +188,8 @@
         
       });
 
-      //프로필정보조회
-      const token = localStorage.getItem('token');
-      const decodedToken = jwtDecode(token);
-      const userid = decodedToken.username; // 사용자 아이디 추출
-      this.profileSearch(userid);
+      
+      this.profileSearch(this.loginUserId);
       // 서버에 최근 메시지를 요청합니다.
       const chatId = this.selectedChatId;
       this.socket.emit('getLatestMessages',chatId);
@@ -302,6 +299,7 @@
             profilePicture: this.profilePicture,
             chatimageUrl:null,
             chatId: this.selectedChatId,
+            isMyMessage: true,
             ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
           };
           this.newMessage = '';
@@ -420,6 +418,7 @@
           profilePicture: this.profilePicture,
           chatimageUrl: `/api/file/download/${chat_file_id}`,
           chatId: this.selectedChatId,
+          isMyMessage: true,
           ins_ymdhms: now - 10800000,
         };
 
@@ -471,6 +470,7 @@
           profilePicture: this.profilePicture,
           chatimageUrl:chatimageUrl,
           chatId: this.selectedChatId,
+          isMyMessage: true,
           ins_ymdhms: now - 10800000,
         };
 
@@ -545,7 +545,6 @@
         if (chatContainer.scrollTop === 0 && !this.loadingPreviousMessages && this.shouldMaintainScroll) {
           this.loadingPreviousMessages = true;
           try {
-            debugger;
             const oldestMessage = {
               oldestMessageTime: this.messages[0].ins_ymdhms,
               chatId:this.selectedChatId,
@@ -637,6 +636,7 @@
     font-family: Arial, sans-serif;
     }
   }
+
 .message-container{
   display: flex;
   flex-direction: column;
@@ -665,7 +665,7 @@
   align-items: center; /* 수직 가운데 정렬 */
   padding: 8px;
   border-radius: 5px;
-  background-color: #f0f0f0; 
+  /* background-color: #f0f0f0;  */
   margin: 5px;
 }
 
@@ -698,26 +698,31 @@ input[type="text"] {
 
 .profile-image{
   border-radius: 50%; /* 원형태로 보여주기 위해 반지름을 50%로 설정 */
-    width: 100x;
-    height: 50px;
-    object-fit: cover; /* 이미지 비율 유지 */
-    border: 2px solid #ccc;
-    height: 100%; /* 부모 컨테이너의 높이에 맞게 설정 */
-  margin-right: 10px;
+  width: 100px;
+  height: 50px;
+  object-fit: cover; /* 이미지 비율 유지 */
+  border: 2px solid #ccc;
+  height: 100%; /* 부모 컨테이너의 높이에 맞게 설정 */
+  margin-right: 3px;
 }
 
 .message-bubble {
   background-color: #f0f0f0;
-  border-radius: 16px;
+  border-radius: 5px;
   padding: 7px;
   display: inline-block;
   margin-top: 5px;
 }
 
 
+.yellow-background { 
+  margin-left:10px;
+  background-color: lightskyblue; /* 다른 메시지의 배경색 */
+}
+
 .my-message {
-  background-color: lightskyblue;
-  color: white;
+  margin-left:10px;
+  background-color: #f1e0e0;
   align-self: flex-end;
 }
 
