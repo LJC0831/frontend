@@ -1,15 +1,20 @@
 <template>
   <div class="chat-container">
+    <!-- 채팅헤더 -->
     <div class="chat-header">
         <span>{{ selectSubject }}</span>
         <span style="float: right;">
             <i :class="'fas fa-bars'" @click="toggleSearch()"></i>
         </span>
     </div>
+    <!-- 로딩 오버레이 -->
     <div v-if="loading" class="loading-overlay">
         <img src="../../assets/loading.gif" alt="loading" class="loading-image">
-      </div>
+    </div>
+
+    <!-- 채팅 메세지 -->
     <div class="chat-messages" ref="chatContainer" @scroll="checkScrollPosition">
+      <!-- 메세지 표시 -->
       <div v-for="(message, index) in messages" :key="index" class="message">
         <img v-if="!message.profilePicture" src="../../assets/profile-user.png" alt="내 정보" class="profile-image" />
         <img v-if="message.profilePicture" class="profile-image" :src="message.profilePicture" alt="프로필 사진" />
@@ -26,6 +31,7 @@
         <span class="message-date">{{ formatDate(message.ins_ymdhms) }}</span>
       </div>
     </div>
+    <!-- 채팅 입력 -->
     <div class="chat-input">
       <textarea  v-model="newMessage" 
       style="width: 92%; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); padding: 10px; resize: none;"
@@ -73,6 +79,7 @@
   import jwtDecode from 'jwt-decode';
   import loginMethods from '../../scripts/login.js';
   import axios from 'axios';
+  
 
   export default {
     props: {
@@ -101,7 +108,8 @@
         selectedImage: '',
         scrollPosition: null, //현재스크롤위치
         previousNotification :false, //알람처리변수
-        userSockets: [],
+        userSockets: [],//소켓
+        isShowingToast: false, // 토스트 메시지 표시 중 여부
       };
     },
     created() {
@@ -544,6 +552,31 @@
             this.loadingPreviousMessages = false;
           } 
         }
+        
+        const today = new Date().toLocaleDateString();
+        const messageDate = new Date(this.messages[0].ins_ymdhms).toLocaleDateString();
+        // 토스트(메세지시간)
+        if (!this.isShowingToast && messageDate !== today) {
+          this.isShowingToast = true;
+          this.showToast(`${messageDate}`);
+          setTimeout(() => {
+              this.isShowingToast = false;
+            }, 2000); // 2초 후에 토스트 메시지 표시 여부를 리셋
+          }
+      },
+
+      showToast(message) {
+        this.$toast.open({
+          message: message,
+          duration: 2000, // 토스트 메시지가 보여지는 시간 (2초)
+          position: 'top', // 토스트 메시지 위치
+          type: 'info', // 토스트 메시지 타입 (info, success, error)
+          style: {
+            background: '#888', // 회색 배경 색상
+            'font-size': '14px', // 작은 글꼴 크기
+            color: '#fff', // 흰색 글자 색상
+          },
+        });
       },
 
       // 내정보 조회
