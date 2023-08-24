@@ -209,25 +209,24 @@
       },
       //날짜 포맷
       formatDate(dateTime) {
-        // 주어진 dateTime을 Date 객체로 변환
-          const originalDate = new Date(dateTime);
+        const originalDate = new Date(dateTime);
 
-        // 3시간을 밀리초 단위로 변환하여 더하고 새로운 Date 객체 생성
+        // 대한민국 시간대로 조정
         const adjustedDate = new Date(originalDate.getTime() - (9 * 60 * 60 * 1000));
 
-        // 변환된 날짜를 원하는 포맷으로 포맷팅
-        const options = {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-          timeZone: 'Asia/Seoul' // 대한민국 타임존
-        };
-        const formattedDate = adjustedDate.toLocaleString('ko-KR', options);
+        // 시간과 분 추출
+        const hours = adjustedDate.getHours();
+        const minutes = adjustedDate.getMinutes();
 
-        return formattedDate;
+        // 오전/오후 및 12시간 형식으로 변환
+        const ampm = hours < 12 ? '오전' : '오후';
+        const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+        const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+        // 최종 포맷팅된 시간 문자열 생성
+        const formattedTime = `${ampm} ${formattedHours}:${formattedMinutes}`;
+
+        return formattedTime;
       },
       // 브라우저 알림 생성
       showNotification(message, imgUrl) {
