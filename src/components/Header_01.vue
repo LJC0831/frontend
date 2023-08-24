@@ -39,12 +39,14 @@
       <div v-if="showSignupModal" class="login-modal">
         <div class="login-form">
           <h2>회원가입</h2>
-          <label for="newUserId">아이디 :</label>&nbsp;
-          <input type="text" v-model="newUserId" id="newUserId" />&nbsp;
-          <label for="newPassword">비밀번호: </label>&nbsp;
-          <input type="password" v-model="newPassword" id="newPassword" />&nbsp;
-          <label for="newName">이름: </label>&nbsp; 
-          <input type="text" v-model="newName" id="newName" />&nbsp; 
+          <label for="newUserId">아이디(인증가능한 이메일)</label>
+          <input type="text" v-model="newUserId" id="newUserId" />
+          <button @click="emailCheck">인증하기</button>&nbsp;
+          <label for="newPassword">비밀번호 </label>
+          <input type="password" v-model="newPassword" id="newPassword" />
+          <input type="password2" v-model="newPassword2" id="newPassword2" />
+          <label for="newName">이름 </label>
+          <input type="text" v-model="newName" id="newName" />
           <button @click="signup">회원가입</button>&nbsp;
           <button @click="cancelSignup">취소</button>&nbsp;
         </div>
