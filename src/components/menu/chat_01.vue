@@ -356,34 +356,29 @@
           const formData = new FormData();
           formData.append('file', file);
           formData.append("fileName", encodeURIComponent(uniqueFileName)); // 파일명을 인코딩하여 formData에 추가
-          const api = axios.create({
-                  baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
-                  //baseURL: "http://localhost:3000",
-                });
           // 파일 업로드 요청
           this.loading = true;
           // 이미지 파일 확장자들의 배열
           const imageExtensions = ["jpg", "jpeg", "png", "gif"];
           const fileExtension = uniqueFileName.slice(((uniqueFileName.lastIndexOf(".") - 1) >>> 0) + 2).toLowerCase();
           const isImageFile = imageExtensions.includes(fileExtension);
-          api.post('/api/upload', formData, {
-                  headers: {
-                      Authorization: `Bearer ${localStorage.getItem('token')}`, // 토큰을 요청 헤더에 추가
-                  },
-                  }).then((response) => {
-                          if(isImageFile){
-                            this.chatImgurl(response.data.fileId);
-                          } else {
-                            this.chatfileUrl(response.data.fileId, originalFileName);
-                          }
-                          this.loading = false;
-                      // 파일 업로드 성공 시 처리할 로직을 여기에 작성합니다.
-                      // 예: 성공 메시지 출력, 업로드 결과를 다른 동작에 활용 등
-                      })
+          const token = localStorage.getItem('token');
+          chatMethods.methods.uploadImageToServer(formData,token,(res) => {
+                   if(isImageFile){
+                        this.chatImgurl(res.data.fileId);
+                      } else {
+                        this.chatfileUrl(res.data.fileId, originalFileName);
+                      }
+                },
+                (error) => { // 에러 콜백
+                  console.error("이미지 업로드 오류:", error);
+                }
+          );
         }
       },
       // 파일 메세지 전송1
       async chatfileUrl(chat_file_id, originalFileName) {
+        debugger;
         const token = localStorage.getItem('token');
         if (token == null) {
           alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
@@ -417,6 +412,7 @@
         };
 
         this.socket.emit('message', messageObject);
+        this.loading = false;
         this.newMessage = '';
         this.$nextTick(() => {
           setTimeout(() => {
