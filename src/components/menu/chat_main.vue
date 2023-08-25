@@ -138,6 +138,7 @@ export default {
     },
     exit() {
       this.selectedChatId = null;
+      this.search01();
     },
     //조회
     search01: debounce(async function () {
