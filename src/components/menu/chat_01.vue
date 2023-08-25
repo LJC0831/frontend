@@ -891,8 +891,7 @@ input[type="text"] {
   }
 
   .my-message {
-    background-color: #87CEEB;
-    color: white;
+    background-color: #f1e0e0;
     align-self: flex-end;
   }
 
