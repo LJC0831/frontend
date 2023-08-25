@@ -1,3 +1,4 @@
+import jwtDecode from 'jwt-decode';
 // helpers.js 파일 생성
 // 토큰 저장 함수
 /* eslint-disable */
@@ -15,6 +16,7 @@ export function saveTokenToLocalStorage(token) {
     const token = localStorage.getItem('token');
     if (token) {
       try {
+        debugger;
         const decodedToken = jwtDecode(token);
         const expirationTime = decodedToken.exp * 1000; // 토큰 만료 시간 (밀리초 단위)
         const currentTime = new Date().getTime(); // 현재 시간 (밀리초 단위)
