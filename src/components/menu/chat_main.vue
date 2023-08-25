@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="chat-main" v-if="selectedChatId !== null">
-      <ChatRoom01 :selectedChatId="selectedChatId" :selectSubject="selectSubject" :selectUser="selectUser"/>
+      <ChatRoom01 :selectedChatId="selectedChatId" :selectSubject="selectSubject" :selectUser="selectUser" @changeSelectedChatId="changeSelectedChatId" />
       <button class="btn btn-primary search-button" id="btn-exit" @click="exit()">뒤로가기</button>
     </div>
     <div class="chat-room" v-if="selectedChatId === null">
@@ -146,6 +146,10 @@ export default {
         }
       }
       
+    },
+    //채팅>채팅목록 호출
+    changeSelectedChatId(chatId) {
+      this.selectedChatId = chatId;
     },
     exit() {
       this.selectedChatId = null;

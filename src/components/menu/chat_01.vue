@@ -196,6 +196,11 @@
       this.socket.emit('getLatestMessages',chatId);
     },
     methods: {
+      // 채팅목록 이동
+      changeChatIdInChild() {
+        // 새로운 채팅 ID로 변경
+        this.$emit('changeSelectedChatId', null);
+      },
       //소켓유저확인
       manageUserSocket(userId, socket){
         if (this.userSockets[userId]) {
@@ -227,6 +232,7 @@
           }
         );
         this.showModal = false; // 모달 닫기
+        this.changeChatIdInChild();
       },
       //날짜 포맷
       formatDate(dateTime) {
@@ -389,7 +395,6 @@
       },
       // 파일 메세지 전송1
       async chatfileUrl(chat_file_id, originalFileName) {
-        debugger;
         const token = localStorage.getItem('token');
         if (token == null) {
           alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
