@@ -557,19 +557,19 @@
           } 
         }
         
-        const ins_ymdhms = new Date(this.messages[0].ins_ymdhms);
-        const adjustDate = new Date(ins_ymdhms.getTime() - (9 * 60 * 60 * 1000)); //한국시간적용
+        // const ins_ymdhms = new Date(this.messages[0].ins_ymdhms);
+        // const adjustDate = new Date(ins_ymdhms.getTime() - (9 * 60 * 60 * 1000)); //한국시간적용
 
-        const today = new Date().toLocaleDateString();
-        const messageDate = new Date(adjustDate).toLocaleDateString();
-        // 토스트(메세지시간)
-        if (!this.isShowingToast && messageDate !== today) {
-          this.isShowingToast = true;
-          this.showToast(`${messageDate}`);
-          setTimeout(() => {
-              this.isShowingToast = false;
-            }, 2000); // 2초 후에 토스트 메시지 표시 여부를 리셋
-          }
+        // const today = new Date().toLocaleDateString();
+        // const messageDate = new Date(adjustDate).toLocaleDateString();
+        // // 토스트(메세지시간)
+        // if (!this.isShowingToast && messageDate !== today) {
+        //   this.isShowingToast = true;
+        //   this.showToast(`${messageDate}`);
+        //   setTimeout(() => {
+        //       this.isShowingToast = false;
+        //     }, 2000); // 2초 후에 토스트 메시지 표시 여부를 리셋
+        //   }
       },
 
       showToast(message) {
