@@ -162,21 +162,4 @@ export default {
   pointer-events: auto; /* 사이드바가 열렸을 때 포인터 이벤트를 받도록 설정 */
 }
 
-/* 모바일환경 */
-@media (max-width: 768px) {
-  .sidebar {
-  width: 150px;
-  height: 100%;
-  background-color: #333;
-  padding: 10px;
-  position: fixed;
-  top: 100px;
-  left: 0;
-  transition: transform 0.3s ease;
-  transform: translateX(-100%);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
-  pointer-events: none; /* 사이드바가 열렸을 때 포인터 이벤트를 받지 않도록 설정 */
-  }
-}
-
 </style>
