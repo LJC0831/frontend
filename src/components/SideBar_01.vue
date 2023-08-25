@@ -11,7 +11,7 @@
         {{ menu.label }}
       </div>
     </div>
-    <div class="content" :style="{ marginLeft: sidebarOpen ? '150px' : '10px' }">
+    <div :style="{ marginLeft: sidebarOpen ? '150px' : '10px' }" style="transition: margin-left 0.3s ease;">
       <!-- Memo_01.vue 컴포넌트 보여주기 -->
       <main01 v-if="selectedMenu === ''" />
       <Intro v-if="selectedMenu === 'introVue'" />
