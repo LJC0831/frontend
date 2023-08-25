@@ -217,6 +217,17 @@
       formatMessage(message) {
         return message.replace(/\n/g, '<br>');
       },
+      //방 나가기
+      exitUser(){
+        const chat_id = this.selectedChatId;
+        chatMethods.methods.chatDeleteUser(chat_id,this.loginUserId,(res) => {
+          },
+          (error) => { // 에러 콜백
+            console.error("채팅방 입장 오류:", error);
+          }
+        );
+        this.showModal = false; // 모달 닫기
+      },
       //날짜 포맷
       formatDate(dateTime) {
         const originalDate = new Date(dateTime);

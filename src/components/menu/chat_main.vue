@@ -76,6 +76,7 @@ export default {
       selectSubject:null,
       selectUser:[],
       checkFlag:false,
+      myUserYn:false,  //방 입장여부(본인)
     };
   },
   methods: {
@@ -102,8 +103,11 @@ export default {
 
 
       for (const userId of userIdsArray){
-        if(userId === userid  && chat_type==="1" ){
-          this.checkFlag = true;
+        if(userId === userid ){ //방에 본인이 있을시
+          this.myUserYn = true;
+          if(chat_type==="1" ){
+            this.checkFlag = true;
+          }
         }
       }
       if(!this.checkFlag && chat_type==="1"){
@@ -124,20 +128,28 @@ export default {
         }
       } else {
         
-        chatMethods.methods.chatInsertUser(chat_id,userid,(res) => {
-          },
-          (error) => { // 에러 콜백
-            console.error("채팅방 입장 오류:", error);
-          }
-        );
-        this.selectedChatId = chat_id;
-        this.selectSubject = subject;
-        this.selectUser = userIdsArray;
+        if(!this.myUserYn){
+          chatMethods.methods.chatInsertUser(chat_id,userid,(res) => {
+            },
+            (error) => { // 에러 콜백
+              console.error("채팅방 입장 오류:", error);
+            }
+          );
+          userIdsArray.push(userid);
+          this.selectedChatId = chat_id;
+          this.selectSubject = subject;
+          this.selectUser = userIdsArray;
+        } else {
+          this.selectedChatId = chat_id;
+          this.selectSubject = subject;
+          this.selectUser = userIdsArray;
+        }
       }
       
     },
     exit() {
       this.selectedChatId = null;
+      this.myUserYn=false;
       this.search01();
     },
     //조회
@@ -159,7 +171,7 @@ export default {
       } catch (error) {
         console.error("검색 오류:", error);
       }
-    }, 500),
+    }, 100),
     // 방만들기
     createChatRoom(){
       alert('아직은 관리자만 개설가능합니다.');

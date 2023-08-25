@@ -23,6 +23,11 @@ export default {
           .then(successCallback)
           .catch(errorCallback);
         },
+          chatDeleteUser(chat_id, userid, successCallback, errorCallback) {
+            api.delete('/api/char/userDelete', { data: { chat_id, userid } })
+          .then(successCallback)
+          .catch(errorCallback);
+        },
           
     },
 
