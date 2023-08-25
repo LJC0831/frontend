@@ -150,6 +150,7 @@ export default {
     //채팅>채팅목록 호출
     changeSelectedChatId(chatId) {
       this.selectedChatId = chatId;
+      this.search01();
     },
     exit() {
       this.selectedChatId = null;

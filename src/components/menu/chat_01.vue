@@ -59,7 +59,8 @@
             {{ selectUser }}
           </li>
         </ul>
-        <button class="chat_exit" @click="exitUser()">방나가기</button>
+        <button v-if="!loading2" class="chat_exit" @click="exitUser()">방나가기</button>
+        <button v-if="loading2" class="chat_exit" @click="exitUser()">Loading...</button>
         <button class="modal_close" @click="closeModal">닫기</button>
         
       </div>
@@ -114,6 +115,7 @@
         isShowingToast: false, // 토스트 메시지 표시 중 여부
         loginUserId:null, //로그인유저
         firstChat:null, //스크롤 기준 맨위채팅
+        loading2: false,
       };
     },
     created() {
@@ -221,15 +223,19 @@
       },
       //방 나가기
       exitUser(){
+        this.loading2 = true;
         const chat_id = this.selectedChatId;
         chatMethods.methods.chatDeleteUser(chat_id,this.loginUserId,(res) => {
+            if(res.status === 200){
+            this.showModal = false;
+            this.loading2 = false;
+            this.changeChatIdInChild();
+            }
           },
           (error) => { // 에러 콜백
             console.error("채팅방 입장 오류:", error);
           }
         );
-        this.showModal = false; // 모달 닫기
-        this.changeChatIdInChild();
       },
       //날짜 포맷
       formatDate(dateTime) {
