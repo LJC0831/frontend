@@ -36,7 +36,7 @@
 /* 데스크탑 */
 @media (min-width: 768px) {
     .hello-world{
-    margin-left: 600px;
+    margin-left: -300px;
     
     }
   }
