@@ -21,8 +21,8 @@
         <div class="message-container">
           <div class="message-content">
           <span class="message-name">{{ message.editedName }} </span>
-            <div class="message-bubble" :class="{ 'my-message': message.user_id !== this.loginUserId 
-                                                , 'yellow-background': message.user_id === this.loginUserId }">
+            <div class="message-bubble" :class="{ 'other-message': message.user_id !== this.loginUserId 
+                                                , 'my-message': message.user_id === this.loginUserId }">
               <span class="message-text" v-html="formatMessage(message.message)"></span>
             </div>
             <div v-if="message.chat_type === 'image'" class="message-bubble image-bubble">
@@ -715,12 +715,12 @@ input[type="text"] {
 }
 
 
-.yellow-background { 
+.my-message { 
   margin-left:10px;
   background-color: lightskyblue; /* 다른 메시지의 배경색 */
 }
 
-.my-message {
+.other-message {
   margin-left:10px;
   background-color: #f1e0e0;
   align-self: flex-end;
@@ -898,7 +898,7 @@ input[type="text"] {
     max-width: 70%;
   }
 
-  .my-message {
+  .other-message {
     background-color: #f1e0e0;
     align-self: flex-end;
   }
