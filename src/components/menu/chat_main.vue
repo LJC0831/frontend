@@ -82,6 +82,7 @@ export default {
   methods: {
     //채팅방 open
     openChatRoom(chatRooms) {
+      this.search01();
       const pwd = chatRooms.pwd; // 방 비밀번호
       const chat_id = chatRooms.id; //방 id
       const subject = chatRooms.subject; // 방 제목
@@ -130,15 +131,17 @@ export default {
         
         if(!this.myUserYn){
           chatMethods.methods.chatInsertUser(chat_id,userid,(res) => {
+              if(res.status === 200){
+                userIdsArray.push(userid);
+                this.selectedChatId = chat_id;
+                this.selectSubject = subject;
+                this.selectUser = userIdsArray;
+              }
             },
             (error) => { // 에러 콜백
               console.error("채팅방 입장 오류:", error);
             }
           );
-          userIdsArray.push(userid);
-          this.selectedChatId = chat_id;
-          this.selectSubject = subject;
-          this.selectUser = userIdsArray;
         } else {
           this.selectedChatId = chat_id;
           this.selectSubject = subject;
@@ -150,6 +153,7 @@ export default {
     //채팅>채팅목록 호출
     changeSelectedChatId(chatId) {
       this.selectedChatId = chatId;
+      this.myUserYn = false;
       this.search01();
     },
     exit() {
