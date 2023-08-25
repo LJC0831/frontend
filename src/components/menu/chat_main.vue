@@ -126,36 +126,31 @@ export default {
 
       if(pwd ==! null){
         const enteredPassword = prompt('비밀번호를 입력하세요:');
-        if (enteredPassword !== null) { 
-          if (enteredPassword === pwd) {
-            this.selectedChatId = chat_id;
-            this.selectSubject = subject;
-            this.selectUser = userIdsArray;
-          } else {
+          if (enteredPassword !== pwd) {
             alert('비밀번호가 일치하지 않습니다.');
-          }
-        }
-      } else {
-        
-        if(!this.myUserYn){
-          chatMethods.methods.chatInsertUser(chat_id,userid,(res) => {
-              if(res.status === 200){
-                userIdsArray.push(userid);
-                this.selectedChatId = chat_id;
-                this.selectSubject = subject;
-                this.selectUser = userIdsArray;
-              }
-            },
-            (error) => { // 에러 콜백
-              console.error("채팅방 입장 오류:", error);
+            return;
+          } 
+      } 
+
+      if(!this.myUserYn){
+        chatMethods.methods.chatInsertUser(chat_id,userid,(res) => {
+            if(res.status === 200){
+              userIdsArray.push(userid);
+              this.selectedChatId = chat_id;
+              this.selectSubject = subject;
+              this.selectUser = userIdsArray;
             }
-          );
-        } else {
-          this.selectedChatId = chat_id;
-          this.selectSubject = subject;
-          this.selectUser = userIdsArray;
-        }
+          },
+          (error) => { // 에러 콜백
+            console.error("채팅방 입장 오류:", error);
+          }
+        );
+      } else {
+        this.selectedChatId = chat_id;
+        this.selectSubject = subject;
+        this.selectUser = userIdsArray;
       }
+
       
     },
     //채팅>채팅목록 호출
