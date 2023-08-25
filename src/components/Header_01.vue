@@ -42,9 +42,12 @@
           <label for="newUserId">아이디(인증가능한 이메일)</label>
           <input type="text" v-model="newUserId" id="newUserId" />
           <button @click="emailCheck">인증하기</button>&nbsp;
+          <label v-if="mailCheck && !signUpAppr" for="checkNumber">인증번호</label>
+          <input v-if="mailCheck && !signUpAppr" type="text" v-model="checkNumberInput"/>
+          <button v-if="mailCheck && !signUpAppr" @click="emailNumCheck">확인</button>&nbsp;
           <label for="newPassword">비밀번호 </label>
           <input type="password" v-model="newPassword" id="newPassword" />
-          <input type="password2" v-model="newPassword2" id="newPassword2" />
+          <input type="password" v-model="newPassword2" id="newPassword2" />
           <label for="newName">이름 </label>
           <input type="text" v-model="newName" id="newName" />
           <button @click="signup">회원가입</button>&nbsp;
@@ -103,6 +106,8 @@
         file_no: null,
         isEditingProfilePicture: false, // 프로필사진수정여부
         maxFileSize: 1024 * 1024, // 1MB (메가바이트)
+        mailCheck:false, //메일체크여부
+        signUpAppr:false, //인증완료처리
       };
     },
     methods: {
@@ -283,25 +288,69 @@
               this.username = ""; // 입력한 사용자 이름 초기화
               this.password = ""; // 입력한 비밀번호 초기화
             },
-            // 회원가입처리
-            signup() {
-              loginMethods.methods.signup(
+            // 메일인증
+            emailCheck() {
+              let randomNumber = '';
+              for (let i = 0; i < 6; i++) {
+                const digit = Math.floor(Math.random() * 10); // 0부터 9까지의 난수 생성
+                randomNumber += digit.toString();
+              }
+              this.checkNumber = randomNumber;
+              loginMethods.methods.emailCheck(
                 this.newUserId,
-                this.newPassword,
-                this.newName,
+                this.checkNumber,
                 (res) => {
-                  alert("회원가입에 성공했습니다!");
-                  this.showSignupModal = false;
-                  this.newUserId = "";
-                  this.newPassword = "";
-                  this.newName = "";
+                  alert("메일확인 후 인증번호를 입력하세요.!");
+                  this.mailCheck = true;
                 },
                 (error) => {
                   // 에러 콜백
-                  console.error("회원가입 오류:", error);
-                  alert(" 이미 사용 중인 아이디입니다.");
+                  console.error("이메일 인증오류:", error);
+                  alert("인증오류입니다. 문의바랍니다.");
                 }
               );
+            },
+            //메일인증비교
+            emailNumCheck(){
+              if(this.checkNumber === this.checkNumberInput){
+                alert('인증되었습니다.');
+                this.signUpAppr = true;
+              } else {
+                alert('인증번호가 일치하지 않습니다. 다시확인해주세요.');
+              }
+            },
+            // 회원가입처리
+            signup() {
+              if(this.newPassword !== this.newPassword2){
+                alert('패스워드가 일치하지 않습니다. 다시확인해주세요.');
+                return;
+              }
+              if(this.newPassword.length < 8){
+                alert('패스워드는 8자리 이상 입력해주세요.');
+                return;
+              }
+              if(this.signUpAppr){
+                loginMethods.methods.signup(
+                  this.newUserId,
+                  this.newPassword,
+                  this.newName,
+                  (res) => {
+                    alert("회원가입에 성공했습니다!");
+                    this.showSignupModal = false;
+                    this.newUserId = "";
+                    this.newPassword = "";
+                    this.newName = "";
+                  },
+                  (error) => {
+                    // 에러 콜백
+                    console.error("회원가입 오류:", error);
+                    alert(" 이미 사용 중인 아이디입니다.");
+                    this.signUpAppr = false;
+                  }
+                );
+              } else {
+                alert('이메일 인증해주세요.');
+              }
             },
             //회원가입팝업닫기
             cancelSignup() {
@@ -309,6 +358,8 @@
               this.newUserId = "";
               this.newPassword = "";
               this.newName = "";
+              this.mailCheck = false; 
+              this.signUpAppr =false; 
             },
           },
 
