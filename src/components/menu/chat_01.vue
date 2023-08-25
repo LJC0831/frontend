@@ -637,7 +637,7 @@
     }
   }
 .chat-textarea{
-  width: 92%; 
+  width: 100%; 
   border: 1px solid #ccc; 
   border-radius: 8px; 
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); 
