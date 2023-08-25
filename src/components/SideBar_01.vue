@@ -93,7 +93,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000; /* 사이드바 토글 버튼이 사이드바 위에 표시되도록 설정 */
+  z-index: 1200; /* 사이드바 토글 버튼이 사이드바 위에 표시되도록 설정 */
   width: 100%;
   background-color: #333;
 }
@@ -123,20 +123,13 @@ export default {
   transform: translateY(-50%);
 }
 
-.sidebar-expand {
-  flex: 1;
-  height: 100%;
-  transition: width 0.3s ease;
-  background-color: transparent;
-}
-
 .sidebar {
   width: 150px;
   height: 100%;
+  margin-top:-1px;
   background-color: #333;
   padding: 10px;
   position: fixed;
-  top: 9.3%;
   left: 0;
   transition: transform 0.3s ease;
   transform: translateX(-100%);
