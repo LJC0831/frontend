@@ -59,10 +59,6 @@
             {{ selectUser }}
           </li>
         </ul>
-        <span>
-          <input type="text" class="chat_input_invite" v-model="inviteUserId" placeholder="아이디 입력..." >
-          <button class="chat_invite" @click="InviteUser()">초대하기</button>
-        </span>
         <button class="chat_exit" @click="exitUser()">방나가기</button>
         <button class="modal_close" @click="closeModal">닫기</button>
         
@@ -117,6 +113,7 @@
         userSockets: [],//소켓
         isShowingToast: false, // 토스트 메시지 표시 중 여부
         loginUserId:null, //로그인유저
+        firstChat:null, //스크롤 기준 맨위채팅
       };
     },
     created() {
@@ -555,14 +552,16 @@
               oldestMessageTime: this.messages[0].ins_ymdhms,
               chatId:this.selectedChatId,
             };
-            this.socket.emit('getPreviousMessages', oldestMessage);
+            if(this.firstChat !== this.messages[0].ins_ymdhms){
+              this.socket.emit('getPreviousMessages', oldestMessage);
+            }
+            this.firstChat = this.messages[0].ins_ymdhms;
           } catch (error) {
             console.error('이전 채팅 조회 오류:', error);
           } finally {
             this.loadingPreviousMessages = false;
           } 
         }
-        
         // const ins_ymdhms = new Date(this.messages[0].ins_ymdhms);
         // const adjustDate = new Date(ins_ymdhms.getTime() - (9 * 60 * 60 * 1000)); //한국시간적용
 
