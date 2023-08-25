@@ -83,6 +83,7 @@
   import io from 'socket.io-client';
   import jwtDecode from 'jwt-decode';
   import loginMethods from '../../scripts/login.js';
+  import chatMethods from '../../scripts/chat.js';
   import axios from 'axios';
   
 
@@ -326,22 +327,15 @@
       async uploadImageToServer(file) {
         const formData = new FormData();
         formData.append('file', file);
-        try {
-          const api = axios.create({
-                  baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
-                  //baseURL: "http://localhost:3000",
-                });
-          const response = await api.post('/api/upload', formData, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
+        const token = localStorage.getItem('token');
+        chatMethods.methods.uploadImageToServer(formData,token,(res) => {
+              const chat_file_id = res.data.fileId;
+              this.chatImgurl(chat_file_id);
             },
-          });
-
-          const chat_file_id = response.data.fileId;
-          this.chatImgurl(chat_file_id);
-        } catch (error) {
-          console.error('이미지 업로드 오류:', error);
-        }
+            (error) => { // 에러 콜백
+              console.error("이미지 업로드 오류:", error);
+            }
+        );
       },
       // 업로드메세지
       handleUpload() {
