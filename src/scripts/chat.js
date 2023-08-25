@@ -18,6 +18,11 @@ export default {
             .then(successCallback)
             .catch(errorCallback);
           },
+          chatInsertUser(chat_id, userid, successCallback, errorCallback) {
+            api.post('/api/char/userInsert', {chat_id, userid})
+          .then(successCallback)
+          .catch(errorCallback);
+        },
           
     },
 

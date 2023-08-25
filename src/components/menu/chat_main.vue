@@ -57,6 +57,7 @@ import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import ChatRoom01 from './chat_01.vue';
 import loginMethods from '../../scripts/login.js';
+import chatMethods from '../../scripts/chat.js';
 
 const api = axios.create({
   baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
@@ -122,6 +123,13 @@ export default {
           }
         }
       } else {
+        
+        chatMethods.methods.chatInsertUser(chat_id,userid,(res) => {
+          },
+          (error) => { // 에러 콜백
+            console.error("채팅방 입장 오류:", error);
+          }
+        );
         this.selectedChatId = chat_id;
         this.selectSubject = subject;
         this.selectUser = userIdsArray;
