@@ -3,14 +3,16 @@
     <Header/>
       <div class="main-container">
         <Sidebar v-on:menuSelected="handleMenuSelected" :selectedMenu="selectedMenu" />
+      </div>
         <!--<Memo/>-->
           <!-- Memo_01.vue 컴포넌트 보여주기 -->
-          <main01 v-if="selectedMenu === ''" /> 
-          <Memo_01 v-if="selectedMenu === 'memoVue'" />
-          <Intro v-if="selectedMenu === 'introVue'" />
-          <maker_01 v-if="selectedMenu === 'maker_01'" />
-          <chat_01 v-if="selectedMenu === 'chat_01'" />
-      </div>
+          <div class="content">
+            <main01 v-if="selectedMenu === ''" /> 
+            <Memo_01 v-if="selectedMenu === 'memoVue'" />
+            <Intro v-if="selectedMenu === 'introVue'" />
+            <maker_01 v-if="selectedMenu === 'maker_01'" />
+            <chat_01 v-if="selectedMenu === 'chat_01'" />
+          </div>
     <!-- <Footer/> -->
   </div>
 </template>
@@ -46,11 +48,6 @@ export default {
   flex-direction: column;
   min-height: 100vh;
 }
-
-.main-container {
-  display: flex;
-}
-
 
 
 /* 화면 크기가 768px 이하인 경우 버튼들을 세로로 정렬 */
