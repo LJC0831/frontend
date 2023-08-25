@@ -38,15 +38,15 @@
     </div>
     <!-- 채팅 입력 -->
     <div class="chat-input">
-      <textarea  v-model="newMessage" 
-      style="width: 92%; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); padding: 10px; resize: none;"
-      @paste="handleImagePaste" @keydown="handleKeyDown" placeholder="메시지를 입력하세요..." />
-      <label for="imageInput" class="upload-button" style="margin-top: 9px;">
-        <img src="../../assets/uploadIKon.png" alt="첨부 아이콘" style="width:40px"/>
-      </label>
-      <input type="file" id="imageInput" ref="imageInput" @change="handleUpload" class="hidden-input"/>
-      <button @click="sendMessage" v-if="!loading" class="send-button">전송</button>
-      <button @click="sendMessage" v-if="loading" class="send-button">Loading...</button>
+      <textarea  v-model="newMessage" class ="chat-textarea" @paste="handleImagePaste" @keydown="handleKeyDown" placeholder="메시지를 입력하세요..." />
+      <div>
+        <label for="imageInput" class="upload-button">
+          <img src="../../assets/uploadIKon.png" alt="첨부 아이콘" style="width:40px"/>
+        </label>
+        <input type="file" id="imageInput" ref="imageInput" @change="handleUpload" class="hidden-input"/>
+        <button @click="sendMessage" v-if="!loading" class="send-button">전송</button>
+        <button @click="sendMessage" v-if="loading" class="send-button">Loading...</button>
+      </div>
     </div>
     <!-- 모달 창 -->
     <div v-if="showModal" class="modal">
@@ -636,6 +636,14 @@
     font-family: Arial, sans-serif;
     }
   }
+.chat-textarea{
+  width: 92%; 
+  border: 1px solid #ccc; 
+  border-radius: 8px; 
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); 
+  padding: 10px; 
+  resize: none;
+}
 
 .message-container{
   display: flex;
@@ -684,12 +692,14 @@ input[type="text"] {
 }
 
 .send-button {
-  padding: 8px 16px;
+  display: none;
+  padding: 5px 0px;
   background-color: #6200ff;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  width: 100%;
 }
 
 .send-button:hover {
@@ -871,6 +881,14 @@ input[type="text"] {
       flex-direction: column;
       align-items: stretch;
     }
+    .chat-textarea{
+      width: 100%; 
+      border: 1px solid #ccc; 
+      border-radius: 8px; 
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); 
+      padding: 10px; 
+      resize: none;
+    }
 
     .profile-image{
     border-radius: 50%; /* 원형태로 보여주기 위해 반지름을 50%로 설정 */
@@ -940,6 +958,8 @@ input[type="text"] {
   }
   .send-button {
   margin-left: 0px;
+  width: 89%;
+  display: inline;
   }
 
 }
