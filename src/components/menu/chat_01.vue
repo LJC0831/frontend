@@ -240,7 +240,7 @@
       },
       // 브라우저 알림 생성
       showNotification(message, imgUrl) {
-        if (this.previousNotification) {
+        if (this.previousNotification || document.hasFocus()) {
           return; // 이미 알림이 떠 있는 경우 함수 종료
         }
         if ('Notification' in window) {
