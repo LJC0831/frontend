@@ -295,7 +295,6 @@ export default {
       font-size: 14px;
       color: #fff;
       cursor: pointer;
-      margin-top: 5px;
     }
   }
 
