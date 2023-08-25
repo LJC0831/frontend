@@ -183,7 +183,7 @@ export default {
       } catch (error) {
         console.error("검색 오류:", error);
       }
-    }, 100),
+    }, 400),
     // 방만들기
     createChatRoom(){
       alert('아직은 관리자만 개설가능합니다.');
