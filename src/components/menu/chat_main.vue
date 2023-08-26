@@ -11,34 +11,44 @@
             <h1 class="chat-title">자유로운 채팅방</h1>
             <p class="chat-description">누구나 자유롭게 채팅이 가능합니다. 욕설 및 성희롱 등 입력 시 제재 될 수 있습니다. 매너채팅 부탁드립니다 ^^</p>
             <p>
-              <input type="text" v-model.trim="searchKeyword" @keyup.enter="search01()" placeholder="Search" class="search-input" />&nbsp;
-              <button class="btn btn-primary search-button" @click="search01()">조회</button>
+              <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'ALL'" @keyup.enter="search01('ALL')" placeholder="Search" class="search-input" />&nbsp;
+              <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'Chatting'" @keyup.enter="search01('Chatting')" placeholder="Search" class="search-input" />&nbsp;
+              <button class="btn btn-primary search-button" v-if="activeTab === 'ALL'" @click="search01('ALL')">조회</button>
+              <button class="btn btn-primary search-button" v-if="activeTab === 'Chatting'" @click="search01('Chatting')">조회</button>
               <button class="btn btn-success create-button" @click="createChatRoom()">방 만들기</button>
             </p>
           </div>
         </div>
       </section>
+      <div class="tabs-container">
+        <div class="tabs">
+          <div v-for="(tab, index) in tabs" :key="index" @click="handleTabClick(tab)" :class="{ active: activeTab === tab }"  class="tab">
+            {{ tab }}
+          </div>
+        </div>
+      </div>
 
-      <div class="album py-5 bg-body-tertiary">
-        <div class="container">
-          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4" id="chat_main_img">
-            <div class="col" v-for="(chatRooms, index) in chatRooms" :key="index" @click="openChatRoom(chatRooms)">
-              <div class="card shadow-sm">
-                <div class="card-body">
-                  <p class="card-text">
-                    <span>
-                      <img v-if="chatRooms.profile_id !== null" :src="chatRooms.imageUrl" class="thumbnail-image" />
-                      <img v-if="chatRooms.profile_id === null" src="../../assets/profile-user.png" class="thumbnail-image" />
-                    </span>
-                    <span class="chatromm-subject">{{ chatRooms.subject }}</span>
-                    <span><img v-if="chatRooms.pwd !== null" src="../../assets/pwdIkon.jpg" /></span>
-                  </p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+        <div class="album py-5 bg-body-tertiary">
+          <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4" id="chat_main_img">
+              <div class="col" v-for="(chatRooms, index) in chatRooms" :key="index" @click="openChatRoom(chatRooms)">
+                <div class="card shadow-sm">
+                  <div class="card-body">
+                    <p class="card-text">
+                      <span>
+                        <img v-if="chatRooms.profile_id !== null" :src="chatRooms.imageUrl" class="thumbnail-image" />
+                        <img v-if="chatRooms.profile_id === null" src="../../assets/profile-user.png" class="thumbnail-image" />
+                      </span>
+                      <span class="chatromm-subject">{{ chatRooms.subject }}</span>
+                      <span><img v-if="chatRooms.pwd !== null" src="../../assets/pwdIkon.jpg" /></span>
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                      </div>
+                      <span class="chatromm-cnt">{{ chatRooms.user_cnt }}/{{ chatRooms.expire_cnt }}</span>
+                      <small class="text-body-secondary">{{ chatRooms.formatted_date }}</small>
                     </div>
-                    <span class="chatromm-cnt">{{ chatRooms.user_cnt }}/{{ chatRooms.expire_cnt }}</span>
-                    <small class="text-body-secondary">{{ chatRooms.formatted_date }}</small>
                   </div>
                 </div>
               </div>
@@ -47,7 +57,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -77,12 +86,19 @@ export default {
       selectUser:[],
       checkFlag:false,
       myUserYn:false,  //방 입장여부(본인)
+      tabs:['ALL', 'Chatting'],
+      activeTab: 'ALL',
+      searchUserId: null,
     };
   },
   methods: {
+    //탭 선택
+    handleTabClick(tab) {
+      this.activeTab = tab;
+      this.search01(tab);
+    },
     //채팅방 open
     openChatRoom(chatRooms) {
-      this.search01();
       const pwd = chatRooms.pwd; // 방 비밀번호
       const chat_id = chatRooms.id; //방 id
       const subject = chatRooms.subject; // 방 제목
@@ -157,19 +173,26 @@ export default {
     changeSelectedChatId(chatId) {
       this.selectedChatId = chatId;
       this.myUserYn = false;
-      this.search01();
+      this.search01('ALL');
     },
     exit() {
       this.selectedChatId = null;
       this.myUserYn=false;
-      this.search01();
+      this.search01('ALL');
     },
     //조회
-    search01: debounce(async function () {
+    search01: debounce(async function (tab) {
       try {
-        const response = await api.get("/api/chat/search",{ params: { q: this.searchKeyword } });
+        
+        if (tab !== 'ALL'){
+          const token = localStorage.getItem('token');
+          const decodedToken = jwtDecode(token);
+          this.searchUserId = decodedToken.username; // 사용자 아이디 추출
+        } 
+        debugger;
+        const response = await api.get("/api/chat/search",{ params: { q: this.searchKeyword, userId:this.searchUserId } });
         this.chatRooms = response.data;
-
+        this.searchUserId = null;
         for (const chatRoom of this.chatRooms) {
           if (chatRoom.profile_id !== null) {
             try {
@@ -206,12 +229,44 @@ export default {
     }
   },
   created() {
-    this.search01();
+    this.search01('ALL');
   }
 };
 </script>
   
 <style scoped>
+.tabs-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+  .tabs {
+    display: flex;
+    margin-bottom: 10px;
+  }
+
+  .tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    color: #333;
+    background-color: #fff;
+    border-radius: 5px;
+    margin: 0 5px;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+
+  .tab {
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  .active {
+    font-weight: bold;
+    border-bottom: 2px solid #333; /* 선택된 탭 하단 선 색상 */
+    background-color: #3498db; /* 선택된 탭 배경색 */
+  }
+
   .chat-section {
     background-color: #f9f9f9;
     padding: 20px;
