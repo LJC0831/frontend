@@ -856,10 +856,19 @@ input[type="text"] {
   display: block; /* 블록 요소로 설정하여 가로 중앙 정렬을 위함 */
 }
 /* 모달 스타일 */
+@media (min-width: 768px) {
+  .chat-container{
+    width:100%;
+    max-height: 700px;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    }
+  }
 
 @media (max-width: 768px) {
     .chat-container{
-    width:90%;
+    width:100%;
     max-height: 700px;
     display: flex;
     flex-direction: column;
