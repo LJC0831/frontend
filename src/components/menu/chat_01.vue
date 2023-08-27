@@ -244,6 +244,9 @@
         // 대한민국 시간대로 조정
         const adjustedDate = new Date(originalDate.getTime() - (9 * 60 * 60 * 1000));
 
+        // 월과 일 추출
+        const month = adjustedDate.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
+        const day = adjustedDate.getDate();
         // 시간과 분 추출
         const hours = adjustedDate.getHours();
         const minutes = adjustedDate.getMinutes();
@@ -254,7 +257,7 @@
         const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
         // 최종 포맷팅된 시간 문자열 생성
-        const formattedTime = `${ampm} ${formattedHours}:${formattedMinutes}`;
+        const formattedTime = `${month}/${day} ${ampm} ${formattedHours}:${formattedMinutes}`;
 
         return formattedTime;
       },
@@ -568,19 +571,6 @@
             this.loadingPreviousMessages = false;
           } 
         }
-        // const ins_ymdhms = new Date(this.messages[0].ins_ymdhms);
-        // const adjustDate = new Date(ins_ymdhms.getTime() - (9 * 60 * 60 * 1000)); //한국시간적용
-
-        // const today = new Date().toLocaleDateString();
-        // const messageDate = new Date(adjustDate).toLocaleDateString();
-        // // 토스트(메세지시간)
-        // if (!this.isShowingToast && messageDate !== today) {
-        //   this.isShowingToast = true;
-        //   this.showToast(`${messageDate}`);
-        //   setTimeout(() => {
-        //       this.isShowingToast = false;
-        //     }, 2000); // 2초 후에 토스트 메시지 표시 여부를 리셋
-        //   }
       },
 
       showToast(message) {
