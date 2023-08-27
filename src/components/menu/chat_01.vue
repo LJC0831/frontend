@@ -640,8 +640,8 @@
 
 @media (min-width: 768px) {
     .chat-container{
-    min-width:1400px;
-    max-height: 800px;
+    width:80%;
+    max-height: 700px;
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif;
@@ -834,30 +834,12 @@ input[type="text"] {
   font-size: 18px;
 }
 
-.modal_close,  .chat_invite{
-  background-color: #6200ff;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  margin-bottom: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  float: right;
-}
 
 .modal button:hover {
   background-color: #0056b3;
 }
 
-.chat_input_invite{
-  width: 65%;
-}
-.chat_invite {
-  width: 30%;
-  margin-left: 10px;
-  margin-bottom: 10px;
-}
+
 .chat_exit {
   background-color: brown;
   padding: 10px 20px;
@@ -877,7 +859,7 @@ input[type="text"] {
 
 @media (max-width: 768px) {
     .chat-container{
-    width:100%;
+    width:90%;
     max-height: 700px;
     display: flex;
     flex-direction: column;

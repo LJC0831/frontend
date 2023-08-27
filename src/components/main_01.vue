@@ -60,10 +60,10 @@
 }
 
 @media (min-width: 768px) {
-    .header-section{
-    min-width: 1300px;
-    }
+  .header-section{
+   width:100%;
   }
+}
 
 .header-text {
   display: block; /* 블록 요소로 만듭니다. */

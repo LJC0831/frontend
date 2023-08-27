@@ -189,7 +189,6 @@ export default {
           const decodedToken = jwtDecode(token);
           this.searchUserId = decodedToken.username; // 사용자 아이디 추출
         } 
-        debugger;
         const response = await api.get("/api/chat/search",{ params: { q: this.searchKeyword, userId:this.searchUserId } });
         this.chatRooms = response.data;
         this.searchUserId = null;
@@ -350,6 +349,14 @@ export default {
       font-size: 14px;
       color: #fff;
       cursor: pointer;
+    }
+    .chat-main {
+      width: 80%;
+    }
+  }
+  @media (min-width: 768px) {
+    .chat-main {
+      width: 100%;
     }
   }
 
