@@ -12,9 +12,9 @@
             <p class="chat-description">누구나 자유롭게 채팅이 가능합니다. 욕설 및 성희롱 등 입력 시 제재 될 수 있습니다. 매너채팅 부탁드립니다 ^^</p>
             <p>
               <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'ALL'" @keyup.enter="search01('ALL')" placeholder="Search" class="search-input" />&nbsp;
-              <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'Chatting'" @keyup.enter="search01('Chatting')" placeholder="Search" class="search-input" />&nbsp;
+              <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'My Chat'" @keyup.enter="search01('My Chat')" placeholder="Search" class="search-input" />&nbsp;
               <button class="btn btn-primary search-button" v-if="activeTab === 'ALL'" @click="search01('ALL')">조회</button>
-              <button class="btn btn-primary search-button" v-if="activeTab === 'Chatting'" @click="search01('Chatting')">조회</button>
+              <button class="btn btn-primary search-button" v-if="activeTab === 'My Chat'" @click="search01('My Chat')">조회</button>
               <button class="btn btn-success create-button" @click="createChatRoom()">방 만들기</button>
             </p>
           </div>
@@ -108,7 +108,7 @@ export default {
       selectUser:[],
       checkFlag:false,
       myUserYn:false,  //방 입장여부(본인)
-      tabs:['ALL', 'Chatting'],
+      tabs:['ALL', 'My Chat'],
       activeTab: 'ALL',
       searchUserId: null,
       createChatModal: false, // 모달 창 띄우기 여부
@@ -183,7 +183,7 @@ export default {
             }
           },
           (error) => { // 에러 콜백
-            alert('일반유저는 최대 방5개까지만 입장가능합니다.');
+            alert('일반유저는 최대 방3개까지만 입장가능합니다.');
             console.error("채팅방 입장 오류:", error);
             return;
           }
