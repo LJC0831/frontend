@@ -11,7 +11,7 @@
             <h1 class="chat-title">자유로운 채팅방</h1>
             <p class="chat-description">누구나 자유롭게 채팅이 가능합니다. 욕설 및 성희롱 등 입력 시 제재 될 수 있습니다. 매너채팅 부탁드립니다 ^^</p>
             <p>
-              <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'ALL'" @keyup.enter="search01('ALL')" placeholder="Search" class="search-input" />&nbsp;
+              <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'ALL'" @keyup.enter="search01('ALL')" placeholder="Search" class="search-input" />
               <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'My Chat'" @keyup.enter="search01('My Chat')" placeholder="Search" class="search-input" />&nbsp;
               <button class="btn btn-primary search-button" v-if="activeTab === 'ALL'" @click="search01('ALL')">조회</button>
               <button class="btn btn-primary search-button" v-if="activeTab === 'My Chat'" @click="search01('My Chat')">조회</button>
@@ -31,7 +31,7 @@
         <div class="album py-5 bg-body-tertiary">
           <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4" id="chat_main_img">
-              <div class="col" v-for="(chatRooms, index) in chatRooms" :key="index" @click="openChatRoom(chatRooms)">
+              <div class="col" v-for="(chatRooms, index) in displayedChatRooms" :key="index"  @click="openChatRoom(chatRooms)">
                 <div class="card shadow-sm">
                   <div class="card-body">
                     <p class="card-text">
@@ -78,6 +78,14 @@
             <button class="search-button" @click="this.createChatModal=false;">취소</button>
         </div>
       </div>
+      <!-- 모달 창 END-->
+      <div class="page-container">
+        <div>
+          <button class="prev-button" @click="prevPage" :disabled="currentPage === 1">이전</button>&nbsp;
+          <span class="page-indicator">{{ currentPage }} / {{ pageCount }}</span>&nbsp;
+          <button class="next-button" @click="nextPage" :disabled="currentPage === pageCount">다음</button>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -114,13 +122,29 @@ export default {
       createChatModal: false, // 모달 창 띄우기 여부
       expire_cnt: 2, // 초기 값 1로 설정
       subject: '방제목을 입력해주세요', // 초기 값 1로 설정
+      chatRooms: [],        // 전체 채팅방 정보가 들어 있는 배열
+      itemsPerPage: this.isMobile() ? 4 : 6,
+      currentPage: 1        // 현재 페이지 번호
     };
+  },
+  computed: {
+    pageCount() {
+      return Math.ceil(this.chatRooms.length / this.itemsPerPage);
+    },
+    displayedChatRooms() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.chatRooms.slice(startIndex, endIndex);
+    }
   },
   methods: {
     //탭 선택
     handleTabClick(tab) {
       this.activeTab = tab;
       this.search01(tab);
+    },
+    isMobile() {
+      return window.innerWidth <= 800; // 600px 이하면 모바일로 판단
     },
     //채팅방 open
     openChatRoom(chatRooms) {
@@ -196,6 +220,16 @@ export default {
 
       
     },
+    nextPage() {
+      if (this.currentPage < this.pageCount) {
+        this.currentPage++;
+      }
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
     //채팅>채팅목록 호출
     changeSelectedChatId(chatId) {
       this.selectedChatId = chatId;
@@ -251,6 +285,12 @@ export default {
         return;
       }
       const token = localStorage.getItem('token');
+      if(token == null) {
+          alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
+          window.location.reload();
+          // 페이지 새로고침
+          return;
+        }
       const decodedToken = jwtDecode(token);
       const userid = decodedToken.username; // 사용자 아이디 추출
       chatMethods.methods.createChatRoom(this.subject, this.newPassword, userid, this.expire_cnt, (res) => {
@@ -302,7 +342,7 @@ export default {
 </script>
   
 <style scoped>
-.tabs-container {
+.tabs-container, .page-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -369,7 +409,7 @@ export default {
     border-radius: 5px;
     font-size: 14px;
     color: #333;
-    width: 200px;
+    width: 150x;
   }
 
   .search-button {
@@ -486,6 +526,18 @@ export default {
   text-decoration: none;
   cursor: pointer;
 }
+.prev-button, .next-button{
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
 /* 모달 style 끝 */
   
   @media (max-width: 768px) {
@@ -497,14 +549,12 @@ export default {
       color: #fff;
       cursor: pointer;
     }
-    .chat-main {
-      
+    .col {
+      width: 25%; /* 모바일에서 4개씩 표시 */
     }
   }
   @media (min-width: 768px) {
-    .chat-main {
-      
-    }
+   
   }
 
 
