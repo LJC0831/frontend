@@ -67,10 +67,15 @@
               <input type="text" v-model="subject" id="subject" class="form-control" />
             </div>
             <div class="form-group">
-              <label for="newPassword">비밀번호</label>
+              <label for="newPassword">비밀번호(선택)</label>
               <input type="password" v-model="newPassword" id="newPassword" class="form-control" />
             </div>
-            <button class="btn btn-success" @click="createChatRoom01">방 만들기</button>
+            <div class="form-group">
+              <label for="newPassword">인원(명)</label>
+              <input type="number" v-model="expire_cnt" id="expire_cnt" class="form-control" />
+            </div>
+            <button class="btn btn-success" @click="createChatRoom01">방 만들기</button>&nbsp;
+            <button class="search-button" @click="this.createChatModal=false;">취소</button>
         </div>
       </div>
     </div>
@@ -107,6 +112,8 @@ export default {
       activeTab: 'ALL',
       searchUserId: null,
       createChatModal: false, // 모달 창 띄우기 여부
+      expire_cnt: 1, // 초기 값 1로 설정
+      subject: '방제목을 입력해주세요', // 초기 값 1로 설정
     };
   },
   methods: {
@@ -233,10 +240,31 @@ export default {
     },
     //방만들기
     createChatRoom01(){
+      if(this.subject === ''){
+        alert('방 제목을 입력해주세요.');
+        return;
+      } 
+      if(this.expire_cnt === '' ){
+        alert('인원수를 입력해주세요.');
+        return;
+      }
       const token = localStorage.getItem('token');
       const decodedToken = jwtDecode(token);
       const userid = decodedToken.username; // 사용자 아이디 추출
-      chatMethods.methods.createChatRoom(this.subject, this.newPassword, userid, (res) => {
+      chatMethods.methods.createChatRoom(this.subject, this.newPassword, userid, this.expire_cnt, (res) => {
+            if(res.status === 200){
+              this.createChatRoom02(res.data.chat_id, userid);
+            }
+          },
+          (error) => { // 에러 콜백
+            alert('방만들기 최대횟수를 초과하였습니다.');
+            this.createChatModal = false;
+            console.error("방만들기 오류:", error);
+          });
+    },
+    //방만들기 후처리
+    createChatRoom02(chat_id, userid){
+      chatMethods.methods.createChatRoom02(chat_id, userid, (res) => {
             if(res.status === 200){
               alert('방이 생성되었습니다.');
               this.createChatModal = false;
@@ -244,6 +272,7 @@ export default {
             }
           },
           (error) => { // 에러 콜백
+            this.createChatModal = false;
             console.error("채팅방 입장 오류:", error);
           });
     },

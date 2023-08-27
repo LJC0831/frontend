@@ -28,8 +28,13 @@ export default {
           .then(successCallback)
           .catch(errorCallback);
         },
-          createChatRoom(subject, newPassword, user_id, successCallback, errorCallback) {
-            api.post('/api/char/create', {subject, newPassword, user_id})
+          createChatRoom(subject, newPassword, user_id, expire_cnt, successCallback, errorCallback) {
+            api.post('/api/char/create', {subject, newPassword, user_id, expire_cnt})
+          .then(successCallback)
+          .catch(errorCallback);
+        },
+          createChatRoom02(chat_id, userid, successCallback, errorCallback) {
+            api.post('/api/char/create02', {chat_id, userid})
           .then(successCallback)
           .catch(errorCallback);
         },
