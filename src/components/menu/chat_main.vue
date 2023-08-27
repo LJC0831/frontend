@@ -79,9 +79,9 @@
         </div>
       </div>
       <!-- 모달 창 END-->
-      <div class="page-container">
+      <div class="page-container" v-if="selectedChatId === null">
         <div>
-          <button class="prev-button" @click="prevPage" :disabled="currentPage === 1">이전</button>&nbsp;
+          <button class="prev-button" @click="prevPage" :disabled="currentPage === 1" >이전</button>&nbsp;
           <span class="page-indicator">{{ currentPage }} / {{ pageCount }}</span>&nbsp;
           <button class="next-button" @click="nextPage" :disabled="currentPage === pageCount">다음</button>
         </div>
