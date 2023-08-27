@@ -347,7 +347,6 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
 }
   .tabs {
     display: flex;
@@ -362,6 +361,7 @@ export default {
     border-radius: 5px;
     margin: 0 5px;
     transition: background-color 0.3s, transform 0.3s;
+    border: 1px solid #ccc;
   }
 
   .tab {
@@ -373,6 +373,9 @@ export default {
     font-weight: bold;
     border-bottom: 2px solid #333; /* 선택된 탭 하단 선 색상 */
     background-color: #3498db; /* 선택된 탭 배경색 */
+    color: white;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
   }
 
   .chat-section {
