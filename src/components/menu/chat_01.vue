@@ -640,11 +640,12 @@
 
 @media (min-width: 768px) {
     .chat-container{
-    width:80%;
-    max-height: 700px;
+    width:100%;
+    max-height: 800px;
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif;
+    background-color: rgb(240, 252, 255);
     }
   }
 .chat-textarea{
@@ -677,6 +678,7 @@
 .chat-messages {
   padding: 10px;
   overflow-y: auto;
+  /*background-image: url("../../assets/img_background.jpg"); /* 이미지 파일 경로 */
 }
 
 .message {
@@ -686,6 +688,7 @@
   border-radius: 5px;
   /* background-color: #f0f0f0;  */
   margin: 5px;
+  
 }
 
 .chat-input {
@@ -772,11 +775,7 @@ input[type="text"] {
   min-width: 40px;
   min-height: 40px;
 }
-.chat-title {
-  font-size: 24px;
-  color: white;
-  margin: 0;
-}
+
 .message-image {
   max-width: 100%;
   max-height: 200px; /* 이미지의 최대 높이 설정 */
@@ -855,16 +854,8 @@ input[type="text"] {
   margin: 0 auto; /* 가운데 정렬 */
   display: block; /* 블록 요소로 설정하여 가로 중앙 정렬을 위함 */
 }
+
 /* 모달 스타일 */
-@media (min-width: 768px) {
-  .chat-container{
-    width:100%;
-    max-height: 700px;
-    display: flex;
-    flex-direction: column;
-    font-family: Arial, sans-serif;
-    }
-  }
 
 @media (max-width: 768px) {
     .chat-container{
@@ -872,6 +863,7 @@ input[type="text"] {
     max-height: 700px;
     display: flex;
     flex-direction: column;
+    background-color: rgb(240, 252, 255);
     font-family: Arial, sans-serif;
     }
     .chat-messages {
