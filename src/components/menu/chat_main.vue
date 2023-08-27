@@ -62,7 +62,6 @@
           <span class="close" @click="closeCreateChatModal">&times;</span>
           <!-- 모달 창 내용 -->
           <h2 class="modal-title">방 만들기</h2>
-          <form class="modal-form">
           <div class="form-group">
               <label for="subject">방 제목</label>
               <input type="text" v-model="subject" id="subject" class="form-control" />
@@ -72,7 +71,6 @@
               <input type="password" v-model="newPassword" id="newPassword" class="form-control" />
             </div>
             <button class="btn btn-success" @click="createChatRoom01">방 만들기</button>
-          </form>
         </div>
       </div>
     </div>
@@ -242,6 +240,7 @@ export default {
             if(res.status === 200){
               alert('방이 생성되었습니다.');
               this.createChatModal = false;
+              this.search01(this.activeTab);
             }
           },
           (error) => { // 에러 콜백
