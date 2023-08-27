@@ -49,15 +49,6 @@ export default {
   min-height: 100vh;
 }
 
-
-/* 화면 크기가 768px 이하인 경우 버튼들을 세로로 정렬 */
-@media (max-width: 768px) {
-  .main-container {
-    display: flex; /* 사이드바와 컨텐츠 영역을 가로로 배치 */
-    margin-right: 0;
-  }
-}
-
 </style>
 
 

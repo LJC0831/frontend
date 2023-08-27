@@ -498,12 +498,12 @@ export default {
       cursor: pointer;
     }
     .chat-main {
-      width: 80%;
+      
     }
   }
   @media (min-width: 768px) {
     .chat-main {
-      width: 100%;
+      
     }
   }
 

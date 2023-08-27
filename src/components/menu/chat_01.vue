@@ -630,7 +630,6 @@
 
 @media (min-width: 768px) {
     .chat-container{
-    width:100%;
     max-height: 800px;
     display: flex;
     flex-direction: column;
@@ -858,7 +857,7 @@ input[type="text"] {
 
 @media (max-width: 768px) {
     .chat-container{
-    width:100%;
+    
     max-height: 700px;
     display: flex;
     flex-direction: column;
