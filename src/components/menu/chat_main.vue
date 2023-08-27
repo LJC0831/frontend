@@ -183,7 +183,9 @@ export default {
             }
           },
           (error) => { // 에러 콜백
+            alert('일반유저는 최대 방5개까지만 입장가능합니다.');
             console.error("채팅방 입장 오류:", error);
+            return;
           }
         );
       } else {
