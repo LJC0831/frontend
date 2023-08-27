@@ -63,8 +63,8 @@
                 <button @click="dropUploadFile()" :disabled="isNotEditable">삭제하기</button>
             </div>
             <div class="form-group">
-                <label for="fileUpload">파일 업로드 :</label>&nbsp;
-                <input type="file" @change="handleFileUpload" id="fileUpload" ref="fileUploadRef" max="10485760" v-if="!state.uploadedFile" />
+                <label for="fileUpload" v-if ="showAddModal">파일 업로드 :</label>&nbsp;
+                <input type="file" @change="handleFileUpload" id="fileUpload" ref="fileUploadRef" max="10485760" v-if="!state.uploadedFile && showAddModal" />
             </div>
             <div class="modal-buttons">
                 <button @click="deleteMemo(editingMemoId)" :disabled="isNotEditable">삭제하기</button>
@@ -295,7 +295,6 @@ const getDownloadLink = () => {
   }
 // 업로드파일 삭제
 const dropUploadFile = () => {
-    debugger;
     api.get(`/api/file/delete/${editingFileId.value}`, ).then((response) => {
                     alert('삭제하였습니다.');
                 })
