@@ -837,6 +837,15 @@ input[type="text"] {
   border: none;
   transition: background-color 0.3s;
 }
+.modal_close {
+  padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #3498db;
+    font-size: 14px;
+    color: #fff;
+    cursor: pointer;
+}
 .enlarged-image {
   max-width: 100%; /* 이미지 최대 너비 설정 */
   max-height: 80vh; /* 이미지 최대 높이 설정 (화면 높이의 80%) */

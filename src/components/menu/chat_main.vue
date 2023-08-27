@@ -112,7 +112,7 @@ export default {
       activeTab: 'ALL',
       searchUserId: null,
       createChatModal: false, // 모달 창 띄우기 여부
-      expire_cnt: 1, // 초기 값 1로 설정
+      expire_cnt: 2, // 초기 값 1로 설정
       subject: '방제목을 입력해주세요', // 초기 값 1로 설정
     };
   },
