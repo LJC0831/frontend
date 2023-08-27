@@ -28,6 +28,11 @@ export default {
           .then(successCallback)
           .catch(errorCallback);
         },
+          createChatRoom(subject, newPassword, user_id, successCallback, errorCallback) {
+            api.post('/api/char/create', {subject, newPassword, user_id})
+          .then(successCallback)
+          .catch(errorCallback);
+        },
           
     },
 

@@ -56,6 +56,25 @@
           </div>
         </div>
       </div>
+       <!-- 모달 창 -->
+       <div v-if="createChatModal" class="modal">
+        <div class="modal-content">
+          <span class="close" @click="closeCreateChatModal">&times;</span>
+          <!-- 모달 창 내용 -->
+          <h2 class="modal-title">방 만들기</h2>
+          <form class="modal-form">
+          <div class="form-group">
+              <label for="subject">방 제목</label>
+              <input type="text" v-model="subject" id="subject" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="newPassword">비밀번호</label>
+              <input type="password" v-model="newPassword" id="newPassword" class="form-control" />
+            </div>
+            <button class="btn btn-success" @click="createChatRoom01">방 만들기</button>
+          </form>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -89,6 +108,7 @@ export default {
       tabs:['ALL', 'Chatting'],
       activeTab: 'ALL',
       searchUserId: null,
+      createChatModal: false, // 모달 창 띄우기 여부
     };
   },
   methods: {
@@ -208,7 +228,25 @@ export default {
     }, 400),
     // 방만들기
     createChatRoom(){
-      alert('아직은 관리자만 개설가능합니다.');
+      this.createChatModal = true;
+    },
+    closeCreateChatModal() {
+      this.createChatModal = false;
+    },
+    //방만들기
+    createChatRoom01(){
+      const token = localStorage.getItem('token');
+      const decodedToken = jwtDecode(token);
+      const userid = decodedToken.username; // 사용자 아이디 추출
+      chatMethods.methods.createChatRoom(this.subject, this.newPassword, userid, (res) => {
+            if(res.status === 200){
+              alert('방이 생성되었습니다.');
+              this.createChatModal = false;
+            }
+          },
+          (error) => { // 에러 콜백
+            console.error("채팅방 입장 오류:", error);
+          });
     },
     //imgurl조회
     async getFileUrl(fileNo) {
@@ -341,6 +379,84 @@ export default {
   .col{
     margin-bottom: 10px;
   }
+
+  /* 모달 스타일 */
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* 반투명 배경 */
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 90%;
+}
+
+.close {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  cursor: pointer;
+}
+.modal-title {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-control {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #333;
+}
+
+.btn-success {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #2ecc71;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-success:hover {
+  background-color: #27ae60;
+}
+
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+/* 모달 style 끝 */
   
   @media (max-width: 768px) {
     .create-button {
