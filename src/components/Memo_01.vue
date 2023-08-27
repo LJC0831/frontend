@@ -291,11 +291,17 @@ const handleFileUpload = () => {
 // 파일다운로드
 const getDownloadLink = () => {
 // 다운로드 링크 생성
-    return `/api/file/download/${editingFileId.value}`;
+    if (editingFileId.value) {
+            return `/api/file/download/${editingFileId.value}`;
+    } else {
+        return null; // 또는 다른 기본값 설정
+    }
   }
 // 업로드파일 삭제
 const dropUploadFile = () => {
     api.get(`/api/file/delete/${editingFileId.value}`, ).then((response) => {
+                    editingFileId.value = null;
+                    file_no.value = null;
                     alert('삭제하였습니다.');
                 })
                 .catch((error) => {
