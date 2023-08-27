@@ -409,7 +409,7 @@ export default {
     border-radius: 5px;
     font-size: 14px;
     color: #333;
-    width: 150x;
+    width: 300px;
   }
 
   .search-button {
@@ -545,12 +545,24 @@ export default {
       border: none;
       border-radius: 5px;
       background-color: #2ecc71;
-      font-size: 14px;
+      font-size: 12px;
       color: #fff;
       cursor: pointer;
+      width:95px;
+    }
+    .search-button{
+      font-size: 12px;
     }
     .col {
       width: 25%; /* 모바일에서 4개씩 표시 */
+    }
+    .search-input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 12px;
+      color: #333;
+      width: 150px;
     }
   }
   @media (min-width: 768px) {
