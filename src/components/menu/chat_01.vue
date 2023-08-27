@@ -628,15 +628,6 @@
   
 <style scoped>
 
-@media (min-width: 768px) {
-    .chat-container{
-    max-height: 800px;
-    display: flex;
-    flex-direction: column;
-    font-family: Arial, sans-serif;
-    background-color: rgb(240, 252, 255);
-    }
-  }
 .chat-textarea{
   width: 100%; 
   border: 1px solid #ccc; 
@@ -855,9 +846,17 @@ input[type="text"] {
 
 /* 모달 스타일 */
 
+@media (min-width: 768px) {
+    .chat-container{
+    max-height: 800px;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    background-color: rgb(240, 252, 255);
+    }
+  }
 @media (max-width: 768px) {
     .chat-container{
-    
     max-height: 700px;
     display: flex;
     flex-direction: column;
@@ -907,7 +906,6 @@ input[type="text"] {
 
   .message-name {
     font-weight: bold; /* 볼드체 */
-    min-width: 50px;
     vertical-align: middle;
     font-size: 13px;
   }
