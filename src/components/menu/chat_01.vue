@@ -349,7 +349,10 @@
       // 이미지 붙여넣기 작업
       async uploadImageToServer(file) {
         const formData = new FormData();
+        const timestamp = Date.now();
+        const uniqueFileName = `${timestamp}_img_upload`;
         formData.append('file', file);
+        formData.append('fileName', uniqueFileName);
         const token = localStorage.getItem('token');
         chatMethods.methods.uploadImageToServer(formData,token,(res) => {
               const chat_file_id = res.data.fileId;
@@ -367,7 +370,7 @@
 
         // 파일 크기 확인
         if (file && file.size > this.maxFileSize) {
-            this.showToast('이미지 크기가 너무 큽니다. 1MB 이하의 이미지를 선택해주세요.');
+            this.showToast('파일 또는 이미지 크기가 너무 큽니다. 1MB 이하의 이미지를 선택해주세요.');
             return;
            }
         const reader = new FileReader();
