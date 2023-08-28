@@ -17,7 +17,6 @@
       <Intro v-if="selectedMenu === 'introVue'" />
       <Memo_01 v-if="selectedMenu === 'memoVue'" />
       <maker_01 v-if="selectedMenu === 'maker_01'" />
-      <chat_01 v-if="selectedMenu === 'chat_01'" />
       <chat_main v-if="selectedMenu === 'chat_main'" />
     </div>
   </div>
@@ -29,7 +28,6 @@ import Memo_01 from "./Memo_01.vue";
 import Intro from "./intro_01.vue";
 import main01 from "./main_01.vue";
 import maker_01 from "./maker_01.vue";
-import chat_01 from "./menu/chat_01.vue";
 import chat_main from "./menu/chat_main.vue";
 
 export default {
@@ -41,7 +39,6 @@ export default {
         { name: '', label: '메인화면' },
         { name: 'introVue', label: '소개 글 보기' },
         { name: 'chat_main', label: '채팅방' },
-       /* { name: 'chat_01', label: '대화하기' },*/
         { name: 'memoVue', label: '문의하기' },
         { name: 'maker_01', label: '제작자정보' },
       ],
@@ -68,7 +65,7 @@ export default {
     handleMenuClick(menuName) {
       this.selectedMenu = menuName;
       this.$emit('menuSelected', menuName);
-      // 화면 크기가 768px 이하인 경우  this.sidebarOpen = false 처리하고싶어
+      // 화면 크기가 768px 이하인 경우  this.sidebarOpen = false 처리하고싶어   
       if (window.innerWidth <= 768) {
         this.sidebarOpen = false;
       }
@@ -79,7 +76,6 @@ export default {
       Intro,
       main01,
       maker_01,
-      chat_01,
       chat_main,
   },
 };
@@ -154,12 +150,6 @@ export default {
 
 .menu-item:hover {
   background-color: #777;
-}
-
-.content {
-  transition: margin-left 0.3s ease;
-  width: 100%;
-  pointer-events: auto; /* 사이드바가 열렸을 때 포인터 이벤트를 받도록 설정 */
 }
 
 </style>
