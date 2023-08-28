@@ -107,6 +107,14 @@ export default {
   components: {
     ChatRoom01,
   },
+  mounted() {
+    // 모바일 뒤로가기 이벤트 감지
+    window.addEventListener("popstate", this.handleMobileBackButton);
+  },
+  beforeDestroy() {
+    // 컴포넌트가 제거되기 전에 이벤트 리스너 해제
+    window.removeEventListener("popstate", this.handleMobileBackButton);
+  },
   data() {
     return {
       searchKeyword: '',
@@ -347,6 +355,13 @@ export default {
       }
     }
   },
+  handleMobileBackButton(event) {
+      // 모바일 뒤로가기 버튼이 눌렸을 때 실행할 로직
+      if (this.isMobile() && this.selectedChatId !== null) {
+        // 선택된 채팅이 있을 경우 exit() 메서드 실행
+        this.exit();
+      }
+    },
   created() {
     this.search01('ALL');
   }
