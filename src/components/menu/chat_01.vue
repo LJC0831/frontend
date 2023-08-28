@@ -850,7 +850,7 @@ input[type="text"] {
 
 @media (min-width: 768px) {
     .chat-container{
-    max-height: 800px;
+    height: 750px;
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif;

@@ -2,7 +2,7 @@
   <div>
     <div class="chat-main" v-if="selectedChatId !== null">
       <ChatRoom01 :selectedChatId="selectedChatId" :selectSubject="selectSubject" :selectUser="selectUser" @changeSelectedChatId="changeSelectedChatId" />
-      <button class="btn btn-primary search-button" id="btn-exit" @click="exit()">뒤로가기</button>
+      <button class="btn btn-primary search-button" id="btn-exit" v-if="exitbuttonFlag" @click="exit()">뒤로가기</button>
     </div>
     <div class="chat-room" v-if="selectedChatId === null">
       <section class="chat-section">
@@ -115,6 +115,7 @@ export default {
       selectSubject:null,
       selectUser:[],
       checkFlag:false,
+      exitbuttonFlag:this.isMobile() ? false : true, //뒤로가기버튼활성화여부
       myUserYn:false,  //방 입장여부(본인)
       tabs:['ALL', 'My Chat'],
       activeTab: 'ALL',
