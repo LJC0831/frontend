@@ -730,7 +730,6 @@ input[type="text"] {
 .other-message {
   margin-left:10px;
   background-color: #f1e0e0;
-  align-self: flex-end;
 }
 
 .message-name {
@@ -904,7 +903,6 @@ input[type="text"] {
 
   .other-message {
     background-color: #f1e0e0;
-    align-self: flex-end;
   }
 
   .message-name {
