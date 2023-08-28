@@ -135,7 +135,10 @@ export default {
     displayedChatRooms() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
-      return this.chatRooms.slice(startIndex, endIndex);
+      const displayedRooms = this.chatRooms.slice(startIndex, endIndex);
+
+      this.getImageUrls(displayedRooms); // 이미지 URL 가져오기 호출
+      return displayedRooms;
     }
   },
   methods: {
@@ -259,16 +262,6 @@ export default {
         const response = await api.get("/api/chat/search",{ params: { q: this.searchKeyword, userId:this.searchUserId } });
         this.chatRooms = response.data;
         this.searchUserId = null;
-        for (const chatRoom of this.chatRooms) {
-          if (chatRoom.profile_id !== null) {
-            try {
-              const imageUrl = await this.getFileUrl(chatRoom.profile_id);
-              chatRoom.imageUrl = imageUrl;
-            } catch (error) {
-              console.error("이미지 URL 조회 오류:", error);
-            }
-          }
-        }
       } catch (error) {
         console.error("검색 오류:", error);
       }
@@ -323,6 +316,19 @@ export default {
             this.createChatModal = false;
             console.error("채팅방 입장 오류:", error);
           });
+    },
+    //imgurl조회전처리
+    async getImageUrls(chatRooms){
+      for (const chatRoom of chatRooms) {
+        if (chatRoom.profile_id !== null) {
+          try {
+            const imageUrl = await this.getFileUrl(chatRoom.profile_id);
+            chatRoom.imageUrl = imageUrl;
+          } catch (error) {
+            console.error("이미지 URL 조회 오류:", error);
+          }
+        }
+      }
     },
     //imgurl조회
     async getFileUrl(fileNo) {
