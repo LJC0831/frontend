@@ -69,7 +69,7 @@
     <div v-if="isImageModalOpen" class="modal">
       <div class="modal-content2">
         <img :src="selectedImage" alt="확대 이미지" class="enlarged-image">
-        <button class="modal_close" @click="closeImageModal">닫기</button>
+        <button ref="closeButton" class="modal_close" @click="closeImageModal" @keyup.esc="closeImageModal">닫기</button>
       </div>
     </div>
   </div>
@@ -501,6 +501,12 @@
       openImageModal(imageUrl) {
         this.selectedImage = imageUrl;
         this.isImageModalOpen = true;
+         // 이미지 모달이 열릴 때 닫기 버튼에 포커스를 줌
+         this.$nextTick(() => {
+          setTimeout(() => {
+            this.$refs.closeButton.focus();
+          }, 0);
+        });
       },
 
       // 이미지 모달 닫기
