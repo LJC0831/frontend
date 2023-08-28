@@ -195,6 +195,14 @@
       this.socket.emit('getLatestMessages',chatId);
     },
     methods: {
+      // 웹소켓종료
+      disconnectWebSocket() {
+      // 웹소켓 연결을 끊는 작업을 수행합니다.
+        if (this.socket) {
+          this.socket.close();
+          this.socket = null; // 소켓 변수 초기화
+        }
+      },
       // 채팅목록 이동
       changeChatIdInChild() {
         // 새로운 채팅 ID로 변경

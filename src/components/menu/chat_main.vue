@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="chat-main" v-if="selectedChatId !== null">
-      <ChatRoom01 :selectedChatId="selectedChatId" :selectSubject="selectSubject" :selectUser="selectUser" @changeSelectedChatId="changeSelectedChatId" />
+      <ChatRoom01 ref="chatComponent" :selectedChatId="selectedChatId" :selectSubject="selectSubject" :selectUser="selectUser" @changeSelectedChatId="changeSelectedChatId" />
       <button class="btn btn-primary search-button" id="btn-exit" v-if="exitbuttonFlag" @click="exit()">뒤로가기</button>
     </div>
     <div class="chat-room" v-if="selectedChatId === null">
@@ -147,6 +147,10 @@ export default {
     isMobile() {
       return window.innerWidth <= 800; // 600px 이하면 모바일로 판단
     },
+    // 소켓끊기
+    exitChat() {
+      this.$refs.chatComponent.disconnectWebSocket();
+    },
     //채팅방 open
     openChatRoom(chatRooms) {
       const pwd = chatRooms.pwd; // 방 비밀번호
@@ -238,6 +242,7 @@ export default {
       this.search01('ALL');
     },
     exit() {
+      this.exitChat();
       this.selectedChatId = null;
       this.myUserYn=false;
       this.search01('ALL');
