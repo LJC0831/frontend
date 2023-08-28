@@ -233,6 +233,7 @@
       exitUser(){
         this.loading2 = true;
         const chat_id = this.selectedChatId;
+        this.disconnectWebSocket();
         chatMethods.methods.chatDeleteUser(chat_id,this.loginUserId,(res) => {
             if(res.status === 200){
             this.showModal = false;
