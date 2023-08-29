@@ -208,6 +208,9 @@ export default {
 
       if(pwd ==! null){
         const enteredPassword = prompt('비밀번호를 입력하세요:');
+          if(enteredPassword === null){
+            return;
+          }
           if (enteredPassword !== pwd) {
             alert('비밀번호가 일치하지 않습니다.');
             return;
