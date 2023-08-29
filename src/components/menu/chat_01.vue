@@ -874,7 +874,7 @@ input[type="text"] {
   }
 @media (max-width: 768px) {
     .chat-container{
-    max-height: 700px;
+    max-height: 600px;
     display: flex;
     flex-direction: column;
     background-color: rgb(240, 252, 255);
@@ -964,7 +964,7 @@ input[type="text"] {
   }
   .send-button {
   margin-left: 0px;
-  width: 89%;
+  width: 86%;
   display: inline;
   }
 
