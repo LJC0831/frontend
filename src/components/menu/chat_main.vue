@@ -268,7 +268,7 @@ export default {
       this.myUserYn=false;
       this.search01('ALL');
       this.$router.push({ path: '/chatrooms' }); // 채팅방 목록 화면으로 이동
-      //this.$router.replace(`/`);
+      this.$router.replace(`/`);
     },
     //조회
     search01: debounce(async function (tab) {
