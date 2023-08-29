@@ -109,6 +109,7 @@ export default {
   },
   mounted() {
     // 모바일 뒤로가기 이벤트 감지
+    alert('뒤로가기 이벤트감지1');
     window.addEventListener("popstate", this.handleMobileBackButton);
     window.history.pushState({}, ""); // 브라우저 히스토리 변경
   },
@@ -357,6 +358,7 @@ export default {
     }
   },
   handleMobileBackButton(event) {
+      alert('뒤로가기 이벤트감지2');
       // 모바일 뒤로가기 버튼이 눌렸을 때 실행할 로직
       if (this.isMobile() && this.selectedChatId !== null) {
         // 선택된 채팅이 있을 경우 exit() 메서드 실행
