@@ -38,6 +38,7 @@ export default {
   methods: {
     handleMenuSelected(menuName) {
       this.selectedMenu = menuName; // 선택된 메뉴 이름으로 selectedMenu 데이터를 업데이트합니다
+      this.$router.replace(`/`);
     },
     // toggleSidebar() {
     //   this.sidebarOpen = !this.sidebarOpen;

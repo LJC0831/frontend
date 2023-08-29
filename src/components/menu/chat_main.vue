@@ -225,6 +225,7 @@ export default {
               this.selectSubject = subject;
               this.selectUser = userIdsArray;
               this.$router.push(`/chat/${this.selectedChatId}`);
+              this.$router.replace(`/`);
             }
           },
           (error) => { // 에러 콜백
@@ -238,6 +239,7 @@ export default {
         this.selectSubject = subject;
         this.selectUser = userIdsArray;
         this.$router.push(`/chat/${this.selectedChatId}`);
+        this.$router.replace(`/`);
       }
 
       
@@ -264,6 +266,7 @@ export default {
       this.myUserYn=false;
       this.search01('ALL');
       this.$router.push({ path: '/chatrooms' }); // 채팅방 목록 화면으로 이동
+      this.$router.replace(`/`);
     },
     //조회
     search01: debounce(async function (tab) {
