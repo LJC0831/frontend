@@ -110,6 +110,7 @@ export default {
   mounted() {
     // 모바일 뒤로가기 이벤트 감지
     window.addEventListener("popstate", this.handleMobileBackButton);
+    window.history.pushState({}, ""); // 브라우저 히스토리 변경
   },
   beforeDestroy() {
     // 컴포넌트가 제거되기 전에 이벤트 리스너 해제
