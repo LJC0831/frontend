@@ -261,7 +261,9 @@ export default {
       this.search01('ALL');
     },
     exit() {
-      this.exitChat();
+      try{
+        this.exitChat(); //소켓종료
+      } catch(error){}
       this.selectedChatId = null;
       this.myUserYn=false;
       this.search01('ALL');
