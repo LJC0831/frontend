@@ -319,8 +319,6 @@ watch(() => state.data.map((d) => d.checked),(checkedList) => {
 .memo {
     flex: 1;
     padding: 20px;
-    min-width:768px;
-    max-height: 760px;
     overflow-y: auto; /* 스크롤이 생기도록 설정 */
 }
 .memo ul {
