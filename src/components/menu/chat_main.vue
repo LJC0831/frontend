@@ -224,6 +224,7 @@ export default {
               this.selectedChatId = chat_id;
               this.selectSubject = subject;
               this.selectUser = userIdsArray;
+              this.$router.push(`/chat/${chatId}`);
             }
           },
           (error) => { // 에러 콜백
@@ -236,6 +237,7 @@ export default {
         this.selectedChatId = chat_id;
         this.selectSubject = subject;
         this.selectUser = userIdsArray;
+        this.$router.push(`/chat/${this.selectedChatId}`);
       }
 
       
@@ -261,6 +263,7 @@ export default {
       this.selectedChatId = null;
       this.myUserYn=false;
       this.search01('ALL');
+      this.$router.push({ path: '/chatrooms' }); // 채팅방 목록 화면으로 이동
     },
     //조회
     search01: debounce(async function (tab) {
@@ -334,15 +337,7 @@ export default {
     },
     handleMobileBackButton(event) {
       // 모바일 뒤로가기 버튼이 눌렸을 때 실행할 로직
-      if (this.isMobile() && this.selectedChatId !== null) {
-        // 선택된 채팅이 있을 경우 exit() 메서드 실행
-        this.exit();
-      } else {
-        // 선택된 채팅이 없을 경우 채팅방 목록으로 돌아가기
-        this.selectedChatId = null;
-        this.myUserYn = false;
-        event.preventDefault(); // 기본 동작 차단
-      }
+      this.exit(); 
     },
     //imgurl조회전처리
     async getImageUrls(chatRooms){
@@ -376,9 +371,6 @@ export default {
   },
   created() {
     this.search01('ALL');
-    // 모바일 뒤로가기 이벤트 감지
-    window.addEventListener("popstate", this.handleMobileBackButton);
-    this.pushEmptyState();
   }
 };
 </script>
