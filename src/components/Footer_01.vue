@@ -4,9 +4,9 @@
           <div class="icon" @click="navigateToPage('')">
             <i class="fas fa-home"></i>
           </div>
-          <div class="icon" @click="navigateToPage('chat_main')">
+          <!-- <div class="icon" @click="navigateToPage('chat_main')">
             <i class="fas fa-user"></i>
-          </div>
+          </div> -->
           <div class="icon" @click="navigateToPage('chat_main')"> 
             <i class="fas fa-comment"></i>
           </div>
