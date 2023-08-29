@@ -2,42 +2,46 @@
   <div class="ground">
     <Header/>
       <div class="main-container">
-        <Sidebar v-on:menuSelected="handleMenuSelected" :selectedMenu="selectedMenu" />
+        <!-- <Sidebar v-on:menuSelected="handleMenuSelected" :selectedMenu="selectedMenu" /> -->
       </div>
-        <!--<Memo/>-->
           <!-- Memo_01.vue 컴포넌트 보여주기 -->
           <div class="content">
             <main01 v-if="selectedMenu === ''" /> 
             <Memo_01 v-if="selectedMenu === 'memoVue'" />
             <Intro v-if="selectedMenu === 'introVue'" />
             <maker_01 v-if="selectedMenu === 'maker_01'" />
-            <chat_01 v-if="selectedMenu === 'chat_01'" />
+            <chat_main v-if="selectedMenu === 'chat_main'" />
           </div>
-    <!-- <Footer/> -->
+    <Footer @menuSelected="handleMenuSelected" />
   </div>
 </template>
 
 <script>
 /* eslint-disable */ 
 import Header from "./Header_01.vue";
-//import Footer from "./Footer_01.vue";
-import Sidebar from "./SideBar_01"; // 사이드바 컴포넌트를 import 합니다.
+import Footer from "./Footer_01.vue";
+import main01 from "./main_01.vue";
+import Memo_01 from "./Memo_01.vue";
+import Intro from "./intro_01.vue";
+import maker_01 from "./maker_01.vue";
+import chat_main from "./menu/chat_main.vue";
+// import Sidebar from "./SideBar_01"; // 사이드바 컴포넌트를 import 합니다.
 export default {
-  components:{Header, Sidebar},
-  //components:{Header, Footer, Sidebar},
+  //components:{Header, Sidebar},
+  components:{Header, Footer, main01, Memo_01, chat_main, Intro, maker_01},
   data() {
     return {
       selectedMenu: '', // 선택된 메뉴를 저장할 변수 추가
-      sidebarOpen: false, // 사이드바 열림 여부를 저장할 변수 추가
+      //sidebarOpen: false, // 사이드바 열림 여부를 저장할 변수 추가
     };
   },
   methods: {
     handleMenuSelected(menuName) {
       this.selectedMenu = menuName; // 선택된 메뉴 이름으로 selectedMenu 데이터를 업데이트합니다
     },
-    toggleSidebar() {
-      this.sidebarOpen = !this.sidebarOpen;
-    },
+    // toggleSidebar() {
+    //   this.sidebarOpen = !this.sidebarOpen;
+    // },
   },
 }
 </script>
@@ -48,6 +52,7 @@ export default {
   flex-direction: column;
   min-height: 100vh;
 }
+
 
 </style>
 

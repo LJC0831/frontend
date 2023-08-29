@@ -20,7 +20,7 @@ app.use(VueToast); // Register the VueToast plugin
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-      { path: '/', component: ChatList },
+      { path: '/chat', component: ChatList },
       { path: '/chat/:chatId', component: ChatRoom }
     ]
   });
