@@ -224,7 +224,7 @@ export default {
               this.selectedChatId = chat_id;
               this.selectSubject = subject;
               this.selectUser = userIdsArray;
-              this.$router.push(`/chat/${chatId}`);
+              this.$router.push(`/chat/${this.selectedChatId}`);
             }
           },
           (error) => { // 에러 콜백
