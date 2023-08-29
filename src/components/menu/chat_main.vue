@@ -329,6 +329,9 @@ export default {
             console.error("채팅방 입장 오류:", error);
           });
     },
+    pushEmptyState() {
+      window.history.pushState({}, ""); // 브라우저 히스토리 변경
+    },
     handleMobileBackButton(event) {
       alert('뒤로가기감지');
       // 모바일 뒤로가기 버튼이 눌렸을 때 실행할 로직
@@ -373,6 +376,9 @@ export default {
   },
   created() {
     this.search01('ALL');
+    // 모바일 뒤로가기 이벤트 감지
+    window.addEventListener("popstate", this.handleMobileBackButton);
+    this.pushEmptyState();
   }
 };
 </script>
