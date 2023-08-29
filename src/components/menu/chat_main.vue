@@ -110,7 +110,7 @@ export default {
   mounted() {
     // 모바일 뒤로가기 이벤트 감지
     window.addEventListener("popstate", this.handleMobileBackButton);
-    window.history.pushState({}, ""); // 브라우저 히스토리 변경
+    this.pushEmptyState();
   },
   beforeDestroy() {
     // 컴포넌트가 제거되기 전에 이벤트 리스너 해제
@@ -329,6 +329,9 @@ export default {
             console.error("채팅방 입장 오류:", error);
           });
     },
+    pushEmptyState() {
+      window.history.pushState({}, ""); // 브라우저 히스토리 변경
+    },
     handleMobileBackButton(event) {
       // 모바일 뒤로가기 버튼이 눌렸을 때 실행할 로직
       if (this.isMobile() && this.selectedChatId !== null) {
@@ -338,6 +341,7 @@ export default {
         // 선택된 채팅이 없을 경우 채팅방 목록으로 돌아가기
         this.selectedChatId = null;
         this.myUserYn = false;
+        event.preventDefault(); // 기본 동작 차단
       }
     },
     //imgurl조회전처리
@@ -373,6 +377,8 @@ export default {
   created() {
     this.search01('ALL');
     // 모바일 뒤로가기 이벤트 감지
+    window.addEventListener("popstate", this.handleMobileBackButton);
+    this.pushEmptyState();
   }
 };
 </script>
