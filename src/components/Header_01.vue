@@ -1,7 +1,7 @@
 <template>
     <header>
       <div class="login-container">
-        <div class="header-name" @click="refreshPage">MEMO App</div>
+        <div class="header-name" @click="refreshPage">Chat App</div>
         <div class="login-button-container">
           <div v-if="!isLoggedIn" class="signup-button" @click="showSignupModal = true">
             <button class="signup-btn">회원가입</button>&nbsp;
