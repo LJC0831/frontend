@@ -334,6 +334,7 @@ export default {
       } else {
         // 선택된 채팅이 없을 경우 채팅방 목록으로 돌아가기
         this.selectedChatId = null;
+        this.myUserYn = false;
       }
     },
     //imgurl조회전처리
