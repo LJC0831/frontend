@@ -41,10 +41,10 @@
       <textarea  v-model="newMessage" class ="chat-textarea" @paste="handleImagePaste" @keydown="handleKeyDown" placeholder="메시지를 입력하세요..." />
       <div>
         <label for="imageInput" class="upload-button">
-          <img src="../../assets/uploadIKon.png" alt="첨부 아이콘" style="width:40px"/>
+          <img src="../../assets/uploadIKon.png" alt="첨부 아이콘" style="width:35px;"/>
         </label>
         <input type="file" id="imageInput" ref="imageInput" @change="handleUpload" class="hidden-input"/>
-        <button @click="sendMessage" v-if="!loading" class="send-button">전송</button>
+        <button @click="sendMessage" v-if="!loading" class="send-button"><i class="fas fa-paper-plane"></i> </button>
         <button @click="sendMessage" v-if="loading" class="send-button">Loading...</button>
       </div>
     </div>
@@ -707,7 +707,7 @@ input[type="text"] {
 }
 
 .send-button {
-  display: none;
+  
   padding: 5px 0px;
   background-color: #6200ff;
   color: #fff;
@@ -715,6 +715,7 @@ input[type="text"] {
   border-radius: 5px;
   cursor: pointer;
   width: 100%;
+  margin-top: -100px;
 }
 
 .send-button:hover {
@@ -889,11 +890,12 @@ input[type="text"] {
     }
 
     .chat-input {
-      flex-direction: column;
       align-items: stretch;
+      display: flex;
+      padding: 10px;
     }
     .chat-textarea{
-      width: 100%; 
+      width: 90%; 
       border: 1px solid #ccc; 
       border-radius: 8px; 
       box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); 
