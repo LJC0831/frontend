@@ -38,11 +38,11 @@
     </div>
     <!-- 채팅 입력 -->
     <div class="chat-input">
+      <label for="imageInput" class="upload-button">
+          <img src="../../assets/uploadIKon.png" alt="첨부 아이콘" />
+      </label>
       <textarea  v-model="newMessage" class ="chat-textarea" @paste="handleImagePaste" @keydown="handleKeyDown" placeholder="메시지를 입력하세요..." />
       <div>
-        <label for="imageInput" class="upload-button">
-          <img src="../../assets/uploadIKon.png" alt="첨부 아이콘" style="width:35px;"/>
-        </label>
         <input type="file" id="imageInput" ref="imageInput" @change="handleUpload" class="hidden-input"/>
         <button @click="sendMessage" v-if="!loading" class="send-button"><i class="fas fa-paper-plane"></i> </button>
         <button @click="sendMessage" v-if="loading" class="send-button">Loading...</button>
@@ -656,6 +656,7 @@
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); 
   padding: 10px; 
   resize: none;
+  height: 50px;
 }
 
 .message-container{
@@ -707,21 +708,6 @@ input[type="text"] {
   border-radius: 5px;
 }
 
-.send-button {
-  
-  padding: 5px 0px;
-  background-color: #6200ff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 100%;
-  margin-top: -100px;
-}
-
-.send-button:hover {
-  background-color: #0056b3;
-}
 
 .profile-image{
   border-radius: 50%; /* 원형태로 보여주기 위해 반지름을 50%로 설정 */
@@ -865,6 +851,9 @@ input[type="text"] {
   margin: 0 auto; /* 가운데 정렬 */
   display: block; /* 블록 요소로 설정하여 가로 중앙 정렬을 위함 */
 }
+.upload-button{
+      margin-top: 10px;
+    }
 
 /* 모달 스타일 */
 
@@ -876,6 +865,19 @@ input[type="text"] {
     font-family: Arial, sans-serif;
     background-color: rgb(240, 252, 255);
     }
+    .send-button {
+      display: none;
+      padding: 5px 0px;
+      background-color: #6200ff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 25px;
+      height: 50px;
+      
+    }
+
   }
 @media (max-width: 768px) {
     .chat-container{
@@ -902,6 +904,7 @@ input[type="text"] {
       box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); 
       padding: 10px; 
       resize: none;
+      height: 50px;
     }
 
     .profile-image{
@@ -968,11 +971,20 @@ input[type="text"] {
   left: 50%;
   transform: translate(-50%, -50%);
   }
+
   .send-button {
-  margin-left: 0px;
-  width: 86%;
-  display: inline;
-  }
+  
+  padding: 5px 0px;
+  background-color: #6200ff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 40px;
+  height: 50px;
+  
+}
+
 
 }
   </style>
