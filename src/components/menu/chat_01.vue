@@ -233,9 +233,15 @@
     //textarea 포커싱
     handleChatTextareaFocus() {
       this.isChatTextareaFocused = true;
+      setTimeout(() => {
+            this.scrollToBottom();
+          }, 300); // 300ms(0.3초) 후에 실행됩니다.
     },
     handleChatTextareaBlur() {
       this.isChatTextareaFocused = false;
+      setTimeout(() => {
+            this.scrollToBottom();
+          }, 300); // 300ms(0.3초) 후에 실행됩니다.
     },
       //메세지 줄바꿈처리
       formatMessage(message) {
