@@ -1,5 +1,5 @@
 <template>
-  <div :class="['chat-container', { 'focused': isChatTextareaFocused }]">
+  <div class="chat-container">
     <!-- 채팅헤더 -->
     <div class="chat-header">
         <span><img src="@/assets/back-img.png" @click="exit()" style="width: 15px; margin-right: 10px;"></span> <!--https://www.flaticon.com/kr/free-icon/backward_318339 출처-->
@@ -42,10 +42,7 @@
       <label for="imageInput" class="upload-button">
           <img src="../../assets/uploadIKon.png" alt="첨부 아이콘" />
       </label>
-      <textarea  v-model="newMessage" class ="chat-textarea" 
-      @focus="handleChatTextareaFocus"
-      @blur="handleChatTextareaBlur"
-      @paste="handleImagePaste" @keydown="handleKeyDown" placeholder="메시지를 입력하세요..." />
+      <textarea  v-model="newMessage" class ="chat-textarea" @paste="handleImagePaste" @keydown="handleKeyDown" placeholder="메시지를 입력하세요..." />
       <div>
         <input type="file" id="imageInput" ref="imageInput" @change="handleUpload" class="hidden-input"/>
         <button @click="sendMessage" v-if="!loading" class="send-button"><i class="fas fa-paper-plane"></i> </button>
@@ -120,7 +117,6 @@
         loginUserId:null, //로그인유저
         firstChat:null, //스크롤 기준 맨위채팅
         loading2: false,
-        isChatTextareaFocused: false //텍스트박스 포커싱여부
       };
     },
     created() {
@@ -228,13 +224,6 @@
         event.preventDefault(); // 기본 동작(줄바꿈) 방지
         this.sendMessage();
       }
-    },
-    //textarea 포커싱
-    handleChatTextareaFocus() {
-      this.isChatTextareaFocused = true;
-    },
-    handleChatTextareaBlur() {
-      this.isChatTextareaFocused = false;
     },
       //메세지 줄바꿈처리
       formatMessage(message) {
@@ -875,7 +864,7 @@ input[type="text"] {
 
 @media (min-width: 768px) {
     .chat-container{
-    height: 80vh;
+    height: 85vh;
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif;
@@ -897,16 +886,11 @@ input[type="text"] {
   }
 @media (max-width: 768px) {
     .chat-container{
-    height: 80vh;
+    height: 85vh;
     display: flex;
     flex-direction: column;
     background-color: rgb(240, 252, 255);
     font-family: Arial, sans-serif;
-    transition: height 0.3s ease; /* 부드러운 애니메이션을 위해 트랜지션 적용 */
-    }
-    .chat-container.focused {
-      /* 포커싱됐을 때의 스타일 설정 */
-      height: calc(80vh - 10vh); /* 원하는 높이로 조절 */
     }
     .chat-messages {
       max-height: none;
