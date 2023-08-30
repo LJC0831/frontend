@@ -223,10 +223,10 @@ export default {
               this.selectedChatId = chat_id;
               this.selectSubject = subject;
               this.selectUser = userIdsArray;
-              this.$router.push(`/chat/${this.selectedChatId}`);
-              setTimeout(() => {
-                this.$router.replace(`/`);
-              }, 300);
+              // this.$router.push(`/chat/${this.selectedChatId}`);
+              // setTimeout(() => {
+              //   this.$router.replace(`/`);
+              // }, 300);
               
             }
           },
@@ -240,10 +240,10 @@ export default {
         this.selectedChatId = chat_id;
         this.selectSubject = subject;
         this.selectUser = userIdsArray;
-        this.$router.push(`/chat/${this.selectedChatId}`);
-        setTimeout(() => {
-                this.$router.replace(`/`);
-              }, 300);
+        // this.$router.push(`/chat/${this.selectedChatId}`);
+        // setTimeout(() => {
+        //         this.$router.replace(`/`);
+        //       }, 300);
       }
 
       
