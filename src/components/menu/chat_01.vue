@@ -227,7 +227,9 @@
     },
       //메세지 줄바꿈처리
       formatMessage(message) {
-        return message.replace(/\n/g, '<br>');
+        //URL처리
+        const urlPattern = /https?:\/\/\S+/g;
+        return message.replace(/\n/g, '<br>').replace(urlPattern, (url) => `<a href="${url}" target="_blank">${url}</a>`).replace(/ /g, "&nbsp;");
       },
       //방 나가기
       exitUser(){
@@ -345,6 +347,7 @@
           });
           }
       },
+
       // 이미지 붙여넣기 event
       handleImagePaste(event) {
         const items = (event.clipboardData || event.originalEvent.clipboardData).items;
