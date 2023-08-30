@@ -231,7 +231,7 @@ export default {
             }
           },
           (error) => { // 에러 콜백
-            alert('일반유저는 최대 방3개까지만 입장가능합니다.');
+            alert('일반유저는 최대 방3개까지만 입장 및 개설이 가능합니다.');
             console.error("채팅방 입장 오류:", error);
             return;
           }
@@ -322,7 +322,7 @@ export default {
             }
           },
           (error) => { // 에러 콜백
-            alert('방만들기 최대횟수를 초과하였습니다.');
+            alert('일반유저는 최대 방3개까지만 입장 및 개설이 가능합니다.');
             this.createChatModal = false;
             console.error("방만들기 오류:", error);
           });
