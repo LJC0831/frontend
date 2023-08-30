@@ -53,9 +53,9 @@
             </div>
             <div class="page-container" v-if="selectedChatId === null">
                 <div>
-                  <img src="@/assets/prevButton.png" @click="prevPage" :disabled="currentPage === 1" style="width: 30px; height: 30px;">&nbsp;
+                  <img src="../../assets/prevButton.png" @click="prevPage" :disabled="currentPage === 1" style="width: 30px; height: 30px;">&nbsp;
                   <span class="page-indicator">{{ currentPage }} / {{ pageCount }}</span>&nbsp;
-                  <img src="@/assets/nextButton.png" @click="nextPage" :disabled="currentPage === pageCount" style="width: 30px; height: 30px;">&nbsp;
+                  <img src="../../assets/nextButton.png" @click="nextPage" :disabled="currentPage === pageCount" style="width: 30px; height: 30px;">&nbsp;
                 </div>
             </div>
           </div>
