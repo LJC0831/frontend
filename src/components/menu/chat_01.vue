@@ -174,7 +174,6 @@
           if (this.chatContainer) {
             // 스크롤을 유지하도록 조정
             if (this.shouldMaintainScroll) {
-              debugger;
               this.scrollPosition.push(this.chatContainer.scrollHeight / 2);
               this.chatContainer.scrollTop = this.scrollPosition[0]; 
             } else {
@@ -193,7 +192,6 @@
       this.profileSearch(this.loginUserId);
       // 서버에 최근 메시지를 요청합니다.
       const chatId = this.selectedChatId;
-      alert('getLatestMessages 시작');
       this.socket.emit('getLatestMessages',chatId);
     },
     methods: {
@@ -866,7 +864,7 @@ input[type="text"] {
 
 @media (min-width: 768px) {
     .chat-container{
-    height: 750px;
+    height: 80vh;
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif;
@@ -888,7 +886,7 @@ input[type="text"] {
   }
 @media (max-width: 768px) {
     .chat-container{
-    max-height: 650px;
+    height: 80vh;
     display: flex;
     flex-direction: column;
     background-color: rgb(240, 252, 255);
