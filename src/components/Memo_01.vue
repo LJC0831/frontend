@@ -1,6 +1,7 @@
 <template>
     <div class="memo">
-        <div class = "act">
+        <span class="memo-title">문의하기</span>
+        <div class = "act"> 
             <input type="text" v-model="searchKeyword" @keyup.enter="search01()" placeholder="Search"/>
             <button class="btn btn-primary" @click="search01()">조회 </button>
             <button class="btn btn-success" @click="add()">+ 추가</button>
@@ -316,6 +317,13 @@ watch(() => state.data.map((d) => d.checked),(checkedList) => {
 </script>
 
 <style scoped>
+.memo-title{
+  font-size: 25px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif;
+  background-color: ivory;
+}
 .memo {
     flex: 1;
     padding: 20px;
