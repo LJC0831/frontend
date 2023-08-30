@@ -2,6 +2,7 @@
   <div class="chat-container">
     <!-- 채팅헤더 -->
     <div class="chat-header">
+        <span><img src="@/assets/back-img.png" @click="exit()" style="width: 15px; margin-right: 10px;"></span> <!--https://www.flaticon.com/kr/free-icon/backward_318339 출처-->
         <span>{{ selectSubject }}</span>
         <span style="float: right;">
             <i :class="'fas fa-bars'" @click="toggleSearch()"></i>
@@ -230,6 +231,11 @@
         //URL처리
         const urlPattern = /https?:\/\/\S+|www\.\S+/g;
         return message.replace(/\n/g, '<br>').replace(/ /g, "&nbsp;").replace(urlPattern, (url) => `<a href="${url}" target="_blank">${url}</a>`);
+      },
+      //뒤로가기
+      exit(){
+        this.disconnectWebSocket();
+        this.changeChatIdInChild();
       },
       //방 나가기
       exitUser(){
