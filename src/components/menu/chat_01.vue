@@ -670,10 +670,11 @@
   align-items: flex-start;
 }
 .chat-header {
-  background-color: #6200ff;
-  color: #fff;
+  background-color: #ffffff;
+  color: #333;
   padding: 10px;
-  border-radius: 10px 10px 0 0;
+  font-weight: bold; /* 볼드체 */
+
 }
 
 .chat-messages {
