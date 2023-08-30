@@ -53,9 +53,9 @@
             </div>
             <div class="page-container" v-if="selectedChatId === null">
                 <div>
-                  <button class="prev-button" @click="prevPage" :disabled="currentPage === 1" >이전</button>&nbsp;
+                  <img src="@/assets/prevButton.png" @click="prevPage" :disabled="currentPage === 1" style="width: 30px; height: 30px;">&nbsp;
                   <span class="page-indicator">{{ currentPage }} / {{ pageCount }}</span>&nbsp;
-                  <button class="next-button" @click="nextPage" :disabled="currentPage === pageCount">다음</button>
+                  <img src="@/assets/nextButton.png" @click="nextPage" :disabled="currentPage === pageCount" style="width: 30px; height: 30px;">&nbsp;
                 </div>
             </div>
           </div>
@@ -427,12 +427,6 @@ export default {
     border-radius: 10px;
   }
 
-  .chat-title  {
-    font-family: 'Arial', sans-serif;
-    font-size: 28px;
-    color: #333;
-    margin-bottom: 10px;
-  }
   .chatromm-subject{
     font-family: 'Montserrat', sans-serif;
     font-size: 15px;
@@ -442,13 +436,7 @@ export default {
     margin-left: 5px;
   }
 
-  .chat-description {
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
-    color: #777;
-    margin-bottom: 20px;
-  }
-
+ 
   .search-input {
     padding: 10px;
     border: 1px solid #ccc;
@@ -533,10 +521,6 @@ export default {
   margin-bottom: 15px;
 }
 
-.modal-form {
-  display: flex;
-  flex-direction: column;
-}
 
 .form-group {
   margin-bottom: 15px;
@@ -572,17 +556,7 @@ export default {
   text-decoration: none;
   cursor: pointer;
 }
-.prev-button, .next-button{
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  margin: 0 5px;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
+
 
 /* 모달 style 끝 */
   
