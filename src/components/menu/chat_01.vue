@@ -229,7 +229,7 @@
       formatMessage(message) {
         //URL처리
         const urlPattern = /https?:\/\/\S+/g;
-        return message.replace(/\n/g, '<br>').replace(urlPattern, (url) => `<a href="${url}" target="_blank">${url}</a>`).replace(/ /g, "&nbsp;");
+        return message.replace(/\n/g, '<br>').replace(/ /g, "&nbsp;").replace(urlPattern, (url) => `<a href="${url}" target="_blank">${url}</a>`);
       },
       //방 나가기
       exitUser(){
