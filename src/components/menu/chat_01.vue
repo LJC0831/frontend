@@ -109,7 +109,7 @@
         maxFileSize: 10 * 1024 * 1024, // 10MB (메가바이트)
         isImageModalOpen: false,
         selectedImage: '',
-        scrollPosition: null, //현재스크롤위치
+        scrollPosition: [], //현재스크롤위치
         previousNotification :false, //알람처리변수
         userSockets: [],//소켓
         isShowingToast: false, // 토스트 메시지 표시 중 여부
@@ -173,9 +173,9 @@
           if (this.chatContainer) {
             // 스크롤을 유지하도록 조정
             if (this.shouldMaintainScroll) {
-              this.scrollPosition = (this.scrollPosition + this.chatContainer.scrollHeight) / 2;
-              this.chatContainer.scrollTop = this.scrollPosition; 
-              this.scrollPosition = null;
+              debugger;
+              this.scrollPosition.push(this.chatContainer.scrollHeight / 2);
+              this.chatContainer.scrollTop = this.scrollPosition[0]; 
             } else {
               this.shouldMaintainScroll = true; // 스크롤 유지 변수를 다시 활성화
             }
