@@ -387,10 +387,10 @@
   <style scoped>
   header {
     text-align: center;
-    padding: 25px;
+    padding: 20px;
     border-bottom: 1px solid #eee;
     background: #333;
-    height: 100px;
+    height: 80px;
   }
   
   .login-modal {
