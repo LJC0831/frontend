@@ -8,8 +8,6 @@
       <section class="chat-section">
         <div class="chat_row">
           <div class="chat_left">
-            <h1 class="chat-title">자유로운 채팅방</h1>
-            <p class="chat-description">누구나 자유롭게 채팅이 가능합니다. 욕설 및 성희롱 등 입력 시 제재 될 수 있습니다. 매너채팅 부탁드립니다 ^^</p>
             <p>
               <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'ALL'" @keyup.enter="search01('ALL')" placeholder="Search" class="search-input" />
               <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'My Chat'" @keyup.enter="search01('My Chat')" placeholder="Search" class="search-input" />&nbsp;
@@ -133,7 +131,7 @@ export default {
       expire_cnt: 2, // 초기 값 1로 설정
       subject: '방제목을 입력해주세요', // 초기 값 1로 설정
       chatRooms: [],        // 전체 채팅방 정보가 들어 있는 배열
-      itemsPerPage: this.isMobile() ? 4 : 6,
+      itemsPerPage: this.isMobile() ? 6 : 9,
       currentPage: 1        // 현재 페이지 번호
     };
   },
