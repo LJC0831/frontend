@@ -196,6 +196,7 @@
       this.profileSearch(this.loginUserId);
       // 서버에 최근 메시지를 요청합니다.
       const chatId = this.selectedChatId;
+      this.loading = true;
       this.socket.emit('getLatestMessages',chatId);
     },
     methods: {
