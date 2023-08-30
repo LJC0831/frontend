@@ -151,6 +151,7 @@ export default {
   methods: {
     //탭 선택
     handleTabClick(tab) {
+      this.currentPage = 1;
       this.activeTab = tab;
       this.search01(tab);
     },
