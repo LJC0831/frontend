@@ -219,7 +219,7 @@
       },
     //채팅전송(엔터처리)
     handleKeyDown(event) {
-      if (event.key === "Enter" && !event.shiftKey) {
+      if ((event.key === "Enter"||event.keyCode === 13) && !event.shiftKey) {
         // Enter 키가 눌렸고 Shift 키가 눌리지 않았을 때만 전송
         event.preventDefault(); // 기본 동작(줄바꿈) 방지
         this.sendMessage();
