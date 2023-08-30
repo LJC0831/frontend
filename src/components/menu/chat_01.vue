@@ -906,7 +906,7 @@ input[type="text"] {
     }
     .chat-container.focused {
       /* 포커싱됐을 때의 스타일 설정 */
-      height: 50vh;
+      height: calc(80vh - 10vh); /* 원하는 높이로 조절 */
     }
     .chat-messages {
       max-height: none;
