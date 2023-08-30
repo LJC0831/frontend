@@ -1,7 +1,7 @@
 <template>
     <header>
       <div class="login-container">
-        <div class="header-name" @click="refreshPage">Chat App</div>
+        <div class="header-name" @click="refreshPage"><img src="@/assets/main_logo.png" style="width: 60px; height: 60px; margin-top: -10px;"></div>
         <div class="login-button-container">
           <div v-if="!isLoggedIn" class="signup-button" @click="showSignupModal = true">
             <button class="signup-btn">회원가입</button>&nbsp;
@@ -389,7 +389,7 @@
     text-align: center;
     padding: 20px;
     border-bottom: 1px solid #eee;
-    background: #333;
+    background: #252525;
     height: 80px;
   }
   
