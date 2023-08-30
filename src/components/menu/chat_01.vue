@@ -228,7 +228,7 @@
       //메세지 줄바꿈처리
       formatMessage(message) {
         //URL처리
-        const urlPattern = /https?:\/\/\S+/g;
+        const urlPattern = /https?:\/\/\S+|www\.\S+/g;
         return message.replace(/\n/g, '<br>').replace(/ /g, "&nbsp;").replace(urlPattern, (url) => `<a href="${url}" target="_blank">${url}</a>`);
       },
       //방 나가기
