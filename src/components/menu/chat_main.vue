@@ -42,9 +42,9 @@
                     </p>
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" style="display:none;">Edit</button>
                       </div>
-                      <span class="chatromm-cnt">{{ chatRooms.user_cnt }}/{{ chatRooms.expire_cnt }}</span>
+                      <span class="chatromm-cnt" style="margin-left: 50px;">{{ chatRooms.user_cnt }}/{{ chatRooms.expire_cnt }}</span>
                       <small class="text-body-secondary">{{ chatRooms.formatted_date }}</small>
                     </div>
                   </div>
