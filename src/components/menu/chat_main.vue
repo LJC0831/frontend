@@ -31,8 +31,8 @@
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4" id="chat_main_img">
               <div class="col" v-for="(chatRooms, index) in displayedChatRooms" :key="index"  @click="openChatRoom(chatRooms)">
                 <div class="card shadow-sm">
-                  <div class="card-body">
-                    <p class="card-text">
+                  <div class="card-body" style="height: 150px;">
+                    <p class="card-text" style="height: 64px;">
                       <span>
                         <img v-if="chatRooms.profile_id !== null" :src="chatRooms.imageUrl" class="thumbnail-image" />
                         <img v-if="chatRooms.profile_id === null" src="../../assets/profile-user.png" class="thumbnail-image" />
