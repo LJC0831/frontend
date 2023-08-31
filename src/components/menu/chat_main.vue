@@ -11,8 +11,8 @@
             <p>
               <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'ALL'" @keyup.enter="search01('ALL')" placeholder="Search" class="search-input" />
               <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'My Chat'" @keyup.enter="search01('My Chat')" placeholder="Search" class="search-input" />&nbsp;
-              <button class="btn btn-primary search-button" v-if="activeTab === 'ALL'" @click="search01('ALL')">조회</button>
-              <button class="btn btn-primary search-button" v-if="activeTab === 'My Chat'" @click="search01('My Chat')">조회</button>
+              <img v-if="activeTab === 'ALL'" src="../../assets/search-image.jpg" @click="search01('ALL')" class="class-search"/>
+              <img v-if="activeTab === 'My Chat'" src="../../assets/search-image.jpg"  @click="search01('My Chat')" class="class-search"/>
               <button class="btn btn-success create-button" @click="createChatRoom()">방 만들기</button>
             </p>
           </div>
@@ -53,9 +53,9 @@
             </div>
             <div class="page-container" v-if="selectedChatId === null">
                 <div>
-                  <img src="../../assets/prevButton.png" @click="prevPage" :disabled="currentPage === 1" style="width: 30px; height: 30px;">&nbsp;
+                  <img src="../../assets/prevButton.png" @click="prevPage" :disabled="currentPage === 1" style="width: 30px; height: 30px; cursor: pointer;">&nbsp;
                   <span class="page-indicator">{{ currentPage }} / {{ pageCount }}</span>&nbsp;
-                  <img src="../../assets/nextButton.png" @click="nextPage" :disabled="currentPage === pageCount" style="width: 30px; height: 30px;">&nbsp;
+                  <img src="../../assets/nextButton.png" @click="nextPage" :disabled="currentPage === pageCount" style="width: 30px; height: 30px; cursor: pointer;">&nbsp;
                 </div>
             </div>
           </div>
@@ -557,6 +557,15 @@ export default {
   cursor: pointer;
 }
 
+.class-search{
+  width:60px; 
+  height: 42px; 
+  margin-top:-5px; 
+  margin-left: -8px;
+}
+.class-search:hover{
+  cursor: pointer;
+}
 
 /* 모달 style 끝 */
   
@@ -570,6 +579,13 @@ export default {
       cursor: pointer;
       width:95px;
     }
+    .class-search{
+      width:45px; 
+      height: 38px; 
+      margin-top:-3px; 
+      margin-left: -8px;
+    }
+
     .search-button{
       font-size: 12px;
     }
