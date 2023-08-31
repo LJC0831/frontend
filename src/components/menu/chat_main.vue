@@ -547,7 +547,7 @@ export default {
 }
 
 .class-search{
-  width:60px; 
+  width:50px; 
   height: 42px; 
   margin-top:-5px; 
   margin-left: -8px;
@@ -568,7 +568,7 @@ export default {
   
   @media (max-width: 768px) {
     .class-search{
-      width:45px; 
+      width:40px; 
       height: 38px; 
       margin-top:-3px; 
       margin-left: -8px;
