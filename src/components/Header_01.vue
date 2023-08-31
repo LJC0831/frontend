@@ -363,7 +363,7 @@
             },
             //패스워드찾기
             searchPwd() {
-              if(this.searchPassword !== this.searchPassword){
+              if(this.searchPassword !== this.searchPassword2){
                 alert('패스워드가 일치하지 않습니다. 다시확인해주세요.');
                 return;
               }
@@ -380,6 +380,8 @@
                     this.showSearchPwd = false;
                     this.searchUserId = "";
                     this.searchPassword = "";
+                    this.mailCheck = false;
+                    this.signUpAppr2 =false;
                   },
                   (error) => {
                     // 에러 콜백
@@ -414,6 +416,8 @@
                     this.newUserId = "";
                     this.newPassword = "";
                     this.newName = "";
+                    this.mailCheck = false;
+                    this.signUpAppr2 =false;
                   },
                   (error) => {
                     // 에러 콜백
