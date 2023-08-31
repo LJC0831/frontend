@@ -314,8 +314,19 @@
               this.username = ""; // 입력한 사용자 이름 초기화
               this.password = ""; // 입력한 비밀번호 초기화
             },
+
             // 메일인증
             emailCheck(email) {
+              function isValidEmail(email) {
+                // 이메일 형태를 확인하는 정규표현식
+                const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                return emailPattern.test(email);
+              }
+
+              if (!isValidEmail(email)) {
+                alert("유효한 이메일이 아닙니다.");
+                return;
+              } 
               let randomNumber = '';
               for (let i = 0; i < 6; i++) {
                 const digit = Math.floor(Math.random() * 10); // 0부터 9까지의 난수 생성
