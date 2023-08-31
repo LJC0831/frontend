@@ -23,7 +23,7 @@
         <div v-if="showLoginModal" class="login-modal">
         <div class="login-form">
           <h2>로그인</h2>
-          <label for="username">아이디 :</label>&nbsp;
+          <label for="username">이메일 :</label>&nbsp;
           <input type="text" v-model="username" id="username" @keydown.enter="login"/>&nbsp;
           <label for="password">비밀번호: </label>&nbsp;
           <input type="password" v-model="password" id="password" @keydown.enter="login"/>&nbsp;
@@ -32,8 +32,8 @@
             <span v-else>로딩 중...</span>
           </button>&nbsp;
           <button @click="cancel">취소</button>&nbsp;
+          <span><label for="username">비밀번호를 잊으셨나요?</label></span>
         </div>
-        <div class="close-button" @click="showLoginModal = false">X</div>
       </div>
       <!-- 회원가입 모달 -->
       <div v-if="showSignupModal" class="login-modal">
@@ -136,9 +136,15 @@
                     window.location.reload();
                     alert("로그인에 성공했습니다!");
                   },
-                  (error) => {
+                  (error, res) => {
+                    if(error.response.status === 401){
+                      alert("존재하지 않는 이메일입니다.");
+                    } else if(error.response.status === 402){
+                      alert("패스워드가 틀렸습니다.");
+                    } else {
+                      alert("네트워크에 문제가 발생했습니다.");
+                    }
                     console.error("로그인 오류:", error);
-                    alert("아이디 패스워드가 틀립니다. ");
                     this.loading = false; //로딩 상태 활성화
                   }
                 );
