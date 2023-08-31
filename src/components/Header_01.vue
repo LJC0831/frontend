@@ -32,8 +32,26 @@
             <span v-else>로딩 중...</span>
           </button>&nbsp;
           <button @click="cancel">취소</button>&nbsp;
-          <span><label for="username">비밀번호를 잊으셨나요?</label></span>
+          <span @click="this.showSearchPwd = true; this.showLoginModal = false;"><label for="username" style="cursor: pointer;">비밀번호를 잊으셨나요?</label></span>
         </div>
+      </div>
+      <!-- 패스워드 찾기 모달 -->
+      <div v-if="showSearchPwd" class="login-modal">
+        <div class="login-form">
+          <h2>패스워드 찾기</h2>
+          <label for="searchUserId">아이디(인증가능한 이메일)</label>
+          <input type="text" v-model="searchUserId" id="searchUserId" />
+          <button @click="emailCheck(searchUserId)">인증하기</button>&nbsp;
+          <label v-if="mailCheck && !signUpAppr2" for="checkNumber">인증번호</label>
+          <input v-if="mailCheck && !signUpAppr2" type="text" v-model="checkNumberInput2"/>
+          <button v-if="mailCheck && !signUpAppr2" @click="emailNumCheck(checkNumberInput2,20)">확인</button>&nbsp;
+          <label for="searchPassword">비밀번호 </label>
+          <input type="password" v-model="searchPassword" id="searchPassword" />
+          <input type="password" v-model="searchPassword2" id="searchPassword2" />
+          <button @click="searchPwd">변경하기</button>&nbsp;
+          <button @click="cancelsearchPwd">취소</button>&nbsp;
+        </div>
+        <div class="close-button" @click="showSignupModal = false">X</div>
       </div>
       <!-- 회원가입 모달 -->
       <div v-if="showSignupModal" class="login-modal">
@@ -41,10 +59,10 @@
           <h2>회원가입</h2>
           <label for="newUserId">아이디(인증가능한 이메일)</label>
           <input type="text" v-model="newUserId" id="newUserId" />
-          <button @click="emailCheck">인증하기</button>&nbsp;
+          <button @click="emailCheck(newUserId)">인증하기</button>&nbsp;
           <label v-if="mailCheck && !signUpAppr" for="checkNumber">인증번호</label>
           <input v-if="mailCheck && !signUpAppr" type="text" v-model="checkNumberInput"/>
-          <button v-if="mailCheck && !signUpAppr" @click="emailNumCheck">확인</button>&nbsp;
+          <button v-if="mailCheck && !signUpAppr" @click="emailNumCheck(checkNumberInput,10)">확인</button>&nbsp;
           <label for="newPassword">비밀번호 </label>
           <input type="password" v-model="newPassword" id="newPassword" />
           <input type="password" v-model="newPassword2" id="newPassword2" />
@@ -107,7 +125,9 @@
         isEditingProfilePicture: false, // 프로필사진수정여부
         maxFileSize: 1024 * 1024, // 1MB (메가바이트)
         mailCheck:false, //메일체크여부
-        signUpAppr:false, //인증완료처리
+        signUpAppr:false, //인증완료처리 (회원가입)
+        signUpAppr2:false, //인증완료처리 (패스워드찾기)
+        showSearchPwd:false, //패스워드찾기 팝업 활성화여부
       };
     },
     methods: {
@@ -295,7 +315,7 @@
               this.password = ""; // 입력한 비밀번호 초기화
             },
             // 메일인증
-            emailCheck() {
+            emailCheck(email) {
               let randomNumber = '';
               for (let i = 0; i < 6; i++) {
                 const digit = Math.floor(Math.random() * 10); // 0부터 9까지의 난수 생성
@@ -303,7 +323,7 @@
               }
               this.checkNumber = randomNumber;
               loginMethods.methods.emailCheck(
-                this.newUserId,
+                email,
                 this.checkNumber,
                 (res) => {
                   alert("메일확인 후 인증번호를 입력하세요.!");
@@ -317,12 +337,49 @@
               );
             },
             //메일인증비교
-            emailNumCheck(){
-              if(this.checkNumber === this.checkNumberInput){
+            emailNumCheck(checkNumberInput, FLAG){
+              if(this.checkNumber === checkNumberInput){
                 alert('인증되었습니다.');
-                this.signUpAppr = true;
+                if (FLAG === 10) { //회원가입
+                  this.signUpAppr = true; 
+                } else { //패스워드찾기
+                  this.signUpAppr2 = true;
+                }
+                
               } else {
                 alert('인증번호가 일치하지 않습니다. 다시확인해주세요.');
+              }
+            },
+            //패스워드찾기
+            searchPwd() {
+              if(this.searchPassword !== this.searchPassword){
+                alert('패스워드가 일치하지 않습니다. 다시확인해주세요.');
+                return;
+              }
+              if(this.searchPassword.length < 8){
+                alert('패스워드는 8자리 이상 입력해주세요.');
+                return;
+              }
+              if(this.signUpAppr2){
+                loginMethods.methods.changePwd(
+                  this.searchUserId,
+                  this.searchPassword,
+                  (res) => {
+                    alert("패스워드를 변경하였습니다.");
+                    this.showSearchPwd = false;
+                    this.searchUserId = "";
+                    this.searchPassword = "";
+                  },
+                  (error) => {
+                    // 에러 콜백
+                    console.error("패스워드 변경 오류:", error);
+                    alert("패스워드 변경실패. 문의바랍니다.");
+                    this.signUpAppr2 = false;
+                  }
+                );
+              } else {
+                alert('이메일 인증해주세요.');
+                return;
               }
             },
             // 회원가입처리
@@ -356,6 +413,7 @@
                 );
               } else {
                 alert('이메일 인증해주세요.');
+                return;
               }
             },
             //회원가입팝업닫기
@@ -366,6 +424,14 @@
               this.newName = "";
               this.mailCheck = false; 
               this.signUpAppr =false; 
+            },
+            //패스워드찾기팝업닫기
+            cancelsearchPwd(){
+              this.showSearchPwd = false;
+              this.searchUserId = "";
+              this.searchPassword = "";
+              this.mailCheck = false; 
+              this.signUpAppr2 =false;
             },
           },
 

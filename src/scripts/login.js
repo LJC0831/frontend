@@ -23,6 +23,14 @@ export default {
         .then(successCallback)
         .catch(errorCallback);
     },
+    changePwd(searchUserId, searchPassword, successCallback, errorCallback) {
+      api.post("/api/changePwd", {
+        userId: searchUserId,
+        password: searchPassword,
+      })
+        .then(successCallback)
+        .catch(errorCallback);
+    },
     emailCheck(email, checkNumber, successCallback, errorCallback) {
       api.post("/api/emailCheck", {
         email: email,
