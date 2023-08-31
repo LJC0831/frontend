@@ -303,6 +303,11 @@ export default {
         alert('방 제목을 입력해주세요.');
         return;
       } 
+      debugger;
+      if(this.subject.length >= 40){
+        alert('제목은 20자내로 입력해주세요.');
+        return;
+      } 
       if(this.expire_cnt === '' ){
         alert('인원수를 입력해주세요.');
         return;
