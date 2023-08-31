@@ -13,7 +13,7 @@
               <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'My Chat'" @keyup.enter="search01('My Chat')" placeholder="Search" class="search-input" />&nbsp;
               <img v-if="activeTab === 'ALL'" src="../../assets/search-image.jpg" @click="search01('ALL')" class="class-search"/>
               <img v-if="activeTab === 'My Chat'" src="../../assets/search-image.jpg"  @click="search01('My Chat')" class="class-search"/>
-              <button class="btn btn-success create-button" @click="createChatRoom()">방 만들기</button>
+              <img src="../../assets/createRoom.png"  @click="createChatRoom()" class="create-button"/>
             </p>
           </div>
         </div>
@@ -464,17 +464,6 @@ export default {
     min-height: 40px;
     border-radius: 50%;
   }
-
-  .create-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #2ecc71;
-    font-size: 14px;
-    color: #fff;
-    cursor: pointer;
-    margin-left: 10px;
-  }
   #btn-exit{
     float: right;
     transition: background-color 0.3s, color 0.3s;
@@ -567,23 +556,29 @@ export default {
   cursor: pointer;
 }
 
+.create-button {
+    cursor: pointer;
+    margin-left: 5px;
+    width:50px; 
+    height:42px;
+    margin-top:-5px; 
+  }
+
 /* 모달 style 끝 */
   
   @media (max-width: 768px) {
-    .create-button {
-      border: none;
-      border-radius: 5px;
-      background-color: #2ecc71;
-      font-size: 12px;
-      color: #fff;
-      cursor: pointer;
-      width:95px;
-    }
     .class-search{
       width:45px; 
       height: 38px; 
       margin-top:-3px; 
       margin-left: -8px;
+    }
+    .create-button {
+      cursor: pointer;
+      margin-left: 5px;
+      width:40px; 
+      height:38px;
+      margin-top:-3px; 
     }
 
     .search-button{
