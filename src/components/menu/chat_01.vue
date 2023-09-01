@@ -138,6 +138,14 @@
       });
       this.manageUserSocket(user_id, this.socket);
 
+      
+      
+      this.profileSearch(this.loginUserId);
+      // 서버에 최근 메시지를 요청합니다.
+      const chatId = this.selectedChatId;
+      this.loading = true;
+      this.socket.emit('getLatestMessages',chatId);
+
       // 서버로부터 메시지를 받으면 채팅 화면에 메시지를 표시합니다.
       this.socket.on('message', (message) => {
         if (message.chatId === this.selectedChatId) {
@@ -192,12 +200,6 @@
         
       });
 
-      
-      this.profileSearch(this.loginUserId);
-      // 서버에 최근 메시지를 요청합니다.
-      const chatId = this.selectedChatId;
-      this.loading = true;
-      this.socket.emit('getLatestMessages',chatId);
     },
     methods: {
       // 웹소켓종료
