@@ -144,6 +144,7 @@
       // 서버에 최근 메시지를 요청합니다.
       const chatId = this.selectedChatId;
       this.loading = true;
+      alert('채팅내역을 불러옵니다.');
       this.socket.emit('getLatestMessages',chatId);
 
       // 서버로부터 메시지를 받으면 채팅 화면에 메시지를 표시합니다.
