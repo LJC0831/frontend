@@ -12,7 +12,6 @@
             <maker_01 v-if="selectedMenu === 'maker_01'" />
             <chat_main v-if="selectedMenu === 'chat_main'" />
           </div>
-    <div class="ad-container"></div>
     <Footer @menuSelected="handleMenuSelected" />
   </div>
 </template>
@@ -26,7 +25,6 @@ import Memo_01 from "./Memo_01.vue";
 import Intro from "./intro_01.vue";
 import maker_01 from "./maker_01.vue";
 import chat_main from "./menu/chat_main.vue";
-import { loadAds2 } from '../scripts/ads.js'
 // import Sidebar from "./SideBar_01"; // 사이드바 컴포넌트를 import 합니다.
 export default {
   //components:{Header, Sidebar},
@@ -36,9 +34,6 @@ export default {
       selectedMenu: '', // 선택된 메뉴를 저장할 변수 추가
       //sidebarOpen: false, // 사이드바 열림 여부를 저장할 변수 추가
     };
-  },
-  mounted() {
-    loadAds2(); // 광고를 로드하는 함수 호출
   },
   methods: {
     handleMenuSelected(menuName) {
