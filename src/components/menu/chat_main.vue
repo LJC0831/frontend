@@ -1,8 +1,5 @@
 <template>
-  <div @touchstart="startSwipe"
-    @touchmove="moveSwipe"
-    @touchend="endSwipe"
-    ref="pageContainer">
+  <div>
     <div class="chat-main" v-if="selectedChatId !== null">
       <ChatRoom01 ref="chatComponent" :selectedChatId="selectedChatId" :selectSubject="selectSubject" :selectUser="selectUser" @changeSelectedChatId="changeSelectedChatId" />
       <button class="btn btn-primary search-button" id="btn-exit" v-if="exitbuttonFlag" @click="exit()">뒤로가기</button>
@@ -135,10 +132,7 @@ export default {
       subject: '방제목을 입력해주세요', // 초기 값 1로 설정
       chatRooms: [],        // 전체 채팅방 정보가 들어 있는 배열
       itemsPerPage: this.isMobile() ? 6 : 9,
-      currentPage: 1,        // 현재 페이지 번호
-      touchStartX: null,
-      touchEndX: null,
-      minSwipeDistance: 50, // 페이지 변경을 위한 최소 스와이프 거리
+      currentPage: 1        // 현재 페이지 번호
     };
   },
   computed: {
@@ -155,29 +149,6 @@ export default {
     }
   },
   methods: {
-    //모바일 스와이프처리
-    startSwipe(event) {
-      this.touchStartX = event.touches[0].clientX;
-    },
-    moveSwipe(event) {
-      if (this.touchStartX !== null) {
-        this.touchEndX = event.touches[0].clientX;
-      }
-    },
-    endSwipe() {
-      if (this.touchStartX !== null && this.touchEndX !== null) {
-        const swipeDistance = this.touchEndX - this.touchStartX;
-        if (Math.abs(swipeDistance) >= this.minSwipeDistance) {
-          if (swipeDistance > 0) {
-            this.prevPage();
-          } else {
-            this.nextPage();
-          }
-        }
-      }
-      this.touchStartX = null;
-      this.touchEndX = null;
-    },
     //탭 선택
     handleTabClick(tab) {
       this.currentPage = 1;
