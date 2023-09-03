@@ -17,12 +17,13 @@
     <div class="chat-messages" ref="chatContainer" @scroll="checkScrollPosition">
       <!-- 메세지 표시 -->
       <div v-for="(message, index) in messages" :key="index" class="message">
-        <img v-if="!message.profilePicture" src="../../assets/profile-user.png" alt="내 정보" class="profile-image" />
-        <img v-if="message.profilePicture" class="profile-image" :src="message.profilePicture" alt="프로필 사진" />
+        <img v-if="!message.profilePicture && message.chat_type !== 'announcement'" src="../../assets/profile-user.png" alt="내 정보" class="profile-image" />
+        <img v-if="message.profilePicture && message.chat_type !== 'announcement'" class="profile-image" :src="message.profilePicture" alt="프로필 사진" />
         <div class="message-container">
           <div class="message-content">
           <span class="message-name">{{ message.editedName }} </span>
-            <div class="message-bubble" :class="{ 'other-message': message.user_id !== this.loginUserId 
+            <div class="message-bubble" :class="{ 'announcement-message': message.chat_type === 'announcement'
+                                                , 'other-message': message.user_id !== this.loginUserId 
                                                 , 'my-message': message.user_id === this.loginUserId }">
               <span class="message-text" v-html="formatMessage(message.message)"></span>
             </div>
@@ -891,6 +892,11 @@ input[type="text"] {
 .upload-button{
       margin-top: 10px;
     }
+.announcement-message{
+  background-color: #bbb; /* 공지사항 배경색 */
+  border-radius: 10px; /* 공지사항 메시지 모서리 둥글게 */
+  font-size: 1px;
+}
 
 /* 모달 스타일 */
 
