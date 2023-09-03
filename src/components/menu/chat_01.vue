@@ -931,6 +931,7 @@ input[type="text"] {
     .chat-messages {
       max-height: none;
       overflow-y: auto;
+      margin-left: -15px;
     }
 
     .chat-input {
