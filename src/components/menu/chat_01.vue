@@ -340,6 +340,10 @@
           // 페이지 새로고침
           return;
         }
+        if(this.newMessage.length>=4000){
+          alert('2000자 이상 입력불가합니다.');
+          return;
+        }
         if (!event.shiftKey) { //쉬프트 엔터 시 줄바꿈
           // 도배체크
           const now = new Date();
