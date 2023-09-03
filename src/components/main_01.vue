@@ -12,20 +12,21 @@
       <div class="product-device shadow-sm d-none d-md-block"></div>
       <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
     </div>
-    <div class="ad-container"></div>
+    <div class="ad-container">
+    </div>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
-import { loadAds } from '../scripts/ads.js'
+import { loadAds2 } from '../scripts/ads.js'
 
 export default {
   setup() {
     
   },
   mounted() {
-    loadAds(); // 광고를 로드하는 함수 호출
+    loadAds2(); // 광고를 로드하는 함수 호출
   },
 }
 </script>
