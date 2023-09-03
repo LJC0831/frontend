@@ -14,11 +14,12 @@ export default {
         .then(successCallback)
         .catch(errorCallback);
     },
-    signup(newUserId, newPassword, newName, successCallback, errorCallback) {
+    signup(newUserId, newPassword, newName, newGender,successCallback, errorCallback) {
       api.post("/api/signup", {
         userId: newUserId,
         password: newPassword,
         name: newName,
+        newGender: newGender,
       })
         .then(successCallback)
         .catch(errorCallback);

@@ -68,6 +68,13 @@
           <input type="password" v-model="newPassword2" id="newPassword2" />
           <label for="newName">이름 </label>
           <input type="text" v-model="newName" id="newName" />
+          <label for="newName">성별 </label>
+          <div class="radio-buttons">
+            <label>남</label>
+            <input type="radio" v-model="newGender" name="gender"  value="male" checked/>
+            <label>여</label>
+            <input type="radio" v-model="newGender" name="gender" value="female"/>
+          </div>
           <button @click="signup">회원가입</button>&nbsp;
           <button @click="cancelSignup">취소</button>&nbsp;
         </div>
@@ -117,6 +124,7 @@
         newUserId: "", // 회원가입용 새 아이디
         newPassword: "", // 회원가입용 새 비밀번호
         newName: "",
+        newGender: "male",
         isLoggedIn: false, // 로그인 상태를 저장하는 데이터 속성
         isUserProfileModalVisible: false, // 내정보 모달 표시 여부 추가
         editedName: "", 
@@ -410,12 +418,14 @@
                   this.newUserId,
                   this.newPassword,
                   this.newName,
+                  this.newGender,
                   (res) => {
                     alert("회원가입에 성공했습니다!");
                     this.showSignupModal = false;
                     this.newUserId = "";
                     this.newPassword = "";
                     this.newName = "";
+                    this.newGender = "";
                     this.mailCheck = false;
                     this.signUpAppr2 =false;
                   },
@@ -603,7 +613,14 @@
     display: inline-block;
     margin-left: 10px;
   }
+  .radio-buttons {
+  display: flex;
+  align-items: center;
+}
 
+.radio-buttons label {
+  margin-right: 10px;
+}
 
 
   </style>
