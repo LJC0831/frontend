@@ -123,7 +123,7 @@
         profilePicture: null,
         file_no: null,
         isEditingProfilePicture: false, // 프로필사진수정여부
-        maxFileSize: 1024 * 1024, // 1MB (메가바이트)
+        maxFileSize: 4 * 1024 * 1024, // 1MB (메가바이트)
         mailCheck:false, //메일체크여부
         signUpAppr:false, //인증완료처리 (회원가입)
         signUpAppr2:false, //인증완료처리 (패스워드찾기)
@@ -268,7 +268,7 @@
 
                // 파일 크기 확인
               if (file && file.size > this.maxFileSize) {
-                alert("이미지 크기가 너무 큽니다. 1MB 이하의 이미지를 선택해주세요.");
+                alert("이미지 크기가 너무 큽니다. 4MB 이하의 이미지를 선택해주세요.");
                 return;
               }
               const reader = new FileReader();
