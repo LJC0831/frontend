@@ -120,7 +120,8 @@
         loginUserId:null, //로그인유저
         firstChat:null, //스크롤 기준 맨위채팅
         loading2: false,
-        isChatTextareaFocused: false //텍스트박스 포커싱여부
+        isChatTextareaFocused: false, //텍스트박스 포커싱여부
+        ismobile:this.isMobile() ? false : true, //뒤로가기버튼활성화여부
       };
     },
     created() {
@@ -144,7 +145,7 @@
       // 서버에 최근 메시지를 요청합니다.
       const chatId = this.selectedChatId;
       this.loading = true;
-      if(!this.isMobile){
+      if(!this.ismobile){
         alert('채팅내역을 불러옵니다.');
       }
       this.socket.emit('getLatestMessages',chatId);
