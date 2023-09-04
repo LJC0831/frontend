@@ -19,7 +19,7 @@
       <div v-for="(message, index) in messages" :key="index" class="message">
         <img v-if="!message.profilePicture && message.chat_type !== 'announcement'" src="../../assets/profile-user.png" alt="내 정보" class="profile-image" />
         <img v-if="message.profilePicture && message.chat_type !== 'announcement'" class="profile-image" :src="message.profilePicture" alt="프로필 사진" />
-        <div class="message-container">
+        <div class="message-container" >
           <div class="message-content">
           <span class="message-name">{{ message.editedName }} </span>
             <div class="message-bubble" :class="{ 'announcement-message': message.chat_type === 'announcement'
@@ -163,7 +163,7 @@
               this.previousMessage = message.message;
               this.showNotification(message.message,message.profilePicture); // 새 메시지 알림 표시
               // 메시지 읽음 처리 후 데이터 갱신
-              this.chatReadUser(message.chatId, message.user_id, this.loginUserId);
+              this.chatReadUser(message.chatId, message.user_id, this.loginUserId, 'live');
             }
           });
         }
@@ -247,6 +247,7 @@
     },
     //textarea 포커싱
     handleChatTextareaFocus() {
+      this.chatReadUser(this.selectedChatId, this.messages[this.messages.length-1].user_id, this.loginUserId, 'focus');
       this.isChatTextareaFocused = true;
       setTimeout(() => {
             this.scrollToBottom();
@@ -311,11 +312,15 @@
         return formattedTime;
       },
       // 유저 read처리
-      chatReadUser(chatId, sendUserId, loginId) {
+      chatReadUser(chatId, sendUserId, loginId, flag) { //flag: live 실시간, focue: 화면포커스
       if(document.hasFocus()) { //포커싱중일때 메세지확인처리
           chatMethods.methods.chatReadUser(chatId,sendUserId,loginId,(res) => {
-            debugger;
-            this.messages[this.messages.length-1].selectUserCount = res.data[0].chat_view;
+            if(flag === "live"){
+              this.messages[this.messages.length-1].selectUserCount = res.data[0].chat_view;
+            }
+            else {
+
+            }
           })
         }
       },
