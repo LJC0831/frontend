@@ -35,6 +35,7 @@
             </div>
           </div>
         </div>
+        <span class="message-view" v-if="message.chat_view !== 0" >{{ message.chat_view }}</span>
         <span class="message-date">{{ formatDate(message.ins_ymdhms) }}</span>
       </div>
     </div>
@@ -373,8 +374,10 @@
             chatimageUrl:null,
             chatId: this.selectedChatId,
             isMyMessage: true,
+            selectUser: this.selectUser.length - 1,
             ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
           };
+          debugger;
           this.newMessage = '';
           this.socket.emit('message', messageObject);
           this.loading = false;
@@ -483,6 +486,7 @@
           chatimageUrl: `/api/file/download/${chat_file_id}`,
           chatId: this.selectedChatId,
           isMyMessage: true,
+          selectUser: this.selectUser.length - 1,
           ins_ymdhms: now - 10800000,
         };
 
@@ -536,6 +540,7 @@
           chatimageUrl:chatimageUrl,
           chatId: this.selectedChatId,
           isMyMessage: true,
+          selectUser: this.selectUser.length - 1,
           ins_ymdhms: now - 10800000,
         };
 
@@ -787,6 +792,7 @@ input[type="text"] {
   font-size: 12px; /* 날짜 글씨체 크기 */
   color: #bbb; /* 연한 색상 */
   margin-left: 10px;
+  margin-top:20px;
 }
 
 .message-text {
@@ -897,6 +903,18 @@ input[type="text"] {
   border-radius: 10px; /* 공지사항 메시지 모서리 둥글게 */
   font-size: 1px;
 }
+.message-view {
+    /* 배경색과 텍스트 색상 설정 */
+    color: #e40b0b;
+    
+    /* 패딩과 마진 설정 */
+    padding: 5px 10px;
+    margin: 5px;
+    
+    /* 글꼴과 글꼴 크기 설정 */
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    }
 
 /* 모달 스타일 */
 
@@ -988,6 +1006,7 @@ input[type="text"] {
     font-size: 10px; /* 날짜 글씨체 크기 */
     color: #bbb; /* 연한 색상 */
     margin-left: 10px;
+    margin-top:20px;
   }
 
   .message-text {
