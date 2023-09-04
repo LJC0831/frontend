@@ -35,7 +35,7 @@
             </div>
           </div>
         </div>
-        <span class="message-view" v-if="message.chat_view !== 0" >{{ message.chat_view }}</span>
+        <span class="message-view" v-if="message.selectUserCount !== 0" >{{ message.selectUserCount }}</span>
         <span class="message-date">{{ formatDate(message.ins_ymdhms) }}</span>
       </div>
     </div>
@@ -156,6 +156,7 @@
       this.socket.on('message', (message) => {
         if (message.chatId === this.selectedChatId) {
           this.messages.push(message);
+          debugger;
           this.$nextTick(() => {
             this.scrollToBottom();
             if(message.user_id !== this.loginUserId){
@@ -374,7 +375,8 @@
             chatimageUrl:null,
             chatId: this.selectedChatId,
             isMyMessage: true,
-            selectUser: this.selectUser.length - 1,
+            selectUserCount: this.selectUser.length - 1,
+            selectUser: ',' + this.selectUser,
             ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
           };
           debugger;
@@ -486,7 +488,8 @@
           chatimageUrl: `/api/file/download/${chat_file_id}`,
           chatId: this.selectedChatId,
           isMyMessage: true,
-          selectUser: this.selectUser.length - 1,
+          selectUserCount: this.selectUser.length - 1,
+          selectUser: ',' + this.selectUser,
           ins_ymdhms: now - 10800000,
         };
 
@@ -540,7 +543,8 @@
           chatimageUrl:chatimageUrl,
           chatId: this.selectedChatId,
           isMyMessage: true,
-          selectUser: this.selectUser.length - 1,
+          selectUserCount: this.selectUser.length - 1,
+          selectUser: ',' + this.selectUser,
           ins_ymdhms: now - 10800000,
         };
 
