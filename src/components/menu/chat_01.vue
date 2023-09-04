@@ -376,7 +376,7 @@
             chatId: this.selectedChatId,
             isMyMessage: true,
             selectUserCount: this.selectUser.length - 1,
-            selectUser: ',' + this.selectUser,
+            selectUser: ',' + this.selectUser.filter(item => item !== userid),
             ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
           };
           debugger;
@@ -489,7 +489,7 @@
           chatId: this.selectedChatId,
           isMyMessage: true,
           selectUserCount: this.selectUser.length - 1,
-          selectUser: ',' + this.selectUser,
+          selectUser: ',' + this.selectUser.filter(item => item !== userid),
           ins_ymdhms: now - 10800000,
         };
 
@@ -544,7 +544,7 @@
           chatId: this.selectedChatId,
           isMyMessage: true,
           selectUserCount: this.selectUser.length - 1,
-          selectUser: ',' + this.selectUser,
+          selectUser: ',' + this.selectUser.filter(item => item !== userid),
           ins_ymdhms: now - 10800000,
         };
 
