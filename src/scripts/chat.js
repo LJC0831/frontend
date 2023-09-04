@@ -19,25 +19,30 @@ export default {
             .catch(errorCallback);
           },
           chatInsertUser(chat_id, userid, successCallback, errorCallback) {
-            api.post('/api/char/userInsert', {chat_id, userid})
+            api.post('/api/chat/userInsert', {chat_id, userid})
           .then(successCallback)
           .catch(errorCallback);
         },
           chatDeleteUser(chat_id, userid, successCallback, errorCallback) {
-            api.delete('/api/char/userDelete', { data: { chat_id, userid } })
+            api.delete('/api/chat/userDelete', { data: { chat_id, userid } })
           .then(successCallback)
           .catch(errorCallback);
         },
           createChatRoom(subject, newPassword, user_id, expire_cnt, successCallback, errorCallback) {
-            api.post('/api/char/create', {subject, newPassword, user_id, expire_cnt})
+            api.post('/api/chat/create', {subject, newPassword, user_id, expire_cnt})
           .then(successCallback)
           .catch(errorCallback);
         },
           createChatRoom02(chat_id, userid, successCallback, errorCallback) {
-            api.post('/api/char/create02', {chat_id, userid})
+            api.post('/api/chat/create02', {chat_id, userid})
           .then(successCallback)
           .catch(errorCallback);
         },
+        chatReadUser(chat_id, sendUserId, loginId, successCallback, errorCallback) {
+          api.post('/api/chat/readUpdate', {chat_id, sendUserId, loginId})
+        .then(successCallback)
+        .catch(errorCallback);
+      },
           
     },
 

@@ -124,6 +124,7 @@
         loading2: false,
         isChatTextareaFocused: false, //텍스트박스 포커싱여부
         ismobile:this.isMobile() ? false : true, //뒤로가기버튼활성화여부
+        userViewCount:0,
       };
     },
     created() {
@@ -156,12 +157,13 @@
       this.socket.on('message', (message) => {
         if (message.chatId === this.selectedChatId) {
           this.messages.push(message);
-          debugger;
           this.$nextTick(() => {
             this.scrollToBottom();
             if(message.user_id !== this.loginUserId){
               this.previousMessage = message.message;
               this.showNotification(message.message,message.profilePicture); // 새 메시지 알림 표시
+              // 메시지 읽음 처리 후 데이터 갱신
+              this.chatReadUser(message.chatId, message.user_id, this.loginUserId);
             }
           });
         }
@@ -308,6 +310,15 @@
 
         return formattedTime;
       },
+      // 유저 read처리
+      chatReadUser(chatId, sendUserId, loginId) {
+      if(document.hasFocus()) { //포커싱중일때 메세지확인처리
+          chatMethods.methods.chatReadUser(chatId,sendUserId,loginId,(res) => {
+            debugger;
+            this.messages[this.messages.length-1].selectUserCount = res.data[0].chat_view;
+          })
+        }
+      },
       // 브라우저 알림 생성
       showNotification(message, imgUrl) {
         if (this.previousNotification || document.hasFocus()) {
@@ -379,7 +390,6 @@
             selectUser: ',' + this.selectUser.filter(item => item !== userid),
             ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
           };
-          debugger;
           this.newMessage = '';
           this.socket.emit('message', messageObject);
           this.loading = false;
