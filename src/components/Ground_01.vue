@@ -38,7 +38,7 @@ export default {
     };
   },
   mounted() {
-    loadAds2(); // 광고를 로드하는 함수 호출
+    //loadAds2(); // 광고를 로드하는 함수 호출
   },
   methods: {
     handleMenuSelected(menuName) {
