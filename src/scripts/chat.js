@@ -38,8 +38,8 @@ export default {
           .then(successCallback)
           .catch(errorCallback);
         },
-        chatReadUser(chat_id, sendUserId, loginId, successCallback, errorCallback) {
-          api.post('/api/chat/readUpdate', {chat_id, sendUserId, loginId})
+        chatReadUser(chat_id, loginId, successCallback, errorCallback) {
+          api.post('/api/chat/readUpdate', {chat_id, loginId})
         .then(successCallback)
         .catch(errorCallback);
       },

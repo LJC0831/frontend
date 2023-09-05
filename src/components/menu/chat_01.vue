@@ -163,7 +163,7 @@
               this.previousMessage = message.message;
               this.showNotification(message.message,message.profilePicture); // 새 메시지 알림 표시
               // 메시지 읽음 처리 후 데이터 갱신
-              this.chatReadUser(message.chatId, message.user_id, this.loginUserId, 'live');
+              this.chatReadUser(message.chatId, this.loginUserId);
             }
           });
         }
@@ -247,7 +247,7 @@
     },
     //textarea 포커싱
     handleChatTextareaFocus() {
-      this.chatReadUser(this.selectedChatId, this.messages[this.messages.length-1].user_id, this.loginUserId, 'focus');
+      this.chatReadUser(this.selectedChatId, this.loginUserId);
       this.isChatTextareaFocused = true;
       setTimeout(() => {
             this.scrollToBottom();
@@ -312,15 +312,10 @@
         return formattedTime;
       },
       // 유저 read처리
-      chatReadUser(chatId, sendUserId, loginId, flag) { //flag: live 실시간, focue: 화면포커스
+      chatReadUser(chatId, loginId) { //flag: live 실시간, focue: 화면포커스
       if(document.hasFocus()) { //포커싱중일때 메세지확인처리
-          chatMethods.methods.chatReadUser(chatId,sendUserId,loginId,(res) => {
-            if(flag === "live"){
-              this.messages[this.messages.length-1].selectUserCount = res.data[0].chat_view;
-            }
-            else {
-
-            }
+          chatMethods.methods.chatReadUser(chatId,loginId,(res) => {
+            this.socket.emit('getLatestMessages',chatId, loginId);
           })
         }
       },
