@@ -151,7 +151,6 @@
 
       this.profileSearch(this.loginUserId);
       // 서버에 최근 메시지를 요청합니다.
-      const chatId = this.selectedChatId;
       this.loading = true;
       if(!this.ismobile){
         alert('채팅내역을 불러옵니다.');
@@ -206,16 +205,15 @@
             }
           }
         });
-
+        debugger;
         setTimeout(() => {
           this.loading = false;
-         }, 300); // 300ms(0.3초) 후에 실행됩니다.
+         }, this.chatContainer.scrollHeight/100); // 300ms(0.3초) 후에 실행됩니다.
         
       });
 
       // 채팅내역찾기
       this.socket.on('messageSearch', (messages) => {
-        this.loading = true;
         // 받은 채팅 메시지들을 화면에 표시하는 로직
         this.messages = messages;
         if(messages.length > 0){
@@ -225,8 +223,9 @@
           setTimeout(() => {
             this.chatContainer = this.$refs.chatContainer;
             this.chatContainer.scrollTop = 1;
-          }, 300); // 300ms(0.3초) 후에 실행됩니다.
-          this.loading = false;
+            this.loading = false;
+          }, messages.length/1000); // 300ms(0.3초) 후에 실행됩니다.
+          
         } else {
           alert('찾는 메세지가 없습니다.');
           this.loading = false;
@@ -384,6 +383,7 @@
       searchChatContent(){
         if(this.isSearchChat){
           //this.searchChatcontentPosition = res.data[0].id;
+          this.loading = true;
           this.socket.emit('getSearchMessages',this.selectedChatId, this.searchKeyword, this.searchChatcontentPosition);
         }
       },
