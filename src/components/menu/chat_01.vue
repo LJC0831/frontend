@@ -6,7 +6,7 @@
         <span>{{ selectSubject }}</span>
         <span style="float: right;">
             <input v-if="isSearchChat" v-model.trim="searchKeyword" type="text" @keyup.enter="searchChatContent()" style="margin-right: 5px; height: 30px;"/>
-            <img src="../../assets/search-image.jpg"  @click="isSearchCheck()" class="class-search" style="width:30px; margin-right: 5px;"/>
+            <img src="../../assets/search-image.jpg"  @click="isSearchCheck()" class="class-search" style="width:30px; margin-right: 10px;"/>
             <i :class="'fas fa-bars'" @click="toggleSearch()"></i>
         </span>
     </div>
