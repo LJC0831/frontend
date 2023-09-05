@@ -43,6 +43,11 @@ export default {
         .then(successCallback)
         .catch(errorCallback);
       },
+      searchChatContent(chat_id, searchKeyword, search_id, successCallback, errorCallback) {
+          api.post('/api/chat/searchChatContent', {chat_id, searchKeyword, search_id})
+        .then(successCallback)
+        .catch(errorCallback);
+      },
           
     },
 

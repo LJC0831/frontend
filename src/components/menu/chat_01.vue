@@ -5,6 +5,8 @@
         <span><img src="@/assets/back-img.png" @click="exit()" style="width: 15px; margin-right: 10px;"></span> <!--https://www.flaticon.com/kr/free-icon/backward_318339 출처-->
         <span>{{ selectSubject }}</span>
         <span style="float: right;">
+            <input v-if="isSearchChat" v-model.trim="searchKeyword" type="text" @keyup.enter="searchChatContent()" style="margin-right: 5px; height: 30px;"/>
+            <img src="../../assets/search-image.jpg"  @click="isSearchCheck()" class="class-search" style="width:30px; margin-right: 5px;"/>
             <i :class="'fas fa-bars'" @click="toggleSearch()"></i>
         </span>
     </div>
@@ -125,6 +127,8 @@
         isChatTextareaFocused: false, //텍스트박스 포커싱여부
         ismobile:this.isMobile() ? false : true, //뒤로가기버튼활성화여부
         userViewCount:0,
+        isSearchChat:false, //채팅검색여부
+        searchChatcontentPosition:null, //채팅검색위치id
       };
     },
     created() {
@@ -253,6 +257,7 @@
             this.scrollToBottom();
           }, 300); // 300ms(0.3초) 후에 실행됩니다.
     },
+    // textarea 포커싱해제
     handleChatTextareaBlur() {
       this.isChatTextareaFocused = false;
       const currentlyFocusedElement = document.activeElement; // 현재 포커스를 가진 요소 가져오기
@@ -344,6 +349,23 @@
                }
           });
           
+        }
+      },
+      // 채팅찾기 활성화여부
+      isSearchCheck(){
+        if(!this.isSearchChat){
+          this.isSearchChat = true;
+        } else {
+          this.isSearchChat = false;
+        }
+      },
+      searchChatContent(){
+        if(this.isSearchChat){
+            chatMethods.methods.searchChatContent(this.selectedChatId, this.searchKeyword, this.searchChatcontentPosition, (res) => {
+            this.searchChatcontentPosition = res.data[0].id;
+            debugger;
+            //this.socket.emit('getLatestMessages',chatId, loginId);
+          })
         }
       },
       // 메세지 보내기
