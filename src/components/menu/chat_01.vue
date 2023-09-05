@@ -255,6 +255,8 @@
     },
     handleChatTextareaBlur() {
       this.isChatTextareaFocused = false;
+      const currentlyFocusedElement = document.activeElement; // 현재 포커스를 가진 요소 가져오기
+      currentlyFocusedElement.blur();
       setTimeout(() => {
             this.scrollToBottom();
           }, 300); // 300ms(0.3초) 후에 실행됩니다.
