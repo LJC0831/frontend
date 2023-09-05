@@ -25,6 +25,7 @@
           <div class="message-content">
           <span class="message-name">{{ message.editedName }} </span>
             <div class="message-bubble" :class="{ 'announcement-message': message.chat_type === 'announcement'
+                                                , 'search-message': message.chat_type === 'search'
                                                 , 'other-message': message.user_id !== this.loginUserId 
                                                 , 'my-message': message.user_id === this.loginUserId }">
               <span class="message-text" v-html="formatMessage(message.message)"></span>
@@ -128,7 +129,8 @@
         ismobile:this.isMobile() ? false : true, //뒤로가기버튼활성화여부
         userViewCount:0,
         isSearchChat:false, //채팅검색여부
-        searchChatcontentPosition:null, //채팅검색위치id
+        searchChatcontentPosition:0, //채팅검색위치id
+        searchChatContentArray: [], //검색위치배열저장
       };
     },
     created() {
@@ -210,6 +212,28 @@
         setTimeout(() => {
           this.loading = false;
          }, 300); // 300ms(0.3초) 후에 실행됩니다.
+        
+      });
+
+      // 채팅내역찾기
+      this.socket.on('messageSearch', (messages) => {
+        this.loading = true;
+        // 받은 채팅 메시지들을 화면에 표시하는 로직
+        this.messages = messages;
+        if(messages.length > 0){
+          this.searchChatcontentPosition = messages[0].id;
+          this.searchChatContentArray.push(this.searchChatcontentPosition);
+          // chatContainer 요소의 레퍼런스를 가져옵니다.
+          setTimeout(() => {
+            this.chatContainer = this.$refs.chatContainer;
+            this.chatContainer.scrollTop = 1;
+          }, 300); // 300ms(0.3초) 후에 실행됩니다.
+          this.loading = false;
+        } else {
+          alert('찾는 메세지가 없습니다.');
+          this.loading = false;
+          this.socket.emit('getLatestMessages',this.selectedChatId, this.loginUserId);
+        }
         
       });
 
@@ -361,11 +385,8 @@
       },
       searchChatContent(){
         if(this.isSearchChat){
-            chatMethods.methods.searchChatContent(this.selectedChatId, this.searchKeyword, this.searchChatcontentPosition, (res) => {
-            this.searchChatcontentPosition = res.data[0].id;
-            debugger;
-            //this.socket.emit('getLatestMessages',chatId, loginId);
-          })
+          //this.searchChatcontentPosition = res.data[0].id;
+          this.socket.emit('getSearchMessages',this.selectedChatId, this.searchKeyword, this.searchChatcontentPosition);
         }
       },
       // 메세지 보내기
@@ -719,12 +740,6 @@
             );
         }
       },
-    watch: {
-      messages(newMessages, oldMessages) {
-        // 메시지 배열이 갱신될 때마다 스크롤을 제일 아래로 이동
-        this.$nextTick(this.scrollToBottom);
-      },
-    },
   };
   </script>
   
@@ -938,6 +953,12 @@ input[type="text"] {
     }
 .announcement-message{
   background-color: #bbb; /* 공지사항 배경색 */
+  border-radius: 10px; /* 공지사항 메시지 모서리 둥글게 */
+  font-size: 1px;
+}
+
+.search-message{
+  background-color: #fffccd; /* 공지사항 배경색 */
   border-radius: 10px; /* 공지사항 메시지 모서리 둥글게 */
   font-size: 1px;
 }
