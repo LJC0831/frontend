@@ -5,7 +5,7 @@
         <span><img src="@/assets/back-img.png" @click="exit()" style="width: 15px; margin-right: 10px;"></span> <!--https://www.flaticon.com/kr/free-icon/backward_318339 출처-->
         <span>{{ selectSubject }}</span>
         <span style="float: right;">
-            <input v-if="isSearchChat" v-model.trim="searchKeyword" type="text" @keyup.enter="searchChatContent()" style="margin-right: 5px; height: 30px;"/>
+            <input v-if="isSearchChat" v-model.trim="searchKeyword" type="text" @keyup.enter="searchChatContent()" @input="handleInputChange" style="margin-right: 5px; height: 30px;"/>
             <img src="../../assets/search-image.jpg"  @click="isSearchCheck()" class="class-search" style="width:30px; margin-right: 10px;"/>
             <i :class="'fas fa-bars'" @click="toggleSearch()"></i>
         </span>
@@ -90,7 +90,6 @@
   import jwtDecode from 'jwt-decode';
   import loginMethods from '../../scripts/login.js';
   import chatMethods from '../../scripts/chat.js';
-  import axios from 'axios';
   
 
   export default {
@@ -244,6 +243,13 @@
       //모바일판단
       isMobile() {
         return window.innerWidth <= 800; // 600px 이하면 모바일로 판단
+      },
+      // Search 내용 초기화
+      handleInputChange() { 
+        // 입력값이 변경될 때 실행되는 로직을 여기에 작성
+        this.searchChatcontentPosition = 0; //채팅검색위치id
+        this.searchChatContentArray= []; //검색위치배열저장
+        this.searchCount = 0; //검색위치
       },
       // 웹소켓종료
       disconnectWebSocket() {
