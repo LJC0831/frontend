@@ -51,6 +51,9 @@
       @focus="handleChatTextareaFocus"
       @blur="handleChatTextareaBlur"
       @paste="handleImagePaste" @keydown="handleKeyDown" placeholder="메시지를 입력하세요..." />
+      <label for="imoticon" class="imoticon-button" @click="openEmoticonModal">
+          <img src="../../assets/imoticon.png" alt="이모티콘" style="width:30px;" />
+      </label>
       <div>
         <input type="file" id="imageInput" ref="imageInput" @change="handleUpload" class="hidden-input"/>
         <button @click="sendMessage" v-if="!loading" class="send-button"><i class="fas fa-paper-plane"></i> </button>
@@ -81,6 +84,30 @@
         <button ref="closeButton" class="modal_close" @click="closeImageModal" @keyup.esc="closeImageModal">닫기</button>
       </div>
     </div>
+    <!-- 이모티콘 모달 -->
+    <div v-if="isStickerModal" class="sticker-modal">
+      <!-- 이모티콘 선택 영역 -->
+      <div class="sticker-selector" style="width:250px">
+        <img class ="sticker-image" src="../../assets/sticker/bear-image01.png" @click="selectEmoticon('bear-image01.png')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image02.png" @click="selectEmoticon('bear-image02.png')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image03.png" @click="selectEmoticon('bear-image03.png')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image04.png" @click="selectEmoticon('bear-image04.png')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image05.png" @click="selectEmoticon('bear-image05.png')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image06.png" @click="selectEmoticon('bear-image06.png')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image07.png" @click="selectEmoticon('bear-image07.png')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image08.png" @click="selectEmoticon('bear-image08.png')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image09.png" @click="selectEmoticon('bear-image09.png')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image10.png" @click="selectEmoticon('bear-image10.png')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image11.png" @click="selectEmoticon('bear-image11.png')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image12.png" @click="selectEmoticon('bear-image12.png')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image13.png" @click="selectEmoticon('bear-image13.png')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image14.png" @click="selectEmoticon('bear-image14.png')" />
+      </div>
+      <span><a href="https://www.flaticon.com/kr/" target="_blank" title="스티커">출처</a></span>
+      <!-- 닫기 버튼 -->
+      <button class="modal-close" @click="closeEmoticonModal">X</button>
+    </div>
+
   </div>
 </template>
   
@@ -131,6 +158,8 @@
         searchChatcontentPosition:0, //채팅검색위치id
         searchChatContentArray: [], //검색위치배열저장
         searchCount: 0, //검색위치
+        isStickerModal:false, //이모티콘 활성화여부
+        selectedSticker: null, // 선택한 스티커를 저장합니다.
       };
     },
     created() {
@@ -453,6 +482,20 @@
               }, 50);
           });
           }
+      },
+      //이모티콘 팝업 활성화
+      openEmoticonModal() {
+        this.isStickerModal = true; // 이모티콘 모달을 엽니다.
+      },
+      //이모티콘 팝업 닫기
+      closeEmoticonModal() {
+        this.isStickerModal = false; // 이모티콘 모달을 닫습니다.
+      },
+      // 이모티콘 팝업 처리
+      selectEmoticon(stickerName) {
+        // 선택한 이모티콘을 처리하는 로직을 추가합니다.
+        // 예: 이모티콘을 메시지에 추가하거나 다른 작업을 수행합니다.
+        this.selectedSticker = stickerName;
       },
 
       // 이미지 붙여넣기 event
@@ -894,6 +937,11 @@ input[type="text"] {
   z-index: 1000; /* 모달을 다른 요소 위에 표시하기 위해 높은 z-index 설정 */
 }
 
+.sticker-modal{
+  position: fixed;
+  bottom:20%;
+  right: 20px; /* 우측 하단에서의 거리 조절 */
+}
 .modal-content {
   background-color: #fff; /* 배경을 흰색으로 설정 */
   padding: 20px;
@@ -941,7 +989,7 @@ input[type="text"] {
   border: none;
   transition: background-color 0.3s;
 }
-.modal_close {
+.modal_close, .modal-close {
   padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -983,7 +1031,10 @@ input[type="text"] {
     font-family: Arial, sans-serif;
     font-size: 11px;
     }
-
+.sticker-image{
+  width:40px;
+  margin-right: 10px;
+}
 /* 모달 스타일 */
 
 @media (min-width: 768px) {
