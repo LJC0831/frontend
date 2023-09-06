@@ -75,7 +75,7 @@
       </div>
     </div>
     <!-- 이미지url 모달 창 -->
-    <div v-if="isImageModalOpen" class="modal">
+    <div v-if="isImageModalOpen" class="modal" @click="this.$refs.closeButton.focus()">
       <div class="modal-content2">
         <img :src="selectedImage" alt="확대 이미지" class="enlarged-image">
         <button ref="closeButton" class="modal_close" @click="closeImageModal" @keyup.esc="closeImageModal">닫기</button>
