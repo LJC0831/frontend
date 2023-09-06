@@ -183,7 +183,7 @@
           // 최근 메시지를 받은 후에 스크롤을 아래로 이동합니다.
           setTimeout(() => {
             this.scrollToBottom();
-          }, 300); // 300ms(0.3초) 후에 실행됩니다.
+          }, 100); // 100ms(0.1초) 후에 실행됩니다.
         });
         this.loading = false;
       });
@@ -276,7 +276,7 @@
       this.isChatTextareaFocused = true;
       setTimeout(() => {
             this.scrollToBottom();
-          }, 300); // 300ms(0.3초) 후에 실행됩니다.
+          }, 100); // 100ms(0.1초) 후에 실행됩니다.
     },
     // textarea 포커싱해제
     handleChatTextareaBlur() {
@@ -285,7 +285,7 @@
       currentlyFocusedElement.blur();
       setTimeout(() => {
             this.scrollToBottom();
-          }, 300); // 300ms(0.3초) 후에 실행됩니다.
+          }, 100); // 100ms(0.1초) 후에 실행됩니다.
     },
       //메세지 줄바꿈처리
       formatMessage(message) {
