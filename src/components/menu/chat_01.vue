@@ -78,8 +78,8 @@
       </div>
     </div>
     <!-- 이미지url 모달 창 -->
-    <div v-if="isImageModalOpen" class="modal" @click="this.$refs.closeButton.focus()">
-      <div class="modal-content2">
+    <div v-if="isImageModalOpen" class="modal">
+      <div class="modal-content2"  @click="this.$refs.closeButton.focus()">
         <img :src="selectedImage" alt="확대 이미지" class="enlarged-image">
         <button ref="closeButton" class="modal_close" @click="closeImageModal" @keyup.esc="closeImageModal">닫기</button>
       </div>
@@ -676,8 +676,10 @@
 
       // 이미지 모달 닫기
       closeImageModal() {
-        this.selectedImage = '';
-        this.isImageModalOpen = false;
+        setTimeout(() => {
+          this.selectedImage = '';
+          this.isImageModalOpen = false;
+          }, 0);
       },
       toggleSearch() {
           this.showModal = true; // 모달 토글
@@ -916,7 +918,7 @@ input[type="text"] {
   max-width: 100%;
   max-height: 200px; /* 이미지의 최대 높이 설정 */
   object-fit: contain; /* 이미지를 가득 차게 표시 */
-  border: 1px solid #ccc;
+  background-color:  rgb(240, 252, 255);
 }
 .hidden-input {
   display: none;
@@ -1033,6 +1035,9 @@ input[type="text"] {
 .sticker-image{
   width:40px;
   margin-right: 10px;
+}
+.image-bubble{
+  background-color:  rgb(240, 252, 255);
 }
 /* 모달 스타일 */
 
