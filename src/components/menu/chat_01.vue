@@ -24,10 +24,10 @@
         <div class="message-container" >
           <div class="message-content">
           <span class="message-name">{{ message.editedName }} </span>
-            <div class="message-bubble" :class="{ 'announcement-message': message.chat_type === 'announcement'
+            <div class="message-bubble" :class="{ 'announcement-message': message.chat_type === 'announcement' && message.chat_type !== 'search'
                                                 , 'search-message': message.chat_type === 'search'
-                                                , 'other-message': message.user_id !== this.loginUserId 
-                                                , 'my-message': message.user_id === this.loginUserId }">
+                                                , 'other-message': message.user_id !== this.loginUserId && message.chat_type !== 'search'
+                                                , 'my-message': message.user_id === this.loginUserId && message.chat_type !== 'search' }">
               <span class="message-text" v-html="formatMessage(message.message)"></span>
             </div>
             <div v-if="message.chat_type === 'image'" class="message-bubble image-bubble">
