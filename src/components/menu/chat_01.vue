@@ -88,20 +88,20 @@
     <div v-if="isStickerModal" class="sticker-modal">
       <!-- 이모티콘 선택 영역 -->
       <div class="sticker-selector" style="width:250px">
-        <img class ="sticker-image" src="../../assets/sticker/bear-image01.png" @click="selectEmoticon('1694006435503_bear-image01.png')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image02.png" @click="selectEmoticon('1694006519952_bear-image02.png')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image03.png" @click="selectEmoticon('1694006571058_bear-image03.png')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image04.png" @click="selectEmoticon('1694006575227_bear-image04.png')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image05.png" @click="selectEmoticon('1694006579102_bear-image05.png')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image06.png" @click="selectEmoticon('1694006582758_bear-image06.png')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image07.png" @click="selectEmoticon('1694006585732_bear-image07.png')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image08.png" @click="selectEmoticon('1694006589647_bear-image08.png')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image09.png" @click="selectEmoticon('1694006593253_bear-image09.png')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image10.png" @click="selectEmoticon('1694006596622_bear-image10.png')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image11.png" @click="selectEmoticon('1694006600229_bear-image11.png')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image12.png" @click="selectEmoticon('1694006603115_bear-image12.png')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image13.png" @click="selectEmoticon('1694006606351_bear-image13.png')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image14.png" @click="selectEmoticon('1694006609315_bear-image14.png')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image01.png" @click="selectEmoticon('281')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image02.png" @click="selectEmoticon('282')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image03.png" @click="selectEmoticon('283')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image04.png" @click="selectEmoticon('284')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image05.png" @click="selectEmoticon('285')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image06.png" @click="selectEmoticon('286')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image07.png" @click="selectEmoticon('287')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image08.png" @click="selectEmoticon('288')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image09.png" @click="selectEmoticon('289')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image10.png" @click="selectEmoticon('290')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image11.png" @click="selectEmoticon('291')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image12.png" @click="selectEmoticon('292')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image13.png" @click="selectEmoticon('293')" />
+        <img class ="sticker-image" src="../../assets/sticker/bear-image14.png" @click="selectEmoticon('294')" />
       </div>
       <span><a href="https://www.flaticon.com/kr/" target="_blank" title="스티커">출처</a></span>
       <!-- 닫기 버튼 -->
@@ -159,7 +159,6 @@
         searchChatContentArray: [], //검색위치배열저장
         searchCount: 0, //검색위치
         isStickerModal:false, //이모티콘 활성화여부
-        selectedSticker: null, // 선택한 스티커를 저장합니다.
       };
     },
     created() {
@@ -492,33 +491,8 @@
         this.isStickerModal = false; // 이모티콘 모달을 닫습니다.
       },
       // 이모티콘 팝업 처리
-      selectEmoticon(stickerName) {
-        // 선택한 이모티콘을 처리하는 로직을 추가합니다.
-        // 예: 이모티콘을 메시지에 추가하거나 다른 작업을 수행합니다.
-        this.selectedSticker = stickerName;
-        const messageObject = {
-          editedName: this.editedName,
-          user_id: this.loginUserId,
-          message: '', // 이미지 데이터를 메시지로 첨부
-          chat_type: 'image', // 이미지 타입
-          chat_file_id: chat_file_id,
-          profilePicture: this.profilePicture,
-          chatimageUrl: `/api/file/download/${chat_file_id}`,
-          chatId: this.selectedChatId,
-          isMyMessage: true,
-          selectUserCount: this.selectUser.length - 1,
-          selectUser: ',' + this.selectUser.filter(item => item !== userid),
-          ins_ymdhms: now - 10800000,
-        };
-
-        this.socket.emit('message', messageObject);
-        this.loading = false;
-        this.newMessage = '';
-        this.$nextTick(() => {
-          setTimeout(() => {
-            this.scrollToBottom();
-          }, 50);
-        });
+      selectEmoticon(stickerFileid) {
+        this.chatImgurl(stickerFileid);
 
         this.closeEmoticonModal();
       },
