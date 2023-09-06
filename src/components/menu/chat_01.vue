@@ -131,6 +131,7 @@
         isSearchChat:false, //채팅검색여부
         searchChatcontentPosition:0, //채팅검색위치id
         searchChatContentArray: [], //검색위치배열저장
+        searchCount: 0, //검색위치
       };
     },
     created() {
@@ -205,7 +206,6 @@
             }
           }
         });
-        debugger;
         setTimeout(() => {
           this.loading = false;
          }, this.chatContainer.scrollHeight/100); // 300ms(0.3초) 후에 실행됩니다.
@@ -219,13 +219,18 @@
         if(messages.length > 0){
           this.searchChatcontentPosition = messages[0].id;
           this.searchChatContentArray.push(this.searchChatcontentPosition);
+          this.searchCount = messages.length;
+          this.loading = false;
           // chatContainer 요소의 레퍼런스를 가져옵니다.
           setTimeout(() => {
             this.chatContainer = this.$refs.chatContainer;
-            this.chatContainer.scrollTop = 1;
-            this.loading = false;
-          }, messages.length/100); // 300ms(0.3초) 후에 실행됩니다.
-          
+            if(this.searchCount < 7){
+              this.chatContainer.scrollTop = 2000;
+            } 
+            else {
+              this.chatContainer.scrollTop = 1;
+            }
+          }, 300); // 300ms(0.3초) 후에 실행됩니다.
         } else {
           alert('찾는 메세지가 없습니다.');
           this.loading = false;
