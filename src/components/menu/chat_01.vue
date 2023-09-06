@@ -33,6 +33,9 @@
             <div v-if="message.chat_type === 'image'" class="message-bubble image-bubble">
               <img v-if="message.chat_type === 'image'" :src="message.chatimageUrl" alt="이미지" class="message-image" @click="openImageModal(message.chatimageUrl)"/>
             </div>
+            <div v-if="message.chat_type === 'emoticon'" class="message-bubble image-bubble">
+              <img v-if="message.chat_type === 'emoticon'" :src="message.chatimageUrl" alt="이모티콘" class="message-image"/>
+            </div>
             <div v-else-if="message.chat_type === 'file'" class="message-bubble file-bubble">
               <a :href="message.chatimageUrl" target="_blank">다운로드</a>
             </div>
@@ -492,7 +495,7 @@
       },
       // 이모티콘 팝업 처리
       selectEmoticon(stickerFileid) {
-        this.chatImgurl(stickerFileid);
+        this.chatImgurl(stickerFileid,'emoticon');
 
         this.closeEmoticonModal();
       },
@@ -517,7 +520,7 @@
         const token = localStorage.getItem('token');
         chatMethods.methods.uploadImageToServer(formData,token,(res) => {
               const chat_file_id = res.data.fileId;
-              this.chatImgurl(chat_file_id);
+              this.chatImgurl(chat_file_id,'image');
             },
             (error) => { // 에러 콜백
               console.error("이미지 업로드 오류:", error);
@@ -552,10 +555,11 @@
           const token = localStorage.getItem('token');
           chatMethods.methods.uploadImageToServer(formData,token,(res) => {
                    if(isImageFile){
-                        this.chatImgurl(res.data.fileId);
+                        this.chatImgurl(res.data.fileId,'image');
                       } else {
                         this.chatfileUrl(res.data.fileId, originalFileName);
                       }
+                      this.loading = false;
                 },
                 (error) => { // 에러 콜백
                   console.error("이미지 업로드 오류:", error);
@@ -609,9 +613,9 @@
         });
       },
       // 이미지 메세지 전송1
-      async chatImgurl(chat_file_id) {
+      async chatImgurl(chat_file_id, imageType) {
         loginMethods.methods.profileImgURL(chat_file_id,(res) => {
-                      this.sendImageMessage(chat_file_id, res.data.imageUrl);
+                      this.sendImageMessage(chat_file_id, res.data.imageUrl, imageType);
                     },
                     (error) => { // 에러 콜백
                       console.error("프로필 이미지 조회 오류:", error);
@@ -619,7 +623,7 @@
         );
       },
       // 이미지 메세지 전송2
-      async sendImageMessage(chat_file_id, chatimageUrl) {
+      async sendImageMessage(chat_file_id, chatimageUrl, imageType) {
         const token = localStorage.getItem('token');
         if (token == null) {
           alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
@@ -643,7 +647,7 @@
           editedName: this.editedName,
           user_id: userid,
           message: '', // 이미지 데이터를 메시지로 첨부
-          chat_type: 'image', // 이미지 타입
+          chat_type: imageType, // 이미지 타입
           chat_file_id: chat_file_id,
           profilePicture: this.profilePicture,
           chatimageUrl:chatimageUrl,
