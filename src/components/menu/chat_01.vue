@@ -91,20 +91,13 @@
     <div v-if="isStickerModal" class="sticker-modal">
       <!-- 이모티콘 선택 영역 -->
       <div class="sticker-selector" style="width:250px">
-        <img class ="sticker-image" src="../../assets/sticker/bear-image01.png" @click="selectEmoticon('281')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image02.png" @click="selectEmoticon('282')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image03.png" @click="selectEmoticon('283')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image04.png" @click="selectEmoticon('284')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image05.png" @click="selectEmoticon('285')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image06.png" @click="selectEmoticon('286')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image07.png" @click="selectEmoticon('287')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image08.png" @click="selectEmoticon('288')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image09.png" @click="selectEmoticon('289')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image10.png" @click="selectEmoticon('290')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image11.png" @click="selectEmoticon('291')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image12.png" @click="selectEmoticon('292')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image13.png" @click="selectEmoticon('293')" />
-        <img class ="sticker-image" src="../../assets/sticker/bear-image14.png" @click="selectEmoticon('294')" />
+        <img
+            class="sticker-image"
+            v-for="stickerId in ['281', '282', '283', '284', '285', '286', '287', '288', '289', '290', '291', '292', '293', '294']"
+            :key="stickerId"
+            :src="`../../assets/sticker/bear-image${stickerId}.png`"
+            @click="selectEmoticon(stickerId)"
+          />
       </div>
       <span><a href="https://www.flaticon.com/kr/" target="_blank" title="스티커">출처</a></span>
       <!-- 닫기 버튼 -->
