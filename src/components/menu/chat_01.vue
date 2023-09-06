@@ -224,7 +224,7 @@
             this.chatContainer = this.$refs.chatContainer;
             this.chatContainer.scrollTop = 1;
             this.loading = false;
-          }, messages.length/1000); // 300ms(0.3초) 후에 실행됩니다.
+          }, messages.length/100); // 300ms(0.3초) 후에 실행됩니다.
           
         } else {
           alert('찾는 메세지가 없습니다.');
