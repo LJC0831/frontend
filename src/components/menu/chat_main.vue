@@ -586,6 +586,9 @@ export default {
   font-weight: bold; /* 글자 굵게 설정 */
   margin-left: 10px;
 }
+.chatroom-readCount:empty {
+  display: none; /* 내용이 없는 경우 숨김 */
+}
 
 /* 모달 style 끝 */
   
