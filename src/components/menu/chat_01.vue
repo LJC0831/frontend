@@ -311,16 +311,13 @@
       this.isChatTextareaFocused = true;
       setTimeout(() => {
             this.scrollToBottom();
-          }, 100); // 100ms(0.1초) 후에 실행됩니다.
+          }, 0); // 100ms(0.1초) 후에 실행됩니다.
     },
     // textarea 포커싱해제
     handleChatTextareaBlur() {
       this.isChatTextareaFocused = false;
       const currentlyFocusedElement = document.activeElement; // 현재 포커스를 가진 요소 가져오기
       currentlyFocusedElement.blur();
-      setTimeout(() => {
-            this.scrollToBottom();
-          }, 100); // 100ms(0.1초) 후에 실행됩니다.
     },
       //메세지 줄바꿈처리
       formatMessage(message) {
