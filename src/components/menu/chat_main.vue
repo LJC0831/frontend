@@ -270,9 +270,6 @@ export default {
       } catch(error){}
       this.selectedChatId = null;
       this.myUserYn=false;
-      this.search01('ALL');
-      
-      
     },
     //조회
     search01: debounce(async function (tab) {
