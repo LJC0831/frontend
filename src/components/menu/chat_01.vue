@@ -306,9 +306,6 @@
     handleChatTextareaFocus() {
       this.chatReadUser(this.selectedChatId, this.loginUserId);
       this.isChatTextareaFocused = true;
-      setTimeout(() => {
-            this.scrollToBottom();
-          }, 0); // 100ms(0.1초) 후에 실행됩니다.
     },
     // textarea 포커싱해제
     handleChatTextareaBlur() {
