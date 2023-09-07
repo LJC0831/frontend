@@ -283,7 +283,6 @@ export default {
         if (tab === 'ALL'){
           this.searchUserId = null; // 사용자 아이디 추출
         } 
-        debugger;
         const response = await api.get("/api/chat/search",{ params: { q: this.searchKeyword, userId:this.searchUserId , userId2: this.searchUserId2 } });
         this.chatRooms = response.data;
         this.searchUserId = null;
@@ -304,7 +303,6 @@ export default {
         alert('방 제목을 입력해주세요.');
         return;
       } 
-      debugger;
       if(this.subject.length >= 40){
         alert('제목은 20자내로 입력해주세요.');
         return;
