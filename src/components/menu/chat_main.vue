@@ -39,7 +39,7 @@
                       </span>
                       <span class="chatroom-subject">{{ chatRooms.subject }}</span>
                       <span><img v-if="chatRooms.pwd !== null" src="../../assets/pwdIkon.jpg" /></span>
-                      <span class="chatroom-readCount">{{ chatRooms.notReadCnt }}</span>
+                      <span class="chatroom-readCount" id="notReadCount">{{ chatRooms.notReadCnt }}</span>
                     </p>
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="btn-group">
@@ -275,13 +275,17 @@ export default {
     },
     //조회
     search01: debounce(async function (tab) {
-      try {
-        
-       
+      try { 
         const token = localStorage.getItem('token');
-        const decodedToken = jwtDecode(token);
-        this.searchUserId = decodedToken.username; // 사용자 아이디 추출
-        this.searchUserId2 = decodedToken.username; // 사용자 아이디 추출
+        if(token){
+          const decodedToken = jwtDecode(token);
+          this.searchUserId = decodedToken.username; // 사용자 아이디 추출
+          this.searchUserId2 = decodedToken.username; // 사용자 아이디 추출
+        } else {
+          this.searchUserId = null;
+          this.searchUserId2 = null;
+        }
+        
         if (tab === 'ALL'){
           this.searchUserId = null; // 사용자 아이디 추출
         } 
@@ -569,6 +573,19 @@ export default {
     height:42px;
     margin-top:-5px; 
   }
+  .chatroom-readCount {
+  display: inline-block;
+  width: 20px;
+  height: 17px;
+  background-color: #FF5733; /* 배경색 설정 */
+  color: #FFFFFF; /* 글자색 설정 */
+  border-radius: 50%; /* 원 모양으로 만들기 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+  line-height: 17px; /* 수직 가운데 정렬 */
+  font-size: 14px; /* 글자 크기 설정 */
+  font-weight: bold; /* 글자 굵게 설정 */
+  margin-left: 10px;
+}
 
 /* 모달 style 끝 */
   
