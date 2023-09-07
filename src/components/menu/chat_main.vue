@@ -275,12 +275,16 @@ export default {
     search01: debounce(async function (tab) {
       try {
         
-        if (tab !== 'ALL'){
-          const token = localStorage.getItem('token');
-          const decodedToken = jwtDecode(token);
-          this.searchUserId = decodedToken.username; // 사용자 아이디 추출
+       
+        const token = localStorage.getItem('token');
+        const decodedToken = jwtDecode(token);
+        this.searchUserId = decodedToken.username; // 사용자 아이디 추출
+        this.searchUserId2 = decodedToken.username; // 사용자 아이디 추출
+        if (tab === 'ALL'){
+          this.searchUserId = null; // 사용자 아이디 추출
         } 
-        const response = await api.get("/api/chat/search",{ params: { q: this.searchKeyword, userId:this.searchUserId , userId2:this.searchUserId } });
+        debugger;
+        const response = await api.get("/api/chat/search",{ params: { q: this.searchKeyword, userId:this.searchUserId , userId2: this.searchUserId2 } });
         this.chatRooms = response.data;
         this.searchUserId = null;
       } catch (error) {
