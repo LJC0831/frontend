@@ -37,8 +37,9 @@
                         <img v-if="chatRooms.profile_id !== null" :src="chatRooms.imageUrl" class="thumbnail-image" />
                         <img v-if="chatRooms.profile_id === null" src="../../assets/profile-user.png" class="thumbnail-image" />
                       </span>
-                      <span class="chatromm-subject">{{ chatRooms.subject }}</span>
+                      <span class="chatroom-subject">{{ chatRooms.subject }}</span>
                       <span><img v-if="chatRooms.pwd !== null" src="../../assets/pwdIkon.jpg" /></span>
+                      <span class="chatroom-readCount">{{ chatRooms.notReadCnt }}</span>
                     </p>
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="btn-group">
@@ -95,6 +96,7 @@ import jwtDecode from 'jwt-decode';
 import ChatRoom01 from './chat_01.vue';
 import loginMethods from '../../scripts/login.js';
 import chatMethods from '../../scripts/chat.js';
+
 
 const api = axios.create({
   baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
@@ -431,7 +433,7 @@ export default {
     border-radius: 10px;
   }
 
-  .chatromm-subject{
+  .chatroom-subject{
     font-family: 'Montserrat', sans-serif;
     font-size: 15px;
     color: #333;
