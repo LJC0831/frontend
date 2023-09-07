@@ -251,7 +251,7 @@
           // chatContainer 요소의 레퍼런스를 가져옵니다.
           setTimeout(() => {
             this.chatContainer = this.$refs.chatContainer;
-            if(this.searchCount < 7){
+            if(this.searchCount <= 7){
               this.chatContainer.scrollTop = 2000;
             } 
             else {
