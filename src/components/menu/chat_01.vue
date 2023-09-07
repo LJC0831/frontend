@@ -183,13 +183,13 @@
       // 서버로부터 메시지를 받으면 채팅 화면에 메시지를 표시합니다.
       this.socket.on('message', (message) => {
         if (message.chatId === this.selectedChatId) {
-          this.messages.push(message);
           if(message.user_id !== this.loginUserId){
               this.previousMessage = message.message;
               this.showNotification(message.message,message.profilePicture); // 새 메시지 알림 표시
               // 메시지 읽음 처리 후 데이터 갱신
               this.chatReadUser(message.chatId, this.loginUserId);
             }
+            this.messages.push(message);
         }
       });
 
