@@ -183,13 +183,20 @@
       // 서버로부터 메시지를 받으면 채팅 화면에 메시지를 표시합니다.
       this.socket.on('message', (message) => {
         if (message.chatId === this.selectedChatId) {
+          if(!document.hasFocus()) { //포커싱중일때 메세지확인처리
+            this.messages.push(message);
+            setTimeout(() => {
+                this.scrollToBottom();
+              }, 0);
+          }
+          
           if(message.user_id !== this.loginUserId){
               this.previousMessage = message.message;
               this.showNotification(message.message,message.profilePicture); // 새 메시지 알림 표시
               // 메시지 읽음 처리 후 데이터 갱신
-              this.chatReadUser(message.chatId, this.loginUserId);
             }
-            this.messages.push(message);
+            this.chatReadUser(message.chatId, this.loginUserId);
+            //this.messages.push(message);
         }
       });
 
