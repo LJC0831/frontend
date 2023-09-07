@@ -280,7 +280,7 @@ export default {
           const decodedToken = jwtDecode(token);
           this.searchUserId = decodedToken.username; // 사용자 아이디 추출
         } 
-        const response = await api.get("/api/chat/search",{ params: { q: this.searchKeyword, userId:this.searchUserId } });
+        const response = await api.get("/api/chat/search",{ params: { q: this.searchKeyword, userId:this.searchUserId , userId2:this.searchUserId } });
         this.chatRooms = response.data;
         this.searchUserId = null;
       } catch (error) {
