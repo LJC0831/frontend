@@ -13,6 +13,7 @@ import ChatRoom from './components/menu/chat_01.vue';
 
 
 const app = createApp(App);
+/*
 const VUE_APP_apiKey = process.env.VUE_APP_apiKey; // 환경 변수 읽기
 const VUE_APP_appId = process.env.VUE_APP_appId; // 환경 변수 읽기
 const VUE_APP_authDomain = process.env.VUE_APP_authDomain; // 환경 변수 읽기
@@ -20,14 +21,7 @@ const VUE_APP_measurementld = process.env.VUE_APP_measurementld; // 환경 변�
 const VUE_APP_messagingSenderld = process.env.VUE_APP_messagingSenderld; // 환경 변수 읽기
 const VUE_APP_projectld = process.env.VUE_APP_projectld; // 환경 변수 읽기
 const VUE_APP_storageBucket = process.env.VUE_APP_storageBucket; // 환경 변수 읽기
-console.log('API Key:', VUE_APP_apiKey);
-console.log('VUE_APP_appId:', VUE_APP_appId);
-console.log('VUE_APP_authDomain:', VUE_APP_authDomain);
-console.log('VUE_APP_measurementld:', VUE_APP_measurementld);
-console.log('VUE_APP_messagingSenderld:', VUE_APP_messagingSenderld);
-console.log('VUE_APP_projectld:', VUE_APP_projectld);
-console.log('VUE_APP_projectld:', VUE_APP_projectld);
-console.log('VUE_APP_storageBucket:', VUE_APP_storageBucket);
+*/
 
 app.use(store);
 app.use(VueToast); // Register the VueToast plugin
