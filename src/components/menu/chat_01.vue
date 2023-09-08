@@ -160,18 +160,17 @@
     created() {
       const login_token = localStorage.getItem('token');
       const decoded_Token = jwtDecode(login_token);
-      const user_id = decoded_Token.username;
-      this.loginUserId = user_id;
+      this.loginUserId = decoded_Token.username;
       // Socket.IO 클라이언트를 초기화하고 서버에 연결합니다.
       //this.socket = io('http://localhost:3000', {
       this.socket = io('https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app', {
         withCredentials: true, // 쿠키와 인증 정보를 전송할 수 있도록 설정 (선택 사항)
         query:{
-          userId:user_id, //로그인유저
+          userId:this.loginUserId, //로그인유저
         }
       });
-      this.socket.emit('getLatestMessages',this.selectedChatId, user_id);
-      this.manageUserSocket(user_id, this.socket);
+      this.socket.emit('getLatestMessages',this.selectedChatId, this.loginUserId);
+      this.manageUserSocket(this.loginUserId, this.socket);
 
       this.profileSearch(this.loginUserId);
       // 서버에 최근 메시지를 요청합니다.
@@ -202,7 +201,6 @@
 
       // 서버로부터 최근 메시지를 받을 때 호출되는 콜백 함수
       this.socket.on('messageHistory', (messages) => {
-        this.loading = true;
         // 받은 채팅 메시지들을 화면에 표시하는 로직
         this.messages = messages;
         // chatContainer 요소의 레퍼런스를 가져옵니다.
@@ -211,9 +209,9 @@
           // 최근 메시지를 받은 후에 스크롤을 아래로 이동합니다.
           setTimeout(() => {
             this.scrollToBottom();
-            this.loading = false;
           }, 100); // 100ms(0.1초) 후에 실행됩니다.
         });
+        this.loading = false;
       });
       // 스크롤 올릴떄 이전내역 가져오기
       this.socket.on('previousMessages', (previousMessages) => {
