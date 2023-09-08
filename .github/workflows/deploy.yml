@@ -29,6 +29,18 @@ jobs:
               buildenv:
                 - name: VUE_APP_apiKey
                   secret: apiKey
+                - name: VUE_APP_appId
+                  secret: appId
+                - name: VUE_APP_authDomain
+                  secret: authDomain
+                - name: VUE_APP_measurementld
+                  secret: measurementId
+                - name: VUE_APP_messagingSenderld
+                  secret: messagingSenderId
+                - name: VUE_APP_projectld
+                  secret: projectId
+                - name: VUE_APP_storageBucket
+                  secret: storageBucket
             context:
               git:
                 url: git@github.com:${{ github.repository }}.git
