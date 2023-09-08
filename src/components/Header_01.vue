@@ -111,12 +111,15 @@
   import { mapActions } from 'vuex';
   import loginMethods from '../scripts/login.js';
   import jwtDecode from 'jwt-decode';
+  import * as commons from '../scripts/common.js';
   import axios from 'axios';
+  
 
   export default {
     data() {
       return {
         loading: false,
+        loginUserId: null,
         showLoginModal: false,
         showSignupModal: false, // 회원가입 모달 표시 여부
         username: "",
@@ -189,10 +192,7 @@
             profileSearch(job){
               const token = localStorage.getItem('token');
               if(token != null) {
-                const decodedToken = jwtDecode(token);
-                const userid = decodedToken.username; // 사용자 아이디 추출
-                
-                loginMethods.methods.profileSearch(userid, (res) => {
+                loginMethods.methods.profileSearch(this.loginUserId, (res) => {
                     this.editedName = res.data[0].user_nm;
                     // 이미지 URL 받아오기
                     if(res.data[0].img_id){
@@ -226,13 +226,8 @@
             },
             // 내정보 수정
             saveUserProfile() {
-              const token = localStorage.getItem('token');
-              if(token == null) {
-                alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
-                return;
-              }
-              const decodedToken = jwtDecode(token);
-              const userid = decodedToken.username; // 사용자 아이디 추출
+              if(!commons.loginCheck()) return;
+              const userid = this.loginUserId; // 사용자 아이디 추출
 
               // 이미지 URL 받아오기
               if(this.file_no){
@@ -465,6 +460,8 @@
         const token = localStorage.getItem("token");
         if (token) {
           this.isLoggedIn = true;
+          const decoded_Token = jwtDecode(token);
+          this.loginUserId = decoded_Token.username;
         }
         this.profileSearch("load");
       },
