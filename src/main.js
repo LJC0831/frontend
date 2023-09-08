@@ -12,7 +12,8 @@ import ChatRoom from './components/menu/chat_01.vue';
 
 
 const app = createApp(App);
-
+const apiKey = process.env.apiKey; // 환경 변수 읽기
+console.log('API Key:', apiKey);
 app.use(store);
 app.use(VueToast); // Register the VueToast plugin
 
