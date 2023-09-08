@@ -517,7 +517,7 @@
 
         // 파일 크기 확인
         if (file && file.size > this.maxFileSize) {
-            this.showToast('파일 또는 이미지 크기가 너무 큽니다. 1MB 이하의 이미지를 선택해주세요.');
+            this.showToast('파일 또는 이미지 크기가 너무 큽니다. 10MB 이하의 이미지를 선택해주세요.');
             return;
            }
         const reader = new FileReader();
@@ -552,10 +552,7 @@
       },
       // 파일 메세지 전송1
       async chatfileUrl(chat_file_id, originalFileName) {
-        const token = localStorage.getItem('token');
-        if(!commons.loginCheck(token)){
-          return;
-        }
+        if(!commons.loginCheck()) return;
         const now = new Date();
         this.lastMessageTimestamps.push(now);
 
@@ -567,11 +564,10 @@
           this.showToast('메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
           return;
         }
-        const decodedToken = jwtDecode(token);
-        const userid = decodedToken.username;
+        
         const messageObject = {
           editedName: this.editedName,
-          user_id: userid,
+          user_id: this.loginUserId,
           message: originalFileName, // 이미지 데이터를 메시지로 첨부
           chat_type: 'file', // 이미지 타입
           chat_file_id: chat_file_id,
@@ -580,7 +576,7 @@
           chatId: this.selectedChatId,
           isMyMessage: true,
           selectUserCount: this.selectUser.length - 1,
-          selectUser: ',' + this.selectUser.filter(item => item !== userid),
+          selectUser: ',' + this.selectUser.filter(item => item !== this.loginUserId),
           ins_ymdhms: now - 10800000,
         };
 
@@ -605,12 +601,7 @@
       },
       // 이미지 메세지 전송2
       async sendImageMessage(chat_file_id, chatimageUrl, imageType) {
-        const token = localStorage.getItem('token');
-        if (token == null) {
-          alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
-          window.location.reload();
-          return;
-        }
+        if(!commons.loginCheck()) return;
         const now = new Date();
         this.lastMessageTimestamps.push(now);
 
@@ -622,11 +613,9 @@
           this.showToast('메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
           return;
         }
-        const decodedToken = jwtDecode(token);
-        const userid = decodedToken.username;
         const messageObject = {
           editedName: this.editedName,
-          user_id: userid,
+          user_id: this.loginUserId,
           message: '', // 이미지 데이터를 메시지로 첨부
           chat_type: imageType, // 이미지 타입
           chat_file_id: chat_file_id,
@@ -635,7 +624,7 @@
           chatId: this.selectedChatId,
           isMyMessage: true,
           selectUserCount: this.selectUser.length - 1,
-          selectUser: ',' + this.selectUser.filter(item => item !== userid),
+          selectUser: ',' + this.selectUser.filter(item => item !== this.loginUserId),
           ins_ymdhms: now - 10800000,
         };
 
