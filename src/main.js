@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { createApp } from 'vue';
 import App from './App.vue';
 import store from "./store";
@@ -12,8 +13,14 @@ import ChatRoom from './components/menu/chat_01.vue';
 
 
 const app = createApp(App);
-const apiKey = process.env.VUE_APP_apiKey; // 환경 변수 읽기
-console.log('API Key:', apiKey);
+const VUE_APP_apiKey = process.env.VUE_APP_apiKey; // 환경 변수 읽기
+const VUE_APP_appId = process.env.VUE_APP_appId; // 환경 변수 읽기
+const VUE_APP_authDomain = process.env.VUE_APP_authDomain; // 환경 변수 읽기
+const VUE_APP_measurementld = process.env.VUE_APP_measurementld; // 환경 변수 읽기
+const VUE_APP_messagingSenderld = process.env.VUE_APP_messagingSenderld; // 환경 변수 읽기
+const VUE_APP_projectld = process.env.VUE_APP_projectld; // 환경 변수 읽기
+const VUE_APP_storageBucket = process.env.VUE_APP_storageBucket; // 환경 변수 읽기
+console.log('API Key:', VUE_APP_storageBucket);
 app.use(store);
 app.use(VueToast); // Register the VueToast plugin
 
