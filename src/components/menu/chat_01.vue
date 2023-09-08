@@ -113,6 +113,7 @@
   import jwtDecode from 'jwt-decode';
   import loginMethods from '../../scripts/login.js';
   import chatMethods from '../../scripts/chat.js';
+  import * as commons from '../../scripts/common.js';
   
 
   export default {
@@ -420,15 +421,10 @@
       },
       // 메세지 보내기
       sendMessage() {
-        const token = localStorage.getItem('token');
+        if(!commons.loginCheck()) return;
+
         if (this.newMessage.trim() === '') return;
-        // 새 메시지를 서버로 보냅니다.
-        if(token == null) {
-          alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
-          window.location.reload();
-          // 페이지 새로고침
-          return;
-        }
+        
         if(this.newMessage.length>=4000){
           alert('2000자 이상 입력불가합니다.');
           return;
@@ -448,11 +444,9 @@
             return;
           }
           this.loading = true;
-          const decodedToken = jwtDecode(token);
-          const userid = decodedToken.username; // 사용자 아이디 추출
           const messageObject = {
             editedName: this.editedName,
-            user_id: userid,
+            user_id: this.loginUserId,
             message: this.newMessage,
             chat_type: 'text', // 이미지 타입
             chat_file_id: null,
@@ -461,7 +455,7 @@
             chatId: this.selectedChatId,
             isMyMessage: true,
             selectUserCount: this.selectUser.length - 1,
-            selectUser: ',' + this.selectUser.filter(item => item !== userid),
+            selectUser: ',' + this.selectUser.filter(item => item !== this.loginUserId),
             ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
           };
           this.newMessage = '';
@@ -559,9 +553,7 @@
       // 파일 메세지 전송1
       async chatfileUrl(chat_file_id, originalFileName) {
         const token = localStorage.getItem('token');
-        if (token == null) {
-          alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
-          window.location.reload();
+        if(!commons.loginCheck(token)){
           return;
         }
         const now = new Date();
