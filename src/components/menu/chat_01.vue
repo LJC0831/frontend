@@ -211,9 +211,9 @@
           // 최근 메시지를 받은 후에 스크롤을 아래로 이동합니다.
           setTimeout(() => {
             this.scrollToBottom();
+            this.loading = false;
           }, 100); // 100ms(0.1초) 후에 실행됩니다.
         });
-        this.loading = false;
       });
       // 스크롤 올릴떄 이전내역 가져오기
       this.socket.on('previousMessages', (previousMessages) => {
