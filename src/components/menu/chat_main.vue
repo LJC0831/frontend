@@ -96,6 +96,7 @@ import jwtDecode from 'jwt-decode';
 import ChatRoom01 from './chat_01.vue';
 import loginMethods from '../../scripts/login.js';
 import chatMethods from '../../scripts/chat.js';
+import * as commons from '../../scripts/common.js';
 
 
 const api = axios.create({
@@ -118,6 +119,7 @@ export default {
   },
   data() {
     return {
+      loginUserId:null,
       searchKeyword: '',
       chatRooms: [],
       selectedChatId: null,
@@ -174,20 +176,13 @@ export default {
       const chat_type = chatRooms.chat_type; //방유형 0: 자유, 1: 제한
       const userIds = chatRooms.user_id; //방 인원list
 
-      const token = localStorage.getItem('token');
-      if(token == null) {
-          alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
-          window.location.reload();
-          // 페이지 새로고침
-          return;
-        }
-      const decodedToken = jwtDecode(token);
-      const userid = decodedToken.username; // 사용자 아이디 추출
+      
+      if(!commons.loginCheck()) return;
       const userIdsArray = userIds.split(',');
 
 
       for (const userId of userIdsArray){
-        if(userId === userid ){ //방에 본인이 있을시
+        if(userId === this.loginUserId ){ //방에 본인이 있을시
           this.myUserYn = true;
           if(chat_type==="1" ){
             this.checkFlag = true;
@@ -219,9 +214,9 @@ export default {
       } 
 
       if(!this.myUserYn){
-        chatMethods.methods.chatInsertUser(chat_id,userid,(res) => {
+        chatMethods.methods.chatInsertUser(chat_id,this.loginUserId,(res) => {
             if(res.status === 200){
-              userIdsArray.push(userid);
+              userIdsArray.push(this.loginUserId);
               this.selectedChatId = chat_id;
               this.selectSubject = subject;
               this.selectUser = userIdsArray;
@@ -278,9 +273,8 @@ export default {
       try { 
         const token = localStorage.getItem('token');
         if(token){
-          const decodedToken = jwtDecode(token);
-          this.searchUserId = decodedToken.username; // 사용자 아이디 추출
-          this.searchUserId2 = decodedToken.username; // 사용자 아이디 추출
+          this.searchUserId = this.loginUserId; // 사용자 아이디 추출
+          this.searchUserId2 = this.loginUserId; // 사용자 아이디 추출
         } else {
           this.searchUserId = null;
           this.searchUserId2 = null;
@@ -317,15 +311,8 @@ export default {
         alert('인원수를 입력해주세요.');
         return;
       }
-      const token = localStorage.getItem('token');
-      if(token == null) {
-          alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
-          window.location.reload();
-          // 페이지 새로고침
-          return;
-        }
-      const decodedToken = jwtDecode(token);
-      const userid = decodedToken.username; // 사용자 아이디 추출
+      if(!commons.loginCheck()) return;
+      const userid = this.loginUserId; 
       chatMethods.methods.createChatRoom(this.subject, this.newPassword, userid, this.expire_cnt, (res) => {
             if(res.status === 200){
               this.createChatRoom02(res.data.chat_id, userid);
@@ -389,6 +376,12 @@ export default {
     }
   },
   created() {
+    const token = localStorage.getItem('token');
+    if(token){
+      const login_token = localStorage.getItem('token');
+      const decoded_Token = jwtDecode(login_token);
+      this.loginUserId = decoded_Token.username;
+    }
     this.search01('ALL');
   }
 };
