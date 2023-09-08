@@ -187,7 +187,7 @@
             this.messages.push(message);
             setTimeout(() => {
                 this.scrollToBottom();
-              }, 0);
+              }, 10);
           }
           
           if(message.user_id !== this.loginUserId){
