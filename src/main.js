@@ -15,8 +15,11 @@ import ChatRoom from './components/menu/chat_01.vue';
 const app = createApp(App);
 
 const google_apiKey = process.env.VUE_APP_apiKey; // 환경 변수 읽기
-console.log(google_apiKey);
+const google_client_secret = process.env.VUE_APP_client_secret; // 환경 변수 읽기
+const google_redirect_uri = process.env.VUE_APP_redirect_uri; // 환경 변수 읽기
 app.config.globalProperties.$google_apiKey = google_apiKey;
+app.config.globalProperties.$google_client_secret = google_client_secret;
+app.config.globalProperties.$google_redirect_uri = google_redirect_uri;
 app.use(store);
 app.use(VueToast); // Register the VueToast plugin
 
