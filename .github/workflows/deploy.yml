@@ -29,6 +29,10 @@ jobs:
               buildenv:
                 - name: VUE_APP_apiKey
                   secret: apiKey
+                - name: VUE_APP_client_secret
+                  secret: client_secret
+                - name: VUE_APP_redirect_uri
+                  secret: redirect_uri
             context:
               git:
                 url: git@github.com:${{ github.repository }}.git
