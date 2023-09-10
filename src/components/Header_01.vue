@@ -557,6 +557,24 @@
           },
 
     created() {
+      // 어플리케이션 딥링크 처리
+        document.addEventListener('deviceready', () => {
+          // Cordova deviceready 이벤트 이후에 딥 링크 이벤트를 구독합니다.
+          window.DeepLink.route(
+              {
+                  '/my-deep-link/:id': { id: '[0-9]+' }
+              },
+              (match, params) => {
+                  // 딥 링크가 일치하는 경우 이곳에서 처리합니다.
+                  console.log('Deep link matched:', match, params);
+                  // 여기서 필요한 함수를 호출하거나 라우팅을 수행할 수 있습니다.
+              },
+              () => {
+                  // 딥 링크가 일치하지 않는 경우 이곳에서 처리합니다.
+                  console.warn('Deep link did not match');
+              }
+          );
+      });
        // 페이지가 로드될 때 실행할 함수
         window.addEventListener('load', () => {
           // URL에서 쿼리 문자열 파싱
@@ -567,11 +585,6 @@
           const code = urlParams.get('code');
 
           if (code) {
-            // 구글 연동 로그인
-            //if(!this.ismobile){
-            //const url = `friendtalk://action?code=${code}`;
-            //window.location.href = url; 
-            //}
             this.exchangeGoogleAuthCodeForAccessToken(code);
           }
         });
