@@ -14,6 +14,11 @@ export default {
         .then(successCallback)
         .catch(errorCallback);
     },
+    Oauthlogin(uesrId, username, successCallback, errorCallback) {
+      api.post("/api/oauth/user", { uesrId, username })
+        .then(successCallback)
+        .catch(errorCallback);
+    },
     signup(newUserId, newPassword, newName, newGender,successCallback, errorCallback) {
       api.post("/api/signup", {
         userId: newUserId,

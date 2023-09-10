@@ -24,14 +24,17 @@
         <div class="login-form">
           <h2>로그인</h2>
           <label for="username">이메일 :</label>&nbsp;
-          <input type="text" v-model="username" id="username" @keydown.enter="login"/>&nbsp;
+          <input type="text" v-model="username" id="username" @keydown.enter="login(null,null,'N')"/>&nbsp;
           <label for="password">비밀번호: </label>&nbsp;
-          <input type="password" v-model="password" id="password" @keydown.enter="login"/>&nbsp;
-          <button ref="loginButton" @click="login"  @keydown.enter="login" :disabled="loading">
+          <input type="password" v-model="password" id="password" @keydown.enter="login(null,null,'N')"/>&nbsp;
+          <button ref="loginButton" @click="login"  @keydown.enter="login(null,null,'N')" :disabled="loading">
             <span v-if="!loading">로그인</span>
             <span v-else>로딩 중...</span>
           </button>&nbsp;
           <button @click="cancel">취소</button>&nbsp;
+          <div @click="loginWithGoogle" class="google-login">
+            <img src="@/assets/google-icon.png" alt="구글로그인" class="google-login-image"/>Sign in with Google
+          </div>
           <span @click="this.showSearchPwd = true; this.showLoginModal = false;"><label for="username" style="cursor: pointer;">비밀번호를 잊으셨나요?</label></span>
         </div>
       </div>
@@ -113,7 +116,6 @@
   import jwtDecode from 'jwt-decode';
   import * as commons from '../scripts/common.js';
   import axios from 'axios';
-  
 
   export default {
     data() {
@@ -152,9 +154,98 @@
             focusLoginButton() {
               this.$refs.loginButton.focus();
             },
-            login() {
+            // Google 로그인 처리 로직 추가
+          async loginWithGoogle() {
+            try {
+              const url = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=' +
+                          process.env.VUE_APP_apiKey +
+                          '&redirect_uri=' +
+                          process.env.VUE_APP_redirect_uri +
+                          '&response_type=code' +
+                          '&scope=email profile';
+              window.location.href = url;
+            } catch (error) {
+              console.error('Google 로그인 오류:', error);
+            }
+          },
+
+          async exchangeGoogleAuthCodeForAccessToken(Googlecode) {
+            const client_id = process.env.VUE_APP_apiKey;
+            const client_secret = process.env.VUE_APP_client_secret;
+            const redirect_uri = process.env.VUE_APP_redirect_uri;
+            const code = Googlecode; // Google 로그인 후 받은 인증 코드
+            const grant_type = 'authorization_code';
+
+            try {
+              const response = await fetch('https://oauth2.googleapis.com/token', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                  client_id,
+                  client_secret,
+                  redirect_uri,
+                  code,
+                  grant_type,
+                }),
+              });
+
+              if (response.ok) {
+                const data = await response.json();
+                const access_token = data.access_token;
+                try {
+                  const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                    method: 'GET',
+                    headers: {
+                      'Authorization': 'Bearer ' + access_token, // 액세스 토큰을 헤더에 추가
+                    },
+                  });
+
+                  if (response.ok) {
+                    const userData = await response.json();
+                    // 여기에서 userData를 사용하여 원하는 작업을 수행할 수 있습니다.
+                    this.login(userData.email, userData.name, 'Y'); // Vue 컴포넌트의 login 메서드 호출
+                  } else {
+                    console.error('Google 사용자 정보 가져오기 실패:', response.status, response.statusText);
+                  }
+                } catch (error) {
+                  console.error('Google 사용자 정보 가져오기 오류:', error);
+                }
+
+              } else {
+                console.error('액세스 토큰 교환 실패:', response.status, response.statusText);
+              }
+            } catch (error) {
+              console.error('액세스 토큰 교환 오류:', error);
+            }
+          },
+            login(oauthUserId, oauthUsername, oauth_yn) {
               this.loading = true; //로딩 상태 활성화
-              loginMethods.methods.login( this.username, this.password,(res) => {
+              if(oauth_yn === 'Y'){ //구글로그인
+                loginMethods.methods.Oauthlogin( oauthUserId, oauthUsername, (res) => { //아이디, 이름
+                      // 토큰을 Vuex에 저장
+                    this.setToken(res.data.token);
+
+                    // 토큰을 로컬 스토리지에 저장
+                    localStorage.setItem("token", res.data.token);
+
+                    this.showLoginModal = false; // 로그인 성공 시 모달 닫기
+                    this.username='';
+                    this.newName='';
+                    window.location.href = process.env.VUE_APP_redirect_uri;
+                    alert("로그인에 성공했습니다!");
+                  },
+                  (error, res) => {
+                    this.username='';
+                    this.newName='';
+                    alert("네트워크에 문제가 발생했습니다.");
+                    console.error("로그인 오류:", error);
+                    this.showLoginModal = false; // 로그인 성공 시 모달 닫기
+                  }
+                );
+              } else { //일반로그인
+                loginMethods.methods.login( this.username, this.password, (res) => {
                       // 토큰을 Vuex에 저장
                     this.setToken(res.data.token);
 
@@ -176,10 +267,14 @@
                       alert("네트워크에 문제가 발생했습니다.");
                     }
                     console.error("로그인 오류:", error);
-                    this.loading = false; //로딩 상태 활성화
+                    this.showLoginModal = false; // 로그인 성공 시 모달 닫기
+                    this.username = ""; // 입력한 사용자 이름 초기화
+                    this.password = ""; // 입력한 비밀번호 초기화
                   }
                 );
-              },
+              }
+              this.loading = false; //로딩 상태 활성화
+            },
            
             logout() {
                   // 로그아웃 처리 로직
@@ -456,6 +551,20 @@
           },
 
     created() {
+       // 페이지가 로드될 때 실행할 함수
+        window.addEventListener('load', () => {
+          // URL에서 쿼리 문자열 파싱
+          const queryString = window.location.search;
+          const urlParams = new URLSearchParams(queryString);
+
+          // 'code' 매개 변수 값 가져오기
+          const code = urlParams.get('code');
+
+          if (code) {
+            // 구글 연동 로그인
+            this.exchangeGoogleAuthCodeForAccessToken(code);
+          }
+        });
         // 페이지가 로드될 때 로컬 스토리지에 토큰이 있는지 확인하여 로그인 상태를 설정
         const token = localStorage.getItem("token");
         if (token) {
@@ -618,6 +727,12 @@
 .radio-buttons label {
   margin-right: 10px;
 }
-
+.google-login-image{
+  margin-left: -40px;
+  width: 70px;
+}
+.google-login{
+  cursor: pointer;
+}
 
   </style>
