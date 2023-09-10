@@ -568,13 +568,12 @@
 
           if (code) {
             // 구글 연동 로그인
-            if(!this.ismobile){
-              const url = `friendtalk://action`;
-              window.location.href = url; 
-              this.exchangeGoogleAuthCodeForAccessToken(code);
-            }else {
-              this.exchangeGoogleAuthCodeForAccessToken(code);
-            }
+            // if(!this.ismobile){
+            //   const url = `friendtalk://action`;
+            //   window.location.href = url; 
+            //   this.exchangeGoogleAuthCodeForAccessToken(code);
+            // }
+            this.exchangeGoogleAuthCodeForAccessToken(code);
           }
         });
         // 페이지가 로드될 때 로컬 스토리지에 토큰이 있는지 확인하여 로그인 상태를 설정
