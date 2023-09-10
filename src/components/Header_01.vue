@@ -569,8 +569,9 @@
           if (code) {
             // 구글 연동 로그인
             if(!this.ismobile){
-              const url = `friendtalk://action`;
+              const url = `friendtalk://action?code=code`;
               window.location.href = url; 
+              alert(code);
               this.exchangeGoogleAuthCodeForAccessToken(code);
             }
             this.exchangeGoogleAuthCodeForAccessToken(code);
