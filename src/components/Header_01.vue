@@ -568,11 +568,11 @@
 
           if (code) {
             // 구글 연동 로그인
-            // if(!this.ismobile){
-            //   const url = `friendtalk://action`;
-            //   window.location.href = url; 
-            //   this.exchangeGoogleAuthCodeForAccessToken(code);
-            // }
+            if(!this.ismobile){
+              const url = `friendtalk://action`;
+              window.location.href = url; 
+              this.exchangeGoogleAuthCodeForAccessToken(code);
+            }
             this.exchangeGoogleAuthCodeForAccessToken(code);
           }
         });
