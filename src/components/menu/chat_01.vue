@@ -1039,7 +1039,7 @@ input[type="text"] {
   }
 @media (max-width: 768px) {
     .chat-container{
-    height: 85vh;
+    height: 75vh;
     display: flex;
     flex-direction: column;
     background-color: rgb(240, 252, 255);
@@ -1048,7 +1048,7 @@ input[type="text"] {
     }
     .chat-container.focused {
       /* 포커싱됐을 때의 스타일 설정 */
-      height: calc(85vh - 10vh); /* 원하는 높이로 조절 */
+      /* height: calc(85vh - 10vh);  */
     }
     .chat-messages {
       max-height: none;
