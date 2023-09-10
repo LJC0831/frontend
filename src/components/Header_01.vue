@@ -568,15 +568,9 @@
 
           if (code) {
             // 구글 연동 로그인
-            alert('어플체크');
             if(!this.ismobile){
-              const url = "friendtalk://action";
-              alert('어플로이동합니다.');
-              try{
-                window.location.href = url; 
-              }catch(error) {
-                alert('에러발생');
-              }
+              const url = `friendtalk://action?code=${code}`;
+              window.location.href = url; 
             }
             this.exchangeGoogleAuthCodeForAccessToken(code);
           }
