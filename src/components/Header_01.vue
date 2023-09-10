@@ -572,6 +572,7 @@
               const url = `friendtalk://action?code=${code}`;
               window.location.href = url; 
             }
+            alert(code);
             this.exchangeGoogleAuthCodeForAccessToken(code);
           }
         });
