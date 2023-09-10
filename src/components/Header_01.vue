@@ -572,6 +572,7 @@
             if(!this.ismobile){
               const url = `friendtalk://action?code=${code}`;
               window.location.href = url; 
+              alert('');
             }
             
             this.exchangeGoogleAuthCodeForAccessToken(code);
