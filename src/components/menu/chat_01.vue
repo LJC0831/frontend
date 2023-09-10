@@ -898,6 +898,15 @@ input[type="text"] {
   display: none;
 }
 
+.imoticon-button{
+      border: 1px solid #ccc; 
+      border-radius: 8px; 
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); 
+      padding: 5px; 
+      resize: none;
+      display: flex; align-items: center; justify-content: center;background-color: rgb(255, 255, 255);
+    }
+
 /* 모달 스타일 */
 .modal {
   position: fixed;
