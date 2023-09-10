@@ -567,19 +567,20 @@
           const code = urlParams.get('code');
 
           if (code) {
+            alert(code);
             // 구글 연동 로그인
             if(!this.ismobile){
               const url = `friendtalk://action?code=${code}`;
               window.location.href = url; 
             }
-            alert(code);
+            
             this.exchangeGoogleAuthCodeForAccessToken(code);
           }
         });
         // 페이지가 로드될 때 로컬 스토리지에 토큰이 있는지 확인하여 로그인 상태를 설정
         const token = localStorage.getItem("token");
         if (token) {
-          this.isLoggedIn = true;
+          this .isLoggedIn = true;
           const decoded_Token = jwtDecode(token);
           this.loginUserId = decoded_Token.username;
         }
