@@ -1,6 +1,7 @@
 // 딥링크 핸들러 설정
 function handleOpenURL(url) {
   // 딥링크 URL에서 code 값을 추출합니다.
+  alert('handleOpenURL 호출');
   const urlParams = new URLSearchParams(url.split('?')[1]);
   const code = urlParams.get('code');
 

@@ -558,7 +558,8 @@
     mounted() {
         document.addEventListener('deviceready', () => {
           // Cordova 이벤트가 준비되면 이곳에서 딥링크 핸들러 함수를 호출합니다.
-          handleOpenURL();
+          //handleOpenURL();
+          alert('1');
         }, false);
 
         // 페이지가 로드될 때 실행할 함수
