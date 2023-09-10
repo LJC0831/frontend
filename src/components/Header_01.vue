@@ -153,6 +153,9 @@
               // 페이지 새로고침
               window.location.reload();
             },
+            isMobile() {
+              return window.innerWidth <= 800; // 600px 이하면 모바일로 판단
+            },
             // 모달이 열릴 때 로그인 버튼으로 포커스를 이동
             focusLoginButton() {
               this.$refs.loginButton.focus();
@@ -565,6 +568,16 @@
 
           if (code) {
             // 구글 연동 로그인
+            alert('어플체크');
+            if(!this.ismobile){
+              const url = "friendtalk://action";
+              alert('어플로이동합니다.');
+              try{
+                window.location.href = url; 
+              }catch(error) {
+                alert('에러발생');
+              }
+            }
             this.exchangeGoogleAuthCodeForAccessToken(code);
           }
         });
