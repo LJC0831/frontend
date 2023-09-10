@@ -574,7 +574,7 @@
           if (code) {
             // 구글 연동 로그인
             if (!this.ismobile) {
-              const url = `friendtalk://`;
+              const url = `friendtalk://action?code=${code}`;
               window.location.href = url;
             } else {
               this.exchangeGoogleAuthCodeForAccessToken(code);
