@@ -567,15 +567,14 @@
           const code = urlParams.get('code');
 
           if (code) {
-            alert(code);
             // 구글 연동 로그인
             if(!this.ismobile){
-              const url = `friendtalk://action?code=${code}`;
+              const url = `friendtalk://action`;
               window.location.href = url; 
-              alert('');
+              this.exchangeGoogleAuthCodeForAccessToken(code);
+            }else {
+              this.exchangeGoogleAuthCodeForAccessToken(code);
             }
-            
-            this.exchangeGoogleAuthCodeForAccessToken(code);
           }
         });
         // 페이지가 로드될 때 로컬 스토리지에 토큰이 있는지 확인하여 로그인 상태를 설정
