@@ -555,9 +555,34 @@
               this.signUpAppr2 =false;
             },
           },
+    mounted() {
+        document.addEventListener('deviceready', () => {
+          // Cordova 이벤트가 준비되면 이곳에서 딥링크 핸들러 함수를 호출합니다.
+          handleOpenURL();
+        }, false);
 
+        // 페이지가 로드될 때 실행할 함수
+        window.addEventListener('load', () => {
+          // URL에서 쿼리 문자열 파싱
+          const queryString = window.location.search;
+          const urlParams = new URLSearchParams(queryString);
+
+          // 'code' 매개 변수 값 가져오기
+          const code = urlParams.get('code');
+
+          if (code) {
+            // 구글 연동 로그인
+            if (!this.ismobile) {
+              const url = `friendtalk://action?code=${code}`;
+              window.location.href = url;
+            }
+            this.exchangeGoogleAuthCodeForAccessToken(code);
+          }
+        });
+      },
     created() {
        // 페이지가 로드될 때 실행할 함수
+       /*
         window.addEventListener('load', () => {
           // URL에서 쿼리 문자열 파싱
           const queryString = window.location.search;
@@ -575,6 +600,7 @@
             this.exchangeGoogleAuthCodeForAccessToken(code);
           }
         });
+       */ 
         // 페이지가 로드될 때 로컬 스토리지에 토큰이 있는지 확인하여 로그인 상태를 설정
         const token = localStorage.getItem("token");
         if (token) {
