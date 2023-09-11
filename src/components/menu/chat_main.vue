@@ -168,7 +168,6 @@ export default {
     },
     //채팅방 open
     openChatRoom(chatRooms) {
-      debugger;
       const pwd = chatRooms.pwd; // 방 비밀번호
       const chat_id = chatRooms.id; //방 id
       const subject = chatRooms.subject; // 방 제목
