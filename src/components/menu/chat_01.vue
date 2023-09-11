@@ -454,8 +454,6 @@
             chatimageUrl:null,
             chatId: this.selectedChatId,
             isMyMessage: true,
-            selectUserCount: this.selectUser.length - 1,
-            selectUser: ',' + this.selectUser.filter(item => item !== this.loginUserId),
             ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
           };
           this.newMessage = '';
@@ -575,8 +573,6 @@
           chatimageUrl: `/api/file/download/${chat_file_id}`,
           chatId: this.selectedChatId,
           isMyMessage: true,
-          selectUserCount: this.selectUser.length - 1,
-          selectUser: ',' + this.selectUser.filter(item => item !== this.loginUserId),
           ins_ymdhms: now - 10800000,
         };
 
@@ -623,8 +619,6 @@
           chatimageUrl:chatimageUrl,
           chatId: this.selectedChatId,
           isMyMessage: true,
-          selectUserCount: this.selectUser.length - 1,
-          selectUser: ',' + this.selectUser.filter(item => item !== this.loginUserId),
           ins_ymdhms: now - 10800000,
         };
 
