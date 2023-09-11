@@ -260,12 +260,12 @@ export default {
     changeSelectedChatId(chatId) {
       this.selectedChatId = chatId;
       this.myUserYn = false;
-      this.search01('ALL');
+      this.search01(this.activeTab);
     },
     exit() {
       try{
         this.exitChat(); //소켓종료
-        this.search01('ALL');
+        this.search01(this.activeTab);
       } catch(error){}
       this.selectedChatId = null;
       this.myUserYn=false;
