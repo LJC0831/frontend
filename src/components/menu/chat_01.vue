@@ -196,7 +196,7 @@
               // 메시지 읽음 처리 후 데이터 갱신
               this.chatReadUser(message.chatId, this.loginUserId);
           } else {
-            this.socket.emit('getLatestMessages',chatId, '');
+            this.socket.emit('getLatestMessages',message.chatId, '');
           }
         }
       });
