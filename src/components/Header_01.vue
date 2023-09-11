@@ -556,9 +556,10 @@ export default {
           },
         },
   mounted() {
-      document.addEventListener('deviceready', () => {
+      document.addEventListener('resume', (event) => {
         // Cordova 이벤트가 준비되면 이곳에서 딥링크 핸들러 함수를 호출합니다.
-        alert('1');
+        //alert(event.url);
+        // const params = new URL(url).searchParams;
         //handleOpenURL();
       }, false);
 
@@ -570,13 +571,10 @@ export default {
 
         // 'code' 매개 변수 값 가져오기
         const code = urlParams.get('code');
-
         if (code) {
           // 구글 연동 로그인
-          if (!this.ismobile) {
-            const url = `friendtalk://action?code=${code}`;
-            window.location.href = url;
-          }
+          const url = `friendtalk://action?code=${code}`;
+          window.location.href = url;
           this.exchangeGoogleAuthCodeForAccessToken(code);
         }
       });
