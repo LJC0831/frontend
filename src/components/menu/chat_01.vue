@@ -196,7 +196,7 @@
               // 메시지 읽음 처리 후 데이터 갱신
               this.chatReadUser(message.chatId, this.loginUserId);
           } else {
-            this.socket.emit('getLatestMessages',message.chatId, this.loginUserId);
+            this.messages.push(message);
           }
         }
       });
@@ -375,7 +375,9 @@
       // 유저 read처리
       chatReadUser(chatId, loginId) { //flag: live 실시간, focue: 화면포커스
       if(document.hasFocus()) { //포커싱중일때 메세지확인처리
-            this.socket.emit('getLatestMessages',chatId, loginId);
+          this.socket.emit('getLatestMessages',chatId, loginId);
+        } else {
+          this.socket.emit('getLatestMessages',chatId, '');
         }
       },
       // 브라우저 알림 생성
