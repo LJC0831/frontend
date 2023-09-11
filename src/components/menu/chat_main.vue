@@ -195,23 +195,24 @@ export default {
       }
 
       if(!this.myUserYn){
+        if(pwd !== null){
+          const enteredPassword = prompt('비밀번호를 입력하세요:');
+            if(enteredPassword === null){
+              return;
+            }
+            if (enteredPassword !== pwd) {
+              alert('비밀번호가 일치하지 않습니다.');
+              return;
+            } 
+        } 
+      }
+
+      if(!this.myUserYn){
         if(user_cnt >= expire_cnt){
           alert('입장할 수 없습니다. 방이 가득 찼습니다.');
           return;
         }
-      } 
-      
-
-      if(pwd !== null){
-        const enteredPassword = prompt('비밀번호를 입력하세요:');
-          if(enteredPassword === null){
-            return;
-          }
-          if (enteredPassword !== pwd) {
-            alert('비밀번호가 일치하지 않습니다.');
-            return;
-          } 
-      } 
+      }   
 
       if(!this.myUserYn){
         chatMethods.methods.chatInsertUser(chat_id,this.loginUserId,(res) => {
