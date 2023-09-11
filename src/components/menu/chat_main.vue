@@ -264,6 +264,7 @@ export default {
     exit() {
       try{
         this.exitChat(); //소켓종료
+        this.search01('ALL');
       } catch(error){}
       this.selectedChatId = null;
       this.myUserYn=false;
