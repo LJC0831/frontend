@@ -42,7 +42,12 @@ export default {
           api.post('/api/chat/readUpdate', {chat_id, loginId})
         .then(successCallback)
         .catch(errorCallback);
-      },
+        },
+        chatUserSearch(chat_id, successCallback, errorCallback) {
+          api.post('/api/chat/chatUserSearch', {chat_id})
+        .then(successCallback)
+        .catch(errorCallback);
+        },
           
     },
 

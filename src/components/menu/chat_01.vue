@@ -194,7 +194,7 @@
               this.previousMessage = message.message;
               this.showNotification(message.message,message.profilePicture); // 새 메시지 알림 표시
               // 메시지 읽음 처리 후 데이터 갱신
-            }
+            } 
             this.chatReadUser(message.chatId, this.loginUserId);
             //this.messages.push(message);
         }
@@ -650,6 +650,14 @@
           }, 0);
       },
       toggleSearch() {
+          chatMethods.methods.chatUserSearch(this.selectedChatId,(res) => {
+              //const chat_file_id = res.data.fileId;
+              //this.chatImgurl(chat_file_id,'image');
+            },
+            (error) => { // 에러 콜백
+              console.error("채팅방 대상자 조회:", error);
+            }
+        );
           this.showModal = true; // 모달 토글
           this.getImageUrl(this.selectUser);
         },
