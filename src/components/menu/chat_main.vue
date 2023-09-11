@@ -168,6 +168,7 @@ export default {
     },
     //채팅방 open
     openChatRoom(chatRooms) {
+      debugger;
       const pwd = chatRooms.pwd; // 방 비밀번호
       const chat_id = chatRooms.id; //방 id
       const subject = chatRooms.subject; // 방 제목
@@ -202,7 +203,7 @@ export default {
       } 
       
 
-      if(pwd ==! null){
+      if(pwd !== null){
         const enteredPassword = prompt('비밀번호를 입력하세요:');
           if(enteredPassword === null){
             return;
