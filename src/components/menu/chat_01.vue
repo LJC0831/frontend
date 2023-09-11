@@ -69,8 +69,8 @@
         <h2>접속 중인 대상자 목록</h2>
         <ul>
           <li v-for="(selectUser, index) in selectUser" :key="index">
-            <img v-if="userPicture[selectUser]" class="profile-image" :src="userPicture[selectUser]" width="100" height="100" alt="프로필 사진" /> 
-            <img v-if="!userPicture[selectUser]" class="profile-image" src="@/assets/profile-user.png" width="100" height="100" alt="프로필 사진" /> 
+            <img v-if="userPicture[index]" class="profile-image" :src="userPicture[index]" width="100" height="100" alt="프로필 사진" /> 
+            <img v-else class="profile-image" src="@/assets/profile-user.png" width="100" height="100" alt="프로필 사진" /> 
             {{ selectUser }}
           </li>
         </ul>
@@ -651,52 +651,23 @@
           }, 0);
       },
       toggleSearch() {
+         this.selectUser.length = 0;
+         this.userPicture.length = 0;
           chatMethods.methods.chatUserSearch(this.selectedChatId,(res) => {
-              //const chat_file_id = res.data.fileId;
-              //this.chatImgurl(chat_file_id,'image');
+              for (const item of res.data) {
+                this.selectUser.push(item.user_id);
+                this.userPicture.push(item.profile_url);
+              }
             },
             (error) => { // 에러 콜백
               console.error("채팅방 대상자 조회:", error);
             }
         );
-          this.showModal = true; // 모달 토글
-          this.getImageUrl(this.selectUser);
+        this.showModal = true; // 모달 토글
+          
         },
       closeModal() {
           this.showModal = false; // 모달 닫기
-      },
-
-      //접속유저 프로필사진 가져오기
-      async getImageUrl(userArray) {
-        try {
-          for (const user of userArray) {
-            const profileSearchResponse = await new Promise((resolve, reject) => {
-              loginMethods.methods.profileSearch(user, (res) => {
-                resolve(res);
-              });
-            });
-            if (profileSearchResponse.data[0].img_id) {
-              this.file_no = profileSearchResponse.data[0].img_id;
-
-              try {
-                const profileImgResponse = await new Promise((resolve, reject) => {
-                  loginMethods.methods.profileImgURL(profileSearchResponse.data[0].img_id, (res) => {
-                    resolve(res);
-                  });
-                });
-
-                this.userPicture[user] = profileImgResponse.data.imageUrl;
-              } catch (error) {
-                console.error("프로필 이미지 조회 오류:", error);
-                this.userPicture[user] = null;
-              }
-            } else {
-              this.userPicture[user] = null;
-            }
-          }
-        } catch (error) {
-          console.error("프로필 조회 오류:", error);
-        }
       },
       scrollToBottom() {
         // chatContainer 요소가 렌더링되지 않은 경우에 대한 예외 처리
