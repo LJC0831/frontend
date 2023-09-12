@@ -89,6 +89,12 @@
         <button ref="closeButton" class="modal_close" @click="closeImageModal" @keyup.esc="closeImageModal">닫기</button>
       </div>
     </div>
+    <!-- 스크롤 다운 버튼과 팝업 컨테이너 -->
+    <div v-if="showScrollPopup"  class="scroll-down-container">
+      <button @click="scrollToBottom" class="scroll-down-button">
+        <i class="fas fa-chevron-down"></i>
+      </button>
+    </div>
     <!-- 이모티콘 모달 -->
     <div v-if="isStickerModal" class="sticker-modal">
       <!-- 이모티콘 선택 영역 -->
@@ -158,6 +164,7 @@
         searchPosition: 0, //검색위치
         searchAllcount:null, //검색채팅(전체개수)
         isStickerModal:false, //이모티콘 활성화여부
+        showScrollPopup:false, //스크롤모달 활성화여부
       };
     },
     created() {
@@ -682,6 +689,17 @@
       
       async checkScrollPosition() {
         const chatContainer = this.$refs.chatContainer;
+        // 스크롤 한번에 내리기 모달
+        if (chatContainer) {
+            if (chatContainer.scrollTop < chatContainer.scrollHeight - chatContainer.clientHeight) {
+              // 스크롤이 맨 아래가 아니면 팝업을 표시
+              this.showScrollPopup = true;
+            } else {
+              // 스크롤이 맨 아래에 도달하면 팝업을 숨김
+              this.showScrollPopup = false;
+            }
+          }
+        // 스크롤 한번에 내리기 모달 END
         if (chatContainer.scrollTop === 0 && !this.loadingPreviousMessages && this.shouldMaintainScroll) {
           this.loadingPreviousMessages = true;
           try {
@@ -984,6 +1002,33 @@ input[type="text"] {
 }
 .image-bubble{
   background-color:  rgb(240, 252, 255);
+}
+
+/* CSS 스타일링 */
+.scroll-down-container {
+  position: fixed;
+  bottom: 30%;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 9999;
+}
+
+.scroll-down-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  cursor: pointer;
+  outline: none;
+}
+
+.scroll-down-button:hover {
+  background-color: #0056b3;
 }
 /* 모달 스타일 */
 
