@@ -240,7 +240,7 @@ export default {
                   this.username='';
                   this.newName='';
                   window.location.href = process.env.VUE_APP_redirect_uri;
-                  alert("로그인에 성공했습니다!");
+                  commons.showToast(this, '로그인에 성공했습니다!');
                 },
                 (error, res) => {
                   this.username='';
@@ -262,13 +262,13 @@ export default {
                   this.username = ""; // 입력한 사용자 이름 초기화
                   this.password = ""; // 입력한 비밀번호 초기화
                   window.location.reload();
-                  alert("로그인에 성공했습니다!");
+                  commons.showToast(this, '로그인에 성공했습니다!');
                 },
                 (error, res) => {
                   if(error.response.status === 401){
-                    alert("존재하지 않는 이메일입니다.");
+                    commons.showToast(this, '존재하지 않는 이메일입니다.');
                   } else if(error.response.status === 402){
-                    alert("패스워드가 틀렸습니다.");
+                    commons.showToast(this, '패스워드가 틀렸습니다.');
                   } else {
                     alert("네트워크에 문제가 발생했습니다.");
                   }
@@ -372,7 +372,7 @@ export default {
 
              // 파일 크기 확인
             if (file && file.size > this.maxFileSize) {
-              alert("이미지 크기가 너무 큽니다. 4MB 이하의 이미지를 선택해주세요.");
+              commons.showToast(this, ' 이미지 크기가 너무 큽니다. 4MB 이하의 이미지를 선택해주세요.');
               return;
             }
             const reader = new FileReader();
@@ -428,7 +428,7 @@ export default {
             }
 
             if (!isValidEmail(email)) {
-              alert("유효한 이메일이 아닙니다.");
+              commons.showToast(this, '유효한 이메일이 아닙니다.');
               return;
             } 
             let randomNumber = '';
@@ -441,20 +441,20 @@ export default {
               email,
               this.checkNumber,
               (res) => {
-                alert("메일확인 후 인증번호를 입력하세요.!");
+                commons.showToast(this, '메일확인 후 인증번호를 입력하세요!');
                 this.mailCheck = true;
               },
               (error) => {
                 // 에러 콜백
                 console.error("이메일 인증오류:", error);
-                alert("인증오류입니다. 문의바랍니다.");
+                commons.showToast(this, '인증오류입니다. 문의바랍니다.');
               }
             );
           },
           //메일인증비교
           emailNumCheck(checkNumberInput, FLAG){
             if(this.checkNumber === checkNumberInput){
-              alert('인증되었습니다.');
+              commons.showToast(this, '인증되었습니다.');
               if (FLAG === 10) { //회원가입
                 this.signUpAppr = true; 
               } else { //패스워드찾기
@@ -462,17 +462,17 @@ export default {
               }
               
             } else {
-              alert('인증번호가 일치하지 않습니다. 다시확인해주세요.');
+              commons.showToast(this, '인증번호가 일치하지 않습니다. 다시확인해주세요.');
             }
           },
           //패스워드찾기
           searchPwd() {
             if(this.searchPassword !== this.searchPassword2){
-              alert('패스워드가 일치하지 않습니다. 다시확인해주세요.');
+              commons.showToast(this, '패스워드가 일치하지 않습니다. 다시확인해주세요.');
               return;
             }
             if(this.searchPassword.length < 8){
-              alert('패스워드는 8자리 이상 입력해주세요.');
+              commons.showToast(this, '패스워드는 8자리 이상 입력해주세요.');
               return;
             }
             if(this.signUpAppr2){
@@ -480,7 +480,7 @@ export default {
                 this.searchUserId,
                 this.searchPassword,
                 (res) => {
-                  alert("패스워드를 변경하였습니다.");
+                  commons.showToast(this, '패스워드를 변경하였습니다.');
                   this.showSearchPwd = false;
                   this.searchUserId = "";
                   this.searchPassword = "";
@@ -490,23 +490,23 @@ export default {
                 (error) => {
                   // 에러 콜백
                   console.error("패스워드 변경 오류:", error);
-                  alert("패스워드 변경실패. 문의바랍니다.");
+                  commons.showToast(this, '패스워드 변경실패. 문의바랍니다.');
                   this.signUpAppr2 = false;
                 }
               );
             } else {
-              alert('이메일 인증해주세요.');
+              commons.showToast(this, '이메일 인증해주세요.');
               return;
             }
           },
           // 회원가입처리
           signup() {
             if(this.newPassword !== this.newPassword2){
-              alert('패스워드가 일치하지 않습니다. 다시확인해주세요.');
+              commons.showToast(this, '패스워드가 일치하지 않습니다. 다시확인해주세요.');
               return;
             }
             if(this.newPassword.length < 8){
-              alert('패스워드는 8자리 이상 입력해주세요.');
+              commons.showToast(this, '패스워드는 8자리 이상 입력해주세요.');
               return;
             }
             if(this.signUpAppr){
@@ -528,12 +528,12 @@ export default {
                 (error) => {
                   // 에러 콜백
                   console.error("회원가입 오류:", error);
-                  alert(" 이미 사용 중인 아이디입니다.");
+                  commons.showToast(this, ' 이미 사용 중인 아이디입니다.');
                   this.signUpAppr = false;
                 }
               );
             } else {
-              alert('이메일 인증해주세요.');
+              commons.showToast(this, '이메일 인증해주세요.');
               return;
             }
           },
