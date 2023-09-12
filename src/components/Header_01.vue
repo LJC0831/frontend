@@ -558,7 +558,9 @@ export default {
   mounted() {
       document.addEventListener('resume', () => {
         // Cordova 이벤트가 준비되면 이곳에서 딥링크 핸들러 함수를 호출합니다.
+        setTimeout(() => {
         alert(localStorage.getItem('deepLinkURL'));
+      }, 5000); // 100ms(0.1초) 후에 실행됩니다.
         // const params = new URL(url).searchParams;
         //handleOpenURL();
       }, false);
