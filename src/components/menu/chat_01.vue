@@ -204,10 +204,14 @@
               this.showNotification(message.message,message.profilePicture); // 새 메시지 알림 표시
               // 메시지 읽음 처리 후 데이터 갱신
               this.chatReadUser(message.chatId, this.loginUserId);
+              //this.socket.emit('setMessageRead',message.chatId, this.loginUserId);
           } else {
             this.socket.emit('getLatestMessages',message.chatId, '');
           }
         }
+      });
+      // 메세지 읽음처리
+      this.socket.on('getMessageRead', (message) => {
       });
 
       // 서버로부터 최근 메시지를 받을 때 호출되는 콜백 함수
