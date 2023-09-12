@@ -6,8 +6,10 @@
         <span>{{ selectSubject }}</span>
         <span style="float: right;">
             <input v-if="isSearchChat" v-model.trim="searchKeyword" type="text" @keyup.enter="searchChatContent()" @input="handleInputChange" style="margin-right: 5px; height: 30px;"/>
+            <span v-if="isSearchChat" style="margin-right: 5px;">{{searchChatContentArray.length}}/{{searchAllcount}}</span>
             <img src="../../assets/search-image.jpg"  @click="isSearchCheck()" class="class-search" style="width:30px; margin-right: 10px;"/>
             <i :class="'fas fa-bars'" @click="toggleSearch()"></i>
+            
         </span>
     </div>
     <!-- 로딩 오버레이 -->
@@ -153,7 +155,8 @@
         isSearchChat:false, //채팅검색여부
         searchChatcontentPosition:0, //채팅검색위치id
         searchChatContentArray: [], //검색위치배열저장
-        searchCount: 0, //검색위치
+        searchPosition: 0, //검색위치
+        searchAllcount:null, //검색채팅(전체개수)
         isStickerModal:false, //이모티콘 활성화여부
       };
     },
@@ -246,12 +249,13 @@
         if(messages.length > 0){
           this.searchChatcontentPosition = messages[0].id;
           this.searchChatContentArray.push(this.searchChatcontentPosition);
-          this.searchCount = messages.length;
+          this.searchPosition = messages.length;
+          this.searchAllcount = messages[0].tot_search_count;
           this.loading = false;
           // chatContainer 요소의 레퍼런스를 가져옵니다.
           setTimeout(() => {
             this.chatContainer = this.$refs.chatContainer;
-            if(this.searchCount <= 7){
+            if(this.searchPosition <= 7){
               this.chatContainer.scrollTop = 2000;
             } 
             else {
@@ -275,8 +279,9 @@
       handleInputChange() { 
         // 입력값이 변경될 때 실행되는 로직을 여기에 작성
         this.searchChatcontentPosition = 0; //채팅검색위치id
+        this.searchAllcount = null; //검색된채팅전체개수
         this.searchChatContentArray= []; //검색위치배열저장
-        this.searchCount = 0; //검색위치
+        this.searchPosition = 0; //검색위치
       },
       // 웹소켓종료
       disconnectWebSocket() {
