@@ -556,9 +556,9 @@ export default {
           },
         },
   mounted() {
-      document.addEventListener('resume', (event) => {
+      document.addEventListener('resume', () => {
         // Cordova 이벤트가 준비되면 이곳에서 딥링크 핸들러 함수를 호출합니다.
-        //alert(event.url);
+        alert(localStorage.getItem('deepLinkURL'));
         // const params = new URL(url).searchParams;
         //handleOpenURL();
       }, false);
@@ -573,6 +573,7 @@ export default {
         const code = urlParams.get('code');
         if (code) {
           // 구글 연동 로그인
+          localStorage.setItem('deepLinkURL', urlParams);
           const url = `friendtalk://action?code=${code}`;
           window.location.href = url;
           this.exchangeGoogleAuthCodeForAccessToken(code);
