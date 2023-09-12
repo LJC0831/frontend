@@ -144,7 +144,6 @@
         scrollPosition: [], //현재스크롤위치
         previousNotification :false, //알람처리변수
         userSockets: [],//소켓
-        isShowingToast: false, // 토스트 메시지 표시 중 여부
         loginUserId:null, //로그인유저
         firstChat:null, //스크롤 기준 맨위채팅
         loading2: false,
@@ -441,7 +440,7 @@
 
           if (this.lastMessageTimestamps.length >= 8) {
             // 사용자가 최근 10초 내에 8개 이상의 메시지를 보냄
-            this.showToast('메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
+            commons.showToast(this, '메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
             return;
           }
           this.loading = true;
@@ -516,7 +515,7 @@
 
         // 파일 크기 확인
         if (file && file.size > this.maxFileSize) {
-            this.showToast('파일 또는 이미지 크기가 너무 큽니다. 10MB 이하의 이미지를 선택해주세요.');
+            commons.showToast(this, '파일 또는 이미지 크기가 너무 큽니다. 10MB 이하의 이미지를 선택해주세요.');
             return;
            }
         const reader = new FileReader();
@@ -560,7 +559,7 @@
         this.lastMessageTimestamps = this.lastMessageTimestamps.filter(timestamp => timestamp > tenSecondsAgo);
 
         if (this.lastMessageTimestamps.length >= 8) {
-          this.showToast('메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
+          commons.showToast(this, '메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
           return;
         }
         
@@ -607,7 +606,7 @@
         this.lastMessageTimestamps = this.lastMessageTimestamps.filter(timestamp => timestamp > tenSecondsAgo);
 
         if (this.lastMessageTimestamps.length >= 8) {
-          this.showToast('메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
+          commons.showToast(this, '메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
           return;
         }
         const messageObject = {
@@ -696,21 +695,6 @@
           } 
         }
       },
-
-      showToast(message) {
-        this.$toast.open({
-          message: message,
-          duration: 2000, // 토스트 메시지가 보여지는 시간 (2초)
-          position: 'top', // 토스트 메시지 위치
-          type: 'info', // 토스트 메시지 타입 (info, success, error)
-          style: {
-            background: '#888', // 회색 배경 색상
-            'font-size': '14px', // 작은 글꼴 크기
-            color: '#fff', // 흰색 글자 색상
-          },
-        });
-      },
-
       // 내정보 조회
       profileSearch(user_id){
         loginMethods.methods.profileSearch(user_id, (res) => {
