@@ -573,7 +573,7 @@ export default {
         const code = urlParams.get('code');
         if (code) {
           // 구글 연동 로그인
-          localStorage.setItem('deepLinkURL', urlParams);
+          localStorage.setItem('deepLinkURL', `friendtalk://action?code=${code}`);
           const url = `friendtalk://action?code=${code}`;
           window.location.href = url;
           this.exchangeGoogleAuthCodeForAccessToken(code);
