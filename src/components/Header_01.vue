@@ -556,10 +556,10 @@ export default {
           },
         },
   mounted() {
-      document.addEventListener('resume', () => {
+      document.addEventListener('resume', (event) => {
         // Cordova 이벤트가 준비되면 이곳에서 딥링크 핸들러 함수를 호출합니다.
         setTimeout(() => {
-        alert(localStorage.getItem('deepLinkURL'));
+        alert(event.url);
       }, 5000); // 100ms(0.1초) 후에 실행됩니다.
         // const params = new URL(url).searchParams;
         //handleOpenURL();
@@ -574,8 +574,6 @@ export default {
         // 'code' 매개 변수 값 가져오기
         const code = urlParams.get('code');
         if (code) {
-          // 구글 연동 로그인
-          localStorage.setItem('deepLinkURL', `friendtalk://action?code=${code}`);
           const url = `friendtalk://action?code=${code}`;
           window.location.href = url;
           this.exchangeGoogleAuthCodeForAccessToken(code);
