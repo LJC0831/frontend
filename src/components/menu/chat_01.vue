@@ -1013,10 +1013,10 @@ input[type="text"] {
     font-family: Arial, sans-serif;
     transition: height 0.3s ease; /* 부드러운 애니메이션을 위해 트랜지션 적용 */
     }
-    .chat-container.focused {
+    /* .chat-container.focused { */
       /* 포커싱됐을 때의 스타일 설정 */
-      /* height: calc(85vh - 10vh);  */
-    }
+      /* height: calc(85vh - 10vh);  
+    }*/
     .chat-messages {
       max-height: none;
       overflow-y: auto;
