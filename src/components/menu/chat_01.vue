@@ -192,26 +192,27 @@
       // 서버로부터 메시지를 받으면 채팅 화면에 메시지를 표시합니다.
       this.socket.on('message', (message) => {
         if (message.chatId === this.selectedChatId) {
-          if(!document.hasFocus()) { //포커싱중일때 메세지확인처리
-            this.messages.push(message);
-            setTimeout(() => {
-                this.scrollToBottom();
-              }, 10);
-          }
-          
-          if(message.user_id !== this.loginUserId){
+          if(message.user_id !== this.loginUserId){ //채팅을 받을때
               this.previousMessage = message.message;
               this.showNotification(message.message,message.profilePicture); // 새 메시지 알림 표시
               // 메시지 읽음 처리 후 데이터 갱신
               this.chatReadUser(message.chatId, this.loginUserId);
-              //this.socket.emit('setMessageRead',message.chatId, this.loginUserId);
-          } else {
-            this.socket.emit('getLatestMessages',message.chatId, '');
+          } else { //채팅을 내가 입력할때
+            //this.socket.emit('getLatestMessages',message.chatId, '');
+            this.messages.push(message);
+            setTimeout(() => {
+              this.socket.emit('setMessageRead',message.chatId, this.loginUserId);
+            }, 500); // 100ms(0.1초) 후에 실행됩니다.
+            
           }
         }
       });
       // 메세지 읽음처리
-      this.socket.on('getMessageRead', (message) => {
+      this.socket.on('getMessageRead', (lastMessage) => {
+         for (var i = 1; i <= 8; i ++){
+          this.messages[this.messages.length-i].selectUserCount = lastMessage[lastMessage.length-i].selectUserCount;
+         }
+          
       });
 
       // 서버로부터 최근 메시지를 받을 때 호출되는 콜백 함수
@@ -276,7 +277,7 @@
         } else {
           commons.showToast(this, '찾는 메세지가 없습니다.');
           this.loading = false;
-          this.socket.emit('getLatestMessages',this.selectedChatId, this.loginUserId);
+          this.socket.emit('getLatestMessages',this.selectedChatId, '');
         }
         
       });
@@ -470,6 +471,7 @@
             chatimageUrl:null,
             chatId: this.selectedChatId,
             isMyMessage: true,
+            selectUserCount: 0,
             ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
           };
           this.newMessage = '';
@@ -589,6 +591,7 @@
           chatimageUrl: `/api/file/download/${chat_file_id}`,
           chatId: this.selectedChatId,
           isMyMessage: true,
+          selectUserCount: 0,
           ins_ymdhms: now - 10800000,
         };
 
@@ -635,6 +638,7 @@
           chatimageUrl:chatimageUrl,
           chatId: this.selectedChatId,
           isMyMessage: true,
+          selectUserCount: 0,
           ins_ymdhms: now - 10800000,
         };
 
@@ -697,7 +701,10 @@
         if (chatContainer) {
             if (chatContainer.scrollTop < chatContainer.scrollHeight - chatContainer.clientHeight) {
               // 스크롤이 맨 아래가 아니면 팝업을 표시
-              this.showScrollPopup = true;
+              if(this.ismobile){
+                this.showScrollPopup = true;
+              }
+              
             } else {
               // 스크롤이 맨 아래에 도달하면 팝업을 숨김
               this.showScrollPopup = false;
