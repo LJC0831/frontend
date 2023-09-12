@@ -176,7 +176,7 @@
       // 서버에 최근 메시지를 요청합니다.
       this.loading = true;
       if(!this.ismobile){
-        alert('채팅내역을 불러옵니다.');
+        commons.showToast(this, '채팅내역을 불러옵니다.');
       }
 
       // 서버로부터 메시지를 받으면 채팅 화면에 메시지를 표시합니다.
@@ -259,7 +259,7 @@
             }
           }, 300); // 300ms(0.3초) 후에 실행됩니다.
         } else {
-          alert('찾는 메세지가 없습니다.');
+          commons.showToast(this, '찾는 메세지가 없습니다.');
           this.loading = false;
           this.socket.emit('getLatestMessages',this.selectedChatId, this.loginUserId);
         }
@@ -426,7 +426,7 @@
         if (this.newMessage.trim() === '') return;
         
         if(this.newMessage.length>=4000){
-          alert('2000자 이상 입력불가합니다.');
+          commons.showToast(this, '2000자 이상 입력불가합니다.');
           return;
         }
         if (!event.shiftKey) { //쉬프트 엔터 시 줄바꿈
