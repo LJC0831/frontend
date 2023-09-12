@@ -190,7 +190,7 @@ export default {
         }
       }
       if(!this.checkFlag && chat_type==="1"){
-        alert('입장할 수 없습니다. 방장에게 초대를 받으세요');
+        commons.showToast(this, '입장할 수 없습니다. 방장에게 초대를 받으세요');
         return;
       }
 
@@ -201,7 +201,7 @@ export default {
               return;
             }
             if (enteredPassword !== pwd) {
-              alert('비밀번호가 일치하지 않습니다.');
+              commons.showToast(this, '비밀번호가 일치하지 않습니다.');
               return;
             } 
         } 
@@ -209,7 +209,7 @@ export default {
 
       if(!this.myUserYn){
         if(user_cnt >= expire_cnt){
-          alert('입장할 수 없습니다. 방이 가득 찼습니다.');
+          commons.showToast(this, '입장할 수 없습니다. 방이 가득 찼습니다.');
           return;
         }
       }   
@@ -229,7 +229,7 @@ export default {
             }
           },
           (error) => { // 에러 콜백
-            alert('일반유저는 최대 방3개까지만 입장 및 개설이 가능합니다.');
+            commons.showToast(this, '일반유저는 최대 방10개까지만 입장 및 개설이 가능합니다.');
             console.error("채팅방 입장 오류:", error);
             return;
           }
@@ -302,15 +302,15 @@ export default {
     //방만들기
     createChatRoom01(){
       if(this.subject === ''){
-        alert('방 제목을 입력해주세요.');
+        commons.showToast(this, '방 제목을 입력해주세요.');
         return;
       } 
       if(this.subject.length >= 40){
-        alert('제목은 20자내로 입력해주세요.');
+        commons.showToast(this, '제목은 20자내로 입력해주세요.');
         return;
       } 
       if(this.expire_cnt === '' ){
-        alert('인원수를 입력해주세요.');
+        commons.showToast(this, '인원수를 입력해주세요.');
         return;
       }
       if(!commons.loginCheck()) return;
@@ -321,7 +321,7 @@ export default {
             }
           },
           (error) => { // 에러 콜백
-            alert('일반유저는 최대 방3개까지만 입장 및 개설이 가능합니다.');
+            commons.showToast(this, '일반유저는 최대 방10개까지만 입장 및 개설이 가능합니다.');
             this.createChatModal = false;
             console.error("방만들기 오류:", error);
           });
@@ -330,7 +330,7 @@ export default {
     createChatRoom02(chat_id, userid){
       chatMethods.methods.createChatRoom02(chat_id, userid, (res) => {
             if(res.status === 200){
-              alert('방이 생성되었습니다.');
+              commons.showToast(this, '방이 생성되었습니다.');
               this.createChatModal = false;
               this.search01(this.activeTab);
             }
