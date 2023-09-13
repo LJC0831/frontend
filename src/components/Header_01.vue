@@ -556,9 +556,9 @@ export default {
           },
         },
   mounted() {
-    document.addEventListener('resume', () => {
+    document.addEventListener('resume', (event) => {
           // 백그라운드 딥 링크 핸들러 등록
-          handleopenurl('');
+          handleopenurl(eventData.url);
           universalLinks.subscribe('handleopenurl', (eventData) => {
             alert('제발!!');
               // 딥 링크 URL에서 필요한 데이터 추출
