@@ -53,6 +53,7 @@
           <img src="../../assets/uploadIKon.png" alt="첨부 아이콘" />
       </label>
       <textarea  v-model="newMessage" class ="chat-textarea" 
+      ref="sendButton"
       @focus="handleChatTextareaFocus"
       @blur="handleChatTextareaBlur"
       @paste="handleImagePaste" @keydown="handleKeyDown" placeholder="메시지를 입력하세요..." />
@@ -209,7 +210,7 @@
       });
       // 메세지 읽음처리
       this.socket.on('getMessageRead', (lastMessage) => {
-         for (var i = 1; i <= this.messages.length; i ++){
+         for (var i = 1; i <= 20; i ++){
           this.messages[this.messages.length-i].selectUserCount = lastMessage[lastMessage.length-i].selectUserCount;
          }
           
@@ -479,6 +480,7 @@
           this.loading = false;
           this.$nextTick(() => {
             setTimeout(() => {
+                this.$refs.sendButton.focus();
                 this.scrollToBottom();
               }, 50);
           });
