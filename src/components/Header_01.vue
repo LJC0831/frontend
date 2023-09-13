@@ -556,11 +556,16 @@ export default {
           },
         },
   mounted() {
-      document.addEventListener('resume', () => {
-        // Cordova 이벤트가 준비되면 이곳에서 딥링크 핸들러 함수를 호출합니다.
-        //alert(event.url);
-        // const params = new URL(url).searchParams;
-        //handleOpenURL();
+    document.addEventListener('deviceready', () => {
+          // 백그라운드 딥 링크 핸들러 등록
+          universalLinks.subscribe('handleopenurl', (eventData) => {
+            alert('제발!!');
+              // 딥 링크 URL에서 필요한 데이터 추출
+              const code = eventData.url.split('=')[1];
+              
+              // 추출한 데이터를 사용하여 작업 수행
+              console.log('Received code from background deep link: ' + code);
+          });
       }, false);
 
       // 페이지가 로드될 때 실행할 함수
