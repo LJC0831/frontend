@@ -482,7 +482,7 @@
           this.socket.emit('message', messageObject);
           setTimeout(() => {
             this.$refs.sendButton.focus();
-            this.scrollToBottom();
+            //this.scrollToBottom();
           }, 0);
           this.loading = false;
           this.$nextTick(() => {
