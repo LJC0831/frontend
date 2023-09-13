@@ -1,5 +1,10 @@
 // 딥링크 핸들러 설정
 // 백그라운드 딥 링크 핸들러 등록
+function handleopenurl(url){
+  alert('handleopenurl');
+  alert(url);
+};
+
 universalLinks.subscribe('handleopenurl', (eventData) => {
   // 딥 링크 URL에서 필요한 데이터 추출
   alert('handleopenurl 호출');
