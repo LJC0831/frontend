@@ -487,7 +487,7 @@
           this.loading = false;
           this.$nextTick(() => {
             setTimeout(() => {
-                this.scrollToBottom();
+              this.chatContainer.scrollTop = 2000;
               }, 200);
           });
           }
