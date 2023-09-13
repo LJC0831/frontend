@@ -32,7 +32,7 @@
           <span v-else>로딩 중...</span>
         </button>&nbsp;
         <button @click="cancel">취소</button>&nbsp;
-        <div @click="loginWithGoogle" class="google-login">
+        <div v-if="!this.isMobile()" @click="loginWithGoogle" class="google-login">
           <img src="@/assets/google-icon.png" alt="구글로그인" class="google-login-image"/>Sign in with Google
         </div>
         <span @click="this.showSearchPwd = true; this.showLoginModal = false;"><label for="username" style="cursor: pointer;">비밀번호를 잊으셨나요?</label></span>
@@ -556,19 +556,6 @@ export default {
           },
         },
   mounted() {
-    document.addEventListener('resume', (event) => {
-          // 백그라운드 딥 링크 핸들러 등록
-          handleopenurl(event.url);
-          universalLinks.subscribe('handleopenurl', (eventData) => {
-            alert('제발!!');
-              // 딥 링크 URL에서 필요한 데이터 추출
-              const code = eventData.url.split('=')[1];
-              
-              // 추출한 데이터를 사용하여 작업 수행
-              console.log('Received code from background deep link: ' + code);
-          });
-      }, false);
-
       // 페이지가 로드될 때 실행할 함수
       window.addEventListener('load', () => {
         // URL에서 쿼리 문자열 파싱
@@ -578,9 +565,6 @@ export default {
         // 'code' 매개 변수 값 가져오기
         const code = urlParams.get('code');
         if (code) {
-          const url = `friendtalk://action?code=${code}`;
-          window.location.href = url;
-          handleopenurl(url);
           this.exchangeGoogleAuthCodeForAccessToken(code);
         }
       });
