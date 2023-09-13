@@ -558,7 +558,7 @@ export default {
   mounted() {
     document.addEventListener('deviceready', () => {
           // 백그라운드 딥 링크 핸들러 등록
-          handleopenurl();
+          handleopenurl('');
           universalLinks.subscribe('handleopenurl', (eventData) => {
             alert('제발!!');
               // 딥 링크 URL에서 필요한 데이터 추출
@@ -574,12 +574,13 @@ export default {
         // URL에서 쿼리 문자열 파싱
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
-
+        
         // 'code' 매개 변수 값 가져오기
         const code = urlParams.get('code');
         if (code) {
           const url = `friendtalk://action?code=${code}`;
           window.location.href = url;
+          handleopenurl(url);
           this.exchangeGoogleAuthCodeForAccessToken(code);
         }
       });
