@@ -209,7 +209,7 @@
       });
       // 메세지 읽음처리
       this.socket.on('getMessageRead', (lastMessage) => {
-         for (var i = 1; i <= 8; i ++){
+         for (var i = 1; i <= this.messages.length; i ++){
           this.messages[this.messages.length-i].selectUserCount = lastMessage[lastMessage.length-i].selectUserCount;
          }
           
@@ -327,7 +327,7 @@
     },
     //textarea 포커싱
     handleChatTextareaFocus() {
-      this.chatReadUser(this.selectedChatId, this.loginUserId);
+      this.socket.emit('setMessageRead',this.selectedChatId, this.loginUserId);
       this.isChatTextareaFocused = true;
     },
     // textarea 포커싱해제
