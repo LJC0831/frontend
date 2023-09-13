@@ -210,8 +210,11 @@
       });
       // 메세지 읽음처리
       this.socket.on('getMessageRead', (lastMessage) => {
-         for (var i = 1; i <= 20; i ++){
+         for (var i = 1; i <= this.messages.length; i ++){
           this.messages[this.messages.length-i].selectUserCount = lastMessage[lastMessage.length-i].selectUserCount;
+          if(i === '199'){
+            break;
+          }
          }
           
       });
