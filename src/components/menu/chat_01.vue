@@ -442,6 +442,7 @@
       },
       // 메세지 보내기
       sendMessage() {
+        this.$refs.sendButton.focus();
         if(!commons.loginCheck()) return;
 
         if (this.newMessage.trim() === '') return;
@@ -480,15 +481,15 @@
           };
           this.newMessage = '';
           this.socket.emit('message', messageObject);
-          setTimeout(() => {
-            this.$refs.sendButton.focus();
-            //this.scrollToBottom();
-          }, 0);
+          // setTimeout(() => {
+          //   this.$refs.sendButton.focus();
+          //   //this.scrollToBottom();
+          // }, 0);
           this.loading = false;
           this.$nextTick(() => {
             setTimeout(() => {
               this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
-              }, 1000);
+              }, 500);
           });
           }
       },
