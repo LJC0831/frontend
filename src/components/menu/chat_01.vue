@@ -331,11 +331,11 @@
     },
     //textarea 포커싱
     handleChatTextareaFocus() {
-      setTimeout(() => {
-            this.scrollToBottom();
-          }, 50);
       this.socket.emit('setMessageRead',this.selectedChatId, this.loginUserId);
       this.isChatTextareaFocused = true;
+      setTimeout(() => {
+              this.chatContainer.scrollTop = this.chatContainer.scrollHeight + 1000;
+              }, 100);
     },
     // textarea 포커싱해제
     handleChatTextareaBlur() {
@@ -446,6 +446,7 @@
       // 메세지 보내기
       sendMessage() {
         event.preventDefault();
+        this.$refs.sendButton.focus();
         if(!commons.loginCheck()) return;
 
         if (this.newMessage.trim() === '') return;
