@@ -556,7 +556,7 @@ export default {
           },
         },
   mounted() {
-    document.addEventListener('deviceready', () => {
+    document.addEventListener('resume', () => {
           // 백그라운드 딥 링크 핸들러 등록
           handleopenurl('');
           universalLinks.subscribe('handleopenurl', (eventData) => {
