@@ -442,6 +442,7 @@
       },
       // 메세지 보내기
       sendMessage() {
+        event.preventDefault();
         this.$refs.sendButton.focus();
         if(!commons.loginCheck()) return;
 
@@ -489,7 +490,7 @@
           this.$nextTick(() => {
             setTimeout(() => {
               this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
-              }, 500);
+              }, 100);
           });
           }
       },
