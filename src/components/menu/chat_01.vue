@@ -477,11 +477,12 @@
           };
           this.newMessage = '';
           this.socket.emit('message', messageObject);
-          this.$refs.sendButton.focus();
+          setTimeout(() => {
+            this.$refs.sendButton.focus();
+          }, 0);
           this.loading = false;
           this.$nextTick(() => {
             setTimeout(() => {
-                
                 this.scrollToBottom();
               }, 50);
           });
