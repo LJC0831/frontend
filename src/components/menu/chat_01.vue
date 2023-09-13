@@ -331,6 +331,9 @@
     },
     //textarea 포커싱
     handleChatTextareaFocus() {
+      setTimeout(() => {
+            this.scrollToBottom();
+          }, 50);
       this.socket.emit('setMessageRead',this.selectedChatId, this.loginUserId);
       this.isChatTextareaFocused = true;
     },
@@ -443,7 +446,6 @@
       // 메세지 보내기
       sendMessage() {
         event.preventDefault();
-        this.$refs.sendButton.focus();
         if(!commons.loginCheck()) return;
 
         if (this.newMessage.trim() === '') return;
