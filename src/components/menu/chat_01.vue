@@ -209,10 +209,10 @@
                   }, 100); // 100ms(0.1초) 후에 실행됩니다.
                 });
           } else { //채팅을 내가 입력할때
-            this.socket.emit('setMessageRead',message.chatId, this.loginUserId, 'Y');
-            this.$nextTick(() => {
-              this.messages.push(message);
-            });
+            this.messages.push(message);
+            setTimeout(() => {
+              this.socket.emit('setMessageRead',message.chatId, this.loginUserId, 'Y');
+            }, 300); // 100ms(0.1초) 후에 실행됩니다.
           }
         }
       });
@@ -293,6 +293,10 @@
         
       });
     },
+    mounted() {
+      // 페이지 로드 시 로컬 스토리지에서 이미지 URL을 로드합니다.
+      this.getChatUserInfo();
+    },
     methods: {
       //모바일판단
       isMobile() {
@@ -347,6 +351,14 @@
       const currentlyFocusedElement = document.activeElement; // 현재 포커스를 가진 요소 가져오기
       currentlyFocusedElement.blur();
     },
+    // 세션종료
+    disconSession(){
+      for (let key in localStorage) {
+          if (key !== "token") {
+            localStorage.removeItem(key);
+          }
+        }
+    },
       //메세지 줄바꿈처리
       formatMessage(message) {
         //URL처리
@@ -361,6 +373,7 @@
       //방 나가기
       exitUser(){
         this.loading2 = true;
+        this.disconSession();
         const chat_id = this.selectedChatId;
         this.disconnectWebSocket();
         chatMethods.methods.chatDeleteUser(chat_id,this.loginUserId,(res) => {
@@ -678,6 +691,28 @@
           this.isImageModalOpen = false;
           }, 0);
       },
+      // 채팅접속자들 프로필사진 url정보가져오기
+      getChatUserInfo(){
+        // 각 사용자의 이미지를 로컬 스토리지에서 가져와 설정합니다.
+        this.disconSession();
+        for (let key in localStorage) {
+          if (key !== "token") {
+            localStorage.removeItem(key);
+          }
+        }
+        chatMethods.methods.chatUserSearch(this.selectedChatId,(res) => {
+              for (const item of res.data) {
+                if(!localStorage.getItem(`profileImageUrl_${item.user_id}`)){
+                  localStorage.setItem(`profileImageUrl_${item.user_id}`, item.profile_url);  
+                } 
+              }
+            },
+            (error) => { // 에러 콜백
+              console.error("대상자 이미지url 조회:", error);
+            }
+        );
+      },
+      // 채팅접속자 내역조회
       toggleSearch() {
          this.selectUser.length = 0;
          this.userPicture.length = 0;
