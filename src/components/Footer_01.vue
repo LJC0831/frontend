@@ -29,8 +29,8 @@ export default {
   }
 };
 </script>
-  
   <style scoped>
+
 .mobile-icons {
   position: fixed;
   bottom: 0;
@@ -57,6 +57,14 @@ export default {
 .icon span {
   font-size: 12px;
   margin-top: 2px;
+}
+@media (max-width: 768px) {
+  .mobile-icons {
+    height: 30px;
+  }
+  .icon {
+    height: 20px;
+  }
 }
 
   </style>
