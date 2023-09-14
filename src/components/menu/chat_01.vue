@@ -347,6 +347,7 @@
     },
     // textarea 포커싱해제
     handleChatTextareaBlur() {
+      this.newMessage='';
       this.isChatTextareaFocused = false;
       const currentlyFocusedElement = document.activeElement; // 현재 포커스를 가진 요소 가져오기
       currentlyFocusedElement.blur();
