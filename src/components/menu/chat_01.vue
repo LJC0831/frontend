@@ -250,7 +250,6 @@
       this.socket.on('previousMessages', (previousMessages) => {
         this.loading = true;
         // 받아온 이전 채팅 내역을 messages 배열의 앞쪽에 추가
-        debugger;
         for (var i = 1; i <= previousMessages.length; i ++){
           previousMessages[previousMessages.length-i].profilePicture = this.chatUserProfileUrl(previousMessages[previousMessages.length-i].user_id);
          }
@@ -278,6 +277,9 @@
       this.socket.on('messageSearch', (messages) => {
         // 받은 채팅 메시지들을 화면에 표시하는 로직
         this.messages = messages;
+        for (var i = 1; i <= this.messages.length; i ++){
+          this.messages[this.messages.length-i].profilePicture = this.chatUserProfileUrl(this.messages[this.messages.length-i].user_id);
+         }
         if(messages.length > 0){
           this.searchChatcontentPosition = messages[0].id;
           this.searchChatContentArray.push(this.searchChatcontentPosition);
