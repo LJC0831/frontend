@@ -166,6 +166,7 @@
         searchAllcount:null, //검색채팅(전체개수)
         isStickerModal:false, //이모티콘 활성화여부
         showScrollPopup:false, //스크롤모달 활성화여부
+        footerYn:null,
       };
     },
     created() {
@@ -353,11 +354,15 @@
     },
     //textarea 포커싱
     handleChatTextareaFocus() {
+      this.footerYn = 'Y';
+      this.$emit('updateFooterYn', this.footerYn); // Emit the custom event
       this.socket.emit('setMessageRead',this.selectedChatId, this.loginUserId, 'Y');
       this.isChatTextareaFocused = true;
     },
     // textarea 포커싱해제
     handleChatTextareaBlur() {
+      this.footerYn = null;
+      this.$emit('updateFooterYn', this.footerYn); // Emit the custom event
       this.isChatTextareaFocused = false;
       const currentlyFocusedElement = document.activeElement; // 현재 포커스를 가진 요소 가져오기
       currentlyFocusedElement.blur();
