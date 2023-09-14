@@ -13,7 +13,7 @@
             <chat_main v-if="selectedMenu === 'chat_main'" />
           </div>
     <div class="ad-container"></div>
-    <Footer @menuSelected="handleMenuSelected" @updateFooterYn="handleFooterYnUpdate" />
+    <Footer @menuSelected="handleMenuSelected" />
   </div>
 </template>
 
@@ -26,16 +26,14 @@ import Memo_01 from "./Memo_01.vue";
 import Intro from "./intro_01.vue";
 import maker_01 from "./maker_01.vue";
 import chat_main from "./menu/chat_main.vue";
-import chat_01 from "./menu/chat_01.vue";
 import { loadAds2 } from '../scripts/ads.js'
 // import Sidebar from "./SideBar_01"; // 사이드바 컴포넌트를 import 합니다.
 export default {
   //components:{Header, Sidebar},
-  components:{Header, Footer, main01, Memo_01, chat_main, Intro, maker_01, chat_01},
+  components:{Header, Footer, main01, Memo_01, chat_main, Intro, maker_01},
   data() {
     return {
       selectedMenu: '', // 선택된 메뉴를 저장할 변수 추가
-      footerYn: null,
       //sidebarOpen: false, // 사이드바 열림 여부를 저장할 변수 추가
     };
   },
@@ -45,10 +43,6 @@ export default {
   methods: {
     handleMenuSelected(menuName) {
       this.selectedMenu = menuName; // 선택된 메뉴 이름으로 selectedMenu 데이터를 업데이트합니다
-    },
-    handleFooterYnUpdate(value) {
-      debugger;
-      this.footerYn = value; // Update footerYn in the parent component
     },
     // toggleSidebar() {
     //   this.sidebarOpen = !this.sidebarOpen;
