@@ -60,10 +60,10 @@ export default {
 }
 @media (max-width: 768px) {
   .mobile-icons {
-    height: 30px;
+    height: 35px;
   }
   .icon {
-    height: 20px;
+    height: 25px;
   }
 }
 
