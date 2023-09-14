@@ -219,6 +219,7 @@
       });
       // 메세지 읽음처리
       this.socket.on('getMessageRead', (lastMessage) => {
+        this.getChatUserInfo();
          for (var i = 1; i <= this.messages.length; i ++){
           this.messages[this.messages.length-i].selectUserCount = lastMessage[lastMessage.length-i].selectUserCount;
           if(i === '199'){
@@ -231,6 +232,9 @@
       this.socket.on('messageHistory', (messages) => {
         // 받은 채팅 메시지들을 화면에 표시하는 로직
         this.messages = messages;
+        for (var i = 1; i <= this.messages.length; i ++){
+          this.messages[this.messages.length-i].profilePicture = this.chatUserProfileUrl(this.messages[this.messages.length-i].user_id);
+         }
         // chatContainer 요소의 레퍼런스를 가져옵니다.
         this.$nextTick(() => {
           this.chatContainer = this.$refs.chatContainer;
@@ -246,8 +250,12 @@
       this.socket.on('previousMessages', (previousMessages) => {
         this.loading = true;
         // 받아온 이전 채팅 내역을 messages 배열의 앞쪽에 추가
+        debugger;
+        for (var i = 1; i <= previousMessages.length; i ++){
+          previousMessages[previousMessages.length-i].profilePicture = this.chatUserProfileUrl(previousMessages[previousMessages.length-i].user_id);
+         }
         this.messages.unshift(...previousMessages);
-
+          
         // 이전 채팅 내역을 받아온 후 스크롤 위치를 조정
         this.$nextTick(() => {
           if (this.chatContainer) {
@@ -351,14 +359,6 @@
       this.isChatTextareaFocused = false;
       const currentlyFocusedElement = document.activeElement; // 현재 포커스를 가진 요소 가져오기
       currentlyFocusedElement.blur();
-    },
-    // 세션종료
-    disconSession(){
-      for (let key in localStorage) {
-          if (key !== "token") {
-            localStorage.removeItem(key);
-          }
-        }
     },
       //메세지 줄바꿈처리
       formatMessage(message) {
@@ -692,27 +692,6 @@
           this.isImageModalOpen = false;
           }, 0);
       },
-      // 채팅접속자들 프로필사진 url정보가져오기
-      getChatUserInfo(){
-        // 각 사용자의 이미지를 로컬 스토리지에서 가져와 설정합니다.
-        this.disconSession();
-        for (let key in localStorage) {
-          if (key !== "token") {
-            localStorage.removeItem(key);
-          }
-        }
-        chatMethods.methods.chatUserSearch(this.selectedChatId,(res) => {
-              for (const item of res.data) {
-                if(!localStorage.getItem(`profileImageUrl_${item.user_id}`)){
-                  localStorage.setItem(`profileImageUrl_${item.user_id}`, item.profile_url);  
-                } 
-              }
-            },
-            (error) => { // 에러 콜백
-              console.error("대상자 이미지url 조회:", error);
-            }
-        );
-      },
       // 채팅접속자 내역조회
       toggleSearch() {
          this.selectUser.length = 0;
@@ -773,6 +752,40 @@
             this.loadingPreviousMessages = false;
           } 
         }
+      },
+      // 세션종료
+      disconSession(){
+        for (let key in localStorage) {
+            if (key !== "token") {
+              localStorage.removeItem(key);
+            }
+          }
+      },
+      // 채팅접속자들 프로필사진 url정보가져오기
+      getChatUserInfo(){
+        // 각 사용자의 이미지를 로컬 스토리지에서 가져와 설정합니다.
+        this.disconSession();
+        for (let key in localStorage) {
+          if (key !== "token") {
+            localStorage.removeItem(key);
+          }
+        }
+        chatMethods.methods.chatUserSearch(this.selectedChatId,(res) => {
+              for (const item of res.data) {
+                if(!localStorage.getItem(`profileImageUrl_${item.user_id}`)){
+                  localStorage.setItem(`profileImageUrl_${item.user_id}`, item.profile_url);  
+                } 
+              }
+            },
+            (error) => { // 에러 콜백
+              console.error("대상자 이미지url 조회:", error);
+            }
+        );
+      },
+      //세션 이미지 url 출력 
+      chatUserProfileUrl(userId){
+        const key = `profileImageUrl_${userId}`;
+        return localStorage.getItem(key);
       },
       // 내정보 조회
       profileSearch(user_id){
