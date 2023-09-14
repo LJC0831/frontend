@@ -492,7 +492,6 @@
             selectUserCount: 0,
             ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
           };
-          this.newMessage = '';
           this.socket.emit('message', messageObject);
           // setTimeout(() => {
           //   this.$refs.sendButton.focus();
@@ -505,6 +504,7 @@
               }, 100);
           });
           }
+          this.newMessage = '';
       },
       //이모티콘 팝업 활성화
       openEmoticonModal() {
