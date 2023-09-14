@@ -197,7 +197,6 @@
               this.previousMessage = message.message;
               this.showNotification(message.message,message.profilePicture); // 새 메시지 알림 표시
               // 메시지 읽음 처리 후 데이터 갱신
-              //this.chatReadUser(message.chatId, this.loginUserId);
               if(document.hasFocus()) { //포커싱중일때 메세지확인처리
                 this.socket.emit('setMessageRead',message.chatId, this.loginUserId, 'Y');
               } else {
@@ -205,6 +204,9 @@
               }
                 this.$nextTick(() => {
                   this.messages.push(message);
+                  setTimeout(() => {
+                    this.scrollToBottom();
+                  }, 100); // 100ms(0.1초) 후에 실행됩니다.
                 });
           } else { //채팅을 내가 입력할때
             this.socket.emit('setMessageRead',message.chatId, this.loginUserId, 'Y');
@@ -396,14 +398,6 @@
         const formattedTime = `${month}/${day} ${ampm} ${formattedHours}:${formattedMinutes}`;
 
         return formattedTime;
-      },
-      // 유저 read처리
-      chatReadUser(chatId, loginId) { //flag: live 실시간, focue: 화면포커스
-      if(document.hasFocus()) { //포커싱중일때 메세지확인처리
-          this.socket.emit('getLatestMessages',chatId, loginId);
-        } else {
-          this.socket.emit('getLatestMessages',chatId, '');
-        }
       },
       // 브라우저 알림 생성
       showNotification(message, imgUrl) {
