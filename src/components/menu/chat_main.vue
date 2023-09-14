@@ -264,6 +264,11 @@ export default {
     },
     exit() {
       try{
+        for (let key in localStorage) {
+          if (key !== "token") {
+            localStorage.removeItem(key);
+          }
+        }
         this.exitChat(); //소켓종료
         this.search01(this.activeTab);
       } catch(error){}
