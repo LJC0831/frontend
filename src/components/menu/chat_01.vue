@@ -457,8 +457,6 @@
       },
       // 메세지 보내기
       sendMessage() {
-        event.preventDefault();
-        this.$refs.sendButton.focus();
         if(!commons.loginCheck()) return;
 
         if (this.newMessage.trim() === '') return;
@@ -508,6 +506,8 @@
           });
           }
           this.newMessage = '';
+          event.preventDefault();
+          this.$refs.sendButton.focus();
       },
       //이모티콘 팝업 활성화
       openEmoticonModal() {
