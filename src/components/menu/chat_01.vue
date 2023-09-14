@@ -197,14 +197,20 @@
               this.previousMessage = message.message;
               this.showNotification(message.message,message.profilePicture); // 새 메시지 알림 표시
               // 메시지 읽음 처리 후 데이터 갱신
-              this.chatReadUser(message.chatId, this.loginUserId);
+              //this.chatReadUser(message.chatId, this.loginUserId);
+              if(document.hasFocus()) { //포커싱중일때 메세지확인처리
+                this.socket.emit('setMessageRead',message.chatId, this.loginUserId, 'Y');
+              } else {
+                this.socket.emit('setMessageRead',message.chatId, this.loginUserId, 'N');
+              }
+                this.$nextTick(() => {
+                  this.messages.push(message);
+                });
           } else { //채팅을 내가 입력할때
-            //this.socket.emit('getLatestMessages',message.chatId, '');
-            this.messages.push(message);
-            setTimeout(() => {
-              this.socket.emit('setMessageRead',message.chatId, this.loginUserId);
-            }, 500); // 100ms(0.1초) 후에 실행됩니다.
-            
+            this.socket.emit('setMessageRead',message.chatId, this.loginUserId, 'Y');
+            this.$nextTick(() => {
+              this.messages.push(message);
+            });
           }
         }
       });
@@ -216,7 +222,6 @@
             break;
           }
          }
-          
       });
 
       // 서버로부터 최근 메시지를 받을 때 호출되는 콜백 함수
@@ -331,7 +336,7 @@
     },
     //textarea 포커싱
     handleChatTextareaFocus() {
-      this.socket.emit('setMessageRead',this.selectedChatId, this.loginUserId);
+      this.socket.emit('setMessageRead',this.selectedChatId, this.loginUserId, 'Y');
       this.isChatTextareaFocused = true;
     },
     // textarea 포커싱해제
