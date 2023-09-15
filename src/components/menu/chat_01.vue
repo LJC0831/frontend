@@ -21,8 +21,8 @@
     <div class="chat-messages" ref="chatContainer" @scroll="checkScrollPosition">
       <!-- 메세지 표시 -->
       <div v-for="(message, index) in messages" :key="index" class="message">
-        <img v-if="!message.profilePicture && message.chat_type !== 'announcement'" src="../../assets/profile-user.png" alt="내 정보" class="profile-image" />
-        <img v-if="message.profilePicture && message.chat_type !== 'announcement'" class="profile-image" :src="message.profilePicture" alt="프로필 사진" />
+        <img v-if="!message.profilePicture && message.chat_type !== 'announcement'" src="../../assets/profile-user.png" alt="내 정보" class="profile-image" @click="profilePop(message.user_id, message.editedName)"/>
+        <img v-if="message.profilePicture && message.chat_type !== 'announcement'" class="profile-image" :src="message.profilePicture" alt="프로필 사진"  @click="profilePop(message.user_id, message.editedName)"/>
         <div class="message-container" >
           <div class="message-content">
           <span class="message-name">{{ message.editedName }} </span>
@@ -96,6 +96,22 @@
         <i class="fas fa-chevron-down"></i>
       </button>
     </div>
+    <!-- 프로필 조회 모달 -->
+    <div v-if="isUserProfileModalVisible" class="profile-modal">
+    <div class="profile-modal-content">
+          <div class="profile-picture-container">
+              <img v-if="!profilePopimgUrl" src="../../assets/profile-user.png" alt="내 정보" class="profile-image" />
+              <img v-if="profilePopimgUrl" class="profile-pop-image" :src="profilePopimgUrl" alt="프로필 사진" />
+          </div>
+          <div class="profile-details">
+              <span><h2>{{ profilePopId }}</h2></span>
+              <!-- 다른 프로필 정보를 표시할 수도 있습니다. -->
+          </div>
+          <div class="profile-actions">
+              <button ref="closeButton" @click="isUserProfileModalVisible = false;" @keyup.esc="isUserProfileModalVisible = false;">닫기</button>
+          </div>
+      </div>
+    </div>
     <!-- 이모티콘 모달 -->
     <div v-if="isStickerModal" class="sticker-modal">
       <!-- 이모티콘 선택 영역 -->
@@ -166,6 +182,9 @@
         searchAllcount:null, //검색채팅(전체개수)
         isStickerModal:false, //이모티콘 활성화여부
         showScrollPopup:false, //스크롤모달 활성화여부
+        isUserProfileModalVisible: false, // 프로필확인
+        profilePopId: null, //프로필확인대상 Id
+        profilePopimgUrl: null, // 프로필확인대상 이미지
       };
     },
     created() {
@@ -445,6 +464,18 @@
           });
           
         }
+      },
+      //프로필조회
+      profilePop(userId, userNm){
+        this.isUserProfileModalVisible = true;
+        this.profilePopId = userNm;
+        const key = `profileImageUrl_${userId}`;
+        this.profilePopimgUrl = localStorage.getItem(key);
+        this.$nextTick(() => {
+          setTimeout(() => {
+            this.$refs.closeButton.focus();
+          }, 0);
+        });
       },
       // 채팅찾기 활성화여부
       isSearchCheck(){
@@ -1106,6 +1137,78 @@ input[type="text"] {
 .scroll-down-button:hover {
   background-color: #0056b3;
 }
+
+.profile-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* 모달 내용 스타일 */
+.profile-modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* 프로필 이미지 스타일 */
+.profile-picture-container {
+    margin-bottom: 20px;
+}
+
+.profile-pop-image {
+    width: 250px;
+    height: 200px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+}
+.profile-details {
+    margin-bottom: 20px;
+}
+
+.profile-details h2 {
+    font-size: 24px;
+    color: #333;
+}
+
+.profile-details label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.profile-details span {
+    font-size: 16px;
+    color: #777;
+}
+
+/* 작업 버튼 스타일 */
+.profile-actions {
+    display: flex;
+    justify-content: center;
+}
+
+.profile-actions button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    background-color: #3498db;
+    cursor: pointer;
+}
+
+
+
 /* 모달 스타일 */
 
 @media (min-width: 768px) {
