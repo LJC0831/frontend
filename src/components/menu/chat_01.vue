@@ -498,7 +498,7 @@
           this.$nextTick(() => {
             setTimeout(() => {
               this.scrollToBottom();
-              }, 500);
+              }, 100);
           });
           }
           event.preventDefault();
