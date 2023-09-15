@@ -356,6 +356,9 @@
     handleChatTextareaFocus() {
       this.socket.emit('setMessageRead',this.selectedChatId, this.loginUserId, 'Y');
       this.isChatTextareaFocused = true;
+      setTimeout(() => {
+              this.scrollToBottom();
+              }, 50);
     },
     // textarea 포커싱해제
     handleChatTextareaBlur() {
@@ -495,15 +498,11 @@
             ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
           };
           this.socket.emit('message', messageObject);
-          // setTimeout(() => {
-          //   this.$refs.sendButton.focus();
-          //   //this.scrollToBottom();
-          // }, 0);
           this.loading = false;
           this.$nextTick(() => {
             setTimeout(() => {
-              this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
-              }, 100);
+              this.scrollToBottom();
+              }, 50);
           });
           }
           this.newMessage = '';
