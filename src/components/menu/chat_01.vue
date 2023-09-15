@@ -308,9 +308,6 @@
     mounted() {
       // 페이지 로드 시 로컬 스토리지에서 이미지 URL을 로드합니다.
       this.getChatUserInfo();
-      setTimeout(() => {
-              this.scrollToBottom();
-              }, 50);
     },
     methods: {
       //모바일판단
@@ -357,6 +354,9 @@
     },
     //textarea 포커싱
     handleChatTextareaFocus() {
+      setTimeout(() => {
+        this.chatContainer.scrollTop = 2000;
+              }, 50);
       this.socket.emit('setMessageRead',this.selectedChatId, this.loginUserId, 'Y');
       this.isChatTextareaFocused = true;
     },
