@@ -192,6 +192,7 @@
 
       // 서버로부터 메시지를 받으면 채팅 화면에 메시지를 표시합니다.
       this.socket.on('message', (message) => {
+        this.getChatUserInfo();
         if (message.chatId === this.selectedChatId) {
           if(message.user_id !== this.loginUserId){ //채팅을 받을때
               this.previousMessage = message.message;
@@ -219,7 +220,6 @@
       });
       // 메세지 읽음처리
       this.socket.on('getMessageRead', (lastMessage) => {
-        this.getChatUserInfo();
          for (var i = 1; i <= this.messages.length; i ++){
           this.messages[this.messages.length-i].selectUserCount = lastMessage[lastMessage.length-i].selectUserCount;
           if(i === '199'){
