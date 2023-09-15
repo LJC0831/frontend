@@ -100,7 +100,7 @@
     <div v-if="isUserProfileModalVisible" class="profile-modal">
     <div class="profile-modal-content">
           <div class="profile-picture-container">
-              <img v-if="!profilePopimgUrl" src="../../assets/profile-user.png" alt="내 정보" class="profile-image" />
+              <img v-if="!profilePopimgUrl" src="../../assets/profile-user.png" alt="내 정보" class="profile-pop-image" />
               <img v-if="profilePopimgUrl" class="profile-pop-image" :src="profilePopimgUrl" alt="프로필 사진" />
           </div>
           <div class="profile-details">
