@@ -353,8 +353,8 @@
     },
     //textarea 포커싱
     handleChatTextareaFocus() {
-      const chatContainer = document.querySelector('.chat-container'); // 채팅 창의 요소 선택
-      chatContainer.style.transform = 'translateY(-50px)'; // 적절한 위치로 이동
+      //const chatContainer = document.querySelector('.chat-container'); // 채팅 창의 요소 선택
+      //chatContainer.style.transform = 'translateY(-50px)'; // 적절한 위치로 이동
       setTimeout(() => {
         this.chatContainer.scrollTop = this.chatContainer.scrollHeight + 2000;
       }, 200); // 100ms(0.1초) 후에 실행됩니다.
@@ -364,8 +364,8 @@
     // textarea 포커싱해제
     handleChatTextareaBlur() {
       this.isChatTextareaFocused = false;
-      const chatContainer = document.querySelector('.chat-container'); // 채팅 창의 요소 선택
-      chatContainer.style.transform = 'translateY(0)'; // 적절한 위치로 이동
+      //const chatContainer = document.querySelector('.chat-container'); // 채팅 창의 요소 선택
+      //chatContainer.style.transform = 'translateY(0)'; // 적절한 위치로 이동
       const currentlyFocusedElement = document.activeElement; // 현재 포커스를 가진 요소 가져오기
       currentlyFocusedElement.blur();
     },
