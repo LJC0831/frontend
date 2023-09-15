@@ -928,6 +928,7 @@ input[type="text"] {
   border: 2px solid #ccc;
   height: 100%; /* 부모 컨테이너의 높이에 맞게 설정 */
   margin-right: 3px;
+  cursor: pointer;
 }
 
 .message-bubble {
