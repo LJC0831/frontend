@@ -308,6 +308,7 @@
     mounted() {
       // 페이지 로드 시 로컬 스토리지에서 이미지 URL을 로드합니다.
       this.getChatUserInfo();
+      this.scrollToBottom();
     },
     methods: {
       //모바일판단
@@ -502,7 +503,6 @@
               }, 50);
           });
           }
-          this.newMessage = '';
           event.preventDefault();
           this.$refs.sendButton.focus();
       },
