@@ -355,6 +355,7 @@
     handleChatTextareaFocus() {
       const chatContainer = document.querySelector('.chat-container'); // 채팅 창의 요소 선택
       chatContainer.style.transform = 'translateY(-50px)'; // 적절한 위치로 이동
+      this.chatContainer.scrollTop = this.chatContainer.scrollHeight + 2000;
       this.socket.emit('setMessageRead',this.selectedChatId, this.loginUserId, 'Y');
       this.isChatTextareaFocused = true;
     },
