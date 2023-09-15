@@ -750,8 +750,8 @@ cursor: pointer;
     height: 60px;
   }
   .profile-img {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     background-color: #ffffff;
     margin-right: 10px;
     cursor: pointer;
@@ -759,9 +759,9 @@ cursor: pointer;
     object-fit: cover;
   }
   .main_logo_img{
-    width: 40px; 
-    height: 40px; 
-    margin-top: -25px;
+    width: 50px; 
+    height: 50px; 
+    margin-top: -20px;
   }
   .login-button-container{
     margin-top:-15px;
