@@ -355,11 +355,6 @@
     handleChatTextareaFocus() {
       this.socket.emit('setMessageRead',this.selectedChatId, this.loginUserId, 'Y');
       this.isChatTextareaFocused = true;
-      if(!this.ismobile){
-        setTimeout(() => {
-          this.scrollToBottom();
-        }, 100); // 100ms(0.1초) 후에 실행됩니다.
-      }
     },
     // textarea 포커싱해제
     handleChatTextareaBlur() {
