@@ -356,9 +356,6 @@
     handleChatTextareaFocus() {
       this.socket.emit('setMessageRead',this.selectedChatId, this.loginUserId, 'Y');
       this.isChatTextareaFocused = true;
-      setTimeout(() => {
-              this.scrollToBottom();
-              }, 50);
     },
     // textarea 포커싱해제
     handleChatTextareaBlur() {
