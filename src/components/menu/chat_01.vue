@@ -353,9 +353,12 @@
     },
     //textarea 포커싱
     handleChatTextareaFocus() {
-      setTimeout(() => {
-        this.chatContainer.scrollTop = this.chatContainer.scrollHeight + 2000;
-      }, 500); // 100ms(0.1초) 후에 실행됩니다.
+      if(!this.ismobile){
+        setTimeout(() => {
+          this.chatContainer.scrollTop = this.chatContainer.scrollHeight + 2000;
+        }, 500); // 100ms(0.1초) 후에 실행됩니다.
+      }
+      
       this.socket.emit('setMessageRead',this.selectedChatId, this.loginUserId, 'Y');
       this.isChatTextareaFocused = true;
     },
