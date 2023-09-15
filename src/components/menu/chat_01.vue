@@ -188,6 +188,7 @@
       this.loading = true;
       if(!this.ismobile){
         commons.showToast(this, '채팅내역을 불러옵니다.');
+        this.getChatUserInfo();
       }
 
       // 서버로부터 메시지를 받으면 채팅 화면에 메시지를 표시합니다.
