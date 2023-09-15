@@ -308,7 +308,9 @@
     mounted() {
       // 페이지 로드 시 로컬 스토리지에서 이미지 URL을 로드합니다.
       this.getChatUserInfo();
-      this.scrollToBottom();
+      setTimeout(() => {
+              this.scrollToBottom();
+              }, 50);
     },
     methods: {
       //모바일판단
