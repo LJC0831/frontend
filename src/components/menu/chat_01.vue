@@ -728,9 +728,9 @@
         if (chatContainer) {
             if (chatContainer.scrollTop < chatContainer.scrollHeight - chatContainer.clientHeight) {
               // 스크롤이 맨 아래가 아니면 팝업을 표시
-              if(this.ismobile){
+              //if(this.ismobile){
                 this.showScrollPopup = true;
-              }
+              //}
               
             } else {
               // 스크롤이 맨 아래에 도달하면 팝업을 숨김
