@@ -310,6 +310,7 @@
       this.getChatUserInfo();
       // 키보드가 나타날 때 발생하는 이벤트 감지
       window.addEventListener('keyboardDidShow', () => {
+        alert('키보드감지');
         // 채팅 창을 위로 스크롤
         const chatContainer = document.querySelector('.chat-container'); // 채팅 창의 요소 선택
         chatContainer.style.transform = 'translateY(-50px)'; // 적절한 위치로 이동
@@ -1251,8 +1252,7 @@ input[type="text"] {
   width: 40px;
   height: 50px;
   
-}
-
+  }
 
 }
   </style>
