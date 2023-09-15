@@ -1,7 +1,7 @@
 <template>
   <header>
     <div class="login-container">
-      <div class="header-name" @click="refreshPage"><img src="@/assets/main_logo.png" style="width: 60px; height: 60px; margin-top: -10px;"></div>
+      <div class="header-name" @click="refreshPage"><img src="@/assets/main_logo.png" class="main_logo_img"></div>
       <div class="login-button-container">
         <div v-if="!isLoggedIn" class="signup-button" @click="showSignupModal = true">
           <button class="signup-btn">회원가입</button>&nbsp;
@@ -601,6 +601,11 @@ header {
   height: 80px;
 }
 
+.main_logo_img{
+  width: 60px; 
+  height: 60px; 
+  margin-top: -10px;
+}
 .login-modal {
 position: fixed;
 top: 0;
@@ -740,4 +745,36 @@ width: 70px;
 cursor: pointer;
 }
 
+@media (max-width: 768px) {
+  header {
+    height: 60px;
+  }
+  .profile-img {
+    width: 30px;
+    height: 30px;
+    background-color: #ffffff;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 50%; /* Add the border-radius property to create a circular profile picture */
+    object-fit: cover;
+  }
+  .main_logo_img{
+    width: 40px; 
+    height: 40px; 
+    margin-top: -25px;
+  }
+  .login-button-container{
+    margin-top:-15px;
+  }
+
+  .login-btn, .signup-btn, .logout-btn {
+    padding: 4px 8px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    }
+
+}
 </style>
