@@ -62,8 +62,8 @@
       </label>
       <div>
         <input type="file" id="imageInput" ref="imageInput" @change="handleUpload" class="hidden-input"/>
-        <button @click="sendMessage" v-if="!loading" class="send-button"><i class="fas fa-paper-plane"></i> </button>
-        <button @click="sendMessage" v-if="loading" class="send-button">Loading...</button>
+        <button @click="sendMessage()" v-if="!loading" class="send-button"><i class="fas fa-paper-plane"></i> </button>
+        <button @click="sendMessage()" v-if="loading" class="send-button">Loading...</button>
       </div>
     </div>
     <!-- 모달 창 -->
@@ -346,10 +346,9 @@
       },
     //채팅전송(엔터처리)
     handleKeyDown(event) {
+      // 쉬프트 엔터처리
       if ((event.key === "Enter"||event.keyCode === 13) && !event.shiftKey) {
-        // Enter 키가 눌렸고 Shift 키가 눌리지 않았을 때만 전송
-        event.preventDefault(); // 기본 동작(줄바꿈) 방지
-        this.sendMessage();
+        this.sendMessage(event);
       }
     },
     //textarea 포커싱
@@ -457,9 +456,9 @@
         }
       },
       // 메세지 보내기
-      sendMessage() {
-        event.preventDefault();
-        this.$refs.sendButton.focus();
+      sendMessage(event) {
+        // event.preventDefault();
+        // this.$refs.sendButton.focus();
         if(!commons.loginCheck()) return;
 
         if (this.newMessage.trim() === '') return;
