@@ -776,7 +776,11 @@
         chatMethods.methods.chatUserSearch(this.selectedChatId,(res) => {
               for (const item of res.data) {
                 if(!localStorage.getItem(`profileImageUrl_${item.user_id}`)){
-                  localStorage.setItem(`profileImageUrl_${item.user_id}`, item.profile_url);  
+                  if(item.profile_url){
+                    localStorage.setItem(`profileImageUrl_${item.user_id}`, item.profile_url);  
+                  } else {
+                    localStorage.setItem(`profileImageUrl_${item.user_id}`, '');  
+                  }
                 } 
               }
             },
