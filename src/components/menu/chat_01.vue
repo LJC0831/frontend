@@ -1130,7 +1130,7 @@ input[type="text"] {
   }
 @media (max-width: 768px) {
     .chat-container{
-    height: 75vh;
+    height: 90vh;
     display: flex;
     flex-direction: column;
     background-color: rgb(240, 252, 255);
