@@ -354,9 +354,6 @@
     },
     //textarea 포커싱
     handleChatTextareaFocus() {
-      setTimeout(() => {
-        this.chatContainer.scrollTop = 2000;
-              }, 50);
       this.socket.emit('setMessageRead',this.selectedChatId, this.loginUserId, 'Y');
       this.isChatTextareaFocused = true;
     },
@@ -461,6 +458,8 @@
       },
       // 메세지 보내기
       sendMessage() {
+        event.preventDefault();
+        this.$refs.sendButton.focus();
         if(!commons.loginCheck()) return;
 
         if (this.newMessage.trim() === '') return;
@@ -505,8 +504,7 @@
               }, 50);
           });
           }
-          //event.preventDefault();
-          //this.$refs.sendButton.focus();
+          this.newMessage = '';
       },
       //이모티콘 팝업 활성화
       openEmoticonModal() {
