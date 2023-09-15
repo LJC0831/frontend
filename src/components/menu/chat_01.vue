@@ -186,9 +186,9 @@
       this.profileSearch(this.loginUserId);
       // 서버에 최근 메시지를 요청합니다.
       this.loading = true;
+      this.getChatUserInfo();
       if(!this.ismobile){
         commons.showToast(this, '채팅내역을 불러옵니다.');
-        this.getChatUserInfo();
       }
 
       // 서버로부터 메시지를 받으면 채팅 화면에 메시지를 표시합니다.
@@ -355,6 +355,11 @@
     handleChatTextareaFocus() {
       this.socket.emit('setMessageRead',this.selectedChatId, this.loginUserId, 'Y');
       this.isChatTextareaFocused = true;
+      if(!this.ismobile){
+        setTimeout(() => {
+          this.scrollToBottom();
+        }, 100); // 100ms(0.1초) 후에 실행됩니다.
+      }
     },
     // textarea 포커싱해제
     handleChatTextareaBlur() {
