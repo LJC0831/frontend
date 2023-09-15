@@ -357,7 +357,6 @@
       chatContainer.style.transform = 'translateY(-50px)'; // 적절한 위치로 이동
       setTimeout(() => {
         this.chatContainer.scrollTop = this.chatContainer.scrollHeight + 2000;
-        alert('스크롤이동처리');
       }, 1000); // 100ms(0.1초) 후에 실행됩니다.
       this.socket.emit('setMessageRead',this.selectedChatId, this.loginUserId, 'Y');
       this.isChatTextareaFocused = true;
