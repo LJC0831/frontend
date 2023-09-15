@@ -348,7 +348,7 @@
     handleKeyDown(event) {
       // 쉬프트 엔터처리
       if ((event.key === "Enter"||event.keyCode === 13) && !event.shiftKey) {
-        this.sendMessage(event);
+        this.sendMessage();
       }
     },
     //textarea 포커싱
@@ -456,9 +456,9 @@
         }
       },
       // 메세지 보내기
-      sendMessage(event) {
-        // event.preventDefault();
-        // this.$refs.sendButton.focus();
+      sendMessage() {
+        event.preventDefault();
+        this.$refs.sendButton.focus();
         if(!commons.loginCheck()) return;
 
         if (this.newMessage.trim() === '') return;
