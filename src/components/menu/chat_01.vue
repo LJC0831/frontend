@@ -503,8 +503,8 @@
               }, 50);
           });
           }
-          event.preventDefault();
-          this.$refs.sendButton.focus();
+          //event.preventDefault();
+          //this.$refs.sendButton.focus();
       },
       //이모티콘 팝업 활성화
       openEmoticonModal() {
@@ -1106,7 +1106,7 @@ input[type="text"] {
 
 @media (min-width: 768px) {
     .chat-container{
-    height: 75vh;
+    height: 80vh;
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif;
