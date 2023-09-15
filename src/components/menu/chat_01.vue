@@ -308,20 +308,6 @@
     mounted() {
       // 페이지 로드 시 로컬 스토리지에서 이미지 URL을 로드합니다.
       this.getChatUserInfo();
-      // 키보드가 나타날 때 발생하는 이벤트 감지
-      window.addEventListener('keyboardDidShow', () => {
-        alert('키보드감지');
-        // 채팅 창을 위로 스크롤
-        const chatContainer = document.querySelector('.chat-container'); // 채팅 창의 요소 선택
-        chatContainer.style.transform = 'translateY(-50px)'; // 적절한 위치로 이동
-      });
-
-      // 키보드가 사라질 때 발생하는 이벤트 감지
-      window.addEventListener('keyboardDidHide', () => {
-        // 스크롤 위치를 원래대로 복원
-        const chatContainer = document.querySelector('.chat-container'); // 채팅 창의 요소 선택
-        chatContainer.style.transform = 'translateY(0)'; // 원래 위치로 복원
-      });
     },
     methods: {
       //모바일판단
@@ -367,15 +353,16 @@
     },
     //textarea 포커싱
     handleChatTextareaFocus() {
+      const chatContainer = document.querySelector('.chat-container'); // 채팅 창의 요소 선택
+      chatContainer.style.transform = 'translateY(-50px)'; // 적절한 위치로 이동
       this.socket.emit('setMessageRead',this.selectedChatId, this.loginUserId, 'Y');
       this.isChatTextareaFocused = true;
     },
     // textarea 포커싱해제
     handleChatTextareaBlur() {
-      setTimeout(() => {
-            this.scrollToBottom();
-          }, 100); // 100ms(0.1초) 후에 실행됩니다.
       this.isChatTextareaFocused = false;
+      const chatContainer = document.querySelector('.chat-container'); // 채팅 창의 요소 선택
+      chatContainer.style.transform = 'translateY(0)'; // 적절한 위치로 이동
       const currentlyFocusedElement = document.activeElement; // 현재 포커스를 가진 요소 가져오기
       currentlyFocusedElement.blur();
     },
