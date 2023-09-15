@@ -308,6 +308,19 @@
     mounted() {
       // 페이지 로드 시 로컬 스토리지에서 이미지 URL을 로드합니다.
       this.getChatUserInfo();
+      // 키보드가 나타날 때 발생하는 이벤트 감지
+      window.addEventListener('keyboardDidShow', () => {
+        // 채팅 창을 위로 스크롤
+        const chatContainer = document.querySelector('.chat-container'); // 채팅 창의 요소 선택
+        chatContainer.style.transform = 'translateY(-50px)'; // 적절한 위치로 이동
+      });
+
+      // 키보드가 사라질 때 발생하는 이벤트 감지
+      window.addEventListener('keyboardDidHide', () => {
+        // 스크롤 위치를 원래대로 복원
+        const chatContainer = document.querySelector('.chat-container'); // 채팅 창의 요소 선택
+        chatContainer.style.transform = 'translateY(0)'; // 원래 위치로 복원
+      });
     },
     methods: {
       //모바일판단
