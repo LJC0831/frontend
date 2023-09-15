@@ -91,7 +91,7 @@
       </div>
     </div>
     <!-- 스크롤 다운 버튼과 팝업 컨테이너 -->
-    <div v-if="showScrollPopup"  class="scroll-down-container">
+    <div v-if="showScrollPopup && !isChatTextareaFocused"  class="scroll-down-container">
       <button @click="scrollToBottom" class="scroll-down-button">
         <i class="fas fa-chevron-down"></i>
       </button>
