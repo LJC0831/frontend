@@ -34,6 +34,6 @@ const store = createStore({
 // 토큰 유효기간 확인 타이머 설정
 setInterval(() => {
   checkTokenExpiration();
-}, 3600000); // 60분마다 실행 (1000밀리초 * 60초 = 1분)
+}, 14400000); // 60분마다 실행 (1000밀리초 * 60초 = 1분)
 
 export default store;
