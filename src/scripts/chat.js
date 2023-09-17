@@ -43,6 +43,11 @@ export default {
         .then(successCallback)
         .catch(errorCallback);
         },
+        searchUserList(successCallback, errorCallback) {
+          api.post('/api/chat/searchUserList')
+        .then(successCallback)
+        .catch(errorCallback);
+        },
           
     },
 
