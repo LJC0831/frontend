@@ -338,6 +338,37 @@
         }
         
       });
+
+      // 답장내역찾기
+      this.socket.on('setSearchAnswer', (messages) => {
+        // 받은 채팅 메시지들을 화면에 표시하는 로직
+        this.messages = messages;
+        for (var i = 1; i <= this.messages.length; i ++){
+          this.messages[this.messages.length-i].profilePicture = this.chatUserProfileUrl(this.messages[this.messages.length-i].user_id);
+         }
+        if(messages.length > 0){
+          this.searchChatcontentPosition = messages[0].id;
+          this.searchChatContentArray.push(this.searchChatcontentPosition);
+          this.searchPosition = messages.length;
+          this.searchAllcount = messages[0].tot_search_count;
+          this.loading = false;
+          // chatContainer 요소의 레퍼런스를 가져옵니다.
+          setTimeout(() => {
+            this.chatContainer = this.$refs.chatContainer;
+            if(this.searchPosition <= 7){
+              this.chatContainer.scrollTop = 2000;
+            } 
+            else {
+              this.chatContainer.scrollTop = 1;
+            }
+          }, 300); // 300ms(0.3초) 후에 실행됩니다.
+        } else {
+          commons.showToast(this, '찾는 메세지가 없습니다.');
+          this.loading = false;
+          this.socket.emit('getLatestMessages',this.selectedChatId, '');
+        }
+        
+      });
     },
     mounted() {
       // 페이지 로드 시 로컬 스토리지에서 이미지 URL을 로드합니다.
