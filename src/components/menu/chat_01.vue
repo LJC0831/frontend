@@ -840,11 +840,6 @@
       getChatUserInfo(){
         // 각 사용자의 이미지를 로컬 스토리지에서 가져와 설정합니다.
         this.disconSession();
-        for (let key in localStorage) {
-          if (key !== "token") {
-            localStorage.removeItem(key);
-          }
-        }
         chatMethods.methods.chatUserSearch(this.selectedChatId,(res) => {
               for (const item of res.data) {
                 if(!localStorage.getItem(`profileImageUrl_${item.user_id}`)){
