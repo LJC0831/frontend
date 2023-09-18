@@ -26,7 +26,7 @@
         <div class="message-container" >
           <div class="message-content">
           <span class="message-name">{{ message.editedName }} </span>
-          <span v-if="message.answer_message && message.answer_message !== `undefined`" class="message-answer-text">{{ message.answer_message }} 메세지의 답장:</span>   
+          <span v-if="message.answer_message && message.answer_message !== `undefined`" class="message-answer-text">{{ message.answer_message }} 답장</span>   
             <div @click="chat_answer(message)" class="message-bubble" :class="{ 'announcement-message': message.chat_type === 'announcement' && message.chat_type !== 'search'
                                                 , 'search-message': message.chat_type === 'search'
                                                 , 'other-message': message.user_id !== this.loginUserId && message.chat_type !== 'search'
@@ -55,7 +55,7 @@
       </label>
       <textarea  v-model="newMessage" class ="chat-textarea" 
       ref="sendButton"
-      @keyup.esc="this.selectedMessage = null"
+      @keyup.esc="this.answerMessage = null"
       @focus="handleChatTextareaFocus"
       @blur="handleChatTextareaBlur"
       @paste="handleImagePaste" @keydown="handleKeyDown" placeholder="메시지를 입력하세요..." />
@@ -115,8 +115,8 @@
       </div>
     </div>
     <!-- 선택한 메시지가 확장되었을 때만 표시 -->
-     <div v-if="this.selectedMessage" @click="this.selectedMessage = null">
-        <p style="margin-left:50px;">답장(취소하려면 클릭) → {{ this.selectedMessage }}</p>
+     <div v-if="this.answerMessage" @click="this.answerMessage = null">
+        <p style="margin-left:50px;">답장(취소하려면 클릭) → {{ this.anwerMessage }}</p>
     </div>
     <!-- 이모티콘 모달 -->
     <div v-if="isStickerModal" class="sticker-modal">
@@ -192,8 +192,9 @@
         profilePopId: null, //프로필확인대상 Id
         profilePopimgUrl: null, // 프로필확인대상 이미지
         replyText: "", //답장
-        selectedMessage: null,//답장선택한메세지
-        selectedchatId: null,//답장선택한메세지 id
+        answerMessage: null,//답장선택한메세지
+        answerId: null,//답장선택한메세지 id
+        answerUserId: null, //답장선택한userid
       };
     },
     created() {
@@ -201,8 +202,8 @@
       const decoded_Token = jwtDecode(login_token);
       this.loginUserId = decoded_Token.username;
       // Socket.IO 클라이언트를 초기화하고 서버에 연결합니다.
-      //this.socket = io('http://localhost:3000', {
-      this.socket = io('https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app', {
+      this.socket = io('http://localhost:3000', {
+      //this.socket = io('https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app', {
         withCredentials: true, // 쿠키와 인증 정보를 전송할 수 있도록 설정 (선택 사항)
         query:{
           userId:this.loginUserId, //로그인유저
@@ -355,8 +356,9 @@
       // 채팅답장
       chat_answer(message){
         this.$refs.sendButton.focus();
-        this.selectedMessage = message.message;
-        this.selectedchatId = message.id;
+        this.answerMessage = message.message;
+        this.answerId = message.id;
+        this.answerUserId = message.editedName;
       },
       // Search 내용 초기화
       handleInputChange() { 
@@ -553,8 +555,9 @@
             chatId: this.selectedChatId,
             isMyMessage: true,
             selectUserCount: 0,
-            answer_message:this.selectedMessage,
-            answer_id:this.selectedchatId,
+            answer_message:this.answerMessage,
+            answer_id:this.answerId,
+            answer_user_id:this.answerUserId,
             ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
           };
           this.socket.emit('message', messageObject);
@@ -567,6 +570,9 @@
           }
           event.preventDefault();
           this.$refs.sendButton.focus();
+          this.answerMessage = null;
+          this.answer_id = null;
+          this.answer_user_id = null;
       },
       //이모티콘 팝업 활성화
       openEmoticonModal() {
@@ -676,8 +682,9 @@
           chatId: this.selectedChatId,
           isMyMessage: true,
           selectUserCount: 0,
-          answer_message:this.selectedMessage,
-          answer_id:this.selectedchatId,
+          answer_message:this.answerMessage,
+          answer_id:this.answerId,
+          answer_user_id:this.answerUserId,
           ins_ymdhms: now - 10800000,
         };
 
@@ -730,8 +737,9 @@
           chatId: this.selectedChatId,
           isMyMessage: true,
           selectUserCount: 0,
-          answer_message:this.selectedMessage,
-          answer_id:this.selectedchatId,
+          answer_message:this.answerMessage,
+          answer_id:this.answerId,
+          answer_user_id:this.answerUserId,
           ins_ymdhms: now - 10800000,
         };
 
@@ -981,6 +989,7 @@ input[type="text"] {
   padding: 5px; /* 선택한 메시지 주위에 여백 추가 (선택 사항) */
   border: 1px solid #ccc; /* 선택한 메시지 주위에 테두리 추가 (선택 사항) */
   margin-left: 10px;
+  font-size: 12px;
 }
 
 
