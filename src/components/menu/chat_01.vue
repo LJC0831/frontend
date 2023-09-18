@@ -26,6 +26,7 @@
         <div class="message-container" >
           <div class="message-content">
           <span class="message-name">{{ message.editedName }} </span>
+          <span v-if="message.answer_message && message.answer_message !== `undefined`" class="message-answer-text">{{ message.answer_message }} 메세지의 답장:</span>   
             <div @click="chat_answer(message)" class="message-bubble" :class="{ 'announcement-message': message.chat_type === 'announcement' && message.chat_type !== 'search'
                                                 , 'search-message': message.chat_type === 'search'
                                                 , 'other-message': message.user_id !== this.loginUserId && message.chat_type !== 'search'
@@ -970,6 +971,16 @@ input[type="text"] {
   display: inline-block;
   margin-top: 5px;
   cursor: pointer;
+}
+
+.message-answer-text {
+  background-color: #f2f2f2; /* 배경색 설정 */
+  padding: 7px;
+  border-radius: 5px;
+  color: gray; /* 글자색 설정 */
+  padding: 5px; /* 선택한 메시지 주위에 여백 추가 (선택 사항) */
+  border: 1px solid #ccc; /* 선택한 메시지 주위에 테두리 추가 (선택 사항) */
+  margin-left: 10px;
 }
 
 
