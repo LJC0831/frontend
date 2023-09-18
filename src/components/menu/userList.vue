@@ -5,8 +5,7 @@
         <img v-if="user.img_id !== null" :src="user.profile_url" alt="프로필 사진" class="profile-picture" />
         <img v-if="user.img_id === null" src="../../assets/profile-user.png" class="profile-picture" />
         <div class="user-info">
-        <h5>{{ user.user_nm }}</h5>
-          <p>{{ user.gender_type }}</p>
+        <h5>{{ user.user_nm }} ({{ user.gender_type }})</h5>
           <p>{{ truncateIntro(user.intro) }}</p>
         </div>
       </li>
@@ -47,9 +46,9 @@ export default {
     truncateIntro(intro) {
       const windowWidth = window.innerWidth;
       if (windowWidth < 768) {
-        this.maxLength = 10; // 화면이 작을 때 길이를 줄임
+        this.maxLength = 10;
       } else {
-        this.maxLength = 100; // 화면이 크면 기본 길이로 설정
+        this.maxLength = 100;
       }
       if (intro !== null){
         if (intro.length <= this.maxLength) {
@@ -65,7 +64,7 @@ export default {
 
 <style scoped>
 .content{
-  height: 100vh;
+  margin-bottom: 100px;
 }
 .user-item {
   display: flex;
@@ -76,6 +75,7 @@ export default {
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
   cursor: pointer;
+  width: 80%;
 }
 .user-item:hover {
   transform: translateY(-3px);
@@ -87,6 +87,7 @@ export default {
   border-radius: 50%;
   object-fit: cover;
   margin-right: 10px;
+  margin-left: 10px;
 }
 
 .user-info {
@@ -100,13 +101,6 @@ h5 {
   font-size: 17px;
   margin: 0;
 }
-
-.gender {
-  font-size: 16px;
-  margin: 0;
-  color: #777;
-}
-
 p {
   font-size: 16px;
   margin: 0;
