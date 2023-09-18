@@ -205,7 +205,6 @@
       this.profileSearch(this.loginUserId);
       // 서버에 최근 메시지를 요청합니다.
       this.loading = true;
-      this.getChatUserInfo();
       if(!this.ismobile){
         commons.showToast(this, '채팅내역을 불러옵니다.');
       }
@@ -327,7 +326,15 @@
     mounted() {
       // 페이지 로드 시 로컬 스토리지에서 이미지 URL을 로드합니다.
       this.getChatUserInfo();
+      // 3시간(밀리초 단위)마다 this.getChatUserInfo() 호출
+      this.intervalId = setInterval(() => {
+        this.getChatUserInfo();
+      }, 3 * 60 * 60 * 1000); // 3시간 간격
     },
+    beforeUnmount() {
+        // 컴포넌트가 파괴되기 직전에 interval을 클리어해야 함
+        clearInterval(this.intervalId);
+      },
     methods: {
       //모바일판단
       isMobile() {
