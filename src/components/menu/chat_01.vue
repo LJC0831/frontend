@@ -115,8 +115,8 @@
       </div>
     </div>
     <!-- 선택한 메시지가 확장되었을 때만 표시 -->
-     <div v-if="this.answerMessage" @click="this.answerMessage = null">
-        <p style="margin-left:50px;">답장(취소하려면 클릭) → {{ this.anwerMessage }}</p>
+     <div v-if="this.answerMessage" @click="this.answerMessage = null" class="message-answer-text">
+        <p style="margin-left:50px;">답장(취소하려면 클릭) → {{ this.answerMessage }}</p>
     </div>
     <!-- 이모티콘 모달 -->
     <div v-if="isStickerModal" class="sticker-modal">
