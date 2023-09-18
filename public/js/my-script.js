@@ -5,16 +5,6 @@ function handleopenurl(url){
   alert(url);
 };
 
-universalLinks.subscribe('handleopenurl', (eventData) => {
-  // 딥 링크 URL에서 필요한 데이터 추출
-  alert('handleopenurl 호출');
-  const code = eventData.url.split('=')[1];
-  
-  // 추출한 데이터를 사용하여 작업 수행
-  console.log('Received code from background deep link: ' + code);
-});
-
-
 function handleOpenURL(url) {
   // 딥링크 URL에서 code 값을 추출합니다.
   alert('handleOpenURL 호출');
