@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <ul>
-      <li v-for="(user, index) in userList" :key="index" class="user-item">
+      <li v-for="(user, index) in userList" :key="index" class="user-item" :class="user.gender">
         <img v-if="user.img_id !== null" :src="user.profile_url" alt="프로필 사진" class="profile-picture" />
         <img v-if="user.img_id === null" src="../../assets/profile-user.png" class="profile-picture" />
         <div class="user-info">
@@ -76,6 +76,7 @@ export default {
   transition: transform 0.2s ease-in-out;
   cursor: pointer;
   width: 80%;
+  background-color: rgb(197, 232, 253);
 }
 .user-item:hover {
   transform: translateY(-3px);
@@ -105,5 +106,16 @@ p {
   font-size: 16px;
   margin: 0;
   color: #666;
+}
+/* 여성 사용자 스타일 */
+.female {
+  background-color: rgb(253, 240, 242);
+  /* 기타 여성 스타일 속성 추가 */
+}
+
+/* 남성 사용자 스타일 */
+.male {
+  background-color: rgb(227, 244, 255);
+  /* 기타 남성 스타일 속성 추가 */
 }
 </style>
