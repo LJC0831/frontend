@@ -339,7 +339,11 @@ export default {
                 commons.showToast(this, '1000자 내외로 소개해주세요');
                 return;
               }
+            } else {
+              this.editIntro = '';
             }
+
+            
             
 
             // 이미지 URL 받아오기
