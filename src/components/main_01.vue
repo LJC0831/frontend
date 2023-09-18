@@ -6,7 +6,7 @@
         <div class="header-text">
         <h1 class="display-4 fw-normal">Free chat application</h1>
         <p class="lead fw-normal" >누구나 무료로 사용이 가능한 채팅 어플리케이션 입니다.</p>
-        <a class="btn btn-outline-secondary" href="#">Coming soon</a>
+        <p @click="alarm()" class="btn btn-outline-secondary">Coming soon</p>
       </div>
       </div>
       <div class="product-device shadow-sm d-none d-md-block"></div>
@@ -14,6 +14,23 @@
     </div>
   </div>
 </template>
+
+<script>
+/* eslint-disable */
+import * as commons from './../scripts/common.js';
+
+export default {
+  data() {
+    return {
+    };
+  },
+  methods: {
+    alarm() {
+      commons.showToast(this, '기능준비중입니다 ...');
+    },
+  }
+};
+</script>
 
 <style scoped>
 
