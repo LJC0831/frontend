@@ -446,6 +446,9 @@ export default {
     margin-left: 5px;
   }
 
+  .shadow-sm{
+    background-color: rgb(227, 244, 255);
+  }
  
   .search-input {
     padding: 10px;
