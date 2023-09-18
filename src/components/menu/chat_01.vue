@@ -195,6 +195,7 @@
         answerMessage: null,//답장선택한메세지
         answerId: null,//답장선택한메세지 id
         answerUserId: null, //답장선택한userid
+        answerFocusColor:null, //포커스color 
       };
     },
     created() {
@@ -524,14 +525,28 @@
       },
       // 답장찾기
       answer_search(answer_messages){
-        const flag = true;
+        let flag = true;
         //채팅내역에 있는경우
-          for (const item of this.messages) {
+        if(this.answerFocusColor){
+          this.answerFocusColor.style.color='black';
+          this.answerFocusColor = null;
+        }
+          for (const [index, item] of this.messages.entries()) {
             if(String(item.id) === answer_messages.answer_id){
-              debugger;
-              //const chatItem = this.$refs[`chatItem-${index}`];
+
+              const chatItem = this.$refs[`chatItem-${index}`][0].querySelector('.message-text');
               
-              const flag = false;
+              if (chatItem) { // chatItem이 존재하는지 확인합니다.
+                  chatItem.focus(); // chatItem에 포커스를 설정합니다.
+                  this.answerFocusColor = chatItem;
+                  this.answerFocusColor.style.color='red';
+                  const scrollContainer = this.$refs.chatContainer; // chatContainer에 해당하는 ref를 사용합니다.
+                  if (scrollContainer) {
+                    // 포커스된 요소가 화면 중앙에 오도록 스크롤을 이동합니다.
+                    scrollContainer.scrollTop = chatItem.offsetTop - scrollContainer.clientHeight / 2;
+                  }
+              }
+              flag = false;
               return;
             }
           }
