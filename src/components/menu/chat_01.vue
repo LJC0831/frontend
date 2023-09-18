@@ -757,16 +757,13 @@
         const chatContainer = this.$refs.chatContainer;
         // 스크롤 한번에 내리기 모달
         if (chatContainer) {
-            if (chatContainer.scrollTop < chatContainer.scrollHeight - chatContainer.clientHeight) {
-              // 스크롤이 맨 아래가 아니면 팝업을 표시
-              //if(this.ismobile){
-                this.showScrollPopup = true;
-              //}
-              
-            } else {
-              // 스크롤이 맨 아래에 도달하면 팝업을 숨김
-              this.showScrollPopup = false;
-            }
+              if (chatContainer.scrollTop < chatContainer.scrollHeight - chatContainer.clientHeight  - 1000 ) {
+                // 스크롤이 맨 아래가 아니면 팝업을 표시
+                  this.showScrollPopup = true;
+              } else {
+                // 스크롤이 맨 아래에 도달하면 팝업을 숨김
+                this.showScrollPopup = false;
+              }
           }
         // 스크롤 한번에 내리기 모달 END
         if (chatContainer.scrollTop === 0 && !this.loadingPreviousMessages && this.shouldMaintainScroll) {
