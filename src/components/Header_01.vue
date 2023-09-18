@@ -333,6 +333,11 @@ export default {
             if(!commons.loginCheck()) return;
             const userid = this.loginUserId; // 사용자 아이디 추출
 
+            if(this.editIntro.length >= 2000){
+              commons.showToast(this, '1000자 내외로 소개해주세요');
+              return;
+            }
+
             // 이미지 URL 받아오기
             if(this.file_no){
                   try {
