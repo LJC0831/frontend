@@ -100,6 +100,9 @@
           <label for="editName">이름:</label>
           <input type="text" v-model="editedName" id="editName" />&nbsp;
 
+          <label for="editIntro">소개:</label>
+          <textarea v-model="editIntro" class="profile-intro" placeholder="나를 소개해주세요..." />&nbsp;
+
           <button @click="saveUserProfile" :disabled="loading">
             <span v-if="!loading">저장</span>
             <span v-else>로딩 중...</span>
@@ -347,7 +350,7 @@ export default {
                     console.error('이미지 URL 조회 오류:', error);
                   }
                 }
-            loginMethods.methods.profileAdj( userid, this.editedName, this.file_no,
+            loginMethods.methods.profileAdj( userid, this.editedName, this.file_no, this.editIntro,
               (res) => {
                 alert("수정완료 되었습니다.");
                 this.isUserProfileModalVisible = false; // 데이터 속성을 수정하여 팝업을 닫도록 변경
@@ -625,6 +628,7 @@ padding: 30px;
 border-radius: 10px;
 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 z-index: 100;
+width:500px;
 }
 
 .login-form h2 {
@@ -710,6 +714,16 @@ width: 35px;
   object-fit: cover;
 }
 
+.profile-intro{
+  width: 100%; 
+  border: 1px solid #ccc; 
+  border-radius: 8px; 
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); 
+  padding: 10px; 
+  resize: none;
+  height: 100px;
+}
+
 .profile-picture-container {
   display: flex;
   align-items: center;
@@ -775,6 +789,15 @@ cursor: pointer;
     border-radius: 5px;
     cursor: pointer;
     }
+
+    .login-form {
+      background: #ffffff;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+      width:300px;
+      }
 
 }
 </style>

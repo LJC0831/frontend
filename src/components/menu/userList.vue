@@ -7,6 +7,7 @@
         <div class="user-info">
         <h5>{{ user.user_nm }}</h5>
           <p>{{ user.gender_type }}</p>
+          <p>{{ truncateIntro(user.intro) }}</p>
         </div>
       </li>
     </ul>
@@ -21,6 +22,7 @@ export default {
   data() {
     return {
         userList: [],
+        maxLength: 100, 
     };
   },
   created(){
@@ -40,7 +42,23 @@ export default {
       } catch (error) {
         console.error("검색 오류:", error);
       }
-    }
+    },
+
+    truncateIntro(intro) {
+      const windowWidth = window.innerWidth;
+      if (windowWidth < 768) {
+        this.maxLength = 10; // 화면이 작을 때 길이를 줄임
+      } else {
+        this.maxLength = 100; // 화면이 크면 기본 길이로 설정
+      }
+      if (intro !== null){
+        if (intro.length <= this.maxLength) {
+        return intro;
+        } else {
+          return intro.slice(0, this.maxLength) + '...';
+        }
+      }
+    },
   }
 };
 </script>
@@ -75,6 +93,7 @@ export default {
     display: flex;
     flex-direction: column;
     margin: 10px;
+    height: 60px;
 }
 
 h5 {
