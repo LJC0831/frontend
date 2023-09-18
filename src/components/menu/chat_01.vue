@@ -54,6 +54,7 @@
       </label>
       <textarea  v-model="newMessage" class ="chat-textarea" 
       ref="sendButton"
+      @keyup.esc="this.selectedMessage = null"
       @focus="handleChatTextareaFocus"
       @blur="handleChatTextareaBlur"
       @paste="handleImagePaste" @keydown="handleKeyDown" placeholder="메시지를 입력하세요..." />
@@ -218,10 +219,10 @@
 
       // 서버로부터 메시지를 받으면 채팅 화면에 메시지를 표시합니다.
       this.socket.on('message', (message) => {
-        this.getChatUserInfo();
         if (message.chatId === this.selectedChatId) {
           if(message.user_id !== this.loginUserId){ //채팅을 받을때
               this.previousMessage = message.message;
+              message.profilePicture = this.chatUserProfileUrl(message.user_id);
               this.showNotification(message.message,message.profilePicture); // 새 메시지 알림 표시
               // 메시지 읽음 처리 후 데이터 갱신
               if(document.hasFocus()) { //포커싱중일때 메세지확인처리
@@ -231,7 +232,6 @@
               }
                 this.$nextTick(() => {
                   this.messages.push(message);
-                  debugger;
                   if(this.chatContainer.scrollTop * 2 > this.chatContainer.scrollHeight){
                       setTimeout(() => {
                       this.scrollToBottom();
@@ -353,6 +353,7 @@
       },
       // 채팅답장
       chat_answer(message){
+        this.$refs.sendButton.focus();
         this.selectedMessage = message.message;
         this.selectedchatId = message.id;
       },
