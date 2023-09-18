@@ -224,6 +224,13 @@
               }
                 this.$nextTick(() => {
                   this.messages.push(message);
+                  debugger;
+                  if(this.chatContainer.scrollTop * 2 > this.chatContainer.scrollHeight){
+                      setTimeout(() => {
+                      this.scrollToBottom();
+                    }, 100); // 100ms(0.1초) 후에 실행됩니다.
+                  }
+                  
                 });
           } else { //채팅을 내가 입력할때
             this.messages.push(message);
