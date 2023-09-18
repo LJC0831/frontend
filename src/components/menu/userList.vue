@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <ul>
-      <li v-for="(user, index) in userList" :key="index" class="user-item" :class="user.gender">
+      <li v-for="(user, index) in userList" :key="index" class="user-item" :class="user.gender" @click="profile_search()">
         <img v-if="user.img_id !== null" :src="user.profile_url" alt="프로필 사진" class="profile-picture" />
         <img v-if="user.img_id === null" src="../../assets/profile-user.png" class="profile-picture" />
         <div class="user-info">
@@ -16,6 +16,7 @@
 <script>
 /* eslint-disable */
 import chatMethods from '../../scripts/chat.js';
+import * as commons from '../../scripts/common.js';
 
 export default {
   data() {
@@ -58,6 +59,10 @@ export default {
         }
       }
     },
+    // 프로필조회
+    profile_search(){
+      commons.showToast(this, '기능구현중입니다.');
+    }
   }
 };
 </script>
