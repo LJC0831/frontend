@@ -298,6 +298,7 @@ export default {
             if(token != null) {
               loginMethods.methods.profileSearch(this.loginUserId, (res) => {
                   this.editedName = res.data[0].user_nm;
+                  this.editIntro = res.data[0].intro;
                   // 이미지 URL 받아오기
                   if(res.data[0].img_id){
                     this.file_no = res.data[0].img_id;
