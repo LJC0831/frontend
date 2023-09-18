@@ -672,6 +672,11 @@
       async chatImgurl(chat_file_id, imageType) {
         loginMethods.methods.profileImgURL(chat_file_id,(res) => {
                       this.sendImageMessage(chat_file_id, res.data.imageUrl, imageType);
+                      this.$nextTick(() => {
+                        setTimeout(() => {
+                          this.scrollToBottom();
+                        }, 50);
+                      });
                     },
                     (error) => { // 에러 콜백
                       console.error("프로필 이미지 조회 오류:", error);
