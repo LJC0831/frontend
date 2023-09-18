@@ -20,13 +20,13 @@
     <!-- 채팅 메세지 -->
     <div class="chat-messages" ref="chatContainer" @scroll="checkScrollPosition">
       <!-- 메세지 표시 -->
-      <div v-for="(message, index) in messages" :key="index" class="message">
+      <div v-for="(message, index) in messages" :key="index" class="message" :ref="`chatItem-${index}`">
         <img v-if="!message.profilePicture && message.chat_type !== 'announcement'" src="../../assets/profile-user.png" alt="내 정보" class="profile-image" @click="profilePop(message.user_id, message.editedName)"/>
         <img v-if="message.profilePicture && message.chat_type !== 'announcement'" class="profile-image" :src="message.profilePicture" alt="프로필 사진"  @click="profilePop(message.user_id, message.editedName)"/>
         <div class="message-container" >
           <div class="message-content">
           <span class="message-name">{{ message.editedName }} </span>
-          <span v-if="message.answer_message && message.answer_message !== `undefined`" class="message-answer-text">{{ message.answer_user_id }} : {{ message.answer_message }} 답장</span>   
+          <span @click="answer_search(message)" v-if="message.answer_message && message.answer_message !== `undefined`" class="message-answer-text">{{ message.answer_user_id }} : {{ message.answer_message }} 답장</span>   
             <div @click="chat_answer(message)" class="message-bubble" :class="{ 'announcement-message': message.chat_type === 'announcement' && message.chat_type !== 'search'
                                                 , 'search-message': message.chat_type === 'search'
                                                 , 'other-message': message.user_id !== this.loginUserId && message.chat_type !== 'search'
@@ -514,12 +514,31 @@
           this.isSearchChat = false;
         }
       },
+      // 채팅찾기
       searchChatContent(){
         if(this.isSearchChat){
           //this.searchChatcontentPosition = res.data[0].id;
           this.loading = true;
           this.socket.emit('getSearchMessages',this.selectedChatId, this.searchKeyword, this.searchChatcontentPosition);
         }
+      },
+      // 답장찾기
+      answer_search(answer_messages){
+        const flag = true;
+        //채팅내역에 있는경우
+          for (const item of this.messages) {
+            if(String(item.id) === answer_messages.answer_id){
+              debugger;
+              //const chatItem = this.$refs[`chatItem-${index}`];
+              
+              const flag = false;
+              return;
+            }
+          }
+          // search해서 가져와야하는경우
+          if(flag){
+            this.socket.emit('getSearchAnswer',this.selectedChatId, answer_messages.answer_id);
+          }
       },
       // 메세지 보내기
       sendMessage() {
