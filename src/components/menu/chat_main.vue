@@ -448,6 +448,8 @@ export default {
 
   .shadow-sm{
     background-color: rgb(227, 244, 255);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
   }
  
   .search-input {
