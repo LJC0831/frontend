@@ -26,7 +26,7 @@
         <div class="message-container" >
           <div class="message-content">
           <span class="message-name">{{ message.editedName }} </span>
-          <span v-if="message.answer_message && message.answer_message !== `undefined`" class="message-answer-text">{{ message.answer_message }} 답장</span>   
+          <span v-if="message.answer_message && message.answer_message !== `undefined`" class="message-answer-text">{{ message.answerUserId }} : {{ message.answer_message }} 답장</span>   
             <div @click="chat_answer(message)" class="message-bubble" :class="{ 'announcement-message': message.chat_type === 'announcement' && message.chat_type !== 'search'
                                                 , 'search-message': message.chat_type === 'search'
                                                 , 'other-message': message.user_id !== this.loginUserId && message.chat_type !== 'search'
@@ -116,7 +116,7 @@
     </div>
     <!-- 선택한 메시지가 확장되었을 때만 표시 -->
      <div v-if="this.answerMessage" @click="this.answerMessage = null" class="message-answer-text">
-        <p style="margin-left:50px;">답장(취소하려면 클릭) → {{ this.answerMessage }}</p>
+        <p style="margin-left:50px;">답장(취소하려면 클릭) → {{ this.answerUserId }} : {{ this.answerMessage }}</p>
     </div>
     <!-- 이모티콘 모달 -->
     <div v-if="isStickerModal" class="sticker-modal">
@@ -202,8 +202,8 @@
       const decoded_Token = jwtDecode(login_token);
       this.loginUserId = decoded_Token.username;
       // Socket.IO 클라이언트를 초기화하고 서버에 연결합니다.
-      this.socket = io('http://localhost:3000', {
-      //this.socket = io('https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app', {
+      //this.socket = io('http://localhost:3000', {
+      this.socket = io('https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app', {
         withCredentials: true, // 쿠키와 인증 정보를 전송할 수 있도록 설정 (선택 사항)
         query:{
           userId:this.loginUserId, //로그인유저
