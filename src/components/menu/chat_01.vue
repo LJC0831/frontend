@@ -355,12 +355,7 @@
           // chatContainer 요소의 레퍼런스를 가져옵니다.
           setTimeout(() => {
             this.chatContainer = this.$refs.chatContainer;
-            if(this.searchPosition <= 7){
-              this.chatContainer.scrollTop = 2000;
-            } 
-            else {
-              this.chatContainer.scrollTop = 1;
-            }
+            this.chatContainer.scrollTop = 1;
           }, 300); // 300ms(0.3초) 후에 실행됩니다.
         } else {
           commons.showToast(this, '찾는 메세지가 없습니다.');
