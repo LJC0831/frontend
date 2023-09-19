@@ -26,6 +26,7 @@
         <div class="message-container" >
           <div class="message-content">
           <span class="message-name">{{ message.editedName }} </span>
+          <img v-if="message.thumbnailURL" :src="message.thumbnailURL" alt="썸네일 이미지" class="thumbnail"/>
           <span @click="answer_search(message)" v-if="message.answer_message && message.answer_message !== `undefined`" class="message-answer-text">{{ message.answer_user_id }} : {{ message.answer_message }}</span>   
             <div @click="chat_answer(message)" class="message-bubble" :class="{ 'announcement-message': message.chat_type === 'announcement' && message.chat_type !== 'search'
                                                 , 'search-message': message.chat_type === 'search'
@@ -146,10 +147,9 @@
   import chatMethods from '../../scripts/chat.js';
   import * as commons from '../../scripts/common.js';
 
-  async function fetchThumbnailURL() {
+  async function fetchThumbnailURL(url) {
   try {
-    debugger;
-    const response = await fetch("https://www.friendtalk.shop"); // HTML을 가져오기 위해 await 사용
+    const response = await fetch(url); // HTML을 가져오기 위해 await 사용
     const html = await response.text(); // HTML 텍스트 추출
 
     const parser = new DOMParser();
@@ -164,11 +164,18 @@
         break;
       }
     }
-    alert(thumbnailURL);
-    return thumbnailURL; // 썸네일 URL 반환
+    if (thumbnailURL) {
+      // 이미지를 표시하는 HTML 이미지 태그를 생성
+      const img = document.createElement("img");
+      img.src = thumbnailURL;
+      img.alt = "Thumbnail Image";
+      return thumbnailURL;
+    } else {
+      return null; // 썸네일 이미지가 없을 경우 빈 문자열 반환
+    }
   } catch (error) {
     console.error("Error fetching external link data:", error);
-    return ""; // 에러 발생 시 빈 문자열 반환
+    return null; // 에러 발생 시 빈 문자열 반환
   }
 }
   
@@ -222,6 +229,7 @@
         answerId: null,//답장선택한메세지 id
         answerUserId: null, //답장선택한userid
         answerFocusColor:null, //포커스color 
+        thumbnailURL:null, //썸네일이미지
       };
     },
     created() {
@@ -284,6 +292,15 @@
          for (var i = 1; i <= this.messages.length; i ++){
           this.messages[this.messages.length-i].selectUserCount = lastMessage[lastMessage.length-i].selectUserCount;
           this.messages[this.messages.length-i].id = lastMessage[lastMessage.length-i].id;
+          const urlPattern = /https?:\/\/\S+|www\.\S+/g;
+          const urls = this.message[this.messages.length-i].message.match(urlPattern);
+              if (urls) {
+                for (const url of urls) {
+                  if (url.startsWith('https://') || url.startsWith('www.')) {
+                    this.message[this.messages.length-i].thumbnailURL = fetchThumbnailURL(url);
+                  }
+                }
+              }
           if(i === '199'){
             break;
           }
@@ -585,7 +602,6 @@
           this.answerFocusColor = null;
         }
           for (const [index, item] of this.messages.entries()) {
-            debugger;
             if(String(item.id) === answer_messages.answer_id || item.id === answer_messages.answer_id){
               const chatItem = this.$refs[`chatItem-${index}`][0].querySelector('.message-text');
               
@@ -612,7 +628,6 @@
       },
       // 메세지 보내기
       sendMessage() {
-        fetchThumbnailURL();
         if(!commons.loginCheck()) return;
 
         if (this.newMessage.trim() === '') return;
