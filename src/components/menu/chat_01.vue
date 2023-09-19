@@ -46,7 +46,6 @@
         </div>
         <span class="message-view" v-if="message.selectUserCount !== 0" >{{ message.selectUserCount }}</span>
         <span class="message-date">{{ formatDate(message.ins_ymdhms) }}</span>
-        <span>{{ message.id }}</span>
       </div>
     </div>
     <!-- 채팅 입력 -->
