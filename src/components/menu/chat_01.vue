@@ -170,6 +170,7 @@
       const img = document.createElement("img");
       img.src = thumbnailURL;
       img.alt = "Thumbnail Image";
+      alert(thumbnailURL);
       return thumbnailURL;
     } else {
       return null; // 썸네일 이미지가 없을 경우 빈 문자열 반환
