@@ -559,8 +559,8 @@
           this.answerFocusColor = null;
         }
           for (const [index, item] of this.messages.entries()) {
-            if(String(item.id) === answer_messages.answer_id){
-
+            debugger;
+            if(String(item.id) === answer_messages.answer_id || item.id === answer_messages.answer_id){
               const chatItem = this.$refs[`chatItem-${index}`][0].querySelector('.message-text');
               
               if (chatItem) { // chatItem이 존재하는지 확인합니다.
