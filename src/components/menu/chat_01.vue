@@ -148,6 +148,7 @@
   import * as commons from '../../scripts/common.js';
 
   async function fetchThumbnailURL(url) {
+    debugger;
   try {
     const response = await fetch(url); // HTML을 가져오기 위해 await 사용
     const html = await response.text(); // HTML 텍스트 추출
@@ -293,11 +294,11 @@
           this.messages[this.messages.length-i].selectUserCount = lastMessage[lastMessage.length-i].selectUserCount;
           this.messages[this.messages.length-i].id = lastMessage[lastMessage.length-i].id;
           const urlPattern = /https?:\/\/\S+|www\.\S+/g;
-          const urls = this.message[this.messages.length-i].message.match(urlPattern);
+          const urls = this.messages[this.messages.length-i].message.match(urlPattern);
               if (urls) {
                 for (const url of urls) {
                   if (url.startsWith('https://') || url.startsWith('www.')) {
-                    this.message[this.messages.length-i].thumbnailURL = fetchThumbnailURL(url);
+                    this.messages[this.messages.length-i].thumbnailURL = fetchThumbnailURL(url);
                   }
                 }
               }
