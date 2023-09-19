@@ -53,7 +53,7 @@
       <label for="imageInput" class="upload-button">
           <img src="../../assets/uploadIKon.png" alt="첨부 아이콘" />
       </label>
-      <textarea  v-model="newMessage" class ="chat-textarea" 
+      <textarea  autocomplete="off" v-model="newMessage" class ="chat-textarea" 
       ref="sendButton"
       @keyup.esc="this.answerMessage = null"
       @focus="handleChatTextareaFocus"
