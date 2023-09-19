@@ -148,8 +148,8 @@
   import * as commons from '../../scripts/common.js';
 
   async function fetchThumbnailURL(url) {
-    debugger;
   try {
+    url = 'https://www.friendtalk.shop';
     const response = await fetch(url); // HTML을 가져오기 위해 await 사용
     const html = await response.text(); // HTML 텍스트 추출
 
