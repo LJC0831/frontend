@@ -46,6 +46,7 @@
         </div>
         <span class="message-view" v-if="message.selectUserCount !== 0" >{{ message.selectUserCount }}</span>
         <span class="message-date">{{ formatDate(message.ins_ymdhms) }}</span>
+        <span>{{ message.id }}</span>
       </div>
     </div>
     <!-- 채팅 입력 -->
@@ -257,6 +258,7 @@
       this.socket.on('getMessageRead', (lastMessage) => {
          for (var i = 1; i <= this.messages.length; i ++){
           this.messages[this.messages.length-i].selectUserCount = lastMessage[lastMessage.length-i].selectUserCount;
+          this.messages[this.messages.length-i].id = lastMessage[lastMessage.length-i].id;
           if(i === '199'){
             break;
           }
