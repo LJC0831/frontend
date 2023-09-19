@@ -5,7 +5,7 @@
         <img v-if="user.img_id !== null" :src="user.profile_url" alt="프로필 사진" class="profile-picture" />
         <img v-if="user.img_id === null" src="../../assets/profile-user.png" class="profile-picture" />
         <div class="user-info">
-        <h5>{{ user.user_nm }} ({{ user.gender_type }})</h5>
+        <h5>{{ user.user_nm }} ({{ user.gender_type }}) <i class="fas fa-comment" style="padding: 5px; "></i></h5>
           <p>{{ truncateIntro(user.intro) }}</p>
         </div>
       </li>
