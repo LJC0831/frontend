@@ -164,7 +164,7 @@
         break;
       }
     }
-
+    alert(thumbnailURL);
     return thumbnailURL; // 썸네일 URL 반환
   } catch (error) {
     console.error("Error fetching external link data:", error);
