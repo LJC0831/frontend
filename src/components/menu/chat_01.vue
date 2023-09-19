@@ -578,7 +578,9 @@
           }
           // search해서 가져와야하는경우
           if(flag){
-            this.socket.emit('getSearchAnswer',this.selectedChatId, answer_messages.answer_id);
+            if(answer_messages.answer_id && answer_messages.answer_id !=='undefined'){
+              this.socket.emit('getSearchAnswer',this.selectedChatId, answer_messages.answer_id);
+            } 
           }
       },
       // 메세지 보내기
