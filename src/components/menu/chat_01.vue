@@ -26,7 +26,7 @@
         <div class="message-container" >
           <div class="message-content">
           <span class="message-name">{{ message.editedName }} </span>
-          <span @click="answer_search(message)" v-if="message.answer_message && message.answer_message !== `undefined`" class="message-answer-text">{{ message.answer_user_id }} : {{ message.answer_message }} 답장</span>   
+          <span @click="answer_search(message)" v-if="message.answer_message && message.answer_message !== `undefined`" class="message-answer-text">{{ message.answer_user_id }} : {{ message.answer_message }}</span>   
             <div @click="chat_answer(message)" class="message-bubble" :class="{ 'announcement-message': message.chat_type === 'announcement' && message.chat_type !== 'search'
                                                 , 'search-message': message.chat_type === 'search'
                                                 , 'other-message': message.user_id !== this.loginUserId && message.chat_type !== 'search'
