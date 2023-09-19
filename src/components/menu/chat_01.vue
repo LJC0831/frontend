@@ -145,6 +145,32 @@
   import loginMethods from '../../scripts/login.js';
   import chatMethods from '../../scripts/chat.js';
   import * as commons from '../../scripts/common.js';
+
+  async function fetchThumbnailURL() {
+  try {
+    debugger;
+    const response = await fetch("https://www.friendtalk.shop"); // HTML을 가져오기 위해 await 사용
+    const html = await response.text(); // HTML 텍스트 추출
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const ogpTags = doc.querySelectorAll("meta[property^='og:']");
+    let thumbnailURL = "";
+
+    for (const tag of ogpTags) {
+      const property = tag.getAttribute("property");
+      if (property === "og:image") {
+        thumbnailURL = tag.getAttribute("content");
+        break;
+      }
+    }
+
+    return thumbnailURL; // 썸네일 URL 반환
+  } catch (error) {
+    console.error("Error fetching external link data:", error);
+    return ""; // 에러 발생 시 빈 문자열 반환
+  }
+}
   
 
   export default {
@@ -586,6 +612,7 @@
       },
       // 메세지 보내기
       sendMessage() {
+        fetchThumbnailURL();
         if(!commons.loginCheck()) return;
 
         if (this.newMessage.trim() === '') return;
