@@ -297,7 +297,7 @@
       this.socket.on('messageHistory', (messages) => {
         // 받은 채팅 메시지들을 화면에 표시하는 로직
         this.messages = messages;
-        for (var i = 1; i <= this.messages.length; i ++){
+        for (let i = 1; i <= this.messages.length; i ++){
           // 프로필사진 가져오기
           this.messages[this.messages.length-i].profilePicture = this.chatUserProfileUrl(this.messages[this.messages.length-i].user_id);
           //this.messages[this.messages.length - i].linkPreviewImg = 'https://www.friendtalk.shop/main_logo.png';
