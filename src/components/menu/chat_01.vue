@@ -259,52 +259,36 @@
       });
       // 메세지 읽음처리
       this.socket.on('getMessageRead', (lastMessage) => {
-        const urlsToFetch = [];
          for (var i = 1; i <= this.messages.length; i ++){
           this.messages[this.messages.length-i].selectUserCount = lastMessage[lastMessage.length-i].selectUserCount;
           this.messages[this.messages.length-i].id = lastMessage[lastMessage.length-i].id;
-          const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
-          if(linkTagPattern.test(this.messages[this.messages.length-i].message) && this.messages[this.messages.length-i].thumbnailUrl === undefined){
-            let url = this.messages[this.messages.length-i].message;
-            if (url.startsWith('www.')) {
-              url = 'http://' + url;
-            }
-            urlsToFetch.push({ url, index: this.messages.length - i });
-          }
           if(i === '199'){
             break;
           }
          }
-         urlsToFetch.forEach(async ({ url, index }) => {
-          await this.fetchThumbnail(url, index);
-        });
-
-        setTimeout(() => {
-          this.scrollToBottom();
-        }, 100); // 100ms(0.1초) 후에 실행됩니다.
       });
 
       // 서버로부터 최근 메시지를 받을 때 호출되는 콜백 함수
       this.socket.on('messageHistory', (messages) => {
         // 받은 채팅 메시지들을 화면에 표시하는 로직
         this.messages = messages;
-        const urlsToFetch = [];
+        //const urlsToFetch = [];
         for (let i = 1; i <= this.messages.length; i ++){
           // 프로필사진 가져오기
           this.messages[this.messages.length-i].profilePicture = this.chatUserProfileUrl(this.messages[this.messages.length-i].user_id);
 
-          const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
-          if(linkTagPattern.test(this.messages[this.messages.length-i].message) && this.messages[this.messages.length-i].thumbnailUrl === undefined){
-            let url = this.messages[this.messages.length-i].message;
-            if (url.startsWith('www.')) {
-              url = 'http://' + url;
-            }
-            urlsToFetch.push({ url, index: this.messages.length - i });
-          }
+          //const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
+          // if(linkTagPattern.test(this.messages[this.messages.length-i].message) && this.messages[this.messages.length-i].thumbnailUrl === undefined){
+          //   let url = this.messages[this.messages.length-i].message;
+          //   if (url.startsWith('www.')) {
+          //     url = 'http://' + url;
+          //   }
+          //   urlsToFetch.push({ url, index: this.messages.length - i });
+          // }
          }
-         urlsToFetch.forEach(async ({ url, index }) => {
-          await this.fetchThumbnail(url, index);
-        });
+        //  urlsToFetch.forEach(async ({ url, index }) => {
+        //   await this.fetchThumbnail(url, index);
+        // });
 
         setTimeout(() => {
           this.scrollToBottom();
@@ -422,8 +406,9 @@
         return window.innerWidth <= 800; // 600px 이하면 모바일로 판단
       },
       // 썸네일 가져오기
-      async fetchThumbnail(sendUrl, index) {
+      async fetchThumbnail(sendUrl) {
         // 백엔드 서버로 URL을 전송하고 썸네일 이미지 URL을 받아옴
+        debugger;
         try {
           const response = await fetch('https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app/api/fetchThumbnail', {
             method: 'POST',
@@ -435,9 +420,9 @@
 
           if (response.ok) {
             const data = await response.json();
-            this.messages[index].thumbnailUrl = data.thumbnailUrl;
+            this.thumbnailUrl = data.thumbnailUrl;
             setTimeout(() => {
-                      this.scrollToBottom();
+              this.scrollToBottom();
             }, 50); // 100ms(0.1초) 후에 실행됩니다.
           }
         } catch (error) {
@@ -680,6 +665,16 @@
             return;
           }
           this.loading = true;
+
+          //썸네일 입력
+          const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
+          if(linkTagPattern.test(this.newMessage)){
+            let url = this.newMessage;
+            if (url.startsWith('www.')) {
+              url = 'http://' + url;
+            }
+            this.fetchThumbnail(url);
+          }
           const messageObject = {
             editedName: this.editedName,
             user_id: this.loginUserId,
@@ -694,6 +689,7 @@
             answer_message:this.answerMessage,
             answer_id:this.answerId,
             answer_user_id:this.answerUserId,
+            thumbnailUrl:this.thumbnailUrl,
             ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
           };
           this.socket.emit('message', messageObject);
@@ -822,6 +818,7 @@
           answer_message:this.answerMessage,
           answer_id:this.answerId,
           answer_user_id:this.answerUserId,
+          thumbnailUrl:this.thumbnailUrl,
           ins_ymdhms: now - 10800000,
         };
 
@@ -877,6 +874,7 @@
           answer_message:this.answerMessage,
           answer_id:this.answerId,
           answer_user_id:this.answerUserId,
+          thumbnailUrl:this.thumbnailUrl,
           ins_ymdhms: now - 10800000,
         };
 
