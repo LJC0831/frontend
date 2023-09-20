@@ -396,7 +396,8 @@
       async fetchThumbnail(sendUrl, index) {
         // 백엔드 서버로 URL을 전송하고 썸네일 이미지 URL을 받아옴
         try {
-          const response = await fetch('/api/fetchThumbnail', {
+          debugger;
+          const response = await fetch('https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app/api/fetchThumbnail', {
             method: 'POST',
             body: JSON.stringify({ url: sendUrl }),
             headers: {
