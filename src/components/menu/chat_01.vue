@@ -687,6 +687,7 @@
           this.answerMessage = null;
           this.answer_id = null;
           this.answer_user_id = null;
+          this.answerFoucs = null;
       },
       //이모티콘 팝업 활성화
       openEmoticonModal() {
