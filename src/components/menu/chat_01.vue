@@ -300,7 +300,6 @@
         for (let i = 1; i <= this.messages.length; i ++){
           // 프로필사진 가져오기
           this.messages[this.messages.length-i].profilePicture = this.chatUserProfileUrl(this.messages[this.messages.length-i].user_id);
-          //this.messages[this.messages.length - i].linkPreviewImg = 'https://www.friendtalk.shop/main_logo.png';
           // url일때 썸네일가져오기
           if(window.location.href !== 'http://localhost:8080/'){ //로컬에서는 외부썸네일 접근불가
             const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
@@ -309,9 +308,7 @@
               fetchLinkPreviewData(url).then((linkPreviewData) => {
                 if (linkPreviewData) {
                   const imgurl = linkPreviewData.url + linkPreviewData.imageUrl;
-                  alert(imgurl);
-                  //this.messages[this.messages.length - i].linkPreviewImg = linkPreviewImg; 에러발생중
-                  this.messages[this.messages.length - i].linkPreviewImg = 'https://www.friendtalk.shop/main_logo.png';
+                  this.messages[this.messages.length - i].linkPreviewImg = imgurl;
                 } else {
                   console.log('링크 미리보기 데이터를 가져오지 못했습니다.');
                 }
