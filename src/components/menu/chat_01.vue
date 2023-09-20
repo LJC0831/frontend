@@ -277,7 +277,7 @@
           const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
           if(linkTagPattern.test(this.messages[this.messages.length-i].message)){
             const url = this.messages[this.messages.length-i].message;
-            this.fetchThumbnail(url);
+            this.fetchThumbnail(url, this.messages.length-i);
           }
          }
         // chatContainer 요소의 레퍼런스를 가져옵니다.
@@ -393,7 +393,7 @@
         return window.innerWidth <= 800; // 600px 이하면 모바일로 판단
       },
       // 썸네일 가져오기
-      async fetchThumbnail(sendUrl) {
+      async fetchThumbnail(sendUrl, index) {
         // 백엔드 서버로 URL을 전송하고 썸네일 이미지 URL을 받아옴
         try {
           const response = await fetch('/api/fetchThumbnail', {
@@ -406,7 +406,7 @@
 
           if (response.ok) {
             const data = await response.json();
-            this.thumbnailUrl = data.thumbnailUrl;
+            this.messages[index].thumbnailUrl = data.thumbnailUrl;
           } else {
             console.error('썸네일 가져오기 실패');
           }
