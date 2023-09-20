@@ -310,7 +310,8 @@
                 if (linkPreviewData) {
                   const linkPreviewImg = linkPreviewData.url + linkPreviewData.imageUrl;
                   alert(linkPreviewImg);
-                  this.messages[this.messages.length - i].linkPreviewImg = linkPreviewImg;
+                  //this.messages[this.messages.length - i].linkPreviewImg = linkPreviewImg; 에러발생중
+                  this.messages[this.messages.length - i].linkPreviewImg = 'https://www.friendtalk.shop/main_logo.png';
                 } else {
                   console.log('링크 미리보기 데이터를 가져오지 못했습니다.');
                 }
