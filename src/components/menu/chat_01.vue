@@ -292,23 +292,29 @@
       });
 
       // 서버로부터 최근 메시지를 받을 때 호출되는 콜백 함수
-      const url = 'https://www.friendtalk.shop';
       this.socket.on('messageHistory', (messages) => {
-        fetchLinkPreviewData(url).then((linkPreviewData) => {
-          if (linkPreviewData) {
-            alert(linkPreviewData.url+linkPreviewData.imageUrl);
-            console.log('링크 미리보기 데이터:', linkPreviewData);
-          } else {
-            console.log('링크 미리보기 데이터를 가져오지 못했습니다.');
-          }
-        })
-        .catch((error) => {
-          console.error('오류 발생:', error);
-        });
         // 받은 채팅 메시지들을 화면에 표시하는 로직
         this.messages = messages;
         for (var i = 1; i <= this.messages.length; i ++){
+          // 프로필사진 가져오기
           this.messages[this.messages.length-i].profilePicture = this.chatUserProfileUrl(this.messages[this.messages.length-i].user_id);
+
+          // url일때 썸네일가져오기
+          const linkTagPattern = /<a\s+href=["'](https?:\/\/\S+|www\.\S+)["'][^>]*>.*<\/a>/i;
+          if(linkTagPattern.test(this.messages[this.messages.length-i].message)){
+            const url = 'https://www.friendtalk.shop';
+            fetchLinkPreviewData(url).then((linkPreviewData) => {
+              if (linkPreviewData) {
+                alert(linkPreviewData.url+linkPreviewData.imageUrl);
+                console.log('링크 미리보기 데이터:', linkPreviewData);
+              } else {
+                console.log('링크 미리보기 데이터를 가져오지 못했습니다.');
+              }
+            })
+            .catch((error) => {
+              console.error('오류 발생:', error);
+            });
+          }
          }
         // chatContainer 요소의 레퍼런스를 가져옵니다.
         this.$nextTick(() => {
