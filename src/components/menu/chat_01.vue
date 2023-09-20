@@ -396,7 +396,6 @@
       async fetchThumbnail(sendUrl, index) {
         // 백엔드 서버로 URL을 전송하고 썸네일 이미지 URL을 받아옴
         try {
-          debugger;
           const response = await fetch('https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app/api/fetchThumbnail', {
             method: 'POST',
             body: JSON.stringify({ url: sendUrl }),
@@ -602,7 +601,6 @@
           this.answerFocusColor = null;
         }
           for (const [index, item] of this.messages.entries()) {
-            debugger;
             if(String(item.id) === answer_messages.answer_id || item.id === answer_messages.answer_id){
               const chatItem = this.$refs[`chatItem-${index}`][0].querySelector('.message-text');
               
