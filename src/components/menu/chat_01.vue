@@ -260,6 +260,11 @@
          for (var i = 1; i <= this.messages.length; i ++){
           this.messages[this.messages.length-i].selectUserCount = lastMessage[lastMessage.length-i].selectUserCount;
           this.messages[this.messages.length-i].id = lastMessage[lastMessage.length-i].id;
+          const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
+          if(linkTagPattern.test(this.messages[this.messages.length-i].message)){
+            const url = this.messages[this.messages.length-i].message;
+            this.fetchThumbnail(url, this.messages.length-i);
+          }
           if(i === '199'){
             break;
           }
@@ -407,6 +412,9 @@
           if (response.ok) {
             const data = await response.json();
             this.messages[index].thumbnailUrl = data.thumbnailUrl;
+            setTimeout(() => {
+              this.scrollToBottom();
+            }, 100); // 100ms(0.1초) 후에 실행됩니다.
           } else {
             console.error('썸네일 가져오기 실패');
           }
