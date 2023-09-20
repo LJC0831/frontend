@@ -302,20 +302,22 @@
           this.messages[this.messages.length-i].profilePicture = this.chatUserProfileUrl(this.messages[this.messages.length-i].user_id);
 
           // url일때 썸네일가져오기
-          const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
-          if(linkTagPattern.test(this.messages[this.messages.length-i].message)){
-            const url = 'https://www.friendtalk.shop';
-            fetchLinkPreviewData(url).then((linkPreviewData) => {
-              if (linkPreviewData) {
-                //alert(linkPreviewData.url+linkPreviewData.imageUrl);
-                this.messages[this.messages.length-i].linkPreviewImg = linkPreviewData.url+linkPreviewData.imageUrl;
-              } else {
-                console.log('링크 미리보기 데이터를 가져오지 못했습니다.');
-              }
-            })
-            .catch((error) => {
-              console.error('오류 발생:', error);
-            });
+          if(window.location.href !== 'http://localhost:8080/'){ //로컬에서는 외부썸네일 접근불가
+            const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
+            if(linkTagPattern.test(this.messages[this.messages.length-i].message)){
+              const url = 'https://www.friendtalk.shop';
+              fetchLinkPreviewData(url).then((linkPreviewData) => {
+                if (linkPreviewData) {
+                  const linkPreviewImg = linkPreviewData.url+linkPreviewData.imageUrl
+                  this.messages[this.messages.length - i].linkPreviewImg = linkPreviewImg;
+                } else {
+                  console.log('링크 미리보기 데이터를 가져오지 못했습니다.');
+                }
+              })
+              .catch((error) => {
+                console.error('오류 발생:', error);
+              });
+            }
           }
          }
         // chatContainer 요소의 레퍼런스를 가져옵니다.
