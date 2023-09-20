@@ -56,7 +56,7 @@
       <label for="imageInput" class="upload-button">
           <img src="../../assets/uploadIKon.png" alt="첨부 아이콘" />
       </label>
-      <textarea  autocomplete="off" v-model="newMessage" class ="chat-textarea" 
+      <textarea  autocomplete="off" v-model="newMessage" class ="chat-textarea" v-if="!loading"
       ref="sendButton"
       @keyup.esc="this.answerMessage = null"
       @focus="handleChatTextareaFocus"
@@ -199,7 +199,7 @@
         answerUserId: null, //답장선택한userid
         answerFocusColor:null, //포커스color 
         answerFoucs:null, //답장포커스여부
-        thumbnailUrl:null, //썸네일이미지
+        thumbnailUrl:'', //썸네일이미지
       };
     },
     created() {
@@ -408,7 +408,6 @@
       // 썸네일 가져오기
       async fetchThumbnail(sendUrl) {
         // 백엔드 서버로 URL을 전송하고 썸네일 이미지 URL을 받아옴
-        debugger;
         try {
           const response = await fetch('https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app/api/fetchThumbnail', {
             method: 'POST',
@@ -421,9 +420,6 @@
           if (response.ok) {
             const data = await response.json();
             this.thumbnailUrl = data.thumbnailUrl;
-            setTimeout(() => {
-              this.scrollToBottom();
-            }, 50); // 100ms(0.1초) 후에 실행됩니다.
           }
         } catch (error) {
           console.error('오류 발생:', error);
@@ -470,7 +466,7 @@
     //채팅전송(엔터처리)
     handleKeyDown(event) {
       // 쉬프트 엔터처리
-      if ((event.key === "Enter"||event.keyCode === 13) && !event.shiftKey) {
+      if ((event.key === "Enter"||event.keyCode === 13) && !event.shiftKey && !this.loading) {
         this.sendMessage();
       }
     },
@@ -641,7 +637,7 @@
           }
       },
       // 메세지 보내기
-      sendMessage() {
+      async sendMessage() {
         if(!commons.loginCheck()) return;
 
         if (this.newMessage.trim() === '') return;
@@ -665,15 +661,14 @@
             return;
           }
           this.loading = true;
-
           //썸네일 입력
-          const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
-          if(linkTagPattern.test(this.newMessage)){
-            let url = this.newMessage;
-            if (url.startsWith('www.')) {
-              url = 'http://' + url;
-            }
-            this.fetchThumbnail(url);
+            const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
+            if(linkTagPattern.test(this.newMessage)){
+              let url = this.newMessage;
+              if (url.startsWith('www.')) {
+                url = 'http://' + url;
+              }
+              await this.fetchThumbnail(url);
           }
           const messageObject = {
             editedName: this.editedName,
@@ -692,6 +687,7 @@
             thumbnailUrl:this.thumbnailUrl,
             ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
           };
+          this.thumbnailUrl = '';
           this.socket.emit('message', messageObject);
           this.loading = false;
           this.$nextTick(() => {
