@@ -300,7 +300,7 @@
         for (var i = 1; i <= this.messages.length; i ++){
           // 프로필사진 가져오기
           this.messages[this.messages.length-i].profilePicture = this.chatUserProfileUrl(this.messages[this.messages.length-i].user_id);
-
+          //this.messages[this.messages.length - i].linkPreviewImg = 'https://www.friendtalk.shop/main_logo.png';
           // url일때 썸네일가져오기
           if(window.location.href !== 'http://localhost:8080/'){ //로컬에서는 외부썸네일 접근불가
             const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
@@ -684,7 +684,6 @@
             answer_message:this.answerMessage,
             answer_id:this.answerId,
             answer_user_id:this.answerUserId,
-            linkPreviewImg:null,
             ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
           };
           this.socket.emit('message', messageObject);
@@ -812,7 +811,6 @@
           answer_message:this.answerMessage,
           answer_id:this.answerId,
           answer_user_id:this.answerUserId,
-          linkPreviewImg:null,
           ins_ymdhms: now - 10800000,
         };
 
@@ -868,7 +866,6 @@
           answer_message:this.answerMessage,
           answer_id:this.answerId,
           answer_user_id:this.answerUserId,
-          linkPreviewImg:null,
           ins_ymdhms: now - 10800000,
         };
 
