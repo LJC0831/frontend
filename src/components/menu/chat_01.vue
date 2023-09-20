@@ -262,7 +262,10 @@
           this.messages[this.messages.length-i].id = lastMessage[lastMessage.length-i].id;
           const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
           if(linkTagPattern.test(this.messages[this.messages.length-i].message)){
-            const url = this.messages[this.messages.length-i].message;
+            let url = this.messages[this.messages.length-i].message;
+            if (url.startsWith('www.')) {
+              url = 'http://' + url;
+            }
             this.fetchThumbnail(url, this.messages.length-i);
           }
           if(i === '199'){
@@ -281,7 +284,10 @@
 
           const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
           if(linkTagPattern.test(this.messages[this.messages.length-i].message)){
-            const url = this.messages[this.messages.length-i].message;
+            let url = this.messages[this.messages.length-i].message;
+            if (url.startsWith('www.')) {
+              url = 'http://' + url;
+            }
             this.fetchThumbnail(url, this.messages.length-i);
           }
          }
