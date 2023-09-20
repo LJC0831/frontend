@@ -145,6 +145,32 @@
   import loginMethods from '../../scripts/login.js';
   import chatMethods from '../../scripts/chat.js';
   import * as commons from '../../scripts/common.js';
+  const axios = require('axios');
+  const cheerio = require('cheerio');
+
+  async function fetchLinkPreviewData(url) {
+    try {
+      const response = await axios.get(url);
+      const html = response.data;
+      const $ = cheerio.load(html);
+
+      // 웹 페이지에서 필요한 메타 데이터 추출
+      const title = $('title').text();
+      const description = $('meta[name="description"]').attr('content');
+      const imageUrl = $('meta[property="og:image"]').attr('content');
+
+      // 링크 미리보기 데이터를 객체로 반환
+      return {
+        title,
+        description,
+        imageUrl,
+        url,
+      };
+    } catch (error) {
+      console.error('링크 미리보기 데이터 가져오기 실패:', error);
+      return null;
+    }
+  }
   
 
   export default {
@@ -265,7 +291,18 @@
       });
 
       // 서버로부터 최근 메시지를 받을 때 호출되는 콜백 함수
+      const url = 'https://www.friendtalk.shop';
       this.socket.on('messageHistory', (messages) => {
+        fetchLinkPreviewData(url).then((linkPreviewData) => {
+          if (linkPreviewData) {
+            console.log('링크 미리보기 데이터:', linkPreviewData);
+          } else {
+            console.log('링크 미리보기 데이터를 가져오지 못했습니다.');
+          }
+        })
+        .catch((error) => {
+          console.error('오류 발생:', error);
+        });
         // 받은 채팅 메시지들을 화면에 표시하는 로직
         this.messages = messages;
         for (var i = 1; i <= this.messages.length; i ++){
