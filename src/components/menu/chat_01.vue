@@ -308,7 +308,8 @@
               const url = 'https://www.friendtalk.shop';
               fetchLinkPreviewData(url).then((linkPreviewData) => {
                 if (linkPreviewData) {
-                  const linkPreviewImg = linkPreviewData.url+linkPreviewData.imageUrl
+                  const linkPreviewImg = linkPreviewData.url + linkPreviewData.imageUrl;
+                  alert(linkPreviewImg);
                   this.messages[this.messages.length - i].linkPreviewImg = linkPreviewImg;
                 } else {
                   console.log('링크 미리보기 데이터를 가져오지 못했습니다.');
