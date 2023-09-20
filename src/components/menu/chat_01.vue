@@ -115,8 +115,8 @@
       </div>
     </div>
     <!-- 선택한 메시지가 확장되었을 때만 표시 -->
-     <div v-if="this.answerMessage" @click="this.answerMessage = null" class="message-answer-text">
-        <p style="margin-left:50px;">답장(취소하려면 클릭) → {{ this.answerUserId }} : {{ this.answerMessage }}</p>
+     <div v-if="this.answerFoucs" @click="this.answerFoucs = null" class="message-answer-text">
+        <p style="margin-left:50px;">답장 → {{ this.answerUserId }} : {{ this.answerMessage }}</p>
     </div>
     <!-- 이모티콘 모달 -->
     <div v-if="isStickerModal" class="sticker-modal">
@@ -222,6 +222,7 @@
         answerId: null,//답장선택한메세지 id
         answerUserId: null, //답장선택한userid
         answerFocusColor:null, //포커스color 
+        answerFoucs:null, //답장포커스여부
       };
     },
     created() {
@@ -295,7 +296,7 @@
       this.socket.on('messageHistory', (messages) => {
         fetchLinkPreviewData(url).then((linkPreviewData) => {
           if (linkPreviewData) {
-            alert(linkPreviewData);
+            alert(linkPreviewData.url);
             console.log('링크 미리보기 데이터:', linkPreviewData);
           } else {
             console.log('링크 미리보기 데이터를 가져오지 못했습니다.');
@@ -424,6 +425,7 @@
       // 채팅답장
       chat_answer(message){
         this.$refs.sendButton.focus();
+        this.answerFoucs = true;
         this.answerMessage = message.message;
         this.answerId = message.id;
         this.answerUserId = message.editedName;
@@ -479,7 +481,7 @@
     // textarea 포커싱해제
     handleChatTextareaBlur() {
       this.isChatTextareaFocused = false;
-      this.answerMessage = false;
+      this.answerFoucs = false;
       const currentlyFocusedElement = document.activeElement; // 현재 포커스를 가진 요소 가져오기
       currentlyFocusedElement.blur();
     },
