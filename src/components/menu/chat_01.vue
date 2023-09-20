@@ -295,6 +295,7 @@
       this.socket.on('messageHistory', (messages) => {
         fetchLinkPreviewData(url).then((linkPreviewData) => {
           if (linkPreviewData) {
+            alert(linkPreviewData);
             console.log('링크 미리보기 데이터:', linkPreviewData);
           } else {
             console.log('링크 미리보기 데이터를 가져오지 못했습니다.');
