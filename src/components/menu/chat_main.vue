@@ -229,9 +229,15 @@ export default {
             }
           },
           (error) => { // 에러 콜백
-            commons.showToast(this, '일반유저는 최대 방10개까지만 입장 및 개설이 가능합니다.');
-            console.error("채팅방 입장 오류:", error);
-            return;
+            if(error.response.status === 401){
+              commons.showToast(this, '방 인원이 가득찼습니다. ');
+              this.search01(this.activeTab);
+              return;
+            } else {
+              commons.showToast(this, '일반유저는 최대 방10개까지만 입장 및 개설이 가능합니다.');
+              return;
+            }
+            
           }
         );
       } else {
