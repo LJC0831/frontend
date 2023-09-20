@@ -259,40 +259,56 @@
       });
       // 메세지 읽음처리
       this.socket.on('getMessageRead', (lastMessage) => {
+        const urlsToFetch = [];
          for (var i = 1; i <= this.messages.length; i ++){
           this.messages[this.messages.length-i].selectUserCount = lastMessage[lastMessage.length-i].selectUserCount;
           this.messages[this.messages.length-i].id = lastMessage[lastMessage.length-i].id;
           const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
-          if(linkTagPattern.test(this.messages[this.messages.length-i].message)){
+          if(linkTagPattern.test(this.messages[this.messages.length-i].message) && this.messages[this.messages.length-i].thumbnailUrl === undefined){
             let url = this.messages[this.messages.length-i].message;
             if (url.startsWith('www.')) {
               url = 'http://' + url;
             }
-            this.fetchThumbnail(url, this.messages.length-i);
+            urlsToFetch.push({ url, index: this.messages.length - i });
           }
           if(i === '199'){
             break;
           }
          }
+         urlsToFetch.forEach(async ({ url, index }) => {
+          await this.fetchThumbnail(url, index);
+        });
+
+        setTimeout(() => {
+          this.scrollToBottom();
+        }, 100); // 100ms(0.1초) 후에 실행됩니다.
       });
 
       // 서버로부터 최근 메시지를 받을 때 호출되는 콜백 함수
       this.socket.on('messageHistory', (messages) => {
         // 받은 채팅 메시지들을 화면에 표시하는 로직
         this.messages = messages;
+        const urlsToFetch = [];
         for (let i = 1; i <= this.messages.length; i ++){
           // 프로필사진 가져오기
           this.messages[this.messages.length-i].profilePicture = this.chatUserProfileUrl(this.messages[this.messages.length-i].user_id);
 
           const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
-          if(linkTagPattern.test(this.messages[this.messages.length-i].message)){
+          if(linkTagPattern.test(this.messages[this.messages.length-i].message) && this.messages[this.messages.length-i].thumbnailUrl === undefined){
             let url = this.messages[this.messages.length-i].message;
             if (url.startsWith('www.')) {
               url = 'http://' + url;
             }
-            this.fetchThumbnail(url, this.messages.length-i);
+            urlsToFetch.push({ url, index: this.messages.length - i });
           }
          }
+         urlsToFetch.forEach(async ({ url, index }) => {
+          await this.fetchThumbnail(url, index);
+        });
+
+        setTimeout(() => {
+          this.scrollToBottom();
+        }, 100); // 100ms(0.1초) 후에 실행됩니다.
         // chatContainer 요소의 레퍼런스를 가져옵니다.
         this.$nextTick(() => {
           this.chatContainer = this.$refs.chatContainer;
@@ -421,8 +437,8 @@
             const data = await response.json();
             this.messages[index].thumbnailUrl = data.thumbnailUrl;
             setTimeout(() => {
-              this.scrollToBottom();
-            }, 100); // 100ms(0.1초) 후에 실행됩니다.
+                      this.scrollToBottom();
+            }, 50); // 100ms(0.1초) 후에 실행됩니다.
           }
         } catch (error) {
           console.error('오류 발생:', error);
