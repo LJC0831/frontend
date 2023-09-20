@@ -26,7 +26,7 @@
         <div class="message-container" >
           <div class="message-content">
           <span class="message-name">{{ message.editedName }} </span>
-          <img v-if="message.linkPreviewImg" class="" :src="message.linkPreviewImg" alt="미리보기 사진" />
+          <img v-if="message.thumbnailUrl" class="" :src="message.thumbnailUrl" alt="미리보기 사진" />
           <span @click="answer_search(message)" v-if="message.answer_message && message.answer_message !== `undefined`" class="message-answer-text">{{ message.answer_user_id }} : {{ message.answer_message }}</span>   
             <div @click="chat_answer(message)" class="message-bubble" :class="{ 'announcement-message': message.chat_type === 'announcement' && message.chat_type !== 'search'
                                                 , 'search-message': message.chat_type === 'search'
@@ -146,33 +146,6 @@
   import loginMethods from '../../scripts/login.js';
   import chatMethods from '../../scripts/chat.js';
   import * as commons from '../../scripts/common.js';
-  const axios = require('axios');
-  const cheerio = require('cheerio');
-
-  async function fetchLinkPreviewData(url) {
-    try {
-      const response = await axios.get(url);
-      const html = response.data;
-      const $ = cheerio.load(html);
-
-      // 웹 페이지에서 필요한 메타 데이터 추출
-      const title = $('title').text();
-      const description = $('meta[name="description"]').attr('content');
-      const imageUrl = $('meta[property="og:image"]').attr('content');
-
-      // 링크 미리보기 데이터를 객체로 반환
-      return {
-        title,
-        description,
-        imageUrl,
-        url,
-      };
-    } catch (error) {
-      console.error('링크 미리보기 데이터 가져오기 실패:', error);
-      return null;
-    }
-  }
-  
 
   export default {
     props: {
@@ -224,7 +197,7 @@
         answerUserId: null, //답장선택한userid
         answerFocusColor:null, //포커스color 
         answerFoucs:null, //답장포커스여부
-        linkPreviewImg:null, //썸네일이미지
+        thumbnailUrl:null, //썸네일이미지
       };
     },
     created() {
@@ -300,24 +273,6 @@
         for (let i = 1; i <= this.messages.length; i ++){
           // 프로필사진 가져오기
           this.messages[this.messages.length-i].profilePicture = this.chatUserProfileUrl(this.messages[this.messages.length-i].user_id);
-          // url일때 썸네일가져오기
-          if(window.location.href !== 'http://localhost:8080/'){ //로컬에서는 외부썸네일 접근불가
-            const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
-            if(linkTagPattern.test(this.messages[this.messages.length-i].message)){
-              const url = this.messages[this.messages.length-i].message;
-              fetchLinkPreviewData(url).then((linkPreviewData) => {
-                if (linkPreviewData) {
-                  const imgurl = linkPreviewData.url + linkPreviewData.imageUrl;
-                  this.messages[this.messages.length - i].linkPreviewImg = imgurl;
-                } else {
-                  console.log('링크 미리보기 데이터를 가져오지 못했습니다.');
-                }
-              })
-              .catch((error) => {
-                console.error('오류 발생:', error);
-              });
-            }
-          }
          }
         // chatContainer 요소의 레퍼런스를 가져옵니다.
         this.$nextTick(() => {
