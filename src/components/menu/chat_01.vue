@@ -276,19 +276,7 @@
         for (let i = 1; i <= this.messages.length; i ++){
           // 프로필사진 가져오기
           this.messages[this.messages.length-i].profilePicture = this.chatUserProfileUrl(this.messages[this.messages.length-i].user_id);
-
-          //const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
-          // if(linkTagPattern.test(this.messages[this.messages.length-i].message) && this.messages[this.messages.length-i].thumbnailUrl === undefined){
-          //   let url = this.messages[this.messages.length-i].message;
-          //   if (url.startsWith('www.')) {
-          //     url = 'http://' + url;
-          //   }
-          //   urlsToFetch.push({ url, index: this.messages.length - i });
-          // }
          }
-        //  urlsToFetch.forEach(async ({ url, index }) => {
-        //   await this.fetchThumbnail(url, index);
-        // });
 
         setTimeout(() => {
           this.scrollToBottom();
