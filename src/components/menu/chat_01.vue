@@ -273,6 +273,12 @@
         for (let i = 1; i <= this.messages.length; i ++){
           // 프로필사진 가져오기
           this.messages[this.messages.length-i].profilePicture = this.chatUserProfileUrl(this.messages[this.messages.length-i].user_id);
+
+          const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
+          if(linkTagPattern.test(this.messages[this.messages.length-i].message)){
+            const url = this.messages[this.messages.length-i].message;
+            this.fetchThumbnail(url);
+          }
          }
         // chatContainer 요소의 레퍼런스를 가져옵니다.
         this.$nextTick(() => {
@@ -385,6 +391,28 @@
       //모바일판단
       isMobile() {
         return window.innerWidth <= 800; // 600px 이하면 모바일로 판단
+      },
+      // 썸네일 가져오기
+      async fetchThumbnail(sendUrl) {
+        // 백엔드 서버로 URL을 전송하고 썸네일 이미지 URL을 받아옴
+        try {
+          const response = await fetch('/api/fetchThumbnail', {
+            method: 'POST',
+            body: JSON.stringify({ url: sendUrl }),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            this.thumbnailUrl = data.thumbnailUrl;
+          } else {
+            console.error('썸네일 가져오기 실패');
+          }
+        } catch (error) {
+          console.error('오류 발생:', error);
+        }
       },
       // 채팅답장
       chat_answer(message){
