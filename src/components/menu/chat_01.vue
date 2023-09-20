@@ -308,8 +308,8 @@
               const url = 'https://www.friendtalk.shop';
               fetchLinkPreviewData(url).then((linkPreviewData) => {
                 if (linkPreviewData) {
-                  const linkPreviewImg = linkPreviewData.url + linkPreviewData.imageUrl;
-                  alert(linkPreviewImg);
+                  const imgurl = linkPreviewData.url + linkPreviewData.imageUrl;
+                  alert(imgurl);
                   //this.messages[this.messages.length - i].linkPreviewImg = linkPreviewImg; 에러발생중
                   this.messages[this.messages.length - i].linkPreviewImg = 'https://www.friendtalk.shop/main_logo.png';
                 } else {
