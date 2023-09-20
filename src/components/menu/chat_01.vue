@@ -301,6 +301,7 @@
 
           // url일때 썸네일가져오기
           const linkTagPattern = /<a\s+href=["'](https?:\/\/\S+|www\.\S+)["'][^>]*>.*<\/a>/i;
+          
           if(linkTagPattern.test(this.messages[this.messages.length-i].message)){
             const url = 'https://www.friendtalk.shop';
             fetchLinkPreviewData(url).then((linkPreviewData) => {
@@ -308,6 +309,7 @@
                 alert(linkPreviewData.url+linkPreviewData.imageUrl);
                 console.log('링크 미리보기 데이터:', linkPreviewData);
               } else {
+                alert('오류');
                 console.log('링크 미리보기 데이터를 가져오지 못했습니다.');
               }
             })
