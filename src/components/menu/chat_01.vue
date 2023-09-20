@@ -26,6 +26,7 @@
         <div class="message-container" >
           <div class="message-content">
           <span class="message-name">{{ message.editedName }} </span>
+          <img v-if="message.linkPreviewImg" class="" :src="message.linkPreviewImg" alt="미리보기 사진" />
           <span @click="answer_search(message)" v-if="message.answer_message && message.answer_message !== `undefined`" class="message-answer-text">{{ message.answer_user_id }} : {{ message.answer_message }}</span>   
             <div @click="chat_answer(message)" class="message-bubble" :class="{ 'announcement-message': message.chat_type === 'announcement' && message.chat_type !== 'search'
                                                 , 'search-message': message.chat_type === 'search'
@@ -223,6 +224,7 @@
         answerUserId: null, //답장선택한userid
         answerFocusColor:null, //포커스color 
         answerFoucs:null, //답장포커스여부
+        linkPreviewImg:null, //썸네일이미지
       };
     },
     created() {
@@ -301,13 +303,12 @@
 
           // url일때 썸네일가져오기
           const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
-          debugger;
           if(linkTagPattern.test(this.messages[this.messages.length-i].message)){
             const url = 'https://www.friendtalk.shop';
             fetchLinkPreviewData(url).then((linkPreviewData) => {
               if (linkPreviewData) {
-                alert(linkPreviewData.url+linkPreviewData.imageUrl);
-                console.log('링크 미리보기 데이터:', linkPreviewData);
+                //alert(linkPreviewData.url+linkPreviewData.imageUrl);
+                this.messages[this.messages.length-i].linkPreviewImg = linkPreviewData.url+linkPreviewData.imageUrl;
               } else {
                 console.log('링크 미리보기 데이터를 가져오지 못했습니다.');
               }
