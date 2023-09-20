@@ -441,6 +441,7 @@
     // textarea 포커싱해제
     handleChatTextareaBlur() {
       this.isChatTextareaFocused = false;
+      this.answerMessage = false;
       const currentlyFocusedElement = document.activeElement; // 현재 포커스를 가진 요소 가져오기
       currentlyFocusedElement.blur();
     },
