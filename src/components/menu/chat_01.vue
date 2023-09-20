@@ -446,9 +446,18 @@
     },
       //메세지 줄바꿈처리
       formatMessage(message) {
-        //URL처리
+        // URL 처리
         const urlPattern = /https?:\/\/\S+|www\.\S+/g;
-        return message.replace(/\n/g, '<br>').replace(/ /g, "&nbsp;").replace(urlPattern, (url) => `<a href="${url}" target="_blank">${url}</a>`);
+        const formattedMessage = message.replace(/\n/g, '<br>').replace(/ /g, "&nbsp;").replace(urlPattern, (url) => {
+          if (url.startsWith("www.")) {
+            // "www"로 시작하는 URL 앞에 "https://"를 추가
+            return `<a href="https://${url}" target="_blank">${url}</a>`;
+          } else {
+            return `<a href="${url}" target="_blank">${url}</a>`;
+          }
+        });
+        
+        return formattedMessage;
       },
       //뒤로가기
       exit(){
