@@ -304,7 +304,7 @@
           if(window.location.href !== 'http://localhost:8080/'){ //로컬에서는 외부썸네일 접근불가
             const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
             if(linkTagPattern.test(this.messages[this.messages.length-i].message)){
-              const url = 'https://www.friendtalk.shop';
+              const url = this.messages[this.messages.length-i].message;
               fetchLinkPreviewData(url).then((linkPreviewData) => {
                 if (linkPreviewData) {
                   const imgurl = linkPreviewData.url + linkPreviewData.imageUrl;
