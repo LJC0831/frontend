@@ -26,7 +26,6 @@
         <div class="message-container" >
           <div class="message-content">
           <span class="message-name">{{ message.editedName }} </span>
-          <img v-if="message.thumbnailUrl" class="" :src="message.thumbnailUrl" alt="미리보기 사진" />
           <span @click="answer_search(message)" v-if="message.answer_message && message.answer_message !== `undefined`" class="message-answer-text">{{ message.answer_user_id }} : {{ message.answer_message }}</span>   
             <div @click="chat_answer(message)" class="message-bubble" :class="{ 'announcement-message': message.chat_type === 'announcement' && message.chat_type !== 'search'
                                                 , 'search-message': message.chat_type === 'search'
@@ -43,6 +42,9 @@
             <div v-else-if="message.chat_type === 'file'" class="message-bubble file-bubble">
               <a :href="message.chatimageUrl" target="_blank">다운로드</a>
             </div>
+          </div>
+          <div>
+            <img v-if="message.thumbnailUrl" :src="message.thumbnailUrl" alt="미리보기 사진"  class="chat_thumbnailUrl" />
           </div>
         </div>
         <span class="message-view" v-if="message.selectUserCount !== 0" >{{ message.selectUserCount }}</span>
@@ -1164,7 +1166,11 @@ input[type="text"] {
       resize: none;
       display: flex; align-items: center; justify-content: center;background-color: rgb(255, 255, 255);
     }
+.chat_thumbnailUrl{
+  width:200px;
+  padding:10px;
 
+}
 /* 모달 스타일 */
 .modal {
   position: fixed;
