@@ -423,8 +423,6 @@
             setTimeout(() => {
               this.scrollToBottom();
             }, 100); // 100ms(0.1초) 후에 실행됩니다.
-          } else {
-            console.error('썸네일 가져오기 실패');
           }
         } catch (error) {
           console.error('오류 발생:', error);
