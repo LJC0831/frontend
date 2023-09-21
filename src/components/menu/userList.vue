@@ -1,15 +1,30 @@
 <template>
   <div class="content">
     <ul>
-      <li v-for="(user, index) in userList" :key="index" class="user-item" :class="user.gender" @click="profile_search()">
+      <li v-for="(user, index) in userList" :key="index" class="user-item" :class="user.gender" 
+      @click="profile_search(user.user_id, user.user_nm, user.profile_url, user.gender_type, user.intro)">
         <img v-if="user.img_id !== null" :src="user.profile_url" alt="프로필 사진" class="profile-picture" />
         <img v-if="user.img_id === null" src="../../assets/profile-user.png" class="profile-picture" />
         <div class="user-info">
+        <span style="display: none;">{{ user.user_id }}</span>
         <h5>{{ user.user_nm }} ({{ user.gender_type }}) <i class="fas fa-comment" style="padding: 5px; "></i></h5>
           <p>{{ truncateIntro(user.intro) }}</p>
         </div>
       </li>
     </ul>
+
+      <!-- 프로필 팝업 -->
+    <div class="profile-popup" v-if="showProfilePopup">
+      <div class="profile-popup-content">
+        <img v-if="this.selectedimg_url === undefined" src="../../assets/profile-user.png" class="profile-picture" />
+        <img v-if="this.selectedimg_url !== undefined" :src="this.selectedimg_url" alt="프로필 사진" class="profile-picture" />
+        <h2>{{ this.selectedUserNM }} ({{ this.selectedGender }})</h2>
+        <p v-if="this.selectedIntro !== null"><span>자기소개</span></p>
+        <div class="modal_intro">{{ this.selectedIntro }}</div>
+        <button style="margin-right:10px;" @click="chatAppl()">1:1대화신청</button>
+        <button @click="closeProfilePopup">닫기</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -23,6 +38,12 @@ export default {
     return {
         userList: [],
         maxLength: 100, 
+        showProfilePopup: false, // 프로필 팝업 표시 여부
+        selectedUser: null, // 선택한 사용자 정보를 저장할 변수
+        selectedUserNM: null,
+        selectedimg_url: null,
+        selectedGender:null,
+        selectedIntro:null,
     };
   },
   created(){
@@ -43,6 +64,16 @@ export default {
         console.error("검색 오류:", error);
       }
     },
+    chatAppl() {
+      commons.showToast(this, '기능구현중입니다...');
+      return;
+    },
+
+    // 프로필 팝업 닫기
+    closeProfilePopup() {
+      this.selectedUser = null;
+      this.showProfilePopup = false;
+    },
 
     truncateIntro(intro) {
       const windowWidth = window.innerWidth;
@@ -60,8 +91,13 @@ export default {
       }
     },
     // 프로필조회
-    profile_search(){
-      commons.showToast(this, '기능구현중입니다.');
+    profile_search(user_id, user_nm, img_url, gender, intro){
+      this.selectedUser = user_id; 
+      this.selectedUserNM = user_nm; 
+      this.selectedimg_url = img_url; 
+      this.selectedGender = gender; 
+      this.selectedIntro = intro; 
+      this.showProfilePopup = true; // 팝업 표시
     }
   }
 };
@@ -122,5 +158,80 @@ p {
 .male {
   background-color: rgb(227, 244, 255);
   /* 기타 남성 스타일 속성 추가 */
+}
+
+.profile-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.profile-popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.profile-popup img {
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 10px auto;
+}
+
+.profile-popup h2 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.profile-popup p {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.profile-popup button {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.modal_intro{
+  width:500px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  
+  .modal_intro{
+    width:100%;
+    }
+  .profile-popup-content {
+    background-color: white;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width:90%;
+  }
+  .profile-popup img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
 }
 </style>
