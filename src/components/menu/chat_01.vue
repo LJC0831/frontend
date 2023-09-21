@@ -58,7 +58,7 @@
       </label>
       <textarea  autocomplete="off" v-model="newMessage" class ="chat-textarea" v-if="!loading"
       ref="sendButton"
-      @keyup.esc="this.answerMessage = null"
+      @keyup.esc="answerFocusProc()"
       @focus="handleChatTextareaFocus"
       @blur="handleChatTextareaBlur"
       @paste="handleImagePaste" @keydown="handleKeyDown" placeholder="메시지를 입력하세요..." />
@@ -458,6 +458,15 @@
         this.sendMessage();
       }
     },
+    // 답장포커싱처리
+    answerFocusProc(){
+      this.replyText = ""; //답장
+      this.answerMessage = null;//답장선택한메세지
+      this.answerId = null;//답장선택한메세지 id
+      this.answerUserId = null; //답장선택한userid
+      this.answerFocusColor = null; //포커스color 
+      this.answerFoucs = null; //답장포커스여부
+    },
     //textarea 포커싱
     handleChatTextareaFocus() {
       if(!this.ismobile){
@@ -472,7 +481,7 @@
     // textarea 포커싱해제
     handleChatTextareaBlur() {
       this.isChatTextareaFocused = false;
-      this.answerFoucs = false;
+      this.answerFocusProc();
       const currentlyFocusedElement = document.activeElement; // 현재 포커스를 가진 요소 가져오기
       currentlyFocusedElement.blur();
     },
@@ -686,10 +695,7 @@
           }
           event.preventDefault();
           this.$refs.sendButton.focus();
-          this.answerMessage = null;
-          this.answer_id = null;
-          this.answer_user_id = null;
-          this.answerFoucs = null;
+          this.answerFocusProc();
       },
       //이모티콘 팝업 활성화
       openEmoticonModal() {
