@@ -333,6 +333,13 @@ export default {
           saveUserProfile() {
             if(!commons.loginCheck()) return;
             const userid = this.loginUserId; // 사용자 아이디 추출
+            if(this.editedName.length === 0){
+              commons.showToast(this, '이름은 필수값입니다.');
+              return;
+            } else if(this.editedName.length >= 10){
+              commons.showToast(this, '이름은 10자 내외로 입력해주세요.');
+              return;
+            }
 
             if(this.editIntro){
               if(this.editIntro.length >= 2000){
