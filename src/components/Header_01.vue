@@ -60,7 +60,7 @@
     <div v-if="showSignupModal" class="login-modal">
       <div class="login-form">
         <h2>회원가입</h2>
-        <div @click="loginWithGoogle" class="google-login">
+        <div v-if="!this.isMobile()" @click="loginWithGoogle" class="google-login">
           <img src="@/assets/google-icon.png" alt="구글로그인" class="google-login-image"/>구글아이디로 로그인하기
         </div>
         <label for="newUserId">아이디(인증가능한 이메일)</label>
