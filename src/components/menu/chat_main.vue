@@ -302,7 +302,7 @@ export default {
       } catch (error) {
         console.error("검색 오류:", error);
       }
-    }, 400),
+    }, 200),
     // 방만들기
     createChatRoom(){
       this.createChatModal = true;
