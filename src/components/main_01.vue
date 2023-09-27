@@ -45,7 +45,7 @@ export default {
   overflow: hidden;
   min-height:650px;
   /* 이미지 파일 경로를 수정해주세요 */
-  background-image: url("@/assets/img_background.jpg");
+  background-image: url("@/assets/chat_main.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
