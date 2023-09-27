@@ -254,7 +254,7 @@ export default {
                 }
               );
             } else { //일반로그인
-              loginMethods.methods.login( this.username, this.password, (res) => {
+              loginMethods.methods.login( escapeString(this.username), this.password, (res) => {
                     // 토큰을 Vuex에 저장
                   this.setToken(res.data.token);
 
@@ -613,6 +613,12 @@ export default {
         },
       }
 };
+
+function escapeString(str) {
+  // 이스케이핑 로직을 구현
+  // 예: '를 ''로 대체하여 SQL Injection 방지
+  return str.replace(/'/g, "''");
+}
 </script>
 
 <style scoped>
