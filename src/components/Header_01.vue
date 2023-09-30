@@ -242,7 +242,7 @@ export default {
                   this.showLoginModal = false; // 로그인 성공 시 모달 닫기
                   this.username='';
                   this.newName='';
-                  window.open(process.env.VUE_APP_redirect_uri, "_blank");
+                  window.location.href = process.env.VUE_APP_redirect_uri;
                   alert('로그인에 성공했습니다!');
                 },
                 (error, res) => {
