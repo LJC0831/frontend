@@ -63,7 +63,7 @@ export default {
 }
 @media (max-width: 768px) {
   .mobile-icons {
-    height: 35px;
+    height: 40px;
   }
   .icon {
     height: 25px;
