@@ -20,10 +20,13 @@
 
 <script>
 /* eslint-disable */
+import * as commons from '../scripts/common.js';
+/* eslint-disable */
 export default {
   props: ['menuSelected'], // 부모 컴포넌트로부터 menuSelected 프롭을 받음
   methods: {
     navigateToPage(menuName) {
+      if(!commons.loginCheck()) return;
       this.$emit('menuSelected', menuName); // 메뉴 선택 이벤트를 발생시킴
     }
   }
