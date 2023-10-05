@@ -593,8 +593,8 @@ export default {
             this.showNotification = !this.showNotification;
           },
           startInterval() {
-            // 5분(300000 밀리초)마다 myFunction 함수를 실행합니다.
-            this.timer = setInterval(this.alarmCheck, 300000);
+            // 10분(600000 밀리초)마다 myFunction 함수를 실행합니다.
+            this.timer = setInterval(this.alarmCheck, 600000);
           },
           stopInterval() {
             // setInterval을 멈춥니다.
