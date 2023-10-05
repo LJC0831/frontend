@@ -588,14 +588,14 @@ export default {
   display: inline-block;
   width: 20px;
   height: 17px;
-  background-color: #FF5733; /* 배경색 설정 */
+  background-color: red; /* 배경색 설정 */
   color: #FFFFFF; /* 글자색 설정 */
   border-radius: 50%; /* 원 모양으로 만들기 */
   text-align: center; /* 텍스트 가운데 정렬 */
   line-height: 17px; /* 수직 가운데 정렬 */
-  font-size: 14px; /* 글자 크기 설정 */
+  font-size: 12px; /* 글자 크기 설정 */
   font-weight: bold; /* 글자 굵게 설정 */
-  margin-left: 10px;
+  margin-left: 5px;
 }
 .chatroom-readCount:empty {
   display: none; /* 내용이 없는 경우 숨김 */
