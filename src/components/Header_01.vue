@@ -618,7 +618,10 @@ export default {
           },
         },
   mounted() {
-      // 페이지가 로드될 때 실행할 함수
+     // 페이지가 로드될 때 실행할 함수
+     document.addEventListener('deviceready', () => {
+        alert('deviceready 시작');
+      }, false);
       window.addEventListener('load', () => {
         // URL에서 쿼리 문자열 파싱
         const queryString = window.location.search;
