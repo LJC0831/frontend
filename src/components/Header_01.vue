@@ -619,9 +619,20 @@ export default {
         },
   mounted() {
      // 페이지가 로드될 때 실행할 함수
-     document.addEventListener('deviceready', () => {
-        alert('deviceready 시작');
+     document.addEventListener('resume', (event) => {
+          // 백그라운드 딥 링크 핸들러 등록
+          handleopenurl(event.url);
+          universalLinks.subscribe('handleopenurl', (eventData) => {
+            alert('제발!!');
+              // 딥 링크 URL에서 필요한 데이터 추출
+              const code = eventData.url.split('=')[1];
+              
+              // 추출한 데이터를 사용하여 작업 수행
+              console.log('Received code from background deep link: ' + code);
+          });
       }, false);
+
+      
       window.addEventListener('load', () => {
         // URL에서 쿼리 문자열 파싱
         const queryString = window.location.search;
