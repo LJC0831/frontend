@@ -493,9 +493,6 @@ export default {
   .col{
     margin-bottom: 10px;
   }
-  .chat-room{
-    background-image: url("@/assets/img_background.jpg");
-  }
 
   /* 모달 스타일 */
 .modal {
