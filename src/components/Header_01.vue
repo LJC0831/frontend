@@ -39,7 +39,7 @@
           <span v-else>로딩 중...</span>
         </button>&nbsp;
         <button @click="cancel">취소</button>&nbsp;
-        <div v-if="!this.isMobile()" @click="loginWithGoogle" class="google-login">
+        <div @click="loginWithGoogle" class="google-login">
           <img src="@/assets/google-icon.png" alt="구글로그인" class="google-login-image"/>Sign in with Google
         </div>
         <span @click="this.showSearchPwd = true; this.showLoginModal = false;"><label for="username" style="cursor: pointer;">비밀번호를 잊으셨나요?</label></span>
@@ -623,11 +623,12 @@ export default {
         // URL에서 쿼리 문자열 파싱
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
-        
         // 'code' 매개 변수 값 가져오기
         const code = urlParams.get('code');
         if (code) {
-          this.exchangeGoogleAuthCodeForAccessToken(code);
+          //this.exchangeGoogleAuthCodeForAccessToken(code);
+          const deepLink = `friendtalk://action?code=${code}`;
+          window.location.href = deepLink;
         }
       });
       this.startInterval();
