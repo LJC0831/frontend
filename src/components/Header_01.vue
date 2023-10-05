@@ -19,7 +19,9 @@
         </div>
         <div class="notification" v-if="showNotification" @click="toggleNotification">
           <!-- 알람 메시지 내용 -->
-          {{ notificationMessage }}
+          <div v-for="(notificationMessage, index) in notificationMessage" :key="index">
+            {{ notificationMessage }}
+          </div>
         </div>
         <div v-if="isLoggedIn" class="logout-button" @click="logout">
           <button class="logout-btn">로그아웃</button>
@@ -155,7 +157,7 @@ export default {
       signUpAppr2:false, //인증완료처리 (패스워드찾기)
       showSearchPwd:false, //패스워드찾기 팝업 활성화여부
       showNotification: false, // 알람 표시 여부
-      notificationMessage: "새로운 채팅이 있습니다.", // 채팅알람
+      notificationMessage: [], // 채팅알람
       notificationCount: 0, //알람개수
       timer: null, // setInterval 타이머 변수
     };
@@ -606,7 +608,10 @@ export default {
             if(token != null) {
               loginMethods.methods.alarmSearch(this.loginUserId, (res) => {
                   if(res.data.length > 0 ){
-                    this.notificationCount = 1;
+                    this.notificationCount = res.data.length;
+                    for(let i = 0; i < res.data.length ;i ++){
+                      this.notificationMessage.push('[' + res.data[i].content + '] ' + '새로운 메세지 도착');
+                    }
                   }
                 },
                   (error) => {
