@@ -39,7 +39,7 @@
           <span v-else>로딩 중...</span>
         </button>&nbsp;
         <button @click="cancel">취소</button>&nbsp;
-        <div @click="loginWithGoogle" class="google-login">
+        <div v-if="!this.isMobile()" @click="loginWithGoogle" class="google-login">
           <img src="@/assets/google-icon.png" alt="구글로그인" class="google-login-image"/>Sign in with Google
         </div>
         <span @click="this.showSearchPwd = true; this.showLoginModal = false;"><label for="username" style="cursor: pointer;">비밀번호를 잊으셨나요?</label></span>
@@ -618,19 +618,16 @@ export default {
           },
         },
   mounted() {
-     // 페이지가 로드될 때 실행할 함수
-     document.addEventListener('resume', handleopenurl(), false);
+      // 페이지가 로드될 때 실행할 함수
       window.addEventListener('load', () => {
-        alert('');
         // URL에서 쿼리 문자열 파싱
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
+        
         // 'code' 매개 변수 값 가져오기
         const code = urlParams.get('code');
         if (code) {
-          //this.exchangeGoogleAuthCodeForAccessToken(code);
-          const deepLink = `friendtalk://action?code=${code}`;
-          window.location.href = deepLink;
+          this.exchangeGoogleAuthCodeForAccessToken(code);
         }
       });
       this.startInterval();
