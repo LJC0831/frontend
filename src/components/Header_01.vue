@@ -619,12 +619,9 @@ export default {
         },
   mounted() {
      // 페이지가 로드될 때 실행할 함수
-     document.addEventListener('resume', () => {
-          alert('test');
-      }, false);
-
-      
+     document.addEventListener('resume', handleopenurl(), false);
       window.addEventListener('load', () => {
+        alert('');
         // URL에서 쿼리 문자열 파싱
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
