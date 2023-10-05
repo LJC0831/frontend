@@ -14,6 +14,13 @@
           <img v-if="!profilePicture" src="@/assets/profile-user.png" alt="내 정보" class="profile-img" />
           <img v-if="profilePicture" :src="profilePicture" alt="프로필 사진" class="profile-img" />
         </div>
+        <div class="icon-container"  v-if="!showNotification">
+          <i class="fas fa-bell" @click="toggleNotification"><span class="badge" v-if="notificationCount > 0">{{ notificationCount }}</span></i>
+        </div>
+        <div class="notification" v-if="showNotification" @click="toggleNotification">
+          <!-- 알람 메시지 내용 -->
+          {{ notificationMessage }}
+        </div>
         <div v-if="isLoggedIn" class="logout-button" @click="logout">
           <button class="logout-btn">로그아웃</button>
         </div>
@@ -147,6 +154,10 @@ export default {
       signUpAppr:false, //인증완료처리 (회원가입)
       signUpAppr2:false, //인증완료처리 (패스워드찾기)
       showSearchPwd:false, //패스워드찾기 팝업 활성화여부
+      showNotification: false, // 알람 표시 여부
+      notificationMessage: "새로운 채팅이 있습니다.", // 채팅알람
+      notificationCount: 0, //알람개수
+      timer: null, // setInterval 타이머 변수
     };
   },
   methods: {
@@ -577,6 +588,34 @@ export default {
             this.mailCheck = false; 
             this.signUpAppr2 =false;
           },
+          //토글알림
+          toggleNotification() {
+            this.showNotification = !this.showNotification;
+          },
+          startInterval() {
+            // 5분(300000 밀리초)마다 myFunction 함수를 실행합니다.
+            this.timer = setInterval(this.alarmCheck, 300000);
+          },
+          stopInterval() {
+            // setInterval을 멈춥니다.
+            clearInterval(this.timer);
+          },
+          alarmCheck() {
+            // 이 함수는 10분마다 호출됩니다.
+            const token = localStorage.getItem('token');
+            if(token != null) {
+              loginMethods.methods.alarmSearch(this.loginUserId, (res) => {
+                  if(res.data.length > 0 ){
+                    this.notificationCount = 1;
+                  }
+                },
+                  (error) => {
+                    // 에러 콜백
+                    console.error("알람 조회 오류", error);
+                  }
+                );
+              }
+          },
         },
   mounted() {
       // 페이지가 로드될 때 실행할 함수
@@ -591,7 +630,12 @@ export default {
           this.exchangeGoogleAuthCodeForAccessToken(code);
         }
       });
+      this.startInterval();
     },
+    beforeDestroy() {
+    // 컴포넌트가 파괴되기 전에 setInterval을 멈춥니다.
+    this.stopInterval();
+  },
   created() {
       // 페이지가 로드될 때 로컬 스토리지에 토큰이 있는지 확인하여 로그인 상태를 설정
       const token = localStorage.getItem("token");
@@ -601,6 +645,7 @@ export default {
         this.loginUserId = decoded_Token.username;
       }
       this.profileSearch("load");
+      this.alarmCheck();
     },
     watch: {
         // showLoginModal 데이터 변경 감지
@@ -783,6 +828,28 @@ width: 70px;
 }
 .google-login{
 cursor: pointer;
+}
+.icon-container {
+  margin-top: -20px; /* 원하는 위치로 조정하세요. */
+  margin-right: 10px;
+  z-index: 9999;
+  color:white;
+  cursor: pointer;
+}
+.notification {
+  top: 50px; /* 알람 메시지 위치를 조정하세요. */
+  right: 20px; /* 알람 메시지 위치를 조정하세요. */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 9998;
+}
+.badge {
+  background-color: red; /* 뱃지의 배경색을 설정합니다. */
+  color: white; /* 뱃지의 텍스트 색상을 설정합니다. */
+  border-radius: 50%; /* 뱃지를 원 모양으로 만듭니다. */
+  font-size: 12px; /* 뱃지의 글꼴 크기를 조정합니다. */
+  font-weight: bold; /* 뱃지의 글꼴 굵기를 조정합니다. */
 }
 
 @media (max-width: 768px) {

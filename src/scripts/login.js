@@ -71,5 +71,12 @@ export default {
         .then(successCallback)
         .catch(errorCallback);
     },
+    alarmSearch(userid, successCallback, errorCallback) {
+      api.post("/api/alarmSearch", {
+        userId: userid
+      })
+        .then(successCallback)
+        .catch(errorCallback);
+    },
   },
 };
