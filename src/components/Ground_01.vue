@@ -43,11 +43,13 @@ export default {
   },
   methods: {
     handleMenuSelected(menuName) {
+      this.selectedMenu = menuName; // 선택된 메뉴 이름으로 selectedMenu 데이터를 업데이트합니다
+      /*
       if(menuName === 'userList') this.$router.push(`/user`)
       else if(menuName === 'chat_main') this.$router.push(`/chat`)
-      else if(menuName === 'memoVue') this.$router.push(`/memo`)
+      */
+      if(menuName === 'memoVue') this.$router.push(`/memo`)
       else this.$router.push(`/`)
-      this.selectedMenu = menuName; // 선택된 메뉴 이름으로 selectedMenu 데이터를 업데이트합니다
     },
     // toggleSidebar() {
     //   this.sidebarOpen = !this.sidebarOpen;

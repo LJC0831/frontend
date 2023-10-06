@@ -268,10 +268,9 @@ export default {
             localStorage.removeItem(key);
           }
         }
-        this.$router.replace(`/`);
+        this.$router.replace(`/chat`);
         this.exitChat(); //소켓종료
         this.search01(this.activeTab);
-        
       } catch(error){}
       this.selectedChatId = null;
       this.myUserYn=false;
@@ -384,6 +383,7 @@ export default {
     }
   },
   created() {
+    this.$router.push(`/chat`);
     const token = localStorage.getItem('token');
     if(token){
       const login_token = localStorage.getItem('token');
