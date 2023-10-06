@@ -17,15 +17,16 @@
         <div class="icon-container"  v-if="!showNotification && isLoggedIn">
           <i class="fas fa-bell" @click="toggleNotification"><span class="badge" v-if="notificationCount > 0">{{ notificationCount }}</span></i>
         </div>
-        <div class="notification" v-if="showNotification && isLoggedIn" @click="toggleNotification">
-          <!-- 알람 메시지 내용 -->
-           <span class="alarm-class"> {{ notificationMessage }}</span>
+        <div v-if="showNotification && isLoggedIn">
+          <div class="notification" v-for="(notificationMessage, index) in notificationMessages" :key="index" :style="{ top: (index * 47) + 'px' }" @click="toggleNotification">
+            <!-- 알람 메시지 내용 -->
+            <span class="alarm-class"> {{ notificationMessage }}<br></span>
+          </div>
         </div>
         <div v-if="isLoggedIn" class="logout-button" @click="logout">
           <button class="logout-btn">로그아웃</button>
         </div>
       </div>
-
       <!-- 로그인 모달 -->
       <div v-if="showLoginModal" class="login-modal">
       <div class="login-form">
@@ -155,7 +156,7 @@ export default {
       signUpAppr2:false, //인증완료처리 (패스워드찾기)
       showSearchPwd:false, //패스워드찾기 팝업 활성화여부
       showNotification: false, // 알람 표시 여부
-      notificationMessage: '새로운 채팅이 도착했습니다.', // 채팅알람
+      notificationMessages: [], // 채팅알람
       notificationCount: 0, //알람개수
       timer: null, // setInterval 타이머 변수
     };
@@ -609,6 +610,9 @@ export default {
               loginMethods.methods.alarmSearch(this.loginUserId, (res) => {
                   if(res.data.length > 0 ){
                     this.notificationCount = res.data.length;
+                    for(let i = 0; i <res.data.length; i ++){
+                      this.notificationMessages.push('새로운메세지: ' + res.data[i].content);
+                    }
                   }
                 },
                   (error) => {
@@ -839,12 +843,17 @@ cursor: pointer;
   cursor: pointer;
 }
 .notification {
-  top: 50px; /* 알람 메시지 위치를 조정하세요. */
-  right: 20px; /* 알람 메시지 위치를 조정하세요. */
+  position: fixed;
+  right: 10px; /* 알람 메시지 위치를 조정하세요. */
   background-color: #fff;
   border: 1px solid #ccc;
   padding: 10px;
+  margin-top: 10px;
   z-index: 9998;
+  width: 200px;
+  white-space: nowrap; /* 텍스트를 한 줄로 표시 */
+  overflow: hidden; /* 넘치는 텍스트를 숨김 */
+  text-overflow: ellipsis; /* 넘치는 텍스트 대신 "..."을 표시 */
 }
 .badge {
   background-color: red; /* 뱃지의 배경색을 설정합니다. */
@@ -857,6 +866,7 @@ cursor: pointer;
   font-size: 12px;
   border-radius: 5px; /* 모서리 둥글게 만들기 */
   padding: 5px; /* 내부 여백 설정 */
+  width: 200px;
 }
 
 @media (max-width: 768px) {
