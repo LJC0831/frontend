@@ -276,6 +276,7 @@ export default {
                   this.username = ""; // 입력한 사용자 이름 초기화
                   this.password = ""; // 입력한 비밀번호 초기화
                   window.location.reload();
+                  window.location.href = 'https://www.friendtalk.shop/';
                   alert('로그인에 성공했습니다!');
                 },
                 (error, res) => {

@@ -221,11 +221,7 @@ export default {
               this.selectedChatId = chat_id;
               this.selectSubject = subject;
               this.selectUser = userIdsArray;
-              // this.$router.push(`/chat/${this.selectedChatId}`);
-              // setTimeout(() => {
-              //   this.$router.replace(`/`);
-              // }, 300);
-              
+              this.$router.push(`/chat/${this.selectedChatId}`);
             }
           },
           (error) => { // 에러 콜백
@@ -244,10 +240,7 @@ export default {
         this.selectedChatId = chat_id;
         this.selectSubject = subject;
         this.selectUser = userIdsArray;
-        // this.$router.push(`/chat/${this.selectedChatId}`);
-        // setTimeout(() => {
-        //         this.$router.replace(`/`);
-        //       }, 300);
+        this.$router.push(`/chat/${this.selectedChatId}`);
       }
 
       
@@ -275,8 +268,10 @@ export default {
             localStorage.removeItem(key);
           }
         }
+        this.$router.replace(`/`);
         this.exitChat(); //소켓종료
         this.search01(this.activeTab);
+        
       } catch(error){}
       this.selectedChatId = null;
       this.myUserYn=false;
