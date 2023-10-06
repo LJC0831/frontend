@@ -10,6 +10,7 @@ import { createRouter, createWebHistory } from 'vue-router'; // Vue Router ê´€ë 
 
 import ChatList from './components/menu/chat_main.vue';
 import ChatRoom from './components/menu/chat_01.vue';
+import ChatUser from './components/menu/userList.vue';
 
 
 const app = createApp(App);
@@ -28,7 +29,8 @@ const router = createRouter({
     history: createWebHistory(),
     routes: [
       { path: '/chat', component: ChatList },
-      { path: '/chat/:chatId', component: ChatRoom }
+      { path: '/chat/:chatId', component: ChatRoom },
+      { path: '/user', component: ChatUser}
     ]
   });
 
