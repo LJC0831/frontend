@@ -18,9 +18,9 @@
           <i class="fas fa-bell" @click="toggleNotification"><span class="badge" v-if="notificationCount > 0">{{ notificationCount }}</span></i>
         </div>
         <div v-if="showNotification && isLoggedIn">
-          <div class="notification" v-for="(notificationMessage, index) in notificationMessages" :key="index" :style="{ top: (index * 47) + 'px' }" @click="toggleNotification">
+          <div class="notification" v-for="(notificationMessage, index) in notificationMessages" :key="index" :style="{ top: (index * 47) + 'px' }" @click="navigateToChatRoom(notificationMessage.chat_id)">
             <!-- 알람 메시지 내용 -->
-            <span class="alarm-class"> {{ notificationMessage }}<br></span>
+            <span class="alarm-class"> {{ notificationMessage.subject }}<br></span>
           </div>
         </div>
         <div v-if="isLoggedIn" class="logout-button" @click="logout">
@@ -363,10 +363,6 @@ export default {
             } else {
               this.editIntro = '';
             }
-
-            
-            
-
             // 이미지 URL 받아오기
             if(this.file_no){
                   try {
@@ -611,7 +607,7 @@ export default {
                   if(res.data.length > 0 ){
                     this.notificationCount = res.data.length;
                     for(let i = 0; i <res.data.length; i ++){
-                      this.notificationMessages.push('새로운메세지: ' + res.data[i].content);
+                      this.notificationMessages.push({subject:'새로운메세지: ' + res.data[i].content, chat_id:res.data[i].chat_id});
                     }
                   }
                 },
@@ -621,6 +617,15 @@ export default {
                   }
                 );
               }
+          },
+          // 알림 메시지 클릭 시 채팅방으로 이동하는 메서드
+          navigateToChatRoom(chatRoomNumber) {
+            // chatRoomNumber를 사용하여 URL을 생성
+            const chatRoomURL = `/chat/${chatRoomNumber}`;
+            // Vue Router의 push 메서드를 사용하여 페이지 이동
+            this.$router.push(chatRoomURL);
+            // 알림을 닫으려면 toggleNotification 메서드 또는 다른 방법을 호출하세요.
+            this.toggleNotification();
           },
         },
   mounted() {
