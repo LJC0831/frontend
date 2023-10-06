@@ -275,8 +275,9 @@ export default {
                   this.showLoginModal = false; // 로그인 성공 시 모달 닫기
                   this.username = ""; // 입력한 사용자 이름 초기화
                   this.password = ""; // 입력한 비밀번호 초기화
-                  window.location.reload();
-                  window.location.href = 'https://www.friendtalk.shop/';
+                  const url = window.location.href;
+                  const baseUrl = url.split('/').slice(0, 3).join('/');
+                  window.location.href = baseUrl;
                   alert('로그인에 성공했습니다!');
                 },
                 (error, res) => {
