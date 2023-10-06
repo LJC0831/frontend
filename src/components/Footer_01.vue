@@ -27,6 +27,11 @@ export default {
   methods: {
     navigateToPage(menuName) {
       if(!commons.loginCheck()) return;
+
+      if(menuName === 'userList') this.$router.push(`/user`)
+      else if(menuName === 'chat_main') this.$router.push(`/chat`)
+      else if(menuName === 'memoVue') this.$router.push(`/memo`)
+      else this.$router.push(`/`)
       this.$emit('menuSelected', menuName); // 메뉴 선택 이벤트를 발생시킴
     }
   }
