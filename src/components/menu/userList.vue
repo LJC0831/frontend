@@ -47,7 +47,6 @@ export default {
     };
   },
   created(){
-    this.$router.push(`/user`);
     this.search01();
   },
   methods: {
