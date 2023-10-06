@@ -15,7 +15,7 @@
           <img v-if="profilePicture" :src="profilePicture" alt="프로필 사진" class="profile-img" />
         </div>
         <div class="icon-container"  v-if="!showNotification && isLoggedIn">
-          <i class="fas fa-bell" @click="toggleNotification"><span class="badge" v-if="notificationCount > 0">{{ notificationCount }}</span></i>
+          <i class="fas fa-bell" @click="toggleNotification"><span class="badge" v-if="notificationCount !== 0">{{ notificationCount }}</span></i>
         </div>
         <div v-if="showNotification && isLoggedIn">
           <div class="notification" v-for="(notificationMessage, index) in notificationMessages" :key="index" :style="{ top: (index * 47) + 'px' }" @click="navigateToChatRoom(notificationMessage.chat_id)">
@@ -605,6 +605,8 @@ export default {
             if(token != null) {
               loginMethods.methods.alarmSearch(this.loginUserId, (res) => {
                   if(res.data.length > 0 ){
+                    this.notificationMessages = [];
+                    this.notificationCount = 0;
                     this.notificationCount = res.data.length;
                     for(let i = 0; i <res.data.length; i ++){
                       this.notificationMessages.push({subject:'새로운메세지: ' + res.data[i].content, chat_id:res.data[i].chat_id});
