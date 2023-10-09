@@ -105,6 +105,9 @@ const api = axios.create({
 });
 
 export default {
+  props: {
+    chatData: String,
+  },
   components: {
     ChatRoom01,
   },
@@ -388,7 +391,11 @@ export default {
       const decoded_Token = jwtDecode(login_token);
       this.loginUserId = decoded_Token.username;
     }
+    if(this.chatData !== null) {
+        this.selectedChatId = this.chatData;
+    }
     this.search01('ALL');
+    
   }
 };
 </script>

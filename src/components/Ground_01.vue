@@ -1,6 +1,6 @@
 <template>
   <div class="ground">
-    <Header @menuSelected="handleMenuSelected"/>
+    <Header @menuSelected="handleMenuSelected02"/>
       <div class="main-container">
         <!-- <Sidebar v-on:menuSelected="handleMenuSelected" :selectedMenu="selectedMenu" /> -->
       </div>
@@ -10,7 +10,7 @@
             <Memo_01 v-if="selectedMenu === 'memoVue'" />
             <userList v-if="selectedMenu === 'userList'" />
             <maker_01 v-if="selectedMenu === 'maker_01'" />
-            <chat_main v-if="selectedMenu === 'chat_main'" />
+            <chat_main v-if="selectedMenu === 'chat_main'" :chatData="chatData"/>
           </div>
     <div class="ad-container"></div>
     <Footer @menuSelected="handleMenuSelected" />
@@ -35,6 +35,7 @@ export default {
   data() {
     return {
       selectedMenu: '', // 선택된 메뉴를 저장할 변수 추가
+      chatData: null, 
       //sidebarOpen: false, // 사이드바 열림 여부를 저장할 변수 추가
     };
   },
@@ -44,6 +45,11 @@ export default {
   methods: {
     handleMenuSelected(menuName) {
       this.selectedMenu = menuName; // 선택된 메뉴 이름으로 selectedMenu 데이터를 업데이트합니다
+    },
+    handleMenuSelected02(menuName) {
+      const parts = menuName.split("/");
+      this.chatData = parts[1];
+      this.selectedMenu = parts[0]; // 선택된 메뉴 이름으로 selectedMenu 데이터를 업데이트합니다
     },
     // toggleSidebar() {
     //   this.sidebarOpen = !this.sidebarOpen;

@@ -502,7 +502,6 @@
       },
       //뒤로가기
       exit(){
-        this.$router.replace(`/chat`);
         this.disconnectWebSocket();
         this.changeChatIdInChild();
       },

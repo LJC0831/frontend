@@ -132,6 +132,7 @@ import * as commons from '../scripts/common.js';
 import axios from 'axios';
 
 export default {
+  props: ['menuSelected'], // 부모 컴포넌트로부터 menuSelected 프롭을 받음
   data() {
     return {
       loading: false,
@@ -622,10 +623,7 @@ export default {
           },
           // 알림 메시지 클릭 시 채팅방으로 이동하는 메서드
           navigateToChatRoom(chatRoomNumber) {
-            // chatRoomNumber를 사용하여 URL을 생성
-            const chatRoomURL = `/chat/${chatRoomNumber}`;
-            // Vue Router의 push 메서드를 사용하여 페이지 이동
-            this.$router.push(chatRoomURL);
+            this.$emit('menuSelected', 'chat_main' + '/' + chatRoomNumber);
             // 알림을 닫으려면 toggleNotification 메서드 또는 다른 방법을 호출하세요.
             this.toggleNotification();
           },
