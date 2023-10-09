@@ -221,7 +221,7 @@ export default {
               this.selectedChatId = chat_id;
               this.selectSubject = subject;
               this.selectUser = userIdsArray;
-              this.$router.push(`/chat/${this.selectedChatId}`);
+              //this.$router.push(`/chat/${this.selectedChatId}`);
             }
           },
           (error) => { // 에러 콜백
@@ -240,7 +240,7 @@ export default {
         this.selectedChatId = chat_id;
         this.selectSubject = subject;
         this.selectUser = userIdsArray;
-        this.$router.push(`/chat/${this.selectedChatId}`);
+        //this.$router.push(`/chat/${this.selectedChatId}`);
       }
 
       
@@ -268,7 +268,6 @@ export default {
             localStorage.removeItem(key);
           }
         }
-        this.$router.replace(`/chat`);
         this.exitChat(); //소켓종료
         this.search01(this.activeTab);
       } catch(error){}
@@ -383,7 +382,6 @@ export default {
     }
   },
   created() {
-    this.$router.push(`/chat`);
     const token = localStorage.getItem('token');
     if(token){
       const login_token = localStorage.getItem('token');
