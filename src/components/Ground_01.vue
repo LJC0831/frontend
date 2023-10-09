@@ -1,6 +1,6 @@
 <template>
   <div class="ground">
-    <Header/>
+    <Header @menuSelected="handleMenuSelected"/>
       <div class="main-container">
         <!-- <Sidebar v-on:menuSelected="handleMenuSelected" :selectedMenu="selectedMenu" /> -->
       </div>
