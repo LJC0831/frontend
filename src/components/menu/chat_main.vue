@@ -112,6 +112,9 @@ export default {
     ChatRoom01,
   },
   mounted() {
+    if(this.chatData !== null) {
+        this.selectedChatId = this.chatData;
+    }
     // 모바일 뒤로가기 이벤트 감지
     window.addEventListener("popstate", this.handleMobileBackButton);
     this.pushEmptyState();
@@ -390,9 +393,6 @@ export default {
       const login_token = localStorage.getItem('token');
       const decoded_Token = jwtDecode(login_token);
       this.loginUserId = decoded_Token.username;
-    }
-    if(this.chatData !== null) {
-        this.selectedChatId = this.chatData;
     }
     this.search01('ALL');
     
