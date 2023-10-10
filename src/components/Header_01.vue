@@ -18,7 +18,7 @@
           <i class="fas fa-bell" @click="toggleNotification"><span class="badge" v-if="notificationCount !== 0">{{ notificationCount }}</span></i>
         </div>
         <div v-if="showNotification && isLoggedIn">
-          <div class="notification" v-for="(notificationMessage, index) in notificationMessages" :key="index" :style="{ top: (index * 47) + 'px' }" @click="navigateToChatRoom(notificationMessage.chat_id)">
+          <div class="notification" v-for="(notificationMessage, index) in notificationMessages" :key="index" :style="{ top: (index * 47) + 'px' }" @click="navigateToChatRoom(notificationMessage.chat_id, index)">
             <!-- 알람 메시지 내용 -->
             <span class="alarm-class"> {{ notificationMessage.subject }}<br></span>
           </div>
@@ -605,14 +605,12 @@ export default {
             const token = localStorage.getItem('token');
             if(token != null) {
               loginMethods.methods.alarmSearch(this.loginUserId, (res) => {
-                  if(res.data.length > 0 ){
                     this.notificationMessages = [];
                     this.notificationCount = 0;
                     this.notificationCount = res.data.length;
                     for(let i = 0; i <res.data.length; i ++){
                       this.notificationMessages.push({subject:'새로운메세지: ' + res.data[i].content, chat_id:res.data[i].chat_id});
                     }
-                  }
                 },
                   (error) => {
                     // 에러 콜백
@@ -622,10 +620,14 @@ export default {
               }
           },
           // 알림 메시지 클릭 시 채팅방으로 이동하는 메서드
-          navigateToChatRoom(chatRoomNumber) {
-            this.$emit('menuSelected', 'chat_main' + '/' + chatRoomNumber);
-            // 알림을 닫으려면 toggleNotification 메서드 또는 다른 방법을 호출하세요.
+          navigateToChatRoom(chatRoomNumber, index) {
+            //this.notificationMessages[index] = null;
             this.toggleNotification();
+            this.$emit('menuSelected', 'chat_main' + '/' + chatRoomNumber);
+            setTimeout(() => {
+              this.alarmCheck();
+            }, 500); // 500ms(0.5초) 후에 실행됩니다.
+            // 알림을 닫으려면 toggleNotification 메서드 또는 다른 방법을 호출하세요.
           },
         },
   mounted() {
