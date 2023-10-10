@@ -398,7 +398,10 @@ export default {
   },
   watch: {
     chatData(newChatData) {
-      this.selectedChatId = newChatData;
+      this.selectedChatId = null;
+      setTimeout(() => {
+       this.selectedChatId = newChatData;
+      }, 200); // 500ms(0.5초) 후에 실행됩니다.
     },
   },
 };
