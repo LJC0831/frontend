@@ -18,7 +18,7 @@
           <i class="fas fa-bell" @click="toggleNotification"><span class="badge" v-if="notificationCount !== 0">{{ notificationCount }}</span></i>
         </div>
         <div v-if="showNotification && isLoggedIn">
-          <div class="notification" v-for="(notificationMessage, index) in notificationMessages" :key="index" :style="{ top: (index * 47) + 'px' }" @click="navigateToChatRoom(notificationMessage.chat_id, index)">
+          <div class="notification" v-for="(notificationMessage, index) in notificationMessages" :key="index" :style="{ top: (index * 47) + 'px' }" @click="navigateToChatRoom(notificationMessage.chat_id)">
             <!-- 알람 메시지 내용 -->
             <span class="alarm-class"> {{ notificationMessage.subject }}<br></span>
           </div>
@@ -620,7 +620,7 @@ export default {
               }
           },
           // 알림 메시지 클릭 시 채팅방으로 이동하는 메서드
-          navigateToChatRoom(chatRoomNumber, index) {
+          navigateToChatRoom(chatRoomNumber) {
             //this.notificationMessages[index] = null;
             this.toggleNotification();
             this.$emit('menuSelected', 'chat_main' + '/' + chatRoomNumber);
