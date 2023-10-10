@@ -2,12 +2,14 @@
   <div class="content">
     <ul>
       <li v-for="(user, index) in userList" :key="index" class="user-item" :class="user.gender" 
-      @click="profile_search(user.user_id, user.user_nm, user.profile_url, user.gender_type, user.intro)">
+      @click="profile_search(user.user_id, user.user_nm, user.profile_url, user.gender_type, user.intro, user.appl_yn)">
         <img v-if="user.img_id !== null" :src="user.profile_url" alt="프로필 사진" class="profile-picture" />
         <img v-if="user.img_id === null" src="../../assets/profile-user.png" class="profile-picture" />
         <div class="user-info">
         <span style="display: none;">{{ user.user_id }}</span>
-        <h5>{{ user.user_nm }} ({{ user.gender_type }})<i class="fas fa-comment" style="padding: 5px; "></i></h5>
+        <h5>{{ user.user_nm }} ({{ user.gender_type }})
+          <button v-if="user.talk_yn === 'T'" style="margin-right:10px;">1:1대화 수락</button>
+          <i class="fas fa-comment" style="padding: 5px; "></i></h5>
           <p>{{ truncateIntro(user.intro) }}</p>
         </div>
       </li>
@@ -21,7 +23,8 @@
         <h2>{{ this.selectedUserNM }} ({{ this.selectedGender }})</h2>
         <p v-if="this.selectedIntro !== null"><span>자기소개</span></p>
         <div class="modal_intro">{{ this.selectedIntro }}</div>
-        <button style="margin-right:10px;" @click="chatAppl(this.selectedUser)">1:1대화신청</button>
+        <button v-if="this.selectedApplYn === 'T'" style="margin-right:10px;">요청대기중..</button>
+        <button v-else style="margin-right:10px;" @click="chatAppl(this.selectedUser)">1:1대화신청</button>
         <button @click="closeProfilePopup">닫기</button>
       </div>
     </div>
@@ -44,16 +47,24 @@ export default {
         selectedimg_url: null,
         selectedGender:null,
         selectedIntro:null,
+        selectedApplYn:null,
+        selectedTalkYn:null,
         loginUserId:null,
     };
   },
   created(){
+    const token = localStorage.getItem("token");
+    if (token) {
+      this.isLoggedIn = true;
+      const decoded_Token = jwtDecode(token);
+      this.loginUserId = decoded_Token.username;
+    }
     this.search01();
   },
   methods: {
     search01() {
         try { 
-            chatMethods.methods.searchUserList((res) => {
+            chatMethods.methods.searchUserList(this.loginUserId, (res) => {
                 if(res.status === 200){
                     this.userList = res.data;
                 }
@@ -67,12 +78,6 @@ export default {
     },
     chatAppl(user_id) {
       try { 
-          const token = localStorage.getItem("token");
-          if (token) {
-            this.isLoggedIn = true;
-            const decoded_Token = jwtDecode(token);
-            this.loginUserId = decoded_Token.username;
-          }
           chatMethods.methods.saveUserList(this.loginUserId, user_id, (res) => {
           },
           (error) => { // 에러 콜백
@@ -105,12 +110,14 @@ export default {
       }
     },
     // 프로필조회
-    profile_search(user_id, user_nm, img_url, gender, intro){
+    profile_search(user_id, user_nm, img_url, gender, intro, appl_yn){
+      debugger;
       this.selectedUser = user_id; 
       this.selectedUserNM = user_nm; 
       this.selectedimg_url = img_url; 
       this.selectedGender = gender; 
       this.selectedIntro = intro; 
+      this.selectedApplYn = appl_yn;
       this.showProfilePopup = true; // 팝업 표시
     }
   }
