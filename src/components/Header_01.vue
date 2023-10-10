@@ -14,7 +14,7 @@
           <img v-if="!profilePicture" src="@/assets/profile-user.png" alt="내 정보" class="profile-img" />
           <img v-if="profilePicture" :src="profilePicture" alt="프로필 사진" class="profile-img" />
         </div>
-        <div class="icon-container"  v-if="!showNotification && isLoggedIn">
+        <div class="icon-container"  v-if="!showNotification && isLoggedIn && notificationCount !== 0">
           <i class="fas fa-bell" @click="toggleNotification"><span class="badge" v-if="notificationCount !== 0">{{ notificationCount }}</span></i>
         </div>
         <div v-if="showNotification && isLoggedIn">
