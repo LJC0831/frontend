@@ -609,7 +609,12 @@ export default {
                     this.notificationCount = 0;
                     this.notificationCount = res.data.length;
                     for(let i = 0; i <res.data.length; i ++){
-                      this.notificationMessages.push({subject:'새로운메세지: ' + res.data[i].content, chat_id:res.data[i].chat_id});
+                      if(res.data[i].chat_id > 0){
+                        this.notificationMessages.push({subject:'새로운메세지: ' + res.data[i].content, chat_id:res.data[i].chat_id});
+                      } else {
+                        this.notificationMessages.push({subject:res.data[i].content, chat_id:res.data[i].chat_id});
+                      }
+                      
                     }
                 },
                   (error) => {
