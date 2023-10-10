@@ -7,7 +7,7 @@
         <img v-if="user.img_id === null" src="../../assets/profile-user.png" class="profile-picture" />
         <div class="user-info">
         <span style="display: none;">{{ user.user_id }}</span>
-        <h5>{{ user.user_nm }} ({{ user.gender_type }}) <i class="fas fa-comment" style="padding: 5px; "></i></h5>
+        <h5>{{ user.user_nm }} ({{ user.gender_type }})<i class="fas fa-comment" style="padding: 5px; "></i></h5>
           <p>{{ truncateIntro(user.intro) }}</p>
         </div>
       </li>
@@ -21,7 +21,7 @@
         <h2>{{ this.selectedUserNM }} ({{ this.selectedGender }})</h2>
         <p v-if="this.selectedIntro !== null"><span>자기소개</span></p>
         <div class="modal_intro">{{ this.selectedIntro }}</div>
-        <button style="margin-right:10px;" @click="chatAppl()">1:1대화신청</button>
+        <button style="margin-right:10px;" @click="chatAppl(this.selectedUser)">1:1대화신청</button>
         <button @click="closeProfilePopup">닫기</button>
       </div>
     </div>
@@ -32,7 +32,7 @@
 /* eslint-disable */
 import chatMethods from '../../scripts/chat.js';
 import * as commons from '../../scripts/common.js';
-
+import jwtDecode from 'jwt-decode';
 export default {
   data() {
     return {
@@ -44,6 +44,7 @@ export default {
         selectedimg_url: null,
         selectedGender:null,
         selectedIntro:null,
+        loginUserId:null,
     };
   },
   created(){
@@ -64,9 +65,22 @@ export default {
         console.error("검색 오류:", error);
       }
     },
-    chatAppl() {
-      commons.showToast(this, '기능구현중입니다...');
-      return;
+    chatAppl(user_id) {
+      try { 
+          const token = localStorage.getItem("token");
+          if (token) {
+            this.isLoggedIn = true;
+            const decoded_Token = jwtDecode(token);
+            this.loginUserId = decoded_Token.username;
+          }
+          chatMethods.methods.saveUserList(this.loginUserId, user_id, (res) => {
+          },
+          (error) => { // 에러 콜백
+              console.error("검색 오류:", error);
+          });
+      } catch (error) {
+        console.error("검색 오류:", error);
+      }
     },
 
     // 프로필 팝업 닫기

@@ -48,6 +48,11 @@ export default {
         .then(successCallback)
         .catch(errorCallback);
         },
+        saveUserList(loginId, userid, successCallback, errorCallback) {
+          api.post('/api/chat/saveUserList', {loginId, userid})
+        .then(successCallback)
+        .catch(errorCallback);
+        },
           
     },
 
