@@ -45,6 +45,7 @@ export default {
   methods: {
     handleMenuSelected(menuName) {
       this.selectedMenu = menuName; // 선택된 메뉴 이름으로 selectedMenu 데이터를 업데이트합니다
+      this.chatData = null;
     },
     handleMenuSelected02(menuName) {
       const parts = menuName.split("/");
