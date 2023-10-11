@@ -228,7 +228,7 @@
 
       // 서버로부터 메시지를 받으면 채팅 화면에 메시지를 표시합니다.
       this.socket.on('message', (message) => {
-        if (message.chatId === this.selectedChatId) {
+        if (String(message.chatId) === String(this.selectedChatId)) {
           if(message.user_id !== this.loginUserId){ //채팅을 받을때
               this.previousMessage = message.message;
               message.profilePicture = this.chatUserProfileUrl(message.user_id);
