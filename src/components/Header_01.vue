@@ -628,7 +628,11 @@ export default {
           navigateToChatRoom(chatRoomNumber) {
             //this.notificationMessages[index] = null;
             this.toggleNotification();
-            this.$emit('menuSelected', 'chat_main' + '/' + chatRoomNumber);
+            if(chatRoomNumber > 0){
+              this.$emit('menuSelected', 'chat_main' + '/' + chatRoomNumber);
+            } else {
+              this.$emit('menuSelected', 'userList' + '/' + chatRoomNumber);
+            }
             setTimeout(() => {
               this.alarmCheck();
             }, 500); // 500ms(0.5초) 후에 실행됩니다.
