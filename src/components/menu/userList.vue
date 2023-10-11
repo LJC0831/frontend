@@ -79,6 +79,11 @@ export default {
     chatAppl(user_id) {
       try { 
           chatMethods.methods.saveUserList(this.loginUserId, user_id, (res) => {
+            if(res.status === 200){
+                    alert('요청이 완료되었습니다.');
+                    this.showProfilePopup = false;
+                    this.search01();
+                }
           },
           (error) => { // 에러 콜백
               console.error("검색 오류:", error);
