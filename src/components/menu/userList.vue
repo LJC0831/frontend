@@ -8,7 +8,8 @@
         <div class="user-info">
         <span style="display: none;">{{ user.user_id }}</span>
         <h5>{{ user.user_nm }} ({{ user.gender_type }})
-          <button v-if="user.talk_yn === 'T'" style="margin-right:10px;">1:1대화 수락</button>
+          <button v-if="user.talk_yn === 'T'" style="margin-right:10px;" class="talk-button">1:1대화 수락</button>
+          <button v-if="user.talk_yn === 'T'" class="talk-button2">거절</button>
           <i class="fas fa-comment" style="padding: 5px; "></i></h5>
           <p>{{ truncateIntro(user.intro) }}</p>
         </div>
@@ -238,6 +239,34 @@ p {
 .modal_intro{
   width:500px;
   margin-bottom: 20px;
+}
+
+.talk-button {
+  background-color: #007bff; /* 배경 색상을 원하는 색상으로 설정하세요 */
+  color: #fff; /* 글자 색상을 원하는 색상으로 설정하세요 */
+  border: none;
+  border-radius: 4px; /* 원하는 둥근 모서리 설정 */
+  padding: 10px 10px; /* 원하는 여백 설정 */
+  font-size: 16px; /* 원하는 글자 크기 설정 */
+  cursor: pointer;
+  outline: none;
+}
+.talk-button2 {
+  background-color: #ff0000; /* 배경 색상을 원하는 색상으로 설정하세요 */
+  color: #fff; /* 글자 색상을 원하는 색상으로 설정하세요 */
+  border: none;
+  border-radius: 4px; /* 원하는 둥근 모서리 설정 */
+  padding: 10px 10px; /* 원하는 여백 설정 */
+  font-size: 16px; /* 원하는 글자 크기 설정 */
+  cursor: pointer;
+  outline: none;
+}
+
+.talk-button:hover {
+  background-color: #0056b3; /* 마우스 호버 시 배경 색상 변경 */
+}
+.talk-button2:hover {
+  background-color: #850606; /* 마우스 호버 시 배경 색상 변경 */
 }
 
 @media (max-width: 768px) {
