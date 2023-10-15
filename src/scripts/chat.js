@@ -42,18 +42,7 @@ export default {
           api.post('/api/chat/chatUserSearch', {chat_id})
         .then(successCallback)
         .catch(errorCallback);
-        },
-        searchUserList(userid, successCallback, errorCallback) {
-          api.post('/api/chat/searchUserList', {userid})
-        .then(successCallback)
-        .catch(errorCallback);
-        },
-        saveUserList(loginId, userid, applContent, successCallback, errorCallback) {
-          api.post('/api/chat/saveUserList', {loginId, userid, applContent})
-        .then(successCallback)
-        .catch(errorCallback);
-        },
-          
+        },         
     },
 
   };

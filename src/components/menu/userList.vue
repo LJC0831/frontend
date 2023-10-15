@@ -44,7 +44,7 @@
 
 <script>
 /* eslint-disable */
-import chatMethods from '../../scripts/chat.js';
+import userListMethods from '../../scripts/userList.js'
 import * as commons from '../../scripts/common.js';
 import jwtDecode from 'jwt-decode';
 export default {
@@ -77,7 +77,7 @@ export default {
   methods: {
     search01() {
         try { 
-            chatMethods.methods.searchUserList(this.loginUserId, (res) => {
+          userListMethods.methods.searchUserList(this.loginUserId, (res) => {
                 if(res.status === 200){
                     this.userList = res.data;
                 }
@@ -91,7 +91,7 @@ export default {
     },
     chatAppl(user_id) {
       try { 
-          chatMethods.methods.saveUserList(this.loginUserId, user_id, this.applContent, (res) => {
+        userListMethods.methods.saveUserList(this.loginUserId, user_id, this.applContent, (res) => {
             if(res.status === 200){
                     alert('요청이 완료되었습니다.');
                     this.showProfilePopup = false;
