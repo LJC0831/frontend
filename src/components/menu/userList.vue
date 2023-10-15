@@ -25,8 +25,18 @@
         <p v-if="this.selectedIntro !== null"><span>자기소개</span></p>
         <div class="modal_intro">{{ this.selectedIntro }}</div>
         <button v-if="this.selectedApplYn === 'T'" style="margin-right:10px;">요청대기중..</button>
-        <button v-else style="margin-right:10px;" @click="chatAppl(this.selectedUser)">1:1대화신청</button>
+        <button v-else style="margin-right:10px;" @click="this.isApplContentPopup=true">1:1대화신청</button>
         <button @click="closeProfilePopup">닫기</button>
+      </div>
+    </div>
+
+    <div class="profile-popup" v-if="isApplContentPopup">
+      <div class="profile-popup-content">
+        <div class="modal-body" >
+            <textarea v-model="applContent" style="width:500px;" placeholder="상대방에게 메세지를 전해주세요" />
+        </div>
+        <button style="margin-right:10px;" @click="chatAppl(this.selectedUser)">신청</button>
+        <button @click="this.isApplContentPopup=false">닫기</button>
       </div>
     </div>
   </div>
@@ -51,6 +61,8 @@ export default {
         selectedApplYn:null,
         selectedTalkYn:null,
         loginUserId:null,
+        applContent:"",
+        isApplContentPopup:false,
     };
   },
   created(){
@@ -79,10 +91,11 @@ export default {
     },
     chatAppl(user_id) {
       try { 
-          chatMethods.methods.saveUserList(this.loginUserId, user_id, (res) => {
+          chatMethods.methods.saveUserList(this.loginUserId, user_id, this.applContent, (res) => {
             if(res.status === 200){
                     alert('요청이 완료되었습니다.');
                     this.showProfilePopup = false;
+                    this.isApplContentPopup = false;
                     this.search01();
                 }
           },
