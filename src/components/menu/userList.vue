@@ -9,7 +9,7 @@
         <span style="display: none;">{{ user.user_id }}</span>
         <h5>{{ user.user_nm }} ({{ user.gender_type }})
           <button v-if="user.talk_yn === 'T'" style="margin-right:10px;" class="talk-button">1:1대화 수락</button>
-          <button v-if="user.talk_yn === 'T'" class="talk-button2">거절</button>
+          <button v-if="user.talk_yn === 'T'" class="talk-button2" @click="chatApplDel(user.user_id)">거절</button>
           <i class="fas fa-comment" style="padding: 5px; "></i></h5>
           <p>{{ truncateIntro(user.intro) }}</p>
         </div>
@@ -94,6 +94,23 @@ export default {
         userListMethods.methods.saveUserList(this.loginUserId, user_id, this.applContent, (res) => {
             if(res.status === 200){
                     alert('요청이 완료되었습니다.');
+                    this.showProfilePopup = false;
+                    this.isApplContentPopup = false;
+                    this.search01();
+                }
+          },
+          (error) => { // 에러 콜백
+              console.error("검색 오류:", error);
+          });
+      } catch (error) {
+        console.error("검색 오류:", error);
+      }
+    },
+    chatApplDel(user_id) {
+      try { 
+        userListMethods.methods.deleteUserList(this.loginUserId, user_id, (res) => {
+            if(res.status === 200){
+                    commons.showToast("처리완료!");
                     this.showProfilePopup = false;
                     this.isApplContentPopup = false;
                     this.search01();

@@ -19,6 +19,11 @@ export default {
         .then(successCallback)
         .catch(errorCallback);
         },
+        deleteUserList(loginId, userid, successCallback, errorCallback) {
+            api.post('/api/chat/deleteUserList', {loginId, userid})
+          .then(successCallback)
+          .catch(errorCallback);
+          },
           
     },
 
