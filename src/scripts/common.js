@@ -1,5 +1,24 @@
 /* eslint-disable */
 import jwtDecode from 'jwt-decode';
+import axios from "axios";
+
+// axios 인스턴스 생성
+const api = axios.create({
+    baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
+    //baseURL: "http://localhost:3000",
+  });
+
+  export default {
+    methods: {
+      alarmSearch(userid, successCallback, errorCallback) {
+        api.post("/api/alarmSearch", {
+          userId: userid
+        })
+          .then(successCallback)
+          .catch(errorCallback);
+      },
+    },
+  };
 // 로그인체크
 export function loginCheck() {
     const token = localStorage.getItem('token');
