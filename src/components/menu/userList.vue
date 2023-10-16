@@ -36,7 +36,7 @@
             <textarea v-model="applContent" style="width:500px;" placeholder="상대방에게 메세지를 전해주세요" />
         </div>
         <button style="margin-right:10px;" @click="chatAppl(this.selectedUser)">신청</button>
-        <button @click="this.isApplContentPopup=false">닫기</button>
+        <button @click="this.isApplContentPopup=false;this.applContent='';">닫기</button>
       </div>
     </div>
   </div>
@@ -96,6 +96,7 @@ export default {
                     alert('요청이 완료되었습니다.');
                     this.showProfilePopup = false;
                     this.isApplContentPopup = false;
+                    this.applContent="";
                     this.search01();
                 }
           },
