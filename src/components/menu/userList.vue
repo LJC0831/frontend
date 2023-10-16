@@ -110,7 +110,7 @@ export default {
       try { 
         userListMethods.methods.deleteUserList(this.loginUserId, user_id, (res) => {
             if(res.status === 200){
-                    commons.showToast("처리완료!");
+                    commons.showToast(this, '처리되었습니다.');
                     this.showProfilePopup = false;
                     this.isApplContentPopup = false;
                     this.search01();
