@@ -1,10 +1,9 @@
 <template>
   <div class="content">
     <ul>
-      <li v-for="(user, index) in userList" :key="index" class="user-item" :class="user.gender" 
-      @click="profile_search(user.user_id, user.user_nm, user.profile_url, user.gender_type, user.intro, user.appl_yn)">
-        <img v-if="user.img_id !== null" :src="user.profile_url" alt="프로필 사진" class="profile-picture" />
-        <img v-if="user.img_id === null" src="../../assets/profile-user.png" class="profile-picture" />
+      <li v-for="(user, index) in userList" :key="index" class="user-item" :class="user.gender">
+        <img v-if="user.img_id !== null" :src="user.profile_url" alt="프로필 사진" class="profile-picture" @click="profile_search(user.user_id, user.user_nm, user.profile_url, user.gender_type, user.intro, user.appl_yn)"/>
+        <img v-if="user.img_id === null" src="../../assets/profile-user.png" class="profile-picture" @click="profile_search(user.user_id, user.user_nm, user.profile_url, user.gender_type, user.intro, user.appl_yn)"/>
         <div class="user-info">
         <span style="display: none;">{{ user.user_id }}</span>
         <h5>{{ user.user_nm }} ({{ user.gender_type }})
