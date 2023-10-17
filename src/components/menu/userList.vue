@@ -8,7 +8,7 @@
         <div class="user-info">
         <span style="display: none;">{{ user.user_id }}</span>
         <h5>{{ user.user_nm }} ({{ user.gender_type }})
-          <button v-if="user.talk_yn === 'T'" style="margin-right:10px;" class="talk-button">1:1대화 수락</button>
+          <button v-if="user.talk_yn === 'T'" style="margin-right:10px;" class="talk-button" @click.stop="chatApplCreate(user.user_id)">1:1대화 수락</button>
           <button v-if="user.talk_yn === 'T'" class="talk-button2" @click.stop="chatApplDel(user.user_id)">거절</button>
           <span v-if="user.talk_yn === 'T'" style="margin-left: 10px;font-weight: bold; color: rgb(6, 10, 247);">{{user.appl_content}}</span>
           <i class="fas fa-comment" style="padding: 5px; "></i></h5>
@@ -105,6 +105,26 @@ export default {
                     this.showProfilePopup = false;
                     this.isApplContentPopup = false;
                     this.applContent="";
+                    this.search01();
+                }
+          },
+          (error) => { // 에러 콜백
+              console.error("검색 오류:", error);
+          });
+      } catch (error) {
+        console.error("검색 오류:", error);
+      }
+    },
+    chatApplCreate(user_id) {
+      try { 
+        userListMethods.methods.createUserList(this.loginUserId, user_id, (res) => {
+          debugger;
+            if(res.status === 200){
+
+                    commons.showToast(this, '개설 되었습니다.');
+                    this.showProfilePopup = false;
+                    this.isApplContentPopup = false;
+                    this.$refs.headerComponent.navigateToChatRoom();
                     this.search01();
                 }
           },

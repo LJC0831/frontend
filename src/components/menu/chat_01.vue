@@ -282,8 +282,10 @@
           this.chatContainer = this.$refs.chatContainer;
           // 최근 메시지를 받은 후에 스크롤을 아래로 이동합니다.
           setTimeout(() => {
-            if(this.messages[0].type ===''){ //20개이상 안읽었을 시 
-              this.scrollToBottom();
+            if(this.messages.length > 0 ){
+              if(this.messages[0].type ===''){ //20개이상 안읽었을 시 
+                this.scrollToBottom();
+              }
             }
             this.loading = false;
           }, 100); // 100ms(0.1초) 후에 실행됩니다.
