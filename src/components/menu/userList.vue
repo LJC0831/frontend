@@ -38,7 +38,7 @@
         <button @click="this.isApplContentPopup=false;this.applContent='';">닫기</button>
       </div>
     </div>
-    <Header_01 ref="headerComponent"></Header_01>
+    <Header_01 ref="headerComponent" style="display: none;"></Header_01>
   </div>
 </template>
 
@@ -153,7 +153,6 @@ export default {
     },
     // 프로필조회
     profile_search(user_id, user_nm, img_url, gender, intro, appl_yn){
-      debugger;
       this.selectedUser = user_id; 
       this.selectedUserNM = user_nm; 
       this.selectedimg_url = img_url; 
