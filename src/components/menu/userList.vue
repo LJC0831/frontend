@@ -1,4 +1,5 @@
 <template>
+  <Header_01 ref="headerComponent" style=""></Header_01>
   <div class="content">
     <ul>
       <li v-for="(user, index) in userList" :key="index" class="user-item" :class="user.gender">
@@ -38,7 +39,6 @@
         <button @click="this.isApplContentPopup=false;this.applContent='';">닫기</button>
       </div>
     </div>
-    <Header_01 ref="headerComponent" style="display: none;"></Header_01>
   </div>
 </template>
 

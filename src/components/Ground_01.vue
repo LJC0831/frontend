@@ -1,6 +1,6 @@
 <template>
   <div class="ground">
-    <Header @menuSelected="handleMenuSelected02"/>
+    <Header @menuSelected="handleMenuSelected02" v-if="selectedMenu !== 'userList'"/>
       <div class="main-container">
         <!-- <Sidebar v-on:menuSelected="handleMenuSelected" :selectedMenu="selectedMenu" /> -->
       </div>
