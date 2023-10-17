@@ -38,6 +38,7 @@
         <button @click="this.isApplContentPopup=false;this.applContent='';">닫기</button>
       </div>
     </div>
+    <Header_01 ref="headerComponent"></Header_01>
   </div>
 </template>
 
@@ -46,7 +47,11 @@
 import userListMethods from '../../scripts/userList.js'
 import * as commons from '../../scripts/common.js';
 import jwtDecode from 'jwt-decode';
+import Header_01 from '../Header_01.vue';
 export default {
+  components: {
+    Header_01
+  },
   data() {
     return {
         userList: [],
@@ -113,6 +118,7 @@ export default {
                     commons.showToast(this, '처리되었습니다.');
                     this.showProfilePopup = false;
                     this.isApplContentPopup = false;
+                    this.$refs.headerComponent.navigateToChatRoom();
                     this.search01();
                 }
           },
