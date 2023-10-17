@@ -1,4 +1,4 @@
-# frontend
+# frontend 친톡 접속URL: https://www.friendtalk.shop/
 
 ## 메인화면
 
