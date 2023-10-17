@@ -277,16 +277,19 @@
           // 프로필사진 가져오기
           this.messages[this.messages.length-i].profilePicture = this.chatUserProfileUrl(this.messages[this.messages.length-i].user_id);
          }
-
-        setTimeout(() => {
-          this.scrollToBottom();
-        }, 100); // 100ms(0.1초) 후에 실행됩니다.
+        if(this.messages[0].type !=='ALL'){
+          setTimeout(() => {
+            this.scrollToBottom();
+          }, 100); // 100ms(0.1초) 후에 실행됩니다.
+        }
         // chatContainer 요소의 레퍼런스를 가져옵니다.
         this.$nextTick(() => {
           this.chatContainer = this.$refs.chatContainer;
           // 최근 메시지를 받은 후에 스크롤을 아래로 이동합니다.
           setTimeout(() => {
-            this.scrollToBottom();
+            if(this.messages[0].type !=='ALL'){
+              this.scrollToBottom();
+            }
             this.loading = false;
           }, 100); // 100ms(0.1초) 후에 실행됩니다.
         });
