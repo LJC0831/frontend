@@ -2,14 +2,14 @@
   <Header_01 ref="headerComponent" style=""></Header_01>
   <div class="content">
     <ul>
-      <li v-for="(user, index) in userList" :key="index" class="user-item" :class="user.gender">
-        <img v-if="user.img_id !== null" :src="user.profile_url" alt="프로필 사진" class="profile-picture" @click="profile_search(user.user_id, user.user_nm, user.profile_url, user.gender_type, user.intro, user.appl_yn)"/>
-        <img v-if="user.img_id === null" src="../../assets/profile-user.png" class="profile-picture" @click="profile_search(user.user_id, user.user_nm, user.profile_url, user.gender_type, user.intro, user.appl_yn)"/>
+      <li v-for="(user, index) in userList" :key="index" class="user-item" :class="user.gender" @click="handleLiClick(user)">
+        <img v-if="user.img_id !== null" :src="user.profile_url" alt="프로필 사진" class="profile-picture" />
+        <img v-if="user.img_id === null" src="../../assets/profile-user.png" class="profile-picture" />
         <div class="user-info">
         <span style="display: none;">{{ user.user_id }}</span>
         <h5>{{ user.user_nm }} ({{ user.gender_type }})
           <button v-if="user.talk_yn === 'T'" style="margin-right:10px;" class="talk-button">1:1대화 수락</button>
-          <button v-if="user.talk_yn === 'T'" class="talk-button2" @click="chatApplDel(user.user_id)">거절</button>
+          <button v-if="user.talk_yn === 'T'" class="talk-button2" @click.stop="chatApplDel(user.user_id)">거절</button>
           <span v-if="user.talk_yn === 'T'" style="margin-left: 10px;font-weight: bold; color: rgb(6, 10, 247);">{{user.appl_content}}</span>
           <i class="fas fa-comment" style="padding: 5px; "></i></h5>
           <p>{{ truncateIntro(user.intro) }}</p>
@@ -93,6 +93,9 @@ export default {
       } catch (error) {
         console.error("검색 오류:", error);
       }
+    },
+    handleLiClick(user) {
+      this.profile_search(user.user_id, user.user_nm, user.profile_url, user.gender_type, user.intro, user.appl_yn);
     },
     chatAppl(user_id) {
       try { 
