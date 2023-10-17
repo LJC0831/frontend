@@ -10,6 +10,7 @@
         <h5>{{ user.user_nm }} ({{ user.gender_type }})
           <button v-if="user.talk_yn === 'T'" style="margin-right:10px;" class="talk-button">1:1대화 수락</button>
           <button v-if="user.talk_yn === 'T'" class="talk-button2" @click="chatApplDel(user.user_id)">거절</button>
+          <span v-if="user.talk_yn === 'T'" style="margin-left: 10px;font-weight: bold; color: rgb(6, 10, 247);">{{user.appl_content}}</span>
           <i class="fas fa-comment" style="padding: 5px; "></i></h5>
           <p>{{ truncateIntro(user.intro) }}</p>
         </div>
