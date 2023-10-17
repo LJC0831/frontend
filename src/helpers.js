@@ -16,7 +16,6 @@ export function saveTokenToLocalStorage(token) {
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        debugger;
         const decodedToken = jwtDecode(token);
         const expirationTime = decodedToken.exp * 1000; // 토큰 만료 시간 (밀리초 단위)
         const currentTime = new Date().getTime(); // 현재 시간 (밀리초 단위)

@@ -139,7 +139,6 @@ export default {
   },
   methods: {
     showNextContainer() {
-      debugger;
       if (this.showContainer1) {
         this.showContainer1 = false;
         this.showContainer2 = true;
