@@ -1,6 +1,7 @@
 <template>
-  <Header_01 ref="headerComponent" style=""></Header_01>
+  
   <div class="content">
+    <Header_01 ref="headerComponent"></Header_01>
     <ul>
       <li v-for="(user, index) in userList" :key="index" class="user-item" :class="user.gender" @click="handleLiClick(user)">
         <img v-if="user.img_id !== null" :src="user.profile_url" alt="프로필 사진" class="profile-picture" />
