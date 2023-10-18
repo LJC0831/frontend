@@ -801,7 +801,7 @@
           chat_type: 'file', // 이미지 타입
           chat_file_id: chat_file_id,
           profilePicture: this.profilePicture,
-          chatimageUrl: `https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app/api/file/download/api/file/download/${chat_file_id}`,
+          chatimageUrl: `https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app/api/file/download/${chat_file_id}`,
           chatId: this.selectedChatId,
           isMyMessage: true,
           selectUserCount: 0,
