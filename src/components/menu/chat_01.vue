@@ -1070,6 +1070,7 @@
   display: flex;
   align-items: center;
   padding: 10px;
+  min-height: 100px;
 }
 
 input[type="text"] {
@@ -1166,6 +1167,7 @@ input[type="text"] {
       box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); 
       padding: 5px; 
       resize: none;
+      height: 50px;
       display: flex; align-items: center; justify-content: center;background-color: rgb(255, 255, 255);
     }
 .chat_thumbnailUrl{
