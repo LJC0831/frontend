@@ -141,7 +141,7 @@ export default {
       expire_cnt: 2, // 초기 값 1로 설정
       subject: '방제목을 입력해주세요', // 초기 값 1로 설정
       chatRooms: [],        // 전체 채팅방 정보가 들어 있는 배열
-      itemsPerPage: this.isMobile() ? 6 : 9,
+      itemsPerPage: this.isMobile() ? 4 : 9,
       currentPage: 1,        // 현재 페이지 번호
     };
   },
