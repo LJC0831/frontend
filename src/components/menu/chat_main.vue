@@ -31,8 +31,8 @@
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4" id="chat_main_img">
               <div class="col" v-for="(chatRooms, index) in displayedChatRooms" :key="index"  @click="openChatRoom(chatRooms)">
                 <div class="card shadow-sm">
-                  <div class="card-body" style="height: 150px;">
-                    <p class="card-text" style="height: 64px;">
+                  <div class="card-body">
+                    <p class="card-text">
                       <span>
                         <img v-if="chatRooms.profile_id !== null" :src="chatRooms.imageUrl" class="thumbnail-image" />
                         <img v-if="chatRooms.profile_id === null" src="../../assets/profile-user.png" class="thumbnail-image" />
@@ -607,6 +607,12 @@ export default {
 .chatroom-readCount:empty {
   display: none; /* 내용이 없는 경우 숨김 */
 }
+.card-body {
+  height: 150px;
+}
+.card-text {
+  height: 64px;
+}
 
 /* 모달 style 끝 */
   
@@ -638,6 +644,12 @@ export default {
       font-size: 12px;
       color: #333;
       width: 150px;
+    }
+    .card-body {
+      height: 100px;
+    }
+    .card-text {
+      height: 34px;
     }
   }
   @media (min-width: 768px) {
