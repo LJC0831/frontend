@@ -687,7 +687,6 @@
           this.thumbnailUrl = '';
           this.socket.emit('message', messageObject);
           this.loading = false;
-          this.this.newMessage = '';
           this.$nextTick(() => {
             setTimeout(() => {
               this.scrollToBottom();
