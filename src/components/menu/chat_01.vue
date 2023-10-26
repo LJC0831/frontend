@@ -690,6 +690,7 @@
           this.$nextTick(() => {
             setTimeout(() => {
               this.scrollToBottom();
+              this.newMessage = '';
               }, 100);
           });
           }
