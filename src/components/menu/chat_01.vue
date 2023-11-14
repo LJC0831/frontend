@@ -46,6 +46,9 @@
           <div>
             <img v-if="message.thumbnailUrl" :src="message.thumbnailUrl" alt="미리보기 사진"  class="chat_thumbnailUrl" />
           </div>
+          <div>
+            <span v-if="message.description" class="my-message">{{ message.description }}</span>
+          </div>
         </div>
         <span class="message-view" v-if="message.selectUserCount !== 0" >{{ message.selectUserCount }}</span>
         <span class="message-date">{{ formatDate(message.ins_ymdhms) }}</span>
@@ -200,6 +203,7 @@
         answerFocusColor:null, //포커스color 
         answerFoucs:null, //답장포커스여부
         thumbnailUrl:'', //썸네일이미지
+        description:'', //썸네일설명
       };
     },
     created() {
@@ -408,6 +412,7 @@
           if (response.ok) {
             const data = await response.json();
             this.thumbnailUrl = data.thumbnailUrl;
+            this.description = data.description;
           }
         } catch (error) {
           console.error('오류 발생:', error);
@@ -682,9 +687,11 @@
             answer_id:this.answerId,
             answer_user_id:this.answerUserId,
             thumbnailUrl:this.thumbnailUrl,
+            description:this.description,
             ins_ymdhms: now - 10800000  // 서버에서 받은 시간 정보
           };
           this.thumbnailUrl = '';
+          this.description = '';
           this.socket.emit('message', messageObject);
           this.loading = false;
           this.$nextTick(() => {
@@ -810,6 +817,7 @@
           answer_id:this.answerId,
           answer_user_id:this.answerUserId,
           thumbnailUrl:this.thumbnailUrl,
+          description:this.description,
           ins_ymdhms: now - 10800000,
         };
 
@@ -866,6 +874,7 @@
           answer_id:this.answerId,
           answer_user_id:this.answerUserId,
           thumbnailUrl:this.thumbnailUrl,
+          description:this.description,
           ins_ymdhms: now - 10800000,
         };
 
