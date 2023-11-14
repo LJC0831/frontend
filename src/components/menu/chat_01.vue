@@ -47,7 +47,7 @@
             <img v-if="message.thumbnailUrl" :src="message.thumbnailUrl" alt="미리보기 사진"  class="chat_thumbnailUrl" />
           </div>
           <div>
-            <span v-if="message.description" class="my-message">{{ message.description }}</span>
+            <span v-if="message.description" class="message-bubble">내용: {{ message.description }}</span>
           </div>
         </div>
         <span class="message-view" v-if="message.selectUserCount !== 0" >{{ message.selectUserCount }}</span>
