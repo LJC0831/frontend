@@ -3,8 +3,8 @@ import axios from "axios";
 
 // axios 인스턴스 생성
 const api = axios.create({
-  baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
-  //baseURL: "http://localhost:3000",
+  //baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
+  baseURL: "http://localhost:3000",
 });
 
 export default {
@@ -42,7 +42,12 @@ export default {
           api.post('/api/chat/chatUserSearch', {chat_id})
         .then(successCallback)
         .catch(errorCallback);
-        },         
+        },   
+        chatPrevImgSearch(chat_id, img_id, job_type, successCallback, errorCallback) {
+          api.post('/api/chat/chatPrevImgSearch', {chat_id, img_id, job_type})
+        .then(successCallback)
+        .catch(errorCallback);
+        },        
     },
 
   };

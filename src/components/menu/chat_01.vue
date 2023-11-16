@@ -34,7 +34,7 @@
               <span class="message-text" v-html="formatMessage(message.message)"></span>
             </div>
             <div v-if="message.chat_type === 'image'" class="message-bubble image-bubble">
-              <img v-if="message.chat_type === 'image'" :src="message.chatimageUrl" alt="이미지" class="message-image" @click="openImageModal(message.chatimageUrl)"/>
+              <img v-if="message.chat_type === 'image'" :src="message.chatimageUrl" alt="이미지" class="message-image" @click="openImageModal(message.chatimageUrl, message.id)"/>
             </div>
             <div v-if="message.chat_type === 'emoticon'" class="message-bubble image-bubble">
               <img v-if="message.chat_type === 'emoticon'" :src="message.chatimageUrl" alt="이모티콘" class="message-image"/>
@@ -94,8 +94,12 @@
     <!-- 이미지url 모달 창 -->
     <div v-if="isImageModalOpen" class="modal">
       <div class="modal-content2"  @click="this.$refs.closeButton.focus()">
-        <img :src="selectedImage" alt="확대 이미지" class="enlarged-image">
-        <button ref="closeButton" class="modal_close" @click="closeImageModal" @keyup.esc="closeImageModal">닫기</button>
+        <div class="image-container">
+          <button class="modal_close prev-button" @click="prevGetImg('prev')">이전</button>
+          <img :src="selectedImage" alt="확대 이미지" class="enlarged-image">
+          <button class="modal_close next-button" @click="prevGetImg('next')">다음</button>
+        </div>
+          <button ref="closeButton" class="modal_close" @click="closeImageModal" @keyup.esc="closeImageModal">닫기</button>
       </div>
     </div>
     <!-- 스크롤 다운 버튼과 팝업 컨테이너 -->
@@ -177,6 +181,7 @@
         maxFileSize: 10 * 1024 * 1024, // 10MB (메가바이트)
         isImageModalOpen: false,
         selectedImage: '',
+        selectedImageId: '',
         scrollPosition: [], //현재스크롤위치
         previousNotification :false, //알람처리변수
         userSockets: [],//소켓
@@ -887,8 +892,9 @@
         });
       },
       // 이미지 모달 열기
-      openImageModal(imageUrl) {
+      openImageModal(imageUrl, id) {
         this.selectedImage = imageUrl;
+        this.selectedImageId = id; //선택된 채팅id
         this.isImageModalOpen = true;
          // 이미지 모달이 열릴 때 닫기 버튼에 포커스를 줌
          this.$nextTick(() => {
@@ -897,11 +903,23 @@
           }, 0);
         });
       },
+      // 이미지 모달 이전
+      prevGetImg(job_type){
+        chatMethods.methods.chatPrevImgSearch(this.selectedChatId,this.selectedImageId,job_type,(res) => {
+              this.selectedImageId = res.data[0].id; //변경된 이미지 file id
+              this.selectedImage = res.data[0].file_addr; //이미지변경
+            },
+            (error) => { // 에러 콜백
+              console.error("대상자 이미지url 조회:", error);
+            }
+        );
+      },
 
       // 이미지 모달 닫기
       closeImageModal() {
         setTimeout(() => {
           this.selectedImage = '';
+          this.selectedImageId = '';
           this.isImageModalOpen = false;
           }, 0);
       },
@@ -1220,6 +1238,23 @@ input[type="text"] {
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
   width: 99%; /* 모달 창 너비 조절 */
   color: #333; /* 글자를 검정색으로 설정 */
+
+}
+.image-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%; /* 이미지 컨테이너 전체 너비 */
+  margin-bottom: 20px; /* 닫기 버튼과의 간격 조정 */
+}
+.prev-button,
+.next-button {
+  padding: 10px 20px;
+  /* 버튼에 필요한 스타일을 추가하세요 */
+}
+.close-button {
+  margin-top: 20px; /* 닫기 버튼 위쪽 간격 조정 */
+  /* 닫기 버튼에 필요한 스타일을 추가하세요 */
 }
 
 .modal h2 {
@@ -1261,7 +1296,7 @@ input[type="text"] {
     cursor: pointer;
 }
 .enlarged-image {
-  max-width: 100%; /* 이미지 최대 너비 설정 */
+  max-width: 90%; /* 이미지 최대 너비 설정 */
   max-height: 80vh; /* 이미지 최대 높이 설정 (화면 높이의 80%) */
   object-fit: contain; /* 이미지의 비율 유지하며 채우기 */
   margin: 0 auto; /* 가운데 정렬 */
