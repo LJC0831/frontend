@@ -27,7 +27,7 @@
           <div class="message-content">
           <span class="message-name">{{ message.editedName }} </span>
           <span @click="answer_search(message)" v-if="message.answer_message && message.answer_message !== `undefined`" class="message-answer-text">{{ message.answer_user_id }} : {{ message.answer_message }}</span>   
-            <div @click="chat_answer(message)" class="message-bubble" :class="{ 'announcement-message': message.chat_type === 'announcement' && message.chat_type !== 'search'
+            <div @click="AnswerActive()" class="message-bubble" :class="{ 'announcement-message': message.chat_type === 'announcement' && message.chat_type !== 'search'
                                                 , 'search-message': message.chat_type === 'search'
                                                 , 'other-message': message.user_id !== this.loginUserId && message.chat_type !== 'search'
                                                 , 'my-message': message.user_id === this.loginUserId && message.chat_type !== 'search' }">
@@ -50,6 +50,7 @@
             <span v-if="message.description" class="message-bubble">{{ message.description }}</span>
           </div>
         </div>
+        <span class="message-date" v-if="this._isAnswerActive" @click="chat_answer(message)"><img src="@/assets/back-img.png" style="width: 20px;"></span>
         <span class="message-view" v-if="message.selectUserCount !== 0" >{{ message.selectUserCount }}</span>
         <span class="message-date">{{ formatDate(message.ins_ymdhms) }}</span>
       </div>
@@ -209,6 +210,7 @@
         answerFoucs:null, //답장포커스여부
         thumbnailUrl:'', //썸네일이미지
         description:'', //썸네일설명
+        _isAnswerActive:false, //답장활성화여부
       };
     },
     created() {
@@ -476,6 +478,7 @@
       this.answerUserId = null; //답장선택한userid
       this.answerFocusColor = null; //포커스color 
       this.answerFoucs = null; //답장포커스여부
+      this._isAnswerActive = false; //답장비활성화
     },
     //textarea 포커싱
     handleChatTextareaFocus() {
@@ -609,6 +612,10 @@
           this.loading = true;
           this.socket.emit('getSearchMessages',this.selectedChatId, this.searchKeyword, this.searchChatcontentPosition);
         }
+      },
+      // 답장활성화
+      AnswerActive(){
+        this._isAnswerActive = !this._isAnswerActive;
       },
       // 답장찾기
       answer_search(answer_messages){
