@@ -5,7 +5,7 @@
       <div class="col-md-5 p-lg-5 mx-auto my-5 header-content">
         <div class="header-text">
         <h1 class="display-4 fw-normal">Free chat application</h1>
-        <p class="lead fw-normal" >누구나 무료로 사용이 가능한 채팅 어플리케이션 입니다.</p>
+        <p class="lead fw-normal" >누구나 무료로 사용이 가능한 채팅 어플리케이션 입니다. (오전 00:00 ~ 09:00 시간에는 서버Down)</p>
         <p @click="alarm()" class="btn btn-outline-secondary">Coming soon</p>
       </div>
       </div>
