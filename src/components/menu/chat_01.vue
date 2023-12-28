@@ -1148,6 +1148,7 @@ input[type="text"] {
   border: 1px solid #ccc; /* 선택한 메시지 주위에 테두리 추가 (선택 사항) */
   margin-left: 10px;
   font-size: 12px;
+  cursor: pointer;
 }
 
 
