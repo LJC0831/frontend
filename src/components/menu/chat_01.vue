@@ -184,6 +184,7 @@
         selectedImage: '',
         selectedImageId: '',
         scrollPosition: [], //현재스크롤위치
+        prevscrollPosition: [], //스크롤위치변경전
         previousNotification :false, //알람처리변수
         userSockets: [],//소켓
         loginUserId:null, //로그인유저
@@ -306,6 +307,7 @@
       // 스크롤 올릴떄 이전내역 가져오기
       this.socket.on('previousMessages', (previousMessages) => {
         this.loading = true;
+        this.prevscrollPosition.push(this.chatContainer.scrollHeight);
         // 받아온 이전 채팅 내역을 messages 배열의 앞쪽에 추가
         for (var i = 1; i <= previousMessages.length; i ++){
           previousMessages[previousMessages.length-i].profilePicture = this.chatUserProfileUrl(previousMessages[previousMessages.length-i].user_id);
@@ -317,7 +319,7 @@
           if (this.chatContainer) {
             // 스크롤을 유지하도록 조정
             if (this.shouldMaintainScroll) {
-              this.scrollPosition.push(this.chatContainer.scrollHeight / 2);
+              this.scrollPosition.push(this.prevscrollPosition[0]);
               this.chatContainer.scrollTop = this.scrollPosition[0]; 
             } else {
               this.shouldMaintainScroll = true; // 스크롤 유지 변수를 다시 활성화
