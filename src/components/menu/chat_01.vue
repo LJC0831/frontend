@@ -423,11 +423,11 @@
           console.error('오류 발생:', error);
         }
       },
-      // 채팅답장
+      // 채팅답장시작
       chat_answer(message){
         this.$refs.sendButton.focus();
         this.answerFoucs = true;
-        this.answerMessage = message.message;
+        this.answerMessage = message.message === '' ? '이미지' : message.message;
         this.answerId = message.id;
         this.answerUserId = message.editedName;
       },
