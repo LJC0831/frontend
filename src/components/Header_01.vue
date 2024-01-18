@@ -423,7 +423,7 @@ export default {
               formData.append('file', file);
               formData.append("fileName", encodeURIComponent(uniqueFileName)); // 파일명을 인코딩하여 formData에 추가
               const api = axios.create({
-                baseURL: "http://158.179.164.147:3000",
+                baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
                 //baseURL: "http://localhost:3000",
               });
               // 파일 업로드 요청
