@@ -218,7 +218,7 @@
       this.loginUserId = decoded_Token.username;
       // Socket.IO 클라이언트를 초기화하고 서버에 연결합니다.
       //this.socket = io('http://localhost:3000', {
-      this.socket = io('https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app', {
+      this.socket = io('https://backendserver.shop:3000', {
         withCredentials: true, // 쿠키와 인증 정보를 전송할 수 있도록 설정 (선택 사항)
         query:{
           userId:this.loginUserId, //로그인유저
