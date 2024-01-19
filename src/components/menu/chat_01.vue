@@ -406,7 +406,7 @@
       async fetchThumbnail(sendUrl) {
         // 백엔드 서버로 URL을 전송하고 썸네일 이미지 URL을 받아옴
         try {
-          const response = await fetch('https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app/api/fetchThumbnail', {
+          const response = await fetch('https://backendserver.shop:3000/api/fetchThumbnail', {
             method: 'POST',
             body: JSON.stringify({ url: sendUrl }),
             headers: {
@@ -819,7 +819,7 @@
           chat_type: 'file', // 이미지 타입
           chat_file_id: chat_file_id,
           profilePicture: this.profilePicture,
-          chatimageUrl: `https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app/api/file/download/${chat_file_id}`,
+          chatimageUrl: `https://backendserver.shop:3000/api/file/download/${chat_file_id}`,
           chatId: this.selectedChatId,
           isMyMessage: true,
           selectUserCount: 0,
