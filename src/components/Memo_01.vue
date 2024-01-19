@@ -105,7 +105,7 @@ const handleSelectAll = () => {
         };
 
 const api = axios.create({
-    baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
+    baseURL: "https://backendserver.shop:3000",
     //baseURL: "http://localhost:3000",
 });
 
@@ -293,7 +293,7 @@ const handleFileUpload = () => {
 const getDownloadLink = () => {
 // 다운로드 링크 생성
     if (editingFileId.value) {
-            return `https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app/api/file/download/${editingFileId.value}`;
+            return `https://backendserver.shop:3000/api/file/download/${editingFileId.value}`;
     } else {
         return null; // 또는 다른 기본값 설정
     }
