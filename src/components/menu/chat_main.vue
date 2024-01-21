@@ -296,6 +296,12 @@ export default {
           this.searchUserId = null; // 사용자 아이디 추출
         } 
         const response = await api.get("/api/chat/search",{ params: { q: this.searchKeyword, userId:this.searchUserId , userId2: this.searchUserId2 } });
+        // BigInt를 문자열로 변환
+        this.chatRooms = response.data.map(row => {
+            row.user_cnt = row.user_cnt.toString();
+            row.notReadCnt = row.notReadCnt.toString();
+            return row;
+        });
         this.chatRooms = response.data;
         this.searchUserId = null;
       } catch (error) {
