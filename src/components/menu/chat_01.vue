@@ -667,7 +667,7 @@
           this.lastMessageTimestamps.push(now);
 
           // 10초 이전의 타임스탬프 제거
-          const tenSecondsAgo = new Date(now);
+          const tenSecondsAgo = new Date(now - 10000);
           this.lastMessageTimestamps = this.lastMessageTimestamps.filter(timestamp => timestamp > tenSecondsAgo);
 
           if (this.lastMessageTimestamps.length >= 8) {
@@ -701,7 +701,7 @@
             answer_user_id:this.answerUserId,
             thumbnailUrl:this.thumbnailUrl,
             description:this.description,
-            ins_ymdhms: now  // 서버에서 받은 시간 정보
+            ins_ymdhms: now + 9 * 3600000  // 서버에서 받은 시간 정보
           };
           this.thumbnailUrl = '';
           this.description = '';
@@ -807,7 +807,7 @@
         this.lastMessageTimestamps.push(now);
 
         // 10초 이전의 타임스탬프 제거
-        const tenSecondsAgo = new Date(now);
+        const tenSecondsAgo = new Date(now - 10000);
         this.lastMessageTimestamps = this.lastMessageTimestamps.filter(timestamp => timestamp > tenSecondsAgo);
 
         if (this.lastMessageTimestamps.length >= 8) {
@@ -831,7 +831,7 @@
           answer_user_id:this.answerUserId,
           thumbnailUrl:this.thumbnailUrl,
           description:this.description,
-          ins_ymdhms: now,
+          ins_ymdhms: now + 9 * 3600000,
         };
 
         this.socket.emit('message', messageObject);
@@ -865,7 +865,7 @@
         this.lastMessageTimestamps.push(now);
 
         // 10초 이전의 타임스탬프 제거
-        const tenSecondsAgo = new Date(now);
+        const tenSecondsAgo = new Date(now - 10000);
         this.lastMessageTimestamps = this.lastMessageTimestamps.filter(timestamp => timestamp > tenSecondsAgo);
 
         if (this.lastMessageTimestamps.length >= 8) {
@@ -888,7 +888,7 @@
           answer_user_id:this.answerUserId,
           thumbnailUrl:this.thumbnailUrl,
           description:this.description,
-          ins_ymdhms: now,
+          ins_ymdhms: now - 10800000,
         };
 
         this.socket.emit('message', messageObject);
