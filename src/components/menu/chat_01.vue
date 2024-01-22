@@ -542,7 +542,7 @@
         const originalDate = new Date(dateTime);
 
         // 대한민국 시간대로 조정
-        const adjustedDate = new Date(originalDate.getTime() - (9 * 60 * 60 * 1000));
+        const adjustedDate = new Date(originalDate.getTime());
 
         // 월과 일 추출
         const month = adjustedDate.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
@@ -888,7 +888,7 @@
           answer_user_id:this.answerUserId,
           thumbnailUrl:this.thumbnailUrl,
           description:this.description,
-          ins_ymdhms: now - 10800000,
+          ins_ymdhms: now + 9 * 3600000,
         };
 
         this.socket.emit('message', messageObject);
