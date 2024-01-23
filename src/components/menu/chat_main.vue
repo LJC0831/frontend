@@ -100,7 +100,8 @@ import * as commons from '../../scripts/common.js';
 
 
 const api = axios.create({
-  baseURL: "https://backendserver.shop:3000",
+  //baseURL: "https://backendserver.shop:3000",
+  baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
   //baseURL: "http://localhost:3000",
 });
 
