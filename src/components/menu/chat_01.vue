@@ -704,7 +704,7 @@
             answer_user_id:this.answerUserId,
             thumbnailUrl:this.thumbnailUrl,
             description:this.description,
-            ins_ymdhms: formatDate(now)  // 서버에서 받은 시간 정보
+            ins_ymdhms: now  // 서버에서 받은 시간 정보
           };
           this.thumbnailUrl = '';
           this.description = '';
@@ -835,7 +835,7 @@
           answer_user_id:this.answerUserId,
           thumbnailUrl:this.thumbnailUrl,
           description:this.description,
-          ins_ymdhms: formatDate(now),
+          ins_ymdhms: now,
         };
 
         this.socket.emit('message', messageObject);
@@ -892,7 +892,7 @@
           answer_user_id:this.answerUserId,
           thumbnailUrl:this.thumbnailUrl,
           description:this.description,
-          ins_ymdhms: formatDate(now),
+          ins_ymdhms: now,
         };
 
         this.socket.emit('message', messageObject);
