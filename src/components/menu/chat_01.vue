@@ -702,7 +702,7 @@
             answer_user_id:this.answerUserId,
             thumbnailUrl:this.thumbnailUrl,
             description:this.description,
-            ins_ymdhms: now - 10800000
+            ins_ymdhms: now 
           };
           this.thumbnailUrl = '';
           this.description = '';
@@ -833,7 +833,7 @@
           answer_user_id:this.answerUserId,
           thumbnailUrl:this.thumbnailUrl,
           description:this.description,
-          ins_ymdhms: now - 10800000
+          ins_ymdhms: now 
         };
 
         this.socket.emit('message', messageObject);
@@ -890,7 +890,7 @@
           answer_user_id:this.answerUserId,
           thumbnailUrl:this.thumbnailUrl,
           description:this.description,
-          ins_ymdhms: now - 10800000
+          ins_ymdhms: now
         };
 
         this.socket.emit('message', messageObject);
