@@ -544,7 +544,7 @@
         const originalDate = new Date(dateTime);
 
         // 대한민국 시간대로 조정
-        const adjustedDate = new Date(originalDate.getTime() - (6 * 60 * 60 * 1000));
+        const adjustedDate = new Date(originalDate.getTime() - (3 * 60 * 60 * 1000));
 
         // 월과 일 추출
         const month = adjustedDate.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
