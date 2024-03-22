@@ -660,7 +660,7 @@
         }
         if (!event.shiftKey) { //쉬프트 엔터 시 줄바꿈
           // 도배체크
-			    const now = new Date().toLocaleTimeString("en-US", {timeZone: "Asia/Seoul", hour12: false});
+          const now = new Date();
           this.lastMessageTimestamps.push(now);
 
           // 10초 이전의 타임스탬프 제거
@@ -829,7 +829,7 @@
           answer_user_id:this.answerUserId,
           thumbnailUrl:this.thumbnailUrl,
           description:this.description,
-          ins_ymdhms: now - 10800000,
+          ins_ymdhms: now,
         };
 
         this.socket.emit('message', messageObject);
@@ -886,7 +886,7 @@
           answer_user_id:this.answerUserId,
           thumbnailUrl:this.thumbnailUrl,
           description:this.description,
-          ins_ymdhms: now - 10800000,
+          ins_ymdhms: now,
         };
 
         this.socket.emit('message', messageObject);
