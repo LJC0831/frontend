@@ -1026,24 +1026,7 @@
       profileSearch(user_id){
         loginMethods.methods.profileSearch(user_id, (res) => {
             this.editedName = res.data[0].user_nm;
-            // 이미지 URL 받아오기
-            if(res.data[0].img_id){
-              this.file_no = res.data[0].img_id;
-              try {
-                loginMethods.methods.profileImgURL(
-                  res.data[0].img_id,
-                    (res) => {
-                      this.profilePicture = res.data.imageUrl;
-                    },
-                    (error) => {
-                      // 에러 콜백
-                      console.error("프로필 이미지 조회 오류:", error);
-                    }
-                  );
-              } catch (error) {
-                console.error('이미지 URL 조회 오류:', error);
-              }
-            }     
+            this.profilePicture  = res.data[0].img_url;  
               },
               (error) => {
                 // 에러 콜백
