@@ -1,5 +1,7 @@
 /* eslint-disable */
 import jwtDecode from 'jwt-decode';
+//export const baseURL = "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app";
+export const baseURL = "https://backendserver.shop:3000";
 
 // 로그인체크
 export function loginCheck() {
