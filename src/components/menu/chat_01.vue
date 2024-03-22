@@ -710,7 +710,7 @@
             setTimeout(() => {
               this.scrollToBottom();
               this.newMessage = '';
-              }, 100);
+              }, 500);
           });
           }
           event.preventDefault();
