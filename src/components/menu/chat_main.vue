@@ -154,7 +154,6 @@ export default {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       const displayedRooms = this.chatRooms.slice(startIndex, endIndex);
-
       this.getImageUrls(displayedRooms); // 이미지 URL 가져오기 호출
       return displayedRooms;
     }
@@ -363,30 +362,13 @@ export default {
       for (const chatRoom of chatRooms) {
         if (chatRoom.profile_id !== null) {
           try {
-            const imageUrl = await this.getFileUrl(chatRoom.profile_id);
-            chatRoom.imageUrl = imageUrl;
+            chatRoom.imageUrl = chatRoom.profile_id;
           } catch (error) {
             console.error("이미지 URL 조회 오류:", error);
           }
         }
       }
     },
-    //imgurl조회
-    async getFileUrl(fileNo) {
-      try {
-        const response = await new Promise((resolve, reject) => {
-          loginMethods.methods.profileImgURL(
-            fileNo,
-            (res) => resolve(res),
-            (error) => reject(error)
-          );
-        });
-        return response.data.imageUrl;
-      } catch (error) {
-        console.error('이미지 URL 조회 오류:', error);
-        throw error;
-      }
-    }
   },
   created() {
     const token = localStorage.getItem('token');
