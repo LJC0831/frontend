@@ -168,6 +168,7 @@
         messages: [],
         loading: false,
         newMessage : '',
+        newMessage2 : '', //전달
         editedName : "", 
         file_no : null,
         profilePicture: null,
@@ -467,6 +468,8 @@
     handleKeyDown(event) {
       // 쉬프트 엔터처리
       if ((event.key === "Enter"||event.keyCode === 13) && !event.shiftKey && !this.loading) {
+        this.newMessage2 = this.newMessage;
+        this.newMessage = '';
         this.sendMessage();
       }
     },
@@ -652,9 +655,9 @@
       async sendMessage() {
         if(!commons.loginCheck()) return;
 
-        if (this.newMessage.trim() === '') return;
+        if (this.newMessage2.trim() === '') return;
         
-        if(this.newMessage.length>=4000){
+        if(this.newMessage2.length>=4000){
           commons.showToast(this, '2000자 이상 입력불가합니다.');
           return;
         }
@@ -675,8 +678,8 @@
           this.loading = true;
           //썸네일 입력
             const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
-            if(linkTagPattern.test(this.newMessage)){
-              let url = this.newMessage;
+            if(linkTagPattern.test(this.newMessage2)){
+              let url = this.newMessage2;
               if (url.startsWith('www.')) {
                 url = 'http://' + url;
               }
@@ -685,7 +688,7 @@
           const messageObject = {
             editedName: this.editedName,
             user_id: this.loginUserId,
-            message: this.newMessage,
+            message: this.newMessage2,
             chat_type: 'text', // 이미지 타입
             chat_file_id: null,
             profilePicture: this.profilePicture,
@@ -707,7 +710,7 @@
           this.$nextTick(() => {
             setTimeout(() => {
               this.scrollToBottom();
-              this.newMessage = '';
+              this.newMessage2 = '';
               }, 500);
           });
           }
