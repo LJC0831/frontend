@@ -468,8 +468,6 @@
     handleKeyDown(event) {
       // 쉬프트 엔터처리
       if ((event.key === "Enter"||event.keyCode === 13) && !event.shiftKey && !this.loading) {
-        this.newMessage2 = this.newMessage;
-        this.newMessage = '';
         this.sendMessage();
       }
     },
@@ -653,6 +651,8 @@
       },
       // 메세지 보내기
       async sendMessage() {
+        this.newMessage2 = this.newMessage;
+        this.newMessage = '';
         if(!commons.loginCheck()) return;
 
         if (this.newMessage2.trim() === '') return;
