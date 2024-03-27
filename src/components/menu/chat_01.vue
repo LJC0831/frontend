@@ -974,15 +974,17 @@
         // 스크롤 한번에 내리기 모달 END
         if (chatContainer.scrollTop === 0 && !this.loadingPreviousMessages && this.shouldMaintainScroll) {
           this.loadingPreviousMessages = true;
+          const date = new Date(this.messages[0].ins_ymdhms);
+          const formattedTime = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
           try {
             const oldestMessage = {
-              oldestMessageTime: this.messages[0].ins_ymdhms,
+              oldestMessageTime: formattedTime,
               chatId:this.selectedChatId,
             };
-            if(this.firstChat !== this.messages[0].ins_ymdhms){
+            if(this.firstChat !== formattedTime){
               this.socket.emit('getPreviousMessages', oldestMessage);
             }
-            this.firstChat = this.messages[0].ins_ymdhms;
+            this.firstChat = formattedTime;
           } catch (error) {
             console.error('이전 채팅 조회 오류:', error);
           } finally {
