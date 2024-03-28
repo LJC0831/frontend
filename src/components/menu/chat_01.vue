@@ -916,7 +916,7 @@
       prevGetImg(job_type){
         chatMethods.methods.chatPrevImgSearch(this.selectedChatId,this.selectedImageId,job_type,(res) => {
               this.selectedImageId = res.data[0].id; //변경된 이미지 file id
-              this.selectedImage = res.data[0].file_addr; //이미지변경
+              this.selectedImage = res.data[0].img_url; //이미지변경
             },
             (error) => { // 에러 콜백
               console.error("대상자 이미지url 조회:", error);
