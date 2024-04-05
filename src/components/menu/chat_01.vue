@@ -735,6 +735,7 @@
 
       // 이미지 붙여넣기 event
       handleImagePaste(event) {
+        
         const items = (event.clipboardData || event.originalEvent.clipboardData).items;
         for (const item of items) {
           if (item.type.indexOf("image") !== -1) {
@@ -745,6 +746,7 @@
       },
       // 이미지 붙여넣기 작업
       async uploadImageToServer(file) {
+        this.loading = true;
         const formData = new FormData();
         const timestamp = Date.now();
         const uniqueFileName = `${timestamp}_img_upload`;
@@ -754,6 +756,7 @@
         chatMethods.methods.uploadImageToServer(formData,token,(res) => {
               const chat_file_id = res.data.fileId;
               this.chatImgurl(chat_file_id,'image');
+              this.loading = false;
             },
             (error) => { // 에러 콜백
               console.error("이미지 업로드 오류:", error);
