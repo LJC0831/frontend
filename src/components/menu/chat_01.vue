@@ -1045,7 +1045,11 @@
   </script>
   
 <style scoped>
-
+* {
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI"
+  , "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-weight: 500;
+}
 .chat-textarea{
   width: 100%; 
   border: 1px solid #ccc; 
@@ -1323,7 +1327,6 @@ input[type="text"] {
     margin: 5px;
     
     /* 글꼴과 글꼴 크기 설정 */
-    font-family: Arial, sans-serif;
     font-size: 11px;
     }
 .sticker-image{
@@ -1439,7 +1442,6 @@ input[type="text"] {
     height: 80vh;
     display: flex;
     flex-direction: column;
-    font-family: Arial, sans-serif;
     background-color: rgb(240, 252, 255);
     }
     .send-button {
@@ -1462,7 +1464,6 @@ input[type="text"] {
     display: flex;
     flex-direction: column;
     background-color: rgb(240, 252, 255);
-    font-family: Arial, sans-serif;
     transition: height 0.3s ease; /* 부드러운 애니메이션을 위해 트랜지션 적용 */
     }
     /* .chat-container.focused { */

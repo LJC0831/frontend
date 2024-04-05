@@ -318,11 +318,14 @@ watch(() => state.data.map((d) => d.checked),(checkedList) => {
 </script>
 
 <style scoped>
+* {
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI"
+  , "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
 .memo-title{
   font-size: 25px;
   font-weight: bold;
   text-transform: uppercase;
-  font-family: 'Montserrat', sans-serif;
   background-color: ivory;
 }
 .memo {
@@ -405,7 +408,6 @@ watch(() => state.data.map((d) => d.checked),(checkedList) => {
   font-size: 12px; /* 제목 글자 크기 조정 */
   font-weight: bold;
   text-transform: uppercase;
-  font-family: 'Montserrat', sans-serif;
   background-color: ivory;
   transition: background-color 0.3s ease;
 }
@@ -492,7 +494,6 @@ width:450px;
   padding: 10px;
   font-weight: bold;
   text-transform: uppercase;
-  font-family: 'Montserrat', sans-serif;
   background-color: ivory;
   transition: background-color 0.3s ease;
 }
