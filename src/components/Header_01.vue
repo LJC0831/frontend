@@ -673,11 +673,10 @@ function escapeString(str) {
 
 <style scoped>
 * {
-  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI"
-  , "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
   font-weight: 500;
 }
 header {
+  font-family: "Pretendard";
   text-align: center;
   padding: 20px;
   border-bottom: 1px solid #eee;
