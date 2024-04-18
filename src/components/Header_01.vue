@@ -400,7 +400,7 @@ export default {
             if (file) {
               reader.readAsDataURL(file);
               const timestamp = Date.now();
-              const uniqueFileName = `${timestamp}_${file.name}`;
+              const uniqueFileName = `PROFILE_${timestamp}_${file.name}`;
               const formData = new FormData();
               formData.append('file', file);
               formData.append("fileName", encodeURIComponent(uniqueFileName)); // 파일명을 인코딩하여 formData에 추가
