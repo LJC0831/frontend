@@ -180,7 +180,7 @@
         messageCount: 0, // 최근 10초 내에 보낸 메시지의 수를 저장합니다.
         showModal: false, // 모달 표시 여부
         userPicture:[], // 참가유저들 사진
-        maxFileSize: 10 * 1024 * 1024, // 10MB (메가바이트)
+        maxFileSize: 20 * 1024 * 1024, // 20MB (메가바이트)
         isImageModalOpen: false,
         selectedImage: '',
         selectedImageId: '',
@@ -749,7 +749,7 @@
         this.loading = true;
         const formData = new FormData();
         const timestamp = Date.now();
-        const uniqueFileName = `${timestamp}_img_upload`;
+        const uniqueFileName = `CHAT_${timestamp}_img_upload`;
         formData.append('file', file);
         formData.append('fileName', uniqueFileName);
         const token = localStorage.getItem('token');
@@ -770,14 +770,14 @@
 
         // 파일 크기 확인
         if (file && file.size > this.maxFileSize) {
-            commons.showToast(this, '파일 또는 이미지 크기가 너무 큽니다. 10MB 이하의 이미지를 선택해주세요.');
+            commons.showToast(this, '파일 또는 이미지 크기가 너무 큽니다. 20MB 이하의 이미지를 선택해주세요.');
             return;
            }
         const reader = new FileReader();
         if (file) {
           reader.readAsDataURL(file);
           const timestamp = Date.now();
-          const uniqueFileName = `${timestamp}_${file.name}`;
+          const uniqueFileName = `CHAT_${timestamp}_${file.name}`;
           const originalFileName = `${file.name}`;
           const formData = new FormData();
           formData.append('file', file);
