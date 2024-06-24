@@ -1,5 +1,5 @@
 <template>
-  <div :class="['chat-container', { 'focused': isChatTextareaFocused }]">
+  <div @drop.prevent="handleDrop" @dragover.prevent @dragenter.prevent :class="['chat-container', { 'focused': isChatTextareaFocused }]">
     <!-- 채팅헤더 -->
     <div class="chat-header">
         <span><img src="@/assets/back-img.png" @click="exit()" style="width: 15px; margin-right: 10px;"></span> <!--https://www.flaticon.com/kr/free-icon/backward_318339 출처-->
@@ -764,9 +764,10 @@
         );
       },
       // 업로드메세지
-      handleUpload() {
-        const imageInput = this.$refs.imageInput;
-        const file = imageInput.files[0];
+      handleUpload(event) {
+        const file = event.target.files ? event.target.files[0] : event.dataTransfer.files[0];
+        //const imageInput = this.$refs.imageInput;
+        //const file = imageInput.files[0];
 
         // 파일 크기 확인
         if (file && file.size > this.maxFileSize) {
@@ -801,6 +802,12 @@
                   console.error("이미지 업로드 오류:", error);
                 }
           );
+        }
+      },
+      handleDrop(event) {
+        const files = event.dataTransfer.files;
+        if (files.length) {
+          this.handleUpload({ target: { files } });
         }
       },
       // 파일 메세지 전송1
