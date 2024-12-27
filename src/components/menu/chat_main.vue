@@ -34,15 +34,14 @@
                       <span>
                         <img v-if="chatRooms.profile_id !== null" :src="chatRooms.imageUrl" class="thumbnail-image" />
                         <img v-if="chatRooms.profile_id === null" src="../../assets/profile-user.png" class="thumbnail-image" />
+                        <span class="chatromm-cnt" style="margin-left: 10px;">{{ chatRooms.user_cnt }}/{{ chatRooms.expire_cnt }}</span>
                       </span>
                       <span class="chatroom-subject">{{ chatRooms.subject }}</span>
                       <span v-if="chatRooms.pwd !== null"><font-awesome-icon icon="lock" /></span>
                       <span class="chatroom-readCount" id="notReadCount">{{ chatRooms.notReadCnt }}</span>
                     <div class="d-flex justify-content-between align-items-center">
-                      <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-outline-secondary" style="display:none;">Edit</button>
-                      </div>
-                      <span class="chatromm-cnt" style="margin-left: 50px;">{{ chatRooms.user_cnt }}/{{ chatRooms.expire_cnt }}</span>
+                      <span  class="chatroom-message">{{ chatRooms.message }}</span>
+                      
                       <small class="text-body-secondary">{{ chatRooms.formatted_date }}</small>
                     </div>
                   </div>
@@ -438,12 +437,17 @@ export default {
     font-size: 15px;
     color: #333;
     font-weight: bold;
-    
     padding: 5px;
+  }
+  .chatroom-message{
+    font-size: 12px;
+    color: #6d6c6c;
+    padding: 5px;
+    margin-left: 5%;
   }
 
   .shadow-sm{
-    background-color: rgb(227, 244, 255);
+    
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
   }
@@ -566,7 +570,6 @@ export default {
   }
   .chatroom-readCount {
   display: inline-block;
-  width: 20px;
   height: 17px;
   background-color: red; /* 배경색 설정 */
   color: #FFFFFF; /* 글자색 설정 */
