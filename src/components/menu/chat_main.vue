@@ -40,7 +40,7 @@
                       <span v-if="chatRooms.pwd !== null"><font-awesome-icon icon="lock" /></span>
                       <span class="chatroom-readCount" id="notReadCount">{{ chatRooms.notReadCnt }}</span>
                     <div class="d-flex justify-content-between align-items-center">
-                      <span  class="chatroom-message">{{ chatRooms.message }}</span>
+                      <span  class="chatroom-message">{{ truncatedTitle(chatRooms.message) }}</span>
                       
                       <small class="text-body-secondary">{{ chatRooms.formatted_date }}</small>
                     </div>
@@ -175,6 +175,14 @@ export default {
     // 소켓끊기
     exitChat() {
       this.$refs.chatComponent.disconnectWebSocket();
+    },
+    truncatedTitle(title) {
+      if(title !== null){
+        let maxLength = 30;
+        // 최대 길이 설정
+        return title.length > maxLength ? title.substring(0, maxLength) + '...' : title;
+      }
+      else return title
     },
     //채팅방 open
     openChatRoom(chatRooms) {
