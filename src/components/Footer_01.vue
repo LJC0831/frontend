@@ -56,12 +56,7 @@ export default {
   margin-top: 2px;
 }
 @media (max-width: 768px) {
-  .mobile-icons {
-    height: 40px;
-  }
-  .icon {
-    height: 25px;
-  }
+  
 }
 
   </style>
