@@ -17,7 +17,7 @@
               </div>
             </div>
             <section>
-                <div class="col">
+                <div class="bottom_10">
                   <p>
                     <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'ALL'" @keyup.enter="search01('ALL')" placeholder="Search" class="search-input" />
                     <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'My Chat'" @keyup.enter="search01('My Chat')" placeholder="Search" class="search-input" />&nbsp;
@@ -28,7 +28,7 @@
             </section>
             
             <div>
-              <div class="col" v-for="(chatRooms, index) in displayedChatRooms" :key="index"  @click="openChatRoom(chatRooms)">
+              <div class="bottom_10" v-for="(chatRooms, index) in displayedChatRooms" :key="index"  @click="openChatRoom(chatRooms)">
                 <div class="card shadow-sm">
                   <div class="card-body">
                       <span>
@@ -87,6 +87,10 @@
         </div>
       </div>
       <!-- 모달 창 END-->
+       <!-- 로딩영역 -->
+       <div class="loading-overlay" v-if="loading">
+          <img src="@/assets/loading.gif" alt="로딩 중" class="loading-spinner" />
+        </div>
     </div>
 </template>
 
@@ -126,6 +130,7 @@ export default {
   },
   data() {
     return {
+      loading:false,
       loginUserId:null,
       searchKeyword: '',
       chatRooms: [],
@@ -282,6 +287,7 @@ export default {
     //조회
     search01: debounce(async function (tab) {
       try { 
+        this.loading = true;
         const token = localStorage.getItem('token');
         if(token){
           this.searchUserId = this.loginUserId; // 사용자 아이디 추출
@@ -297,6 +303,7 @@ export default {
         const response = await api.get("/api/chat/search",{ params: { q: this.searchKeyword, userId:this.searchUserId , userId2: this.searchUserId2 } });
         this.chatRooms = response.data;
         this.searchUserId = null;
+        this.loading = false;
       } catch (error) {
         console.error("검색 오류:", error);
       }
@@ -390,278 +397,7 @@ export default {
 </script>
   
 <style scoped>
-* {
-  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI"
-  , "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-  font-weight: 500;
-}
-.tabs-container, .page-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-  .tabs {
-    display: flex;
-    margin-bottom: 10px;
-  }
-
-  .tab {
-    padding: 10px 20px;
-    cursor: pointer;
-    color: #333;
-    background-color: #fff;
-    border-radius: 5px;
-    margin: 0 5px;
-    transition: background-color 0.3s, transform 0.3s;
-    border: 1px solid #ccc;
-  }
-
-  .tab {
-    padding: 10px;
-    cursor: pointer;
-  }
-
-  .active {
-    font-weight: bold;
-    border-bottom: 2px solid #333; /* 선택된 탭 하단 선 색상 */
-    background-color: #3498db; /* 선택된 탭 배경색 */
-    color: white;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-  }
-
-
-
-  .chatroom-subject{
-    font-size: 15px;
-    color: #333;
-    font-weight: bold;
-    padding: 5px;
-  }
-  .chatroom-message{
-    font-size: 12px;
-    color: #6d6c6c;
-    padding: 5px;
-    margin-left: 5%;
-  }
-
-  .shadow-sm{
-    
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-  }
- 
-  .search-input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    color: #333;
-    width: 300px;
-  }
-
-  .thumbnail-image {
-    flex-shrink: 0;
-    max-width: 40px;
-    max-height: 40px;
-    min-width: 40px;
-    min-height: 40px;
-    border-radius: 50%;
-  }
-  #btn-exit{
-    float: right;
-    transition: background-color 0.3s, color 0.3s;
-  }
-
-  .col{
-    margin-bottom: 10px;
-  }
-
-  /* 모달 스타일 */
-.modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* 반투명 배경 */
-}
-
-.modal-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-  width: 90%;
-}
-
-.close {
-  color: #aaa;
-  font-size: 28px;
-  font-weight: bold;
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  cursor: pointer;
-}
-.modal-title {
-  font-size: 24px;
-  margin-bottom: 15px;
-}
-
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-control {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 14px;
-  color: #333;
-}
-
-.btn-success {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #2ecc71;
-  font-size: 14px;
-  color: #fff;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.btn-success:hover {
-  background-color: #27ae60;
-}
-
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.class-search{
-  width:50px; 
-  height: 42px; 
-  margin-top:-5px; 
-  margin-left: -8px;
-}
-.class-search:hover{
-  cursor: pointer;
-}
-
-.create-button {
-    cursor: pointer;
-    margin-left: 5px;
-    width:50px; 
-    height:42px;
-    margin-top:-5px; 
-  }
-  .chatroom-readCount {
-  display: inline-block;
-  height: 17px;
-  background-color: red; /* 배경색 설정 */
-  color: #FFFFFF; /* 글자색 설정 */
-  border-radius: 50%; /* 원 모양으로 만들기 */
-  text-align: center; /* 텍스트 가운데 정렬 */
-  line-height: 17px; /* 수직 가운데 정렬 */
-  font-size: 12px; /* 글자 크기 설정 */
-  font-weight: bold; /* 글자 굵게 설정 */
-  margin-left: 5px;
-}
-.chatroom-readCount:empty {
-  display: none; /* 내용이 없는 경우 숨김 */
-}
-
-.search-button{
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    margin-top: 20px;
-    cursor: pointer;
-  }
-
-  .regist-button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
-  font-size: 16px;
-  cursor: pointer;
-  outline: none;
-}
-.regist-container {
-  position: fixed;
-  bottom: 10%;
-  right: 15%;
-  width: 80px;
-  height: 80px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 9999;
-}
-
-/* 모달 style 끝 */
-  
-  @media (max-width: 768px) {
-    .class-search{
-      width:40px; 
-      height: 38px; 
-      margin-top:-3px; 
-      margin-left: -8px;
-    }
-    .create-button {
-      cursor: pointer;
-      margin-left: 5px;
-      width:40px; 
-      height:38px;
-      margin-top:-3px; 
-    }
-
-    .search-button{
-      font-size: 12px;
-    }
-    
-    .search-input {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 12px;
-      color: #333;
-      width: 150px;
-    }
- 
-    .regist-button {
-    width: 60px;
-    height: 60px;
-    font-size: 10px;
-    }
-    .regist-container {
-    top: 15%;
-    right: 30px;
-    width: 60px;
-    height: 60px;
-  }
-
-  }
-  @media (min-width: 768px) {
-   
-  }
-
-
 </style>
+
+<style scoped src="@/styles/common.css"></style>
+<style scoped src="@/styles/chat_main.css"></style>

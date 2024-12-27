@@ -1,0 +1,77 @@
+* {
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI"
+    , "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    font-weight: 500;
+  }
+.loading-spinner {
+    width: 50px; /* 로딩 이미지 크기 */
+    height: 50px;
+  }
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* 배경을 어둡게 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* 다른 요소들보다 위로 올려 표시 */
+  }
+  .bottom_10{
+    margin-bottom: 10px;
+  }
+  .thumbnail-image {
+    flex-shrink: 0;
+    max-width: 40px;
+    max-height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: 50%;
+  }
+  .search-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+    width: 300px;
+  }
+
+  .tabs-container, .page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+    .tabs {
+      display: flex;
+      margin-bottom: 10px;
+    }
+  
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      color: #333;
+      background-color: #fff;
+      border-radius: 5px;
+      margin: 0 5px;
+      transition: background-color 0.3s, transform 0.3s;
+      border: 1px solid #ccc;
+    }
+  
+    .tab {
+      padding: 10px;
+      cursor: pointer;
+    }
+  
+    .active {
+      font-weight: bold;
+      border-bottom: 2px solid #333; /* 선택된 탭 하단 선 색상 */
+      background-color: #3498db; /* 선택된 탭 배경색 */
+      color: white;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+  

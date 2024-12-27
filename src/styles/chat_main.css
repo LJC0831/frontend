@@ -1,0 +1,168 @@
+.regist-container {
+    position: fixed;
+    bottom: 10%;
+    right: 15%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 9999;
+  }
+  .regist-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+  }
+  .search-button{
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    margin-top: 20px;
+    cursor: pointer;
+  }
+  .chatroom-readCount:empty {
+    display: none; /* 내용이 없는 경우 숨김 */
+  }
+  .create-button {
+    cursor: pointer;
+    margin-left: 5px;
+    width:50px; 
+    height:42px;
+    margin-top:-5px; 
+  }
+  .chatroom-readCount {
+  display: inline-block;
+  height: 17px;
+  background-color: red; /* 배경색 설정 */
+  color: #FFFFFF; /* 글자색 설정 */
+  border-radius: 50%; /* 원 모양으로 만들기 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+  line-height: 17px; /* 수직 가운데 정렬 */
+  font-size: 12px; /* 글자 크기 설정 */
+  font-weight: bold; /* 글자 굵게 설정 */
+  margin-left: 5px;
+}
+.shadow-sm{
+    
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+  }
+
+  
+  .chatroom-subject{
+    font-size: 15px;
+    color: #333;
+    font-weight: bold;
+    padding: 5px;
+  }
+  .chatroom-message{
+    font-size: 12px;
+    color: #6d6c6c;
+    padding: 5px;
+    margin-left: 5%;
+  }
+
+
+  /* 모달 스타일 */
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* 반투명 배경 */
+  }
+.btn-success {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #2ecc71;
+    font-size: 14px;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-success:hover {
+    background-color: #27ae60;
+  }
+  .modal-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+  
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-control {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+  }
+  .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 90%;
+  }
+  /* 모달 style 끝 */
+
+
+  
+  @media (max-width: 768px) {
+    .create-button {
+      cursor: pointer;
+      margin-left: 5px;
+      width:40px; 
+      height:38px;
+      margin-top:-3px; 
+    }
+
+    .search-button{
+      font-size: 12px;
+    }
+    
+    .search-input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 12px;
+      color: #333;
+      width: 150px;
+    }
+ 
+    .regist-button {
+    width: 60px;
+    height: 60px;
+    font-size: 10px;
+    }
+    .regist-container {
+    top: 15%;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+  }
+
+  }
+  @media (min-width: 768px) {
+   
+  }
+  
