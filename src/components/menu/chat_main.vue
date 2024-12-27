@@ -11,9 +11,8 @@
             <p>
               <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'ALL'" @keyup.enter="search01('ALL')" placeholder="Search" class="search-input" />
               <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'My Chat'" @keyup.enter="search01('My Chat')" placeholder="Search" class="search-input" />&nbsp;
-              <img v-if="activeTab === 'ALL'" src="../../assets/search-image.jpg" @click="search01('ALL')" class="class-search"/>
-              <img v-if="activeTab === 'My Chat'" src="../../assets/search-image.jpg"  @click="search01('My Chat')" class="class-search"/>
-              <img src="../../assets/createRoom.png"  @click="createChatRoom()" class="create-button"/>
+              <button v-if="activeTab === 'ALL'" @click="search01('ALL')" class="search-button"><font-awesome-icon icon="search" /></button>
+              <button v-if="activeTab === 'My Chat'" @click="search01('My Chat')" class="search-button"><font-awesome-icon icon="search" /></button>
             </p>
           </div>
         </div>
@@ -28,19 +27,17 @@
 
         <div class="album py-5 bg-body-tertiary">
           <div class="container">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4" id="chat_main_img">
+            <div>
               <div class="col" v-for="(chatRooms, index) in displayedChatRooms" :key="index"  @click="openChatRoom(chatRooms)">
                 <div class="card shadow-sm">
                   <div class="card-body">
-                    <p class="card-text">
                       <span>
                         <img v-if="chatRooms.profile_id !== null" :src="chatRooms.imageUrl" class="thumbnail-image" />
                         <img v-if="chatRooms.profile_id === null" src="../../assets/profile-user.png" class="thumbnail-image" />
                       </span>
                       <span class="chatroom-subject">{{ chatRooms.subject }}</span>
-                      <span><img v-if="chatRooms.pwd !== null" src="../../assets/pwdIkon.jpg" /></span>
+                      <span v-if="chatRooms.pwd !== null"><font-awesome-icon icon="lock" /></span>
                       <span class="chatroom-readCount" id="notReadCount">{{ chatRooms.notReadCnt }}</span>
-                    </p>
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-outline-secondary" style="display:none;">Edit</button>
@@ -61,6 +58,12 @@
             </div>
           </div>
         </div>
+      </div>
+      <!-- 등록버튼 -->
+      <div class="regist-container">
+        <button @click="createChatRoom()" class="regist-button">
+          +방만들기
+        </button>
       </div>
        <!-- 모달 창 -->
        <div v-if="createChatModal" class="modal">
@@ -94,14 +97,12 @@ import { debounce } from 'lodash';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import ChatRoom01 from './chat_01.vue';
-import loginMethods from '../../scripts/login.js';
 import chatMethods from '../../scripts/chat.js';
 import * as commons from '../../scripts/common.js';
 
 
 const api = axios.create({
   baseURL: "https://backendserver.shop:3000",
-  //baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
   //baseURL: "http://localhost:3000",
 });
 
@@ -461,16 +462,6 @@ export default {
     width: 300px;
   }
 
-  .search-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #3498db;
-    font-size: 14px;
-    color: #fff;
-    cursor: pointer;
-  }
-
   .thumbnail-image {
     flex-shrink: 0;
     max-width: 40px;
@@ -594,11 +585,37 @@ export default {
 .chatroom-readCount:empty {
   display: none; /* 내용이 없는 경우 숨김 */
 }
-.card-body {
-  height: 150px;
+
+.search-button{
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    margin-top: 20px;
+    cursor: pointer;
+  }
+
+  .regist-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  font-size: 16px;
+  cursor: pointer;
+  outline: none;
 }
-.card-text {
-  height: 64px;
+.regist-container {
+  position: fixed;
+  bottom: 10%;
+  right: 15%;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 9999;
 }
 
 /* 모달 style 끝 */
@@ -621,9 +638,7 @@ export default {
     .search-button{
       font-size: 12px;
     }
-    .col {
-      width: 25%; /* 모바일에서 4개씩 표시 */
-    }
+    
     .search-input {
       padding: 10px;
       border: 1px solid #ccc;
@@ -632,12 +647,19 @@ export default {
       color: #333;
       width: 150px;
     }
-    .card-body {
-      height: 100px;
+ 
+    .regist-button {
+    width: 60px;
+    height: 60px;
+    font-size: 10px;
     }
-    .card-text {
-      height: 34px;
-    }
+    .regist-container {
+    top: 15%;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+  }
+
   }
   @media (min-width: 768px) {
    

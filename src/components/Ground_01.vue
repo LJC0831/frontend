@@ -27,20 +27,15 @@ import socialChat from "./menu/socialChat.vue";
 import userList from "./menu/userList.vue";
 import maker_01 from "./maker_01.vue";
 import chat_main from "./menu/chat_main.vue";
-import { loadAds2 } from '../scripts/ads.js'
-// import Sidebar from "./SideBar_01"; // 사이드바 컴포넌트를 import 합니다.
 export default {
-  //components:{Header, Sidebar},
   components:{Header, Footer, main01, Memo_01, chat_main, socialChat, maker_01, userList},
   data() {
     return {
       selectedMenu: '', // 선택된 메뉴를 저장할 변수 추가
       chatData: null, 
-      //sidebarOpen: false, // 사이드바 열림 여부를 저장할 변수 추가
     };
   },
   mounted() {
-    //loadAds2(); // 광고를 로드하는 함수 호출
   },
   methods: {
     handleMenuSelected(menuName) {
@@ -52,9 +47,6 @@ export default {
       this.chatData = parts[1];
       this.selectedMenu = parts[0]; // 선택된 메뉴 이름으로 selectedMenu 데이터를 업데이트합니다
     },
-    // toggleSidebar() {
-    //   this.sidebarOpen = !this.sidebarOpen;
-    // },
   },
 }
 </script>
