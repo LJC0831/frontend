@@ -2,31 +2,31 @@
   <div>
     <div class="chat-main" v-if="selectedChatId !== null">
       <ChatRoom01 ref="chatComponent" :selectedChatId="selectedChatId" :selectSubject="selectSubject" :selectUser="selectUser" @changeSelectedChatId="changeSelectedChatId" />
-      <button class="btn btn-primary search-button" id="btn-exit" v-if="exitbuttonFlag" @click="exit()">뒤로가기</button>
     </div>
     <div class="chat-room" v-if="selectedChatId === null">
-      <section class="chat-section">
-        <div class="chat_row">
-          <div class="chat_left">
-            <p>
-              <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'ALL'" @keyup.enter="search01('ALL')" placeholder="Search" class="search-input" />
-              <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'My Chat'" @keyup.enter="search01('My Chat')" placeholder="Search" class="search-input" />&nbsp;
-              <button v-if="activeTab === 'ALL'" @click="search01('ALL')" class="search-button"><font-awesome-icon icon="search" /></button>
-              <button v-if="activeTab === 'My Chat'" @click="search01('My Chat')" class="search-button"><font-awesome-icon icon="search" /></button>
-            </p>
-          </div>
-        </div>
-      </section>
-      <div class="tabs-container">
-        <div class="tabs">
-          <div v-for="(tab, index) in tabs" :key="index" @click="handleTabClick(tab)" :class="{ active: activeTab === tab }"  class="tab">
-            {{ tab }}
-          </div>
-        </div>
-      </div>
+      
+      
 
         <div class="album py-5 bg-body-tertiary">
           <div class="container">
+            <div class="tabs-container">
+              <div class="tabs">
+                <div v-for="(tab, index) in tabs" :key="index" @click="handleTabClick(tab)" :class="{ active: activeTab === tab }"  class="tab">
+                  {{ tab }}
+                </div>
+              </div>
+            </div>
+            <section>
+                <div>
+                  <p>
+                    <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'ALL'" @keyup.enter="search01('ALL')" placeholder="Search" class="search-input" />
+                    <input type="text" v-model.trim="searchKeyword" v-if="activeTab === 'My Chat'" @keyup.enter="search01('My Chat')" placeholder="Search" class="search-input" />&nbsp;
+                    <button v-if="activeTab === 'ALL'" @click="search01('ALL')" class="search-button"><font-awesome-icon icon="search" /></button>
+                    <button v-if="activeTab === 'My Chat'" @click="search01('My Chat')" class="search-button"><font-awesome-icon icon="search" /></button>
+                  </p>
+                </div>
+            </section>
+            
             <div>
               <div class="col" v-for="(chatRooms, index) in displayedChatRooms" :key="index"  @click="openChatRoom(chatRooms)">
                 <div class="card shadow-sm">
@@ -134,16 +134,15 @@ export default {
       selectSubject:null,
       selectUser:[],
       checkFlag:false,
-      exitbuttonFlag:this.isMobile() ? false : true, //뒤로가기버튼활성화여부
       myUserYn:false,  //방 입장여부(본인)
-      tabs:['ALL', 'My Chat'],
-      activeTab: 'ALL',
+      tabs:['My Chat', 'ALL'],
+      activeTab: 'My Chat',
       searchUserId: null,
       createChatModal: false, // 모달 창 띄우기 여부
       expire_cnt: 2, // 초기 값 1로 설정
       subject: '방제목을 입력해주세요', // 초기 값 1로 설정
       chatRooms: [],        // 전체 채팅방 정보가 들어 있는 배열
-      itemsPerPage: this.isMobile() ? 4 : 9,
+      itemsPerPage: 100,
       currentPage: 1,        // 현재 페이지 번호
     };
   },
@@ -378,7 +377,7 @@ export default {
       const decoded_Token = jwtDecode(login_token);
       this.loginUserId = decoded_Token.username;
     }
-    this.search01('ALL');
+    this.search01('My Chat');
   },
   watch: {
     chatData(newChatData) {
@@ -433,11 +432,7 @@ export default {
     border-top-right-radius: 5px;
   }
 
-  .chat-section {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-  }
+
 
   .chatroom-subject{
     font-size: 15px;
