@@ -60,7 +60,7 @@
         </div>
       </div>
       <!-- 등록버튼 -->
-      <div class="regist-container">
+      <div class="regist-container" v-if="selectedChatId === null">
         <button @click="createChatRoom()" class="regist-button">
           +방만들기
         </button>
@@ -443,8 +443,8 @@ export default {
     font-size: 15px;
     color: #333;
     font-weight: bold;
-    margin-bottom: 10px;
-    margin-left: 5px;
+    
+    padding: 5px;
   }
 
   .shadow-sm{
