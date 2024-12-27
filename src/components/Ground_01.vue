@@ -9,7 +9,6 @@
             <main01 v-if="selectedMenu === ''" /> 
             <Memo_01 v-if="selectedMenu === 'memoVue'" />
             <userList v-if="selectedMenu === 'userList'" />
-            <maker_01 v-if="selectedMenu === 'maker_01'" />
             <chat_main v-if="selectedMenu === 'chat_main'" :chatData="chatData"/>
           </div>
     <div class="ad-container"></div>
@@ -23,12 +22,10 @@ import Header from "./Header_01.vue";
 import Footer from "./Footer_01.vue";
 import main01 from "./main_01.vue";
 import Memo_01 from "./Memo_01.vue";
-import socialChat from "./menu/socialChat.vue";
 import userList from "./menu/userList.vue";
-import maker_01 from "./maker_01.vue";
 import chat_main from "./menu/chat_main.vue";
 export default {
-  components:{Header, Footer, main01, Memo_01, chat_main, socialChat, maker_01, userList},
+  components:{Header, Footer, main01, Memo_01, chat_main, userList},
   data() {
     return {
       selectedMenu: '', // 선택된 메뉴를 저장할 변수 추가
