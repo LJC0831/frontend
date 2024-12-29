@@ -463,9 +463,11 @@
       },
     //채팅전송(엔터처리)
     handleKeyDown(event) {
-      // 쉬프트 엔터처리
       if ((event.key === "Enter"||event.keyCode === 13) && !event.shiftKey && !this.loading) {
         this.sendMessage();
+        this.$refs.sendButton.focus();
+        this.answerFocusProc();
+        event.preventDefault();
       }
     },
     // 답장포커싱처리
@@ -623,11 +625,37 @@
       },
       // 메세지 보내기
       async sendMessage() {
-        this.newMessage2 = this.newMessage;
+        this.newMessage2 = this.newMessage.trim(); // 앞뒤 공백 제거
         this.newMessage = '';
         // 도배체크
         const now = new Date();
-        const messageObject = {
+        this.lastMessageTimestamps.push(now);
+        // 10초 이전의 타임스탬프 제거
+        const tenSecondsAgo = new Date(now - 10000);
+        this.lastMessageTimestamps = this.lastMessageTimestamps.filter(timestamp => timestamp > tenSecondsAgo);
+        if (this.lastMessageTimestamps.length >= 20) {
+          // 사용자가 최근 10초 내에 8개 이상의 메시지를 보냄
+          commons.showToast(this, '메시지를 10초 내에 20개 이상 보낼 수 없습니다.');
+          return;
+        }
+        if(!commons.loginCheck()) return;
+        if (this.newMessage2.trim() === '') return;
+        if(this.newMessage2.length>=4000){
+          commons.showToast(this, '2000자 이상 입력불가합니다.');
+          return;
+        }
+
+          //썸네일 입력
+            const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
+            if(linkTagPattern.test(this.newMessage2)){
+              let url = this.newMessage2;
+              if (url.startsWith('www.')) {
+                url = 'http://' + url;
+              }
+              await this.fetchThumbnail(url);
+          }
+
+          const messageObject = {
             editedName: this.editedName,
             user_id: this.loginUserId,
             message: this.newMessage2,
@@ -645,48 +673,15 @@
             description:this.description,
             ins_ymdhms: now // 서버에서 받은 시간 정보
         };
-        this.lastMessageTimestamps.push(now);
-        // 10초 이전의 타임스탬프 제거
-        const tenSecondsAgo = new Date(now - 10000);
-        this.lastMessageTimestamps = this.lastMessageTimestamps.filter(timestamp => timestamp > tenSecondsAgo);
-        if (this.lastMessageTimestamps.length >= 20) {
-          // 사용자가 최근 10초 내에 8개 이상의 메시지를 보냄
-          commons.showToast(this, '메시지를 10초 내에 20개 이상 보낼 수 없습니다.');
-          return;
-        }
-        if(!commons.loginCheck()) return;
-
-        if (this.newMessage2.trim() === '') return;
-        
-        if(this.newMessage2.length>=4000){
-          commons.showToast(this, '2000자 이상 입력불가합니다.');
-          return;
-        }
-        if (!event.shiftKey) { //쉬프트 엔터 시 줄바꿈
- 
-          //썸네일 입력
-            const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
-            if(linkTagPattern.test(this.newMessage2)){
-              let url = this.newMessage2;
-              if (url.startsWith('www.')) {
-                url = 'http://' + url;
-              }
-              await this.fetchThumbnail(url);
-          }
-
+          this.socket.emit('message', messageObject);
           this.thumbnailUrl = '';
           this.description = '';
-          this.socket.emit('message', messageObject);
+          this.newMessage2 = '';
           this.$nextTick(() => {
             setTimeout(() => {
               this.scrollToBottom();
-              this.newMessage2 = '';
               }, 200);
           });
-          }
-          event.preventDefault();
-          this.$refs.sendButton.focus();
-          this.answerFocusProc();
       },
       //이모티콘 팝업 활성화
       openEmoticonModal() {
