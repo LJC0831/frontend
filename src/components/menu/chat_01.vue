@@ -7,21 +7,15 @@
         <span style="float: right;">
             <input v-if="isSearchChat" v-model.trim="searchKeyword" type="text" @keyup.enter="searchChatContent()" @input="handleInputChange" style="margin-right: 5px; height: 30px;"/>
             <span v-if="isSearchChat" style="margin-right: 5px;">{{searchChatContentArray.length}}/{{searchAllcount}}</span>
-            <img src="../../assets/search-image.jpg"  @click="isSearchCheck()" class="class-search" style="width:30px; margin-right: 10px;"/>
+            <img src="@/assets/search-image.jpg"  @click="isSearchCheck()" class="class-search" style="width:30px; margin-right: 10px;"/>
             <i :class="'fas fa-bars'" @click="toggleSearch()"></i>
-            
         </span>
     </div>
-    <!-- 로딩 오버레이 -->
-    <div v-if="loading" class="loading-overlay">
-        <img src="../../assets/loading.gif" alt="loading" class="loading-image">
-    </div>
-
     <!-- 채팅 메세지 -->
     <div class="chat-messages" ref="chatContainer" @scroll="checkScrollPosition">
       <!-- 메세지 표시 -->
       <div v-for="(message, index) in messages" :key="index" class="message" :ref="`chatItem-${index}`">
-        <img v-if="!message.profilePicture && message.chat_type !== 'announcement'" src="../../assets/profile-user.png" alt="내 정보" class="profile-image" @click="profilePop(message.user_id, message.editedName)"/>
+        <img v-if="!message.profilePicture && message.chat_type !== 'announcement'" src="@/assets/profile-user.png" alt="내 정보" class="profile-image" @click="profilePop(message.user_id, message.editedName)"/>
         <img v-if="message.profilePicture && message.chat_type !== 'announcement'" class="profile-image" :src="message.profilePicture" alt="프로필 사진"  @click="profilePop(message.user_id, message.editedName)"/>
         <div class="message-container" >
           <div class="message-content">
@@ -91,6 +85,10 @@
         <button class="modal_close" @click="closeModal">닫기</button>
         
       </div>
+    </div>
+    <!-- 로딩영역 -->
+    <div class="loading-overlay" v-if="loading">
+          <img src="@/assets/loading.gif" alt="로딩 중" class="loading-spinner" />
     </div>
     <!-- 이미지url 모달 창 -->
     <div v-if="isImageModalOpen" class="modal">
@@ -219,7 +217,6 @@
       this.loginUserId = decoded_Token.username;
       // Socket.IO 클라이언트를 초기화하고 서버에 연결합니다.
       //this.socket = io('http://localhost:3000', {
-      //this.socket = io('https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app', {
       this.socket = io('https://backendserver.shop:3000', {
         withCredentials: true, // 쿠키와 인증 정보를 전송할 수 있도록 설정 (선택 사항)
         query:{
@@ -244,7 +241,7 @@
           if(message.user_id !== this.loginUserId){ //채팅을 받을때
               this.previousMessage = message.message;
               message.profilePicture = this.chatUserProfileUrl(message.user_id);
-              this.showNotification(message.message,message.profilePicture); // 새 메시지 알림 표시
+              commons.showNotification(message.message,message.profilePicture); // 새 메시지 알림 표시
               // 메시지 읽음 처리 후 데이터 갱신
               if(document.hasFocus()) { //포커싱중일때 메세지확인처리
                 this.socket.emit('setMessageRead',message.chatId, this.loginUserId, 'Y');
@@ -559,31 +556,6 @@
 
         return formattedTime;
       },
-      // 브라우저 알림 생성
-      showNotification(message, imgUrl) {
-        if (this.previousNotification || document.hasFocus()) {
-          return; // 이미 알림이 떠 있는 경우 함수 종료
-        }
-        if ('Notification' in window) {
-          Notification.requestPermission().then(permission => {
-            if (permission === 'granted') {
-              this.previousNotification = true;
-
-              const notification = new Notification('새로운 채팅', {
-                body: message,
-                icon: imgUrl
-              });
-              this.previousNotification = notification;
-              // 2초 뒤에 알림 닫기
-            setTimeout(() => {
-               notification.close();
-               this.previousNotification = false; // 알림이 닫힘을 표시
-                }, 2000);
-               }
-          });
-          
-        }
-      },
       //프로필조회
       profilePop(userId, userNm){
         this.isUserProfileModalVisible = true;
@@ -653,39 +625,9 @@
       async sendMessage() {
         this.newMessage2 = this.newMessage;
         this.newMessage = '';
-        if(!commons.loginCheck()) return;
-
-        if (this.newMessage2.trim() === '') return;
-        
-        if(this.newMessage2.length>=4000){
-          commons.showToast(this, '2000자 이상 입력불가합니다.');
-          return;
-        }
-        if (!event.shiftKey) { //쉬프트 엔터 시 줄바꿈
-          // 도배체크
-          const now = new Date();
-          this.lastMessageTimestamps.push(now);
-
-          // 10초 이전의 타임스탬프 제거
-          const tenSecondsAgo = new Date(now - 10000);
-          this.lastMessageTimestamps = this.lastMessageTimestamps.filter(timestamp => timestamp > tenSecondsAgo);
-
-          if (this.lastMessageTimestamps.length >= 8) {
-            // 사용자가 최근 10초 내에 8개 이상의 메시지를 보냄
-            commons.showToast(this, '메시지를 10초 내에 8개 이상 보낼 수 없습니다.');
-            return;
-          }
-          this.loading = true;
-          //썸네일 입력
-            const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
-            if(linkTagPattern.test(this.newMessage2)){
-              let url = this.newMessage2;
-              if (url.startsWith('www.')) {
-                url = 'http://' + url;
-              }
-              await this.fetchThumbnail(url);
-          }
-          const messageObject = {
+        // 도배체크
+        const now = new Date();
+        const messageObject = {
             editedName: this.editedName,
             user_id: this.loginUserId,
             message: this.newMessage2,
@@ -702,16 +644,44 @@
             thumbnailUrl:this.thumbnailUrl,
             description:this.description,
             ins_ymdhms: now // 서버에서 받은 시간 정보
-          };
+        };
+        this.lastMessageTimestamps.push(now);
+        // 10초 이전의 타임스탬프 제거
+        const tenSecondsAgo = new Date(now - 10000);
+        this.lastMessageTimestamps = this.lastMessageTimestamps.filter(timestamp => timestamp > tenSecondsAgo);
+        if (this.lastMessageTimestamps.length >= 20) {
+          // 사용자가 최근 10초 내에 8개 이상의 메시지를 보냄
+          commons.showToast(this, '메시지를 10초 내에 20개 이상 보낼 수 없습니다.');
+          return;
+        }
+        if(!commons.loginCheck()) return;
+
+        if (this.newMessage2.trim() === '') return;
+        
+        if(this.newMessage2.length>=4000){
+          commons.showToast(this, '2000자 이상 입력불가합니다.');
+          return;
+        }
+        if (!event.shiftKey) { //쉬프트 엔터 시 줄바꿈
+ 
+          //썸네일 입력
+            const linkTagPattern = /https?:\/\/\S+|www\.\S+/g;
+            if(linkTagPattern.test(this.newMessage2)){
+              let url = this.newMessage2;
+              if (url.startsWith('www.')) {
+                url = 'http://' + url;
+              }
+              await this.fetchThumbnail(url);
+          }
+
           this.thumbnailUrl = '';
           this.description = '';
           this.socket.emit('message', messageObject);
-          this.loading = false;
           this.$nextTick(() => {
             setTimeout(() => {
               this.scrollToBottom();
               this.newMessage2 = '';
-              }, 500);
+              }, 200);
           });
           }
           event.preventDefault();
@@ -1537,18 +1507,6 @@ input[type="text"] {
     flex-shrink: 0;
   }
 
-  .loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 99;
-}
 
 .loading-image {
   max-width: 100px; /* 이미지의 최대 너비 설정 */
@@ -1574,3 +1532,5 @@ input[type="text"] {
 
 }
   </style>
+
+<style scoped src="@/styles/common.css"></style>

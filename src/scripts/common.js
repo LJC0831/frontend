@@ -1,6 +1,5 @@
 /* eslint-disable */
 import jwtDecode from 'jwt-decode';
-//export const baseURL = "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app";
 export const baseURL = "https://backendserver.shop:3000";
 
 // 로그인체크
@@ -47,3 +46,29 @@ export function showToast(vm, data) {
         },
       });
 }
+
+// 알림
+export function showNotification(message, imgUrl) {
+    if (this.previousNotification || document.hasFocus()) {
+      return; // 이미 알림이 떠 있는 경우 함수 종료
+    }
+    if ('Notification' in window) {
+      Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+          this.previousNotification = true;
+
+          const notification = new Notification('새로운 채팅', {
+            body: message,
+            icon: imgUrl
+          });
+          this.previousNotification = notification;
+          // 2초 뒤에 알림 닫기
+        setTimeout(() => {
+           notification.close();
+           this.previousNotification = false; // 알림이 닫힘을 표시
+            }, 2000);
+           }
+      });
+      
+    }
+  }
