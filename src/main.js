@@ -11,6 +11,7 @@ import { createRouter, createWebHistory } from 'vue-router'; // Vue Router ê´€ë 
 import ChatList from './components/menu/chat_main.vue';
 import ChatRoom from './components/menu/chat_01.vue';
 import ChatUser from './components/menu/userList.vue';
+import ChatLogin from './components/menu/login.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
@@ -35,7 +36,8 @@ const router = createRouter({
     routes: [
       { path: '/chat', component: ChatList },
       { path: '/chat/:chatId', component: ChatRoom },
-      { path: '/user', component: ChatUser}
+      { path: '/user', component: ChatUser},
+      { path: '/login', component: ChatLogin},
     ]
   });
 

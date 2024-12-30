@@ -10,6 +10,7 @@
             <Memo_01 v-if="selectedMenu === 'memoVue'" />
             <userList v-if="selectedMenu === 'userList'" />
             <chat_main v-if="selectedMenu === 'chat_main'" :chatData="chatData"/>
+            <login v-if="selectedMenu === 'login'" />
           </div>
     <div class="ad-container"></div>
     <Footer @menuSelected="handleMenuSelected" />
@@ -24,8 +25,9 @@ import main01 from "./main_01.vue";
 import Memo_01 from "./Memo_01.vue";
 import userList from "./menu/userList.vue";
 import chat_main from "./menu/chat_main.vue";
+import login from "./menu/login.vue";
 export default {
-  components:{Header, Footer, main01, Memo_01, chat_main, userList},
+  components:{Header, Footer, main01, Memo_01, chat_main, userList, login},
   data() {
     return {
       selectedMenu: '', // 선택된 메뉴를 저장할 변수 추가

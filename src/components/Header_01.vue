@@ -6,9 +6,8 @@
         <div v-if="!isLoggedIn" class="signup-button" @click="showSignupModal = true">
           <button class="signup-btn">회원가입</button>&nbsp;
         </div>
-        <div v-if="!isLoggedIn" class="login-button" @click="showLoginModal = true">
-          <!-- 로그인 이미지 대신 일반 버튼으로 변경 -->
-          <button class="login-btn">로그인</button>
+        <div v-if="!isLoggedIn" class="login-button" @click="this.$emit('menuSelected', 'login');">
+            <button class="login_btn">로그인</button>
         </div>
         <div v-if="isLoggedIn" class="user-profile-button" @click="profileSearch('')">
           <img v-if="!profilePicture" src="@/assets/profile-user.png" alt="내 정보" class="profile-img" />
@@ -27,25 +26,6 @@
           <button class="logout-btn">로그아웃</button>
         </div>
       </div>
-      <!-- 로그인 모달 -->
-      <div v-if="showLoginModal" class="login-modal">
-      <div class="login-form">
-        <h2>로그인</h2>
-        <label for="username">이메일 :</label>&nbsp;
-        <input type="text" v-model="username" id="username" @keydown.enter="login(null,null,'N')"/>&nbsp;
-        <label for="password">비밀번호: </label>&nbsp;
-        <input type="password" v-model="password" id="password" @keydown.enter="login(null,null,'N')"/>&nbsp;
-        <button ref="loginButton" @click="login"  @keydown.enter="login(null,null,'N')" :disabled="loading">
-          <span v-if="!loading">로그인</span>
-          <span v-else>로딩 중...</span>
-        </button>&nbsp;
-        <button @click="cancel">취소</button>&nbsp;
-        <div v-if="!this.isMobile()" @click="loginWithGoogle" class="google-login">
-          <img src="@/assets/google-icon.png" alt="구글로그인" class="google-login-image"/>Sign in with Google
-        </div>
-        <span @click="this.showSearchPwd = true; this.showLoginModal = false;"><label for="username" style="cursor: pointer;">비밀번호를 잊으셨나요?</label></span>
-      </div>
-    </div>
     <!-- 패스워드 찾기 모달 -->
     <div v-if="showSearchPwd" class="login-modal">
       <div class="login-form">
@@ -68,9 +48,6 @@
     <div v-if="showSignupModal" class="login-modal">
       <div class="login-form">
         <h2>회원가입</h2>
-        <div v-if="!this.isMobile()" @click="loginWithGoogle" class="google-login">
-          <img src="@/assets/google-icon.png" alt="구글로그인" class="google-login-image"/>구글아이디로 로그인하기
-        </div>
         <label for="newUserId">아이디(인증가능한 이메일)</label>
         <input type="text" v-model="newUserId" id="newUserId" />
         <button @click="emailCheck(newUserId)">인증하기</button>&nbsp;
@@ -137,7 +114,6 @@ export default {
     return {
       loading: false,
       loginUserId: null,
-      showLoginModal: false,
       showSignupModal: false, // 회원가입 모달 표시 여부
       username: "",
       password: "",
@@ -176,130 +152,6 @@ export default {
           focusLoginButton() {
             this.$refs.loginButton.focus();
           },
-          // Google 로그인 처리 로직 추가
-        async loginWithGoogle() {
-          try {
-            const url = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=' +
-                        process.env.VUE_APP_apiKey +
-                        '&redirect_uri=' +
-                        process.env.VUE_APP_redirect_uri +
-                        '&response_type=code' +
-                        '&scope=email profile';
-            window.location.href = url;
-          } catch (error) {
-            console.error('Google 로그인 오류:', error);
-          }
-        },
-
-        async exchangeGoogleAuthCodeForAccessToken(Googlecode) {
-          const client_id = process.env.VUE_APP_apiKey;
-          const client_secret = process.env.VUE_APP_client_secret;
-          const redirect_uri = process.env.VUE_APP_redirect_uri;
-          const code = Googlecode; // Google 로그인 후 받은 인증 코드
-          const grant_type = 'authorization_code';
-
-          try {
-            const response = await fetch('https://oauth2.googleapis.com/token', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-              },
-              body: new URLSearchParams({
-                client_id,
-                client_secret,
-                redirect_uri,
-                code,
-                grant_type,
-              }),
-            });
-
-            if (response.ok) {
-              const data = await response.json();
-              const access_token = data.access_token;
-              try {
-                const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-                  method: 'GET',
-                  headers: {
-                    'Authorization': 'Bearer ' + access_token, // 액세스 토큰을 헤더에 추가
-                  },
-                });
-
-                if (response.ok) {
-                  const userData = await response.json();
-                  // 여기에서 userData를 사용하여 원하는 작업을 수행할 수 있습니다.
-                  this.login(userData.email, userData.name, 'Y'); // Vue 컴포넌트의 login 메서드 호출
-                } else {
-                  console.error('Google 사용자 정보 가져오기 실패:', response.status, response.statusText);
-                }
-              } catch (error) {
-                console.error('Google 사용자 정보 가져오기 오류:', error);
-              }
-
-            } else {
-              console.error('액세스 토큰 교환 실패:', response.status, response.statusText);
-            }
-          } catch (error) {
-            console.error('액세스 토큰 교환 오류:', error);
-          }
-        },
-          login(oauthUserId, oauthUsername, oauth_yn) {
-            this.loading = true; //로딩 상태 활성화
-            if(oauth_yn === 'Y'){ //구글로그인
-              loginMethods.methods.Oauthlogin( oauthUserId, oauthUsername, (res) => { //아이디, 이름
-                    // 토큰을 Vuex에 저장
-                  this.setToken(res.data.token);
-
-                  // 토큰을 로컬 스토리지에 저장
-                  localStorage.setItem("token", res.data.token);
-
-                  this.showLoginModal = false; // 로그인 성공 시 모달 닫기
-                  this.username='';
-                  this.newName='';
-                  window.location.href = process.env.VUE_APP_redirect_uri;
-                  alert('로그인에 성공했습니다!');
-                },
-                (error, res) => {
-                  this.username='';
-                  this.newName='';
-                  alert("네트워크에 문제가 발생했습니다.");
-                  console.error("로그인 오류:", error);
-                  this.showLoginModal = false; // 로그인 성공 시 모달 닫기
-                }
-              );
-            } else { //일반로그인
-              loginMethods.methods.login( escapeString(this.username), this.password, (res) => {
-                    // 토큰을 Vuex에 저장
-                  this.setToken(res.data.token);
-
-                  // 토큰을 로컬 스토리지에 저장
-                  localStorage.setItem("token", res.data.token);
-
-                  this.showLoginModal = false; // 로그인 성공 시 모달 닫기
-                  this.username = ""; // 입력한 사용자 이름 초기화
-                  this.password = ""; // 입력한 비밀번호 초기화
-                  const url = window.location.href;
-                  const baseUrl = url.split('/').slice(0, 3).join('/');
-                  window.location.href = baseUrl;
-                  alert('로그인에 성공했습니다!');
-                },
-                (error, res) => {
-                  if(error.response.status === 401){
-                    commons.showToast(this, '존재하지 않는 이메일입니다.');
-                  } else if(error.response.status === 402){
-                    commons.showToast(this, '패스워드가 틀렸습니다.');
-                  } else {
-                    alert("네트워크에 문제가 발생했습니다.");
-                  }
-                  console.error("로그인 오류:", error);
-                  this.showLoginModal = false; // 로그인 성공 시 모달 닫기
-                  this.username = ""; // 입력한 사용자 이름 초기화
-                  this.password = ""; // 입력한 비밀번호 초기화
-                }
-              );
-            }
-            this.loading = false; //로딩 상태 활성화
-          },
-         
           logout() {
                 // 로그아웃 처리 로직
                 // 로컬 스토리지에서 토큰 제거
@@ -429,11 +281,6 @@ export default {
           cancelUserProfile() {
             this.isUserProfileModalVisible = false; 
             this.isEditingProfilePicture = false;
-          },
-          cancel() {
-            this.showLoginModal = false; // 취소 버튼 클릭 시 모달 닫기
-            this.username = ""; // 입력한 사용자 이름 초기화
-            this.password = ""; // 입력한 비밀번호 초기화
           },
 
           // 메일인증
@@ -623,18 +470,6 @@ export default {
           },
         },
   mounted() {
-      // 페이지가 로드될 때 실행할 함수
-      window.addEventListener('load', () => {
-        // URL에서 쿼리 문자열 파싱
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        
-        // 'code' 매개 변수 값 가져오기
-        const code = urlParams.get('code');
-        if (code) {
-          this.exchangeGoogleAuthCodeForAccessToken(code);
-        }
-      });
       this.startInterval();
     },
     unmounted() {
@@ -652,23 +487,9 @@ export default {
       this.profileSearch("load");
       this.alarmCheck();
     },
-    watch: {
-        // showLoginModal 데이터 변경 감지
-        showLoginModal(newValue) {
-          if (newValue) {
-            this.$nextTick(() => {
-              this.focusLoginButton(); // 모달이 열릴 때 버튼으로 포커스 이동
-            });
-          }
-        },
-      }
 };
 
-function escapeString(str) {
-  // 이스케이핑 로직을 구현
-  // 예: '를 ''로 대체하여 SQL Injection 방지
-  return str.replace(/'/g, "''");
-}
+
 </script>
 
 <style scoped>
@@ -744,7 +565,7 @@ cursor: pointer;
 background-color: #0056b3;
 }
 
-.login-btn, .signup-btn, .logout-btn {
+.login_btn, .signup-btn, .logout-btn {
 padding: 8px 16px;
 background-color: #007bff;
 color: #ffffff;
@@ -753,7 +574,7 @@ border-radius: 5px;
 cursor: pointer;
 }
 
-.login-btn:hover {
+.login_btn:hover {
 background-color: #0056b3;
 }
 
@@ -894,7 +715,7 @@ cursor: pointer;
     margin-top:-15px;
   }
 
-  .login-btn, .signup-btn, .logout-btn {
+  .login_btn, .signup-btn, .logout-btn {
     padding: 4px 8px;
     background-color: #007bff;
     color: #ffffff;

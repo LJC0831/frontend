@@ -1,4 +1,27 @@
+* {
+  font-family: "Pretendard";
+}
+/* 사이즈 위치*/
+.main_content_30 {
+  text-align: center;
+  max-width: 30%;
+  margin: 0 auto;
+  width: 100%;
+  padding: 20px;
+  background-color: white;
+}
 
+.resist_top_30{
+  margin-top: 30px;
+  background-color: white;
+}
+
+/* 폰트 */
+#font_color_01{
+  color: rgb(172, 175, 174)
+}
+
+/* 그 외 */
 .loading-spinner {
     width: 50px; /* 로딩 이미지 크기 */
     height: 50px;
