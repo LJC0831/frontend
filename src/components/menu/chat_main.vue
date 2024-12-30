@@ -124,7 +124,7 @@ export default {
     window.addEventListener("popstate", this.handleMobileBackButton);
     this.pushEmptyState();
   },
-  beforeDestroy() {
+  unmounted() {
     // 컴포넌트가 제거되기 전에 이벤트 리스너 해제
     window.removeEventListener("popstate", this.handleMobileBackButton);
   },

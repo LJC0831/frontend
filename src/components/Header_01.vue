@@ -637,7 +637,7 @@ export default {
       });
       this.startInterval();
     },
-    beforeDestroy() {
+    unmounted() {
     // 컴포넌트가 파괴되기 전에 setInterval을 멈춥니다.
     this.stopInterval();
   },
