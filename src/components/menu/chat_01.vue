@@ -168,14 +168,12 @@
         newMessage : '',
         newMessage2 : '', //전달
         editedName : "", 
-        file_no : null,
         profilePicture: null,
         chatContainer: null,
         loadingPreviousMessages: false, // 이전 채팅 내역 로딩 상태
         shouldMaintainScroll: true, // 스크롤을 유지할지 여부를 나타내는 변수
         oldestMessageTime: null,   //이전메세지 시간
         lastMessageTimestamps: [], // 최근 8개 메시지의 타임스탬프를 저장합니다.
-        messageCount: 0, // 최근 10초 내에 보낸 메시지의 수를 저장합니다.
         showModal: false, // 모달 표시 여부
         userPicture:[], // 참가유저들 사진
         maxFileSize: 20 * 1024 * 1024, // 20MB (메가바이트)
@@ -189,7 +187,6 @@
         loading2: false,
         isChatTextareaFocused: false, //텍스트박스 포커싱여부
         ismobile:this.isMobile() ? false : true, //뒤로가기버튼활성화여부
-        userViewCount:0,
         isSearchChat:false, //채팅검색여부
         searchChatcontentPosition:0, //채팅검색위치id
         searchChatContentArray: [], //검색위치배열저장

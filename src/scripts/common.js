@@ -6,7 +6,7 @@ export const baseURL = "https://backendserver.shop:3000";
 export function loginCheck() {
     const token = localStorage.getItem('token');
     if(token === null){
-        alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
+        alert('로그인 후 이용해주세요.');
         return false;
     } else {
         return true;
@@ -16,7 +16,7 @@ export function loginCheck() {
 export function getToken() {
     const token = localStorage.getItem('token');
     if(token === null){
-        alert('로그인 세션이 종료되었습니다. 재로그인해주세요.');
+        alert('로그인 후 이용해주세요.');
         return false;
     }
     const decodedToken = jwtDecode(token);
