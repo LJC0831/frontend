@@ -241,7 +241,7 @@
           if(message.user_id !== this.loginUserId){ //채팅을 받을때
               this.previousMessage = message.message;
               message.profilePicture = this.chatUserProfileUrl(message.user_id);
-              commons.showNotification(message.message,message.profilePicture); // 새 메시지 알림 표시
+              this.showNotification(message.message,message.profilePicture); // 새 메시지 알림 표시
               // 메시지 읽음 처리 후 데이터 갱신
               if(document.hasFocus()) { //포커싱중일때 메세지확인처리
                 this.socket.emit('setMessageRead',message.chatId, this.loginUserId, 'Y');
@@ -357,6 +357,7 @@
         }
         
       });
+      
 
       // 답장내역찾기
       this.socket.on('setSearchAnswer', (messages) => {
@@ -431,6 +432,31 @@
         this.answerId = message.id;
         this.answerUserId = message.editedName;
       },
+      // 알림
+      showNotification(message, imgUrl) {
+          if (this.previousNotification || document.hasFocus()) {
+            return; // 이미 알림이 떠 있는 경우 함수 종료
+          }
+          if ('Notification' in window) {
+            Notification.requestPermission().then(permission => {
+              if (permission === 'granted') {
+                this.previousNotification = true;
+
+                const notification = new Notification('새로운 채팅', {
+                  body: message,
+                  icon: imgUrl
+                });
+                this.previousNotification = notification;
+                // 2초 뒤에 알림 닫기
+              setTimeout(() => {
+                notification.close();
+                this.previousNotification = false; // 알림이 닫힘을 표시
+                  }, 2000);
+                }
+            });
+            
+          }
+        },
       // Search 내용 초기화
       handleInputChange() { 
         // 입력값이 변경될 때 실행되는 로직을 여기에 작성
