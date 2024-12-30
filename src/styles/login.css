@@ -3,6 +3,7 @@
   }
 .OAuth-button{
     display: flex;
+    cursor: pointer;
     justify-content: center
   }
   .regist-div{

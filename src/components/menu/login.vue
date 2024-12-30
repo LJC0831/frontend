@@ -39,6 +39,7 @@
   <script>
   /* eslint-disable */
   import { mapActions } from 'vuex';
+  import OAuth from '@/scripts/OAuth.js';
   import loginMethods from '@/scripts/login.js';
 
   export default {
@@ -46,6 +47,7 @@
     data() {
       return {
         loading: false, // 로딩 상태 추가 true면 로딩처리
+        kakao_url: `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.VUE_APP_KAKAO_CLIENT_ID}&redirect_uri=${process.env.VUE_APP_KAKAO_REDIRECT_URL}&response_type=code`,
         user_id: null,
         user_pwd: null,
       };
@@ -54,6 +56,7 @@
 
     },
     mounted() {
+      OAuth.handleKakaoCallback(this.getKakaoToken); // 카카오 콜백처리
     
     },
     methods: {
