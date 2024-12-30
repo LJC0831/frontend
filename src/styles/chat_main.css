@@ -46,6 +46,7 @@
   .chatroom-readCount {
   display: inline-block;
   height: 17px;
+  min-width: 20px;
   background-color: red; /* 배경색 설정 */
   color: #FFFFFF; /* 글자색 설정 */
   border-radius: 50%; /* 원 모양으로 만들기 */
