@@ -262,6 +262,7 @@
             this.newMessage = '';
             setTimeout(() => {
               this.socket.emit('setMessageRead',message.chatId, this.loginUserId, 'Y');
+              this.scrollToBottom();
             }, 300); // 100ms(0.1초) 후에 실행됩니다.
           }
         }
@@ -703,11 +704,11 @@
           this.thumbnailUrl = '';
           this.description = '';
           this.newMessage2 = '';
-          this.$nextTick(() => {
-            setTimeout(() => {
-              this.scrollToBottom();
-              }, 200);
-          });
+          // this.$nextTick(() => {
+          //   setTimeout(() => {
+          //     this.scrollToBottom();
+          //     }, 400);
+          // });
       },
       //이모티콘 팝업 활성화
       openEmoticonModal() {
