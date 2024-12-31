@@ -91,3 +91,8 @@
       border-top-right-radius: 5px;
     }
   
+    @media (max-width: 768px) {
+      .main_content_30 {
+        max-width: 100%;
+      }
+    }
