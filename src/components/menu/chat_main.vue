@@ -2,11 +2,9 @@
   <div>
     <div class="chat-main" v-if="selectedChatId !== null">
       <ChatRoom01 ref="chatComponent" :selectedChatId="selectedChatId" :selectSubject="selectSubject" :selectUser="selectUser" @changeSelectedChatId="changeSelectedChatId" />
+      <button class="btn btn-primary search-button" id="btn-exit" @click="exit()">채팅목록</button>
     </div>
     <div class="chat-room" v-if="selectedChatId === null">
-      
-      
-
         <div class="album py-5 bg-body-tertiary">
           <div class="container">
             <div class="tabs-container">

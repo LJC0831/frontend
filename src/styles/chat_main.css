@@ -33,6 +33,10 @@
     margin-top: 20px;
     cursor: pointer;
   }
+  #btn-exit{
+    float: right;
+    margin:5px;
+  }
   .chatroom-readCount:empty {
     display: none; /* 내용이 없는 경우 숨김 */
   }
