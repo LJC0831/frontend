@@ -61,6 +61,12 @@
     },
     methods: {
       ...mapActions(["setToken"]),
+      getKakaoToken(code) {
+        OAuth.getKakaoToken(code, this.getKakaoUserInfo, this.$data);
+      },
+      getKakaoUserInfo(accessToken) {
+        OAuth.getKakaoUserInfo(accessToken, this.setToken, this.$data);
+      },
       login() {
             this.loading = true; //로딩 상태 활성화
               loginMethods.methods.login(escapeString(this.user_id), this.user_pwd, (res) => {
