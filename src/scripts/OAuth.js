@@ -54,12 +54,11 @@ export default {
         const pwd = userData.id;
         const OAuthYn = 'Y';
 
-        loginMethods.methods.login_oauth(kakaoUserId, kakaoUserNM, pwd, kakaoPicture, OAuthYn,
+        loginMethods.methods.Oauthlogin(kakaoUserId, kakaoUserNM, pwd, kakaoPicture, OAuthYn,
           (res) => {
             if (res.status === 200) {
               alert('로그인 성공');
               setToken(res.data.token);
-              localStorage.setItem("token_picture", kakaoPicture);
               loadingState.value = false;
               const url = window.location.href;
               const baseUrl = url.split('/').slice(0, 3).join('/');

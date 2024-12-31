@@ -14,8 +14,8 @@ export default {
         .then(successCallback)
         .catch(errorCallback);
     },
-    Oauthlogin(uesrId, username, successCallback, errorCallback) {
-      api.post("/api/oauth/user", { uesrId, username })
+    Oauthlogin(kakaoUserId, kakaoUserNM, pwd, kakaoPicture, OAuthYn, successCallback, errorCallback) {
+      api.post("/api/chat/oauth/user", {kakaoUserId, kakaoUserNM, pwd, kakaoPicture, OAuthYn})
         .then(successCallback)
         .catch(errorCallback);
     },
