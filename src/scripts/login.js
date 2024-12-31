@@ -10,7 +10,7 @@ const api = axios.create({
 export default {
   methods: {
     login(username, password, successCallback, errorCallback) {
-      api.post("/api/user", { username, password })
+      api.post("/api/chat/login", { username, password })
         .then(successCallback)
         .catch(errorCallback);
     },
