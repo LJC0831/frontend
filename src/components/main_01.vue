@@ -18,6 +18,7 @@
 <script>
 /* eslint-disable */
 import * as commons from './../scripts/common.js';
+import axios from 'axios';
 
 export default {
   data() {
@@ -26,6 +27,11 @@ export default {
   },
   methods: {
     alarm() {
+      const accessToken = localStorage.getItem('kakao_code');
+      if (!accessToken) {
+        console.error('액세스 토큰이 없습니다.');
+        return;
+      }
       const kakaoMessage = {
         object_type: 'text',  // 'text' 형식으로 메시지 전송
         text: '안녕하세요! 카카오톡 메시지 전송 테스트입니다.',
@@ -35,11 +41,22 @@ export default {
         },
       };
 
-      window.Kakao.Link.sendDefault({
-        object_type: 'text',  // 'text' 형식으로 메시지 전송
-        text: kakaoMessage.text, // 전송할 텍스트 메시지
-        link: kakaoMessage.link, // 전송할 링크
-      });
+      axios({
+          method: 'post',
+          url: 'https://kapi.kakao.com/v2/api/talk/memo/default/send',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          data: {
+            template_object: kakaoMessage,
+          },
+        })
+          .then((response) => {
+            console.log('메시지 전송 성공:', response.data);
+          })
+          .catch((error) => {
+            console.error('메시지 전송 실패:', error);
+          });
       commons.showToast(this, '기능준비중입니다 ...');
     },
   }
