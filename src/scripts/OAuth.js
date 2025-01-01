@@ -6,6 +6,7 @@ export default {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
     if (code) {
+      localStorage.setItem('kakao_code', code);
       callback(code);
     }
   },
