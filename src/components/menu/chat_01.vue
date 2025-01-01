@@ -662,7 +662,10 @@
           commons.showToast(this, '메시지를 10초 내에 20개 이상 보낼 수 없습니다.');
           return;
         }
-        if(!commons.loginCheck()) return;
+        if(!commons.loginCheck()){
+          this.$router.push('/login');
+          return;
+        }
         if (this.newMessage2.trim() === '') return;
         if(this.newMessage2.length>=4000){
           commons.showToast(this, '2000자 이상 입력불가합니다.');
@@ -801,7 +804,10 @@
       },
       // 파일 메세지 전송1
       async chatfileUrl(chat_file_id, originalFileName) {
-        if(!commons.loginCheck()) return;
+        if(!commons.loginCheck()) {
+          this.$router.push('/login');
+          return;
+        }
         const now = new Date();
         this.lastMessageTimestamps.push(now);
 
@@ -860,7 +866,10 @@
       },
       // 이미지 메세지 전송2
       async sendImageMessage(chat_file_id, chatimageUrl, imageType) {
-        if(!commons.loginCheck()) return;
+        if(!commons.loginCheck()) {
+          this.$router.push('/login');
+          return;
+        }
         const now = new Date();
         this.lastMessageTimestamps.push(now);
 

@@ -6,7 +6,6 @@
         <div v-if="!isLoggedIn" class="signup-button" @click="showSignupModal = true">
           <button class="signup-btn">회원가입</button>&nbsp;
         </div>
-        <!-- <div v-if="!isLoggedIn" class="login-button" @click="$emit('menuSelected', 'login');$router.push('/login');"> -->
         <div v-if="!isLoggedIn" class="login-button" @click="$router.push('/login');">
             <button class="login_btn">로그인</button>
         </div>
@@ -183,7 +182,10 @@ export default {
           },
           // 내정보 수정
           saveUserProfile() {
-            if(!commons.loginCheck()) return;
+            if(!commons.loginCheck()){
+              this.$router.push('/login');
+              return;
+            } 
             const userid = this.loginUserId; // 사용자 아이디 추출
             if(this.editedName.length === 0){
               commons.showToast(this, '이름은 필수값입니다.');

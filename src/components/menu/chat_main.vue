@@ -193,7 +193,10 @@ export default {
       const userIds = chatRooms.user_id; //방 인원list
 
       
-      if(!commons.loginCheck()) return;
+      if(!commons.loginCheck()){
+        this.$router.push('/login');
+        return;
+      } 
       const userIdsArray = userIds.split(',');
 
 
@@ -335,7 +338,10 @@ export default {
         commons.showToast(this, '인원수를 입력해주세요.');
         return;
       }
-      if(!commons.loginCheck()) return;
+      if(!commons.loginCheck()) {
+        this.$router.push('/login');
+        return;
+      }
       const userid = this.loginUserId; 
       chatMethods.methods.createChatRoom(this.subject, this.newPassword, userid, this.expire_cnt, (res) => {
             if(res.status === 200){
