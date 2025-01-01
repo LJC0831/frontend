@@ -41,15 +41,17 @@ export default {
         },
       };
 
+      const data = new URLSearchParams();
+      data.append('template_object', JSON.stringify(kakaoMessage));
+
       axios({
           method: 'post',
           url: 'https://kapi.kakao.com/v2/api/talk/memo/default/send',
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/x-www-form-urlencoded', // 수정된 헤더
           },
-          data: {
-            template_object: kakaoMessage,
-          },
+          data: data,  // data를 URLSearchParams로 변환하여 전달
         })
           .then((response) => {
             console.log('메시지 전송 성공:', response.data);
