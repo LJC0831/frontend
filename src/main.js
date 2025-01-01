@@ -18,7 +18,7 @@ app.use(router); // Vue Router 사용
 app.use(store);
 app.use(VueToast); // Register the VueToast plugin
 app.component('font-awesome-icon', FontAwesomeIcon)
-
+window.Kakao.init(process.env.VUE_APP_KAKAO_REST_API_KEY);
 
 app.mount('#app');
 
