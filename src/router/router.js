@@ -10,6 +10,7 @@ const routes = [
       { path: '/', component: ChatMain },
       { path: '/chat', component: ChatList },
       { path: '/chat/:chatId', component: ChatRoom },
+      { path: '/auth/kakao/callback', name: 'KakaoCallback', component: ChatList },
       { path: '/user', component: ChatUser},
       { path: '/memo', component: ChatMemo},
       { path: '/login', component: ChatLogin},
