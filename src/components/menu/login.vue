@@ -41,6 +41,7 @@
   import { mapActions } from 'vuex';
   import OAuth from '@/scripts/OAuth.js';
   import loginMethods from '@/scripts/login.js';
+  import * as commons from '@/scripts/common.js';
 
   export default {
     name: 'login',
