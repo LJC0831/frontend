@@ -655,13 +655,6 @@ align-items: center;
 .radio-buttons label {
 margin-right: 10px;
 }
-.google-login-image{
-margin-left: -40px;
-width: 70px;
-}
-.google-login{
-cursor: pointer;
-}
 .icon-container {
   margin-top: -20px; /* 원하는 위치로 조정하세요. */
   margin-right: 10px;
