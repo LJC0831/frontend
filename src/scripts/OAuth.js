@@ -6,7 +6,6 @@ export default {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
     if (code) {
-      localStorage.setItem('kakao_code', code);
       callback(code);
     }
   },
@@ -29,6 +28,7 @@ export default {
       .then(response => response.json())
       .then(tokenData => {
         if (tokenData.access_token) {
+          localStorage.setItem('kakao_code', tokenData.access_token);
           getUserInfoCallback(tokenData.access_token);
         } else {
           alert('카카오 로그인 실패: 토큰을 받아올 수 없습니다.');
