@@ -6,7 +6,8 @@
         <div v-if="!isLoggedIn" class="signup-button" @click="showSignupModal = true">
           <button class="signup-btn">회원가입</button>&nbsp;
         </div>
-        <div v-if="!isLoggedIn" class="login-button" @click="this.$emit('menuSelected', 'login');">
+        <!-- <div v-if="!isLoggedIn" class="login-button" @click="$emit('menuSelected', 'login');$router.push('/login');"> -->
+        <div v-if="!isLoggedIn" class="login-button" @click="$router.push('/login');">
             <button class="login_btn">로그인</button>
         </div>
         <div v-if="isLoggedIn" class="user-profile-button" @click="profileSearch('')">

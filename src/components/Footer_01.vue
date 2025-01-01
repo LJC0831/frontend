@@ -2,13 +2,13 @@
     <footer class="footer-container">
       <div class="mobile-icons">
           <div class="icon" @click="navigateToPage('')">
-            <i class="fas fa-home"></i>
+            <router-link to="/" class="router-link"><i class="fas fa-home"></i></router-link>
           </div>
           <div class="icon" @click="navigateToPage('chat_main')"> 
-            <i class="fas fa-comment"></i>
+            <router-link to="/chat" class="router-link"><i class="fas fa-comment"></i></router-link>
           </div>
           <div class="icon" @click="navigateToPage('memoVue')">
-            <i class="fas fa-question-circle" @click="navigateToPage('profile')"></i>
+            <router-link to="/memo" class="router-link"><i class="fas fa-question-circle" @click="navigateToPage('profile')"></i></router-link>
           </div>
         <!-- Add more icons as needed -->
       </div>
@@ -27,7 +27,10 @@ export default {
 };
 </script>
   <style scoped>
-
+.router-link {
+  color: inherit; 
+  text-decoration: none; 
+}
 .mobile-icons {
   position: fixed;
   bottom: 0;

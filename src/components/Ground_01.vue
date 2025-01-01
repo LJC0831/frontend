@@ -1,16 +1,9 @@
 <template>
   <div class="ground">
-    <Header @menuSelected="handleMenuSelected02" v-if="selectedMenu !== 'userList'"/>
-      <div class="main-container">
-        <!-- <Sidebar v-on:menuSelected="handleMenuSelected" :selectedMenu="selectedMenu" /> -->
-      </div>
-          <!-- Memo_01.vue 컴포넌트 보여주기 -->
+    <Header @menuSelected="handleMenuSelected02" />
           <div class="content">
-            <main01 v-if="selectedMenu === ''" /> 
-            <Memo_01 v-if="selectedMenu === 'memoVue'" />
-            <userList v-if="selectedMenu === 'userList'" />
-            <chat_main v-if="selectedMenu === 'chat_main'" :chatData="chatData"/>
-            <login v-if="selectedMenu === 'login'" />
+            <router-view v-if="selectedMenu === 'chat_main'" :chatData="chatData"/> 
+            <router-view v-else /> 
           </div>
     <div class="ad-container"></div>
     <Footer @menuSelected="handleMenuSelected" />
