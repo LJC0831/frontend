@@ -144,7 +144,9 @@ export default {
           ...loginMethods.methods,
           refreshPage() {
             // 페이지 새로고침
-            window.location.reload();
+            const url = window.location.href;
+            const baseUrl = url.split('/').slice(0, 3).join('/');
+            window.location.href = baseUrl;
           },
           isMobile() {
             return window.innerWidth <= 800; // 600px 이하면 모바일로 판단
