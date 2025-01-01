@@ -1,4 +1,4 @@
-# frontend 친톡 접속URL: https://www.friendtalk.shop/
+# frontend 친톡 접속URL: https://friendtalk.netlify.app/
 
 ## 메인화면
 
