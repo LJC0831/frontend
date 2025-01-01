@@ -425,16 +425,7 @@ export default {
           toggleNotification() {
             this.showNotification = !this.showNotification;
           },
-          startInterval() {
-            // 10분(600000 밀리초)마다 myFunction 함수를 실행합니다.
-            this.timer = setInterval(this.alarmCheck, 600000);
-          },
-          stopInterval() {
-            // setInterval을 멈춥니다.
-            clearInterval(this.timer);
-          },
           alarmCheck() {
-            // 이 함수는 10분마다 호출됩니다.
             const token = localStorage.getItem('token');
             if(token != null) {
               loginMethods.methods.alarmSearch(this.loginUserId, (res) => {
@@ -473,12 +464,7 @@ export default {
           },
         },
   mounted() {
-      this.startInterval();
     },
-    unmounted() {
-    // 컴포넌트가 파괴되기 전에 setInterval을 멈춥니다.
-    this.stopInterval();
-  },
   created() {
       // 페이지가 로드될 때 로컬 스토리지에 토큰이 있는지 확인하여 로그인 상태를 설정
       const token = localStorage.getItem("token");
