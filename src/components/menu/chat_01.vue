@@ -448,8 +448,8 @@
             kakaoMessage = {
               object_type: 'feed', // 'feed' 형식으로 메시지 전송
               content: {
-                title: `이미지`,
-                description: `이미지을 다운로드하려면 링크를 클릭하세요:\n${imageUrl}`, 
+                title: `이미지을 다운로드하려면 링크를 클릭하세요:\n${imageUrl}`,
+                description: '', 
                 image_url: imageUrl, // 전송할 이미지 URL
                 link: {
                   web_url: 'https://friendtalk.netlify.app', // 웹 링크
