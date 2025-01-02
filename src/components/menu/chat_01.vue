@@ -1042,7 +1042,7 @@
       // 세션종료
       disconSession(){
         for (let key in localStorage) {
-            if (key !== "token") {
+            if (key !== "token" && key !=="kakao_code") {
               localStorage.removeItem(key);
             }
           }

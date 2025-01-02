@@ -283,7 +283,7 @@ export default {
     exit() {
       try{
         for (let key in localStorage) {
-          if (key !== "token") {
+          if (key !== "token" && key !=="kakao_code") {
             localStorage.removeItem(key);
           }
         }
