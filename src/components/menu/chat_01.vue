@@ -442,7 +442,6 @@
           commons.showToast(this, '카카오 로그인 후 사용 가능합니다.');
           return;
         }
-          console.log(message);
           if(message.chat_type==='image'){
             const imageUrl = message.chatimageUrl;
             kakaoMessage = {
@@ -492,9 +491,10 @@
             data: data,  // data를 URLSearchParams로 변환하여 전달
           })
             .then((response) => {
-              console.log('메시지 전송 성공:', response.data);
+              commons.showToast(this, '카카오톡 메세지 전송 완료');
             })
             .catch((error) => {
+              commons.showToast(this, '메세지 전송 실패했습니다.');
               console.error('메시지 전송 실패:', error);
             });
       },
