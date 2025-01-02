@@ -45,7 +45,7 @@
           </div>
         </div>
         <span class="message-date" v-if="this._isAnswerActive" @click="chat_answer(message)"><img src="@/assets/back-img.png" style="width: 20px;"></span>
-        <span class="message-date" v-if="this._isAnswerActive" @click="kakaoSend(message)" style="width: 20px;"><font-awesome-icon :icon="['fas', 'envelope']" /></span>
+        <span class="message-date" v-if="this._isAnswerActive" @click="kakaoSend(message)" style="width: 20px;"><font-awesome-icon :icon="['fas', 'envelope']" :style="{ fontSize: iconSize }"/></span>
         <span class="message-view" v-if="message.selectUserCount !== 0" >{{ message.selectUserCount }}</span>
         <span class="message-date">{{ formatDate(message.ins_ymdhms) }}</span>
       </div>
@@ -210,6 +210,7 @@
         thumbnailUrl:'', //썸네일이미지
         description:'', //썸네일설명
         _isAnswerActive:false, //답장활성화여부
+        iconSize: '1.3rem',
       };
     },
     created() {
