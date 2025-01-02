@@ -116,6 +116,7 @@ export default {
                 // 로그아웃 처리 로직
                 // 로컬 스토리지에서 토큰 제거
                 localStorage.removeItem("token");
+                localStorage.removeItem("kakao_code");
                 // 로그인 상태를 false로 변경
                 this.isLoggedIn = false;
           },

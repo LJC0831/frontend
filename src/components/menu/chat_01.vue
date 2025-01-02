@@ -440,34 +440,34 @@
           commons.showToast(this, '카카오 로그인 후 사용 가능합니다.');
           return;
         }
-
-        const kakaoMessage = {
-        object_type: 'text',  // 'text' 형식으로 메시지 전송
-        text: message,
-        link: {
-          web_url: 'https://friendtalk.netlify.app',
-          mobile_web_url: 'https://friendtalk.netlify.app',
-        },
-      };
-
-      const data = new URLSearchParams();
-      data.append('template_object', JSON.stringify(kakaoMessage));
-
-      axios({
-          method: 'post',
-          url: 'https://kapi.kakao.com/v2/api/talk/memo/default/send',
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/x-www-form-urlencoded', // 수정된 헤더
+          console.log(message);
+          const kakaoMessage = {
+          object_type: 'text',  // 'text' 형식으로 메시지 전송
+          text: '안녕하세요! 카카오톡 메시지 전송 테스트입니다.',
+          link: {
+            web_url: 'https://friendtalk.netlify.app',
+            mobile_web_url: 'https://friendtalk.netlify.app',
           },
-          data: data,  // data를 URLSearchParams로 변환하여 전달
-        })
-          .then((response) => {
-            console.log('메시지 전송 성공:', response.data);
+        };
+
+        const data = new URLSearchParams();
+        data.append('template_object', JSON.stringify(kakaoMessage));
+
+        axios({
+            method: 'post',
+            url: 'https://kapi.kakao.com/v2/api/talk/memo/default/send',
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+              'Content-Type': 'application/x-www-form-urlencoded', // 수정된 헤더
+            },
+            data: data,  // data를 URLSearchParams로 변환하여 전달
           })
-          .catch((error) => {
-            console.error('메시지 전송 실패:', error);
-          });
+            .then((response) => {
+              console.log('메시지 전송 성공:', response.data);
+            })
+            .catch((error) => {
+              console.error('메시지 전송 실패:', error);
+            });
       },
       // 알림
       showNotification(message, imgUrl) {
