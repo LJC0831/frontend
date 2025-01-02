@@ -448,7 +448,12 @@
             kakaoMessage = {
               object_type: 'feed', // 'feed' 형식으로 메시지 전송
               content: {
+                title: '이미지',
                 image_url: imageUrl, // 전송할 이미지 URL
+                link: {
+                  web_url: 'https://friendtalk.netlify.app', // 웹 링크
+                  mobile_web_url: 'https://friendtalk.netlify.app', // 모바일 웹 링크
+                },
               },
             };
           } else if (message.chat_type==='file'){
