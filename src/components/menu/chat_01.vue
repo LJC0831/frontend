@@ -45,6 +45,7 @@
           </div>
         </div>
         <span class="message-date" v-if="this._isAnswerActive" @click="chat_answer(message)"><img src="@/assets/back-img.png" style="width: 20px;"></span>
+        <span class="message-date" v-if="this._isAnswerActive" @click="kakaoSend(message)" style="width: 20px;"><font-awesome-icon :icon="['fas', 'envelope']" /></span>
         <span class="message-view" v-if="message.selectUserCount !== 0" >{{ message.selectUserCount }}</span>
         <span class="message-date">{{ formatDate(message.ins_ymdhms) }}</span>
       </div>
@@ -156,6 +157,7 @@
   import loginMethods from '../../scripts/login.js';
   import chatMethods from '../../scripts/chat.js';
   import * as commons from '../../scripts/common.js';
+  import axios from 'axios';
 
   export default {
     props: {
@@ -431,6 +433,41 @@
         this.answerMessage = message.message === '' ? '이미지' : message.message;
         this.answerId = message.id;
         this.answerUserId = message.editedName;
+      },
+      kakaoSend(message){
+        const accessToken = localStorage.getItem('kakao_code');
+        if (!accessToken) {
+          commons.showToast(this, '카카오 로그인 후 사용 가능합니다.');
+          return;
+        }
+
+        const kakaoMessage = {
+        object_type: 'text',  // 'text' 형식으로 메시지 전송
+        text: message,
+        link: {
+          web_url: 'https://friendtalk.netlify.app',
+          mobile_web_url: 'https://friendtalk.netlify.app',
+        },
+      };
+
+      const data = new URLSearchParams();
+      data.append('template_object', JSON.stringify(kakaoMessage));
+
+      axios({
+          method: 'post',
+          url: 'https://kapi.kakao.com/v2/api/talk/memo/default/send',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/x-www-form-urlencoded', // 수정된 헤더
+          },
+          data: data,  // data를 URLSearchParams로 변환하여 전달
+        })
+          .then((response) => {
+            console.log('메시지 전송 성공:', response.data);
+          })
+          .catch((error) => {
+            console.error('메시지 전송 실패:', error);
+          });
       },
       // 알림
       showNotification(message, imgUrl) {
