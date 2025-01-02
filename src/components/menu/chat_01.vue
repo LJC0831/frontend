@@ -437,19 +437,35 @@
       },
       kakaoSend(message){
         const accessToken = localStorage.getItem('kakao_code');
+        let kakaoMessage = '';
         if (!accessToken) {
           commons.showToast(this, '카카오 로그인 후 사용 가능합니다.');
           return;
         }
           console.log(message);
-          const kakaoMessage = {
-          object_type: 'text',  // 'text' 형식으로 메시지 전송
-          text: message.message,
-          link: {
-            web_url: 'https://friendtalk.netlify.app',
-            mobile_web_url: 'https://friendtalk.netlify.app',
-          },
-        };
+          if(message.chat_type==='image'){
+            const imageUrl = message.chatimageUrl;
+            kakaoMessage = {
+              object_type: 'feed', // 'feed' 형식으로 메시지 전송
+              content: {
+                title: '이미지', // 메시지 제목
+                image_url: imageUrl, // 전송할 이미지 URL
+                link: {
+                  web_url: 'https://friendtalk.netlify.app', // 웹 링크
+                  mobile_web_url: 'https://friendtalk.netlify.app', // 모바일 웹 링크
+                },
+              },
+            };
+          } else {
+            kakaoMessage = {
+              object_type: 'text',  // 'text' 형식으로 메시지 전송
+              text: message.message,
+              link: {
+                web_url: 'https://friendtalk.netlify.app',
+                mobile_web_url: 'https://friendtalk.netlify.app',
+              },
+            };
+          }
 
         const data = new URLSearchParams();
         data.append('template_object', JSON.stringify(kakaoMessage));
