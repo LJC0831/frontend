@@ -3,6 +3,7 @@ import ChatList from '@/components/menu/chat_main.vue';
 import ChatRoom from '@/components/menu/chat_01.vue';
 import ChatUser from '@/components/menu/userList.vue';
 import ChatLogin from '@/components/menu/login.vue';
+import ChatSignup from '@/components/menu/signup.vue';
 import ChatMemo from '@/components/Memo_01.vue';
 import ChatMain from '@/components/main_01.vue';
 
@@ -14,6 +15,7 @@ const routes = [
       { path: '/user', component: ChatUser},
       { path: '/memo', component: ChatMemo},
       { path: '/login', component: ChatLogin},
+      { path: '/signup', component: ChatSignup},
     ];
 
 const router = createRouter({

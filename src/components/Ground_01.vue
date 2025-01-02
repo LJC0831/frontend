@@ -19,8 +19,10 @@ import Memo_01 from "./Memo_01.vue";
 import userList from "./menu/userList.vue";
 import chat_main from "./menu/chat_main.vue";
 import login from "./menu/login.vue";
+import signup from "./menu/signup.vue";
+
 export default {
-  components:{Header, Footer, main01, Memo_01, chat_main, userList, login},
+  components:{Header, Footer, main01, Memo_01, chat_main, userList, login, signup},
   data() {
     return {
       selectedMenu: '', // 선택된 메뉴를 저장할 변수 추가

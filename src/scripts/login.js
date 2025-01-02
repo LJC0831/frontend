@@ -20,7 +20,7 @@ export default {
         .catch(errorCallback);
     },
     signup(newUserId, newPassword, newName, newGender,successCallback, errorCallback) {
-      api.post("/api/signup", {
+      api.post("/api/chat/signup", {
         userId: newUserId,
         password: newPassword,
         name: newName,

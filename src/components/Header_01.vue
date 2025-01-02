@@ -3,9 +3,6 @@
     <div class="login-container">
       <div class="header-name" @click="refreshPage"><img src="@/assets/main_logo.png" class="main_logo_img"></div>
       <div class="login-button-container">
-        <div v-if="!isLoggedIn" class="signup-button" @click="showSignupModal = true">
-          <button class="signup-btn">회원가입</button>&nbsp;
-        </div>
         <div v-if="!isLoggedIn" class="login-button" @click="$router.push('/login');">
             <button class="login_btn">로그인</button>
         </div>
@@ -42,34 +39,6 @@
         <button @click="searchPwd">변경하기</button>&nbsp;
         <button @click="cancelsearchPwd">취소</button>&nbsp;
       </div>
-      <div class="close-button" @click="showSignupModal = false">X</div>
-    </div>
-    <!-- 회원가입 모달 -->
-    <div v-if="showSignupModal" class="login-modal">
-      <div class="login-form">
-        <h2>회원가입</h2>
-        <label for="newUserId">아이디(인증가능한 이메일)</label>
-        <input type="text" v-model="newUserId" id="newUserId" />
-        <button @click="emailCheck(newUserId)">인증하기</button>&nbsp;
-        <label v-if="mailCheck && !signUpAppr" for="checkNumber">인증번호</label>
-        <input v-if="mailCheck && !signUpAppr" type="text" v-model="checkNumberInput"/>
-        <button v-if="mailCheck && !signUpAppr" @click="emailNumCheck(checkNumberInput,10)">확인</button>&nbsp;
-        <label for="newPassword">비밀번호 </label>
-        <input type="password" v-model="newPassword" id="newPassword" />
-        <input type="password" v-model="newPassword2" id="newPassword2" />
-        <label for="newName">이름 </label>
-        <input type="text" v-model="newName" id="newName" />
-        <label for="newName">성별 </label>
-        <div class="radio-buttons">
-          <label>남</label>
-          <input type="radio" v-model="newGender" name="gender"  value="male" checked/>
-          <label>여</label>
-          <input type="radio" v-model="newGender" name="gender" value="female"/>
-        </div>
-        <button @click="signup">회원가입</button>&nbsp;
-        <button @click="cancelSignup">취소</button>&nbsp;
-      </div>
-      <div class="close-button" @click="showSignupModal = false">X</div>
     </div>
     <!-- 내 정보 모달 -->
       <div v-if="isUserProfileModalVisible" class="login-modal">
@@ -114,13 +83,6 @@ export default {
     return {
       loading: false,
       loginUserId: null,
-      showSignupModal: false, // 회원가입 모달 표시 여부
-      username: "",
-      password: "",
-      newUserId: "", // 회원가입용 새 아이디
-      newPassword: "", // 회원가입용 새 비밀번호
-      newName: "",
-      newGender: "male",
       isLoggedIn: false, // 로그인 상태를 저장하는 데이터 속성
       isUserProfileModalVisible: false, // 내정보 모달 표시 여부 추가
       editedName: "", 
@@ -149,10 +111,6 @@ export default {
           },
           isMobile() {
             return window.innerWidth <= 800; // 600px 이하면 모바일로 판단
-          },
-          // 모달이 열릴 때 로그인 버튼으로 포커스를 이동
-          focusLoginButton() {
-            this.$refs.loginButton.focus();
           },
           logout() {
                 // 로그아웃 처리 로직
@@ -367,53 +325,6 @@ export default {
               commons.showToast(this, '이메일 인증해주세요.');
               return;
             }
-          },
-          // 회원가입처리
-          signup() {
-            if(this.newPassword !== this.newPassword2){
-              commons.showToast(this, '패스워드가 일치하지 않습니다. 다시확인해주세요.');
-              return;
-            }
-            if(this.newPassword.length < 8){
-              commons.showToast(this, '패스워드는 8자리 이상 입력해주세요.');
-              return;
-            }
-            if(this.signUpAppr){
-              loginMethods.methods.signup(
-                this.newUserId,
-                this.newPassword,
-                this.newName,
-                this.newGender,
-                (res) => {
-                  alert("회원가입에 성공했습니다!");
-                  this.showSignupModal = false;
-                  this.newUserId = "";
-                  this.newPassword = "";
-                  this.newName = "";
-                  this.newGender = "";
-                  this.mailCheck = false;
-                  this.signUpAppr2 =false;
-                },
-                (error) => {
-                  // 에러 콜백
-                  console.error("회원가입 오류:", error);
-                  commons.showToast(this, ' 이미 사용 중인 아이디입니다.');
-                  this.signUpAppr = false;
-                }
-              );
-            } else {
-              commons.showToast(this, '이메일 인증해주세요.');
-              return;
-            }
-          },
-          //회원가입팝업닫기
-          cancelSignup() {
-            this.showSignupModal = false;
-            this.newUserId = "";
-            this.newPassword = "";
-            this.newName = "";
-            this.mailCheck = false; 
-            this.signUpAppr =false; 
           },
           //패스워드찾기팝업닫기
           cancelsearchPwd(){

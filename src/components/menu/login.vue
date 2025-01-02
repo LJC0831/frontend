@@ -2,7 +2,7 @@
     <div class="main_content_30">
       <span><h2>로그인</h2></span>
       <div class="resist_top_30">
-        <label id="font_color_01">간편가입</label>
+        <label id="font_color_01">간편로그인</label>
       </div>
 
       <div class="resist_top_30">
@@ -24,7 +24,7 @@
       <div class="resist_top_30">
         <div class="regist-div">
             <button class="login_btn"  @click="login()" @keyup.enter="login()">로그인</button>
-            <button class="login_btn"  >회원가입</button>
+            <button class="login_btn"  @click="$router.push('/signup');">회원가입</button>
         </div>
       </div>
 
