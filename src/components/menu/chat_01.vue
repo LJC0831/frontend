@@ -443,7 +443,7 @@
           console.log(message);
           const kakaoMessage = {
           object_type: 'text',  // 'text' 형식으로 메시지 전송
-          text: '안녕하세요! 카카오톡 메시지 전송 테스트입니다.',
+          text: message.message,
           link: {
             web_url: 'https://friendtalk.netlify.app',
             mobile_web_url: 'https://friendtalk.netlify.app',
