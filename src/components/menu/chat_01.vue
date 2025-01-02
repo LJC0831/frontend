@@ -54,15 +54,17 @@
       <label for="imageInput" class="upload-button">
           <img src="../../assets/uploadIKon.png" alt="첨부 아이콘" />
       </label>
-      <textarea  autocomplete="off" v-model="newMessage" class ="chat-textarea" v-if="!loading"
-      ref="sendButton"
-      @keyup.esc="answerFocusProc()"
-      @focus="handleChatTextareaFocus"
-      @blur="handleChatTextareaBlur"
-      @paste="handleImagePaste" @keydown="handleKeyDown" placeholder="메시지를 입력하세요..." />
-      <label for="imoticon" class="imoticon-button" @click="openEmoticonModal">
-          <img src="../../assets/imoticon.png" alt="이모티콘" style="width:30px;" />
-      </label>
+      <div class="textarea-container">
+        <textarea  autocomplete="off" v-model="newMessage" class ="chat-textarea" v-if="!loading"
+        ref="sendButton"
+        @keyup.esc="answerFocusProc()"
+        @focus="handleChatTextareaFocus"
+        @blur="handleChatTextareaBlur"
+        @paste="handleImagePaste" @keydown="handleKeyDown" placeholder="메시지를 입력하세요..." />
+          <span class="imoticon-button" @click="openEmoticonModal">
+            <font-awesome-icon :icon="['fas', 'smile']" />
+          </span>
+      </div>
       <div>
         <input type="file" id="imageInput" ref="imageInput" @change="handleUpload" class="hidden-input"/>
         <button @click="sendMessage()" v-if="!loading" class="send-button"><i class="fas fa-paper-plane"></i> </button>
