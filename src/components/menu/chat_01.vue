@@ -457,7 +457,7 @@
               },
             };
           } else if (message.chat_type==='file'){
-            const fileUrl = 'message.chatimageUrl'; // 파일 다운로드 링크
+            const fileUrl = message.chatimageUrl; // 파일 다운로드 링크
             kakaoMessage = {
               object_type: 'text', // 텍스트 형식으로 파일 링크 공유
               text: `파일을 다운로드하려면 링크를 클릭하세요:\n${fileUrl}`,
