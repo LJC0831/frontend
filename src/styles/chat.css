@@ -387,7 +387,7 @@ input[type="text"] {
       height: 80vh;
       display: flex;
       flex-direction: column;
-      background-color: white;
+      background-color: rgb(240, 252, 255);
       }
       .send-button {
         display: none;
@@ -408,7 +408,7 @@ input[type="text"] {
       height: 85vh;
       display: flex;
       flex-direction: column;
-      background-color: white;
+      background-color: rgb(240, 252, 255);
       transition: height 0.3s ease; /* 부드러운 애니메이션을 위해 트랜지션 적용 */
       }
       /* .chat-container.focused { */
