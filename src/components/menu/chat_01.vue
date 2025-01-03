@@ -497,7 +497,7 @@
               if (error.response && error.response.status === 401) {
                 // 토큰 만료 시 갱신
                 try {
-                  const newAccessToken = await this.refreshAccessToken(refreshToken);
+                  const newAccessToken = await this.refreshAccessToken(accessToken);
                   accessToken = newAccessToken; // 새로운 토큰으로 갱신
                   await this.sendKakaoMessage(); // 갱신 후 다시 시도
                 } catch (err) {
