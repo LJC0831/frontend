@@ -63,10 +63,14 @@
     methods: {
       ...mapActions(["setToken"]),
       getKakaoToken(code) {
+        this.loading = true;
         OAuth.getKakaoToken(code, this.getKakaoUserInfo, this.$data);
+        this.loading = false;
       },
       getKakaoUserInfo(accessToken) {
+        this.loading = true;
         OAuth.getKakaoUserInfo(accessToken, this.setToken, this.$data);
+        this.loading = false;
       },
       login() {
             this.loading = true; //로딩 상태 활성화
