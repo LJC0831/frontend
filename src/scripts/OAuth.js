@@ -32,6 +32,7 @@ export default {
       .then(tokenData => {
         if (tokenData.access_token) {
           localStorage.setItem('kakao_code', tokenData.access_token);
+          localStorage.setItem('kakao_refresh_token', tokenData.refresh_token);
           this.checkKakaoScopes(tokenData.access_token, getUserInfoCallback, loadingState);
         } else {
           alert('카카오 로그인 실패: 토큰을 받아올 수 없습니다.');

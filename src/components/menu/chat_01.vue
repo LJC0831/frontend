@@ -437,6 +437,7 @@
       },
       async kakaoSend(message){
         const accessToken = localStorage.getItem('kakao_code');
+        const refreshToken = localStorage.getItem('kakao_refresh_token');
         let kakaoMessage = '';
         if (!accessToken) {
           commons.showToast(this, '카카오 로그인 후 사용 가능합니다.');
@@ -497,9 +498,8 @@
               if (error.response && error.response.status === 401) {
                 // 토큰 만료 시 갱신
                 try {
-                  const newAccessToken = await this.refreshAccessToken(accessToken);
-                  accessToken = newAccessToken; // 새로운 토큰으로 갱신
-                  await this.sendKakaoMessage(); // 갱신 후 다시 시도
+                  await this.refreshAccessToken(refreshToken);
+                  await this.kakaoSend(message); // 갱신 후 다시 시도
                 } catch (err) {
                   console.error('갱신 후에도 실패:', err);
                 }
@@ -525,7 +525,7 @@
             });
             const newAccessToken = response.data.access_token;
             localStorage.setItem('kakao_code', newAccessToken); // 새로운 Access Token 저장
-            return newAccessToken;
+            localStorage.setItem('kakao_refresh_token', response.data.refresh_token);
           } catch (error) {
             console.error('토큰 갱신 실패:', error);
             commons.showToast(this, '토큰 갱신에 실패했습니다. 다시 로그인해주세요.');
