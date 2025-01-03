@@ -435,7 +435,7 @@
         this.answerId = message.id;
         this.answerUserId = message.editedName;
       },
-      kakaoSend(message){
+      async kakaoSend(message){
         const accessToken = localStorage.getItem('kakao_code');
         let kakaoMessage = '';
         if (!accessToken) {
@@ -481,7 +481,7 @@
         const data = new URLSearchParams();
         data.append('template_object', JSON.stringify(kakaoMessage));
 
-        axios({
+        await axios({
             method: 'post',
             url: 'https://kapi.kakao.com/v2/api/talk/memo/default/send',
             headers: {
@@ -493,10 +493,44 @@
             .then((response) => {
               commons.showToast(this, '카카오톡 메세지 전송 완료');
             })
-            .catch((error) => {
-              commons.showToast(this, '메세지 전송 실패했습니다.');
-              console.error('메시지 전송 실패:', error);
+            .catch(async (error) => {
+              if (error.response && error.response.status === 401) {
+                // 토큰 만료 시 갱신
+                try {
+                  const newAccessToken = await this.refreshAccessToken(refreshToken);
+                  accessToken = newAccessToken; // 새로운 토큰으로 갱신
+                  await this.sendKakaoMessage(); // 갱신 후 다시 시도
+                } catch (err) {
+                  console.error('갱신 후에도 실패:', err);
+                }
+              } else {
+                commons.showToast(this, '메세지 전송 실패했습니다.');
+                console.error('메시지 전송 실패:', error);
+              }
             });
+      },
+      async refreshAccessToken(refreshToken){ // 토큰 갱신
+        try {
+            const response = await axios({
+              method: 'post',
+              url: 'https://kauth.kakao.com/oauth/token',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              data: new URLSearchParams({
+                grant_type: 'refresh_token',
+                client_id: process.env.VUE_APP_KAKAO_CLIENT_ID, // 카카오 앱 REST API 키
+                refresh_token: refreshToken,
+              }),
+            });
+            const newAccessToken = response.data.access_token;
+            localStorage.setItem('kakao_code', newAccessToken); // 새로운 Access Token 저장
+            return newAccessToken;
+          } catch (error) {
+            console.error('토큰 갱신 실패:', error);
+            commons.showToast(this, '토큰 갱신에 실패했습니다. 다시 로그인해주세요.');
+            throw error;
+          }
       },
       // 알림
       showNotification(message, imgUrl) {
