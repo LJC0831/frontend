@@ -344,23 +344,20 @@
           this.searchChatContentArray.push(this.searchChatcontentPosition);
           this.searchPosition = messages.length;
           this.searchAllcount = messages[0].tot_search_count;
-          this.loading = false;
-          // chatContainer 요소의 레퍼런스를 가져옵니다.
-          setTimeout(() => {
-            this.chatContainer = this.$refs.chatContainer;
-            if(this.searchPosition <= 7){
-              this.chatContainer.scrollTop = 2000;
-            } 
-            else {
-              this.chatContainer.scrollTop = 1;
-            }
-          }, 300); // 300ms(0.3초) 후에 실행됩니다.
+          this.$nextTick(() => {
+              setTimeout(() => {
+                this.chatContainer = this.$refs.chatContainer;
+                const newScrollHeight = this.chatContainer.scrollHeight;
+                this.chatContainer.scrollTop = this.searchPosition <= 7
+                  ? newScrollHeight // 스크롤을 맨 아래로
+                  : 1; // 스크롤을 맨 위로
+              }, 300);
+            });
         } else {
           commons.showToast(this, '찾는 메세지가 없습니다.');
-          this.loading = false;
           this.socket.emit('getLatestMessages',this.selectedChatId, '');
         }
-        
+        this.loading = false;
       });
       
 
