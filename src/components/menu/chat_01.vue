@@ -285,10 +285,10 @@
         // 받은 채팅 메시지들을 화면에 표시하는 로직
         this.messages = messages;
         //const urlsToFetch = [];
-        for (let i = 1; i <= this.messages.length; i ++){
-          // 프로필사진 가져오기
-          this.messages[this.messages.length-i].profilePicture = this.chatUserProfileUrl(this.messages[this.messages.length-i].user_id);
-         }
+         this.messages = messages.map((message) => ({
+            ...message,
+            profilePicture: this.chatUserProfileUrl(message.user_id),
+          }));
         // chatContainer 요소의 레퍼런스를 가져옵니다.
         this.$nextTick(() => {
           this.chatContainer = this.$refs.chatContainer;
@@ -334,10 +334,12 @@
       this.socket.on('messageSearch', (messages) => {
         // 받은 채팅 메시지들을 화면에 표시하는 로직
         this.messages = messages;
-        for (var i = 1; i <= this.messages.length; i ++){
-          this.messages[this.messages.length-i].profilePicture = this.chatUserProfileUrl(this.messages[this.messages.length-i].user_id);
-         }
+        
         if(messages.length > 0){
+          this.messages = messages.map((message) => ({
+            ...message,
+            profilePicture: this.chatUserProfileUrl(message.user_id),
+          }));
           this.searchChatcontentPosition = messages[0].id;
           this.searchChatContentArray.push(this.searchChatcontentPosition);
           this.searchPosition = messages.length;
@@ -366,9 +368,10 @@
       this.socket.on('setSearchAnswer', (messages) => {
         // 받은 채팅 메시지들을 화면에 표시하는 로직
         this.messages = messages;
-        for (var i = 1; i <= this.messages.length; i ++){
-          this.messages[this.messages.length-i].profilePicture = this.chatUserProfileUrl(this.messages[this.messages.length-i].user_id);
-         }
+        this.messages = messages.map((message) => ({
+            ...message,
+            profilePicture: this.chatUserProfileUrl(message.user_id),
+        }));
         if(messages.length > 0){
           this.searchChatcontentPosition = messages[0].id;
           this.searchChatContentArray.push(this.searchChatcontentPosition);
