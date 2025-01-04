@@ -525,7 +525,6 @@
             });
             const newAccessToken = response.data.access_token;
             localStorage.setItem('kakao_code', newAccessToken); // 새로운 Access Token 저장
-            localStorage.setItem('kakao_refresh_token', response.data.refresh_token);
           } catch (error) {
             console.error('토큰 갱신 실패:', error);
             commons.showToast(this, '토큰 갱신에 실패했습니다. 다시 로그인해주세요.');
