@@ -58,19 +58,16 @@
     },
     mounted() {
       OAuth.handleKakaoCallback(this.getKakaoToken); // 카카오 콜백처리
-    
     },
     methods: {
       ...mapActions(["setToken"]),
       getKakaoToken(code) {
         this.loading = true;
         OAuth.getKakaoToken(code, this.getKakaoUserInfo, this.$data);
-        this.loading = false;
       },
       getKakaoUserInfo(accessToken) {
         this.loading = true;
         OAuth.getKakaoUserInfo(accessToken, this.setToken, this.$data);
-        this.loading = false;
       },
       login() {
             this.loading = true; //로딩 상태 활성화
@@ -101,7 +98,6 @@
                   this.password = ""; // 입력한 비밀번호 초기화
                 }
               );
-            this.loading = false; //로딩 상태 활성화
           },
     }
   };
