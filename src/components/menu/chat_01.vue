@@ -138,7 +138,7 @@
             class="sticker-image"
             v-for="stickerId in ['281', '282', '283', '284', '285', '286', '287', '288', '289', '290', '291', '292', '293', '294']"
             :key="stickerId"
-            :src="require(`../../assets/sticker/bear-image${stickerId}.png`)"
+            :src="`/sticker/bear-image${stickerId}.png`"
             @click="selectEmoticon(`bear-image${stickerId}.png`)"
           />
       </div>
