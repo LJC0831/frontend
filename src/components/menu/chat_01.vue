@@ -823,7 +823,7 @@
         //this.chatImgurl(stickerFileid,'emoticon');
         const url = window.location.href;
         const baseUrl = url.split('/').slice(0, 3).join('/') + `/sticker/${stickerFileid}`;
-        this.sendImageMessage('', baseUrl, 'emoticon');
+        this.sendImageMessage(baseUrl, baseUrl, 'emoticon');
                       this.$nextTick(() => {
                         setTimeout(() => {
                           this.scrollToBottom();
