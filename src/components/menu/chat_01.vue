@@ -67,7 +67,7 @@
           </span>
       </div>
       <div>
-        <input type="file" id="imageInput" ref="imageInput" @change="handleUpload" class="hidden-input"/>
+        <input type="file" multiple id="imageInput" ref="imageInput" @change="handleUpload" class="hidden-input"/>
         <button @click="sendMessage()" v-if="!loading" class="send-button"><i class="fas fa-paper-plane"></i> </button>
         <button @click="sendMessage()" v-if="loading" class="send-button">Loading...</button>
       </div>
@@ -180,7 +180,7 @@
         lastMessageTimestamps: [], // 최근 8개 메시지의 타임스탬프를 저장합니다.
         showModal: false, // 모달 표시 여부
         userPicture:[], // 참가유저들 사진
-        maxFileSize: 20 * 1024 * 1024, // 20MB (메가바이트)
+        maxFileSize: 50 * 1024 * 1024, // 20MB (메가바이트)
         isImageModalOpen: false,
         selectedImage: '',
         selectedImageId: '',
@@ -865,43 +865,44 @@
       },
       // 업로드메세지
       handleUpload(event) {
-        const file = event.target.files ? event.target.files[0] : event.dataTransfer.files[0];
-        //const imageInput = this.$refs.imageInput;
-        //const file = imageInput.files[0];
+        const files = event.target.files;
+        for (let i = 0; i < files.length; i++) {
+          const file = event.target.files ? event.target.files[i] : event.dataTransfer.files[i];
 
-        // 파일 크기 확인
-        if (file && file.size > this.maxFileSize) {
-            commons.showToast(this, '파일 또는 이미지 크기가 너무 큽니다. 20MB 이하의 이미지를 선택해주세요.');
-            return;
-           }
-        const reader = new FileReader();
-        if (file) {
-          reader.readAsDataURL(file);
-          const timestamp = Date.now();
-          const uniqueFileName = `CHAT_${timestamp}_${file.name}`;
-          const originalFileName = `${file.name}`;
-          const formData = new FormData();
-          formData.append('file', file);
-          formData.append("fileName", encodeURIComponent(uniqueFileName)); // 파일명을 인코딩하여 formData에 추가
-          // 파일 업로드 요청
-          this.loading = true;
-          // 이미지 파일 확장자들의 배열
-          const imageExtensions = ["jpg", "jpeg", "png", "gif"];
-          const fileExtension = uniqueFileName.slice(((uniqueFileName.lastIndexOf(".") - 1) >>> 0) + 2).toLowerCase();
-          const isImageFile = imageExtensions.includes(fileExtension);
-          const token = localStorage.getItem('token');
-          chatMethods.methods.uploadImageToServer(formData,token,(res) => {
-                   if(isImageFile){
-                        this.chatImgurl(res.data.fileId,'image');
-                      } else {
-                        this.chatfileUrl(res.data.fileId, originalFileName);
-                      }
-                      this.loading = false;
-                },
-                (error) => { // 에러 콜백
-                  console.error("이미지 업로드 오류:", error);
-                }
-          );
+          // 파일 크기 확인
+          if (file && file.size > this.maxFileSize) {
+              commons.showToast(this, '파일 또는 이미지 크기가 너무 큽니다. 50MB 이하의 파일을 선택해주세요.');
+              return;
+            }
+          const reader = new FileReader();
+          if (file) {
+            reader.readAsDataURL(file);
+            const timestamp = Date.now();
+            const uniqueFileName = `CHAT_${timestamp}_${file.name}`;
+            const originalFileName = `${file.name}`;
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append("fileName", encodeURIComponent(uniqueFileName)); // 파일명을 인코딩하여 formData에 추가
+            // 파일 업로드 요청
+            this.loading = true;
+            // 이미지 파일 확장자들의 배열
+            const imageExtensions = ["jpg", "jpeg", "png", "gif"];
+            const fileExtension = uniqueFileName.slice(((uniqueFileName.lastIndexOf(".") - 1) >>> 0) + 2).toLowerCase();
+            const isImageFile = imageExtensions.includes(fileExtension);
+            const token = localStorage.getItem('token');
+            chatMethods.methods.uploadImageToServer(formData,token,(res) => {
+                    if(isImageFile){
+                          this.chatImgurl(res.data.fileId,'image');
+                        } else {
+                          this.chatfileUrl(res.data.fileId, originalFileName);
+                        }
+                        this.loading = false;
+                  },
+                  (error) => { // 에러 콜백
+                    console.error("이미지 업로드 오류:", error);
+                  }
+            );
+          }
         }
       },
       handleDrop(event) {
