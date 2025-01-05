@@ -6,7 +6,7 @@
         <div class="header-text">
         <h1 class="display-4 fw-normal">Free chat application</h1>
         <p class="lead fw-normal" >누구나 무료로 사용이 가능한 채팅 어플리케이션 입니다.</p>
-        <p @click="alarm()" class="btn btn-outline-secondary">Coming soon</p>
+        <!-- <p @click="alarm()" class="btn btn-outline-secondary">Coming soon</p> -->
       </div>
       </div>
       <div class="product-device shadow-sm d-none d-md-block"></div>
@@ -17,8 +17,6 @@
 
 <script>
 /* eslint-disable */
-import * as commons from './../scripts/common.js';
-import axios from 'axios';
 
 export default {
   data() {
@@ -27,39 +25,7 @@ export default {
   },
   methods: {
     alarm() {
-      const accessToken = localStorage.getItem('kakao_code');
-      if (!accessToken) {
-        console.error('액세스 토큰이 없습니다.');
-        return;
-      }
-      const kakaoMessage = {
-        object_type: 'text',  // 'text' 형식으로 메시지 전송
-        text: '안녕하세요! 카카오톡 메시지 전송 테스트입니다.',
-        link: {
-          web_url: 'https://friendtalk.netlify.app',
-          mobile_web_url: 'https://friendtalk.netlify.app',
-        },
-      };
-
-      const data = new URLSearchParams();
-      data.append('template_object', JSON.stringify(kakaoMessage));
-
-      axios({
-          method: 'post',
-          url: 'https://kapi.kakao.com/v2/api/talk/memo/default/send',
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/x-www-form-urlencoded', // 수정된 헤더
-          },
-          data: data,  // data를 URLSearchParams로 변환하여 전달
-        })
-          .then((response) => {
-            console.log('메시지 전송 성공:', response.data);
-          })
-          .catch((error) => {
-            console.error('메시지 전송 실패:', error);
-          });
-      commons.showToast(this, '기능준비중입니다 ...');
+      
     },
   }
 };
