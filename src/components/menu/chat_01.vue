@@ -139,7 +139,7 @@
             v-for="stickerId in ['281', '282', '283', '284', '285', '286', '287', '288', '289', '290', '291', '292', '293', '294']"
             :key="stickerId"
             :src="require(`../../assets/sticker/bear-image${stickerId}.png`)"
-            @click="selectEmoticon(stickerId)"
+            @click="selectEmoticon(`bear-image${stickerId}.png`)"
           />
       </div>
       <span><a href="https://www.flaticon.com/kr/" target="_blank" title="스티커">출처</a></span>
@@ -820,7 +820,15 @@
       },
       // 이모티콘 팝업 처리
       selectEmoticon(stickerFileid) {
-        this.chatImgurl(stickerFileid,'emoticon');
+        //this.chatImgurl(stickerFileid,'emoticon');
+        const url = window.location.href;
+        const baseUrl = url.split('/').slice(0, 3).join('/') + `/sticker/${stickerFileid}`;
+        this.sendImageMessage('', baseUrl, 'emoticon');
+                      this.$nextTick(() => {
+                        setTimeout(() => {
+                          this.scrollToBottom();
+                        }, 50);
+        });
 
         this.closeEmoticonModal();
       },
