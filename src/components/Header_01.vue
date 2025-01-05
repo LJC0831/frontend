@@ -397,8 +397,8 @@ display: flex;
 align-items: center;
 }
 .profile-img {
-width: 35px;
-  height: 35px;
+width: 40px;
+  height: 40px;
   background-color: #ffffff;
   margin-right: 10px;
   cursor: pointer;
