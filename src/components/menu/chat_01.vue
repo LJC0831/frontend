@@ -866,6 +866,7 @@
       // 업로드메세지
       handleUpload(event) {
         const files = event.target.files;
+        const promises = [];
         for (let i = 0; i < files.length; i++) {
           const file = event.target.files ? event.target.files[i] : event.dataTransfer.files[i];
 
@@ -874,9 +875,10 @@
               commons.showToast(this, '파일 또는 이미지 크기가 너무 큽니다. 50MB 이하의 파일을 선택해주세요.');
               return;
             }
-          const reader = new FileReader();
           if (file) {
+            const reader = new FileReader();
             reader.readAsDataURL(file);
+
             const timestamp = Date.now();
             const uniqueFileName = `CHAT_${timestamp}_${file.name}`;
             const originalFileName = `${file.name}`;
@@ -890,20 +892,32 @@
             const fileExtension = uniqueFileName.slice(((uniqueFileName.lastIndexOf(".") - 1) >>> 0) + 2).toLowerCase();
             const isImageFile = imageExtensions.includes(fileExtension);
             const token = localStorage.getItem('token');
-            chatMethods.methods.uploadImageToServer(formData,token,(res) => {
-                    if(isImageFile){
-                          this.chatImgurl(res.data.fileId,'image');
-                        } else {
-                          this.chatfileUrl(res.data.fileId, originalFileName);
-                        }
-                        this.loading = false;
-                  },
-                  (error) => { // 에러 콜백
-                    console.error("이미지 업로드 오류:", error);
-                  }
-            );
+
+            const uploadPromise = new Promise((resolve, reject) => {
+              chatMethods.methods.uploadImageToServer(formData,token,(res) => {
+                      if(isImageFile){
+                            this.chatImgurl(res.data.fileId,'image');
+                          } else {
+                            this.chatfileUrl(res.data.fileId, originalFileName);
+                          }
+                    },
+                    (error) => { // 에러 콜백
+                      console.error("이미지 업로드 오류:", error);
+                    }
+              );
+            });
+            promises.push(uploadPromise);
           }
         }
+
+        Promise.all(promises)
+        .then(() => {
+            this.loading = false;
+        })
+        .catch((error) => {
+            console.error("업로드 중 오류 발생:", error);
+            this.loading = false;
+        });
       },
       handleDrop(event) {
         const files = event.dataTransfer.files;
