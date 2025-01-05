@@ -23,23 +23,6 @@
           <button class="logout-btn">로그아웃</button>
         </div>
       </div>
-    <!-- 패스워드 찾기 모달 -->
-    <div v-if="showSearchPwd" class="login-modal">
-      <div class="login-form">
-        <h2>패스워드 찾기</h2>
-        <label for="searchUserId">아이디(인증가능한 이메일)</label>
-        <input type="text" v-model="searchUserId" id="searchUserId" />
-        <button @click="emailCheck(searchUserId)">인증하기</button>&nbsp;
-        <label v-if="mailCheck && !signUpAppr2" for="checkNumber">인증번호</label>
-        <input v-if="mailCheck && !signUpAppr2" type="text" v-model="checkNumberInput2"/>
-        <button v-if="mailCheck && !signUpAppr2" @click="emailNumCheck(checkNumberInput2,20)">확인</button>&nbsp;
-        <label for="searchPassword">비밀번호 </label>
-        <input type="password" v-model="searchPassword" id="searchPassword" />
-        <input type="password" v-model="searchPassword2" id="searchPassword2" />
-        <button @click="searchPwd">변경하기</button>&nbsp;
-        <button @click="cancelsearchPwd">취소</button>&nbsp;
-      </div>
-    </div>
     <!-- 내 정보 모달 -->
       <div v-if="isUserProfileModalVisible" class="login-modal">
         <div class="login-form">
@@ -89,11 +72,8 @@ export default {
       profilePicture: null,
       file_no: null,
       isEditingProfilePicture: false, // 프로필사진수정여부
-      maxFileSize: 4 * 1024 * 1024, // 1MB (메가바이트)
+      maxFileSize: 10 * 1024 * 1024, // 1MB (메가바이트)
       mailCheck:false, //메일체크여부
-      signUpAppr:false, //인증완료처리 (회원가입)
-      signUpAppr2:false, //인증완료처리 (패스워드찾기)
-      showSearchPwd:false, //패스워드찾기 팝업 활성화여부
       showNotification: false, // 알람 표시 여부
       notificationMessages: [], // 채팅알람
       notificationCount: 0, //알람개수
@@ -204,7 +184,7 @@ export default {
 
              // 파일 크기 확인
             if (file && file.size > this.maxFileSize) {
-              commons.showToast(this, ' 이미지 크기가 너무 큽니다. 4MB 이하의 이미지를 선택해주세요.');
+              commons.showToast(this, ' 이미지 크기가 너무 큽니다. 10MB 이하의 이미지를 선택해주세요.');
               return;
             }
             const reader = new FileReader();
@@ -222,7 +202,6 @@ export default {
               formData.append("fileName", encodeURIComponent(uniqueFileName)); // 파일명을 인코딩하여 formData에 추가
               const api = axios.create({
                 baseURL: "https://backendserver.shop:3000",
-                //baseURL: "https://port-0-backend-nodejs-20zynm2mlk2nnlwj.sel4.cloudtype.app",
                 //baseURL: "http://localhost:3000",
               });
               // 파일 업로드 요청
@@ -234,8 +213,6 @@ export default {
                         this.file_no = response.data.fileId;
                         alert('업로드 하였습니다.');
                         this.loading = false;
-                    // 파일 업로드 성공 시 처리할 로직을 여기에 작성합니다.
-                    // 예: 성공 메시지 출력, 업로드 결과를 다른 동작에 활용 등
                     })
             }
             
@@ -245,95 +222,6 @@ export default {
           cancelUserProfile() {
             this.isUserProfileModalVisible = false; 
             this.isEditingProfilePicture = false;
-          },
-
-          // 메일인증
-          emailCheck(email) {
-            function isValidEmail(email) {
-              // 이메일 형태를 확인하는 정규표현식
-              const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-              return emailPattern.test(email);
-            }
-
-            if (!isValidEmail(email)) {
-              commons.showToast(this, '유효한 이메일이 아닙니다.');
-              return;
-            } 
-            let randomNumber = '';
-            for (let i = 0; i < 6; i++) {
-              const digit = Math.floor(Math.random() * 10); // 0부터 9까지의 난수 생성
-              randomNumber += digit.toString();
-            }
-            this.checkNumber = randomNumber;
-            loginMethods.methods.emailCheck(
-              email,
-              this.checkNumber,
-              (res) => {
-                commons.showToast(this, '메일확인 후 인증번호를 입력하세요!');
-                this.mailCheck = true;
-              },
-              (error) => {
-                // 에러 콜백
-                console.error("이메일 인증오류:", error);
-                commons.showToast(this, '인증오류입니다. 문의바랍니다.');
-              }
-            );
-          },
-          //메일인증비교
-          emailNumCheck(checkNumberInput, FLAG){
-            if(this.checkNumber === checkNumberInput){
-              commons.showToast(this, '인증되었습니다.');
-              if (FLAG === 10) { //회원가입
-                this.signUpAppr = true; 
-              } else { //패스워드찾기
-                this.signUpAppr2 = true;
-              }
-              
-            } else {
-              commons.showToast(this, '인증번호가 일치하지 않습니다. 다시확인해주세요.');
-            }
-          },
-          //패스워드찾기
-          searchPwd() {
-            if(this.searchPassword !== this.searchPassword2){
-              commons.showToast(this, '패스워드가 일치하지 않습니다. 다시확인해주세요.');
-              return;
-            }
-            if(this.searchPassword.length < 8){
-              commons.showToast(this, '패스워드는 8자리 이상 입력해주세요.');
-              return;
-            }
-            if(this.signUpAppr2){
-              loginMethods.methods.changePwd(
-                this.searchUserId,
-                this.searchPassword,
-                (res) => {
-                  commons.showToast(this, '패스워드를 변경하였습니다.');
-                  this.showSearchPwd = false;
-                  this.searchUserId = "";
-                  this.searchPassword = "";
-                  this.mailCheck = false;
-                  this.signUpAppr2 =false;
-                },
-                (error) => {
-                  // 에러 콜백
-                  console.error("패스워드 변경 오류:", error);
-                  commons.showToast(this, '패스워드 변경실패. 문의바랍니다.');
-                  this.signUpAppr2 = false;
-                }
-              );
-            } else {
-              commons.showToast(this, '이메일 인증해주세요.');
-              return;
-            }
-          },
-          //패스워드찾기팝업닫기
-          cancelsearchPwd(){
-            this.showSearchPwd = false;
-            this.searchUserId = "";
-            this.searchPassword = "";
-            this.mailCheck = false; 
-            this.signUpAppr2 =false;
           },
           //토글알림
           toggleNotification() {
