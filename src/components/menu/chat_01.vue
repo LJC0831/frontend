@@ -355,7 +355,6 @@
             });
         } else {
           commons.showToast(this, '찾는 메세지가 없습니다.');
-          this.socket.emit('getLatestMessages',this.selectedChatId, '');
         }
         this.loading = false;
       });
