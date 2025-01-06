@@ -634,7 +634,7 @@
           }
         });
         
-        return formattedMessage;
+        return escapeHTML(formattedMessage);
       },
       //뒤로가기
       exit(){
@@ -1169,6 +1169,12 @@
         }
       },
   };
+
+  function escapeHTML(html) {
+  const div = document.createElement('div');
+  div.innerText = html;
+  return div.innerHTML;
+}
   </script>
   
 <style scoped>
