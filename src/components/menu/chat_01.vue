@@ -328,6 +328,18 @@
          }, this.chatContainer.scrollHeight/100); // 300ms(0.3초) 후에 실행됩니다.
         
       });
+       // 스크롤 내릴때 다음내역 가져오기
+       this.socket.on('SetNextMessages', (nextMessages) => {
+        // 받아온 이전 채팅 내역을 messages 배열의 앞쪽에 추가
+        for (var i = 1; i <= nextMessages.length; i ++){
+          nextMessages[nextMessages.length-i].profilePicture = this.chatUserProfileUrl(nextMessages[nextMessages.length-i].user_id);
+         }
+        this.messages.push(...nextMessages);
+      
+        
+      });
+
+      
 
       // 채팅내역찾기
       this.socket.on('messageSearch', (messages) => {
@@ -1109,7 +1121,6 @@
 
           //스크롤 젤 위
         if (chatContainer.scrollTop === 0 && !this.loadingPreviousMessages && this.shouldMaintainScroll) {
-          this.loadingPreviousMessages = true;
           const date = new Date(this.messages[0].ins_ymdhms);
           const formattedTime = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
           try {
@@ -1118,18 +1129,25 @@
               chatId:this.selectedChatId,
             };
             if(this.firstChat !== formattedTime){
-              this.socket.emit('getPreviousMessages', oldestMessage);
+              this.socket.emit('GetPreviousMessages', oldestMessage);
             }
             this.firstChat = formattedTime;
           } catch (error) {
             console.error('이전 채팅 조회 오류:', error);
-          } finally {
-            this.loadingPreviousMessages = false;
           } 
         }
         
         if(isBottom && !this.isAtBottom){ //스크롤 젤 아래
           this.isAtBottom = true;
+          const nextMessage = {
+              id: this.messages[this.messages.length-1].id,
+              chatId:this.selectedChatId,
+            };
+          try {
+            this.socket.emit('GetNextMessages', nextMessage);
+          } catch (error) {
+            console.error('이후 채팅 조회 오류:', error);
+          } 
         } else if (!isBottom) {
           this.isAtBottom = false; // 스크롤이 아래가 아니면 상태를 리셋
         }
