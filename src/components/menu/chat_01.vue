@@ -211,6 +211,7 @@
         description:'', //썸네일설명
         _isAnswerActive:false, //답장활성화여부
         iconSize: '1.3rem',
+        isAtBottom: false, // 스크롤이 가장 아래에 도달했는지 추적
       };
     },
     created() {
@@ -306,7 +307,6 @@
       });
       // 스크롤 올릴떄 이전내역 가져오기
       this.socket.on('previousMessages', (previousMessages) => {
-        this.loading = true;
         // 받아온 이전 채팅 내역을 messages 배열의 앞쪽에 추가
         for (var i = 1; i <= previousMessages.length; i ++){
           previousMessages[previousMessages.length-i].profilePicture = this.chatUserProfileUrl(previousMessages[previousMessages.length-i].user_id);
@@ -325,7 +325,6 @@
           }
         });
         setTimeout(() => {
-          this.loading = false;
          }, this.chatContainer.scrollHeight/100); // 300ms(0.3초) 후에 실행됩니다.
         
       });
@@ -623,18 +622,23 @@
     },
       //메세지 줄바꿈처리
       formatMessage(message) {
-        // URL 처리
+        const unescapedMessage = message.replace(/\\n/g, '\n');
         const urlPattern = /https?:\/\/\S+|www\.\S+/g;
-        const formattedMessage = message.replace(/\n/g, '<br>').replace(/ /g, "&nbsp;").replace(urlPattern, (url) => {
-          if (url.startsWith("www.")) {
-            // "www"로 시작하는 URL 앞에 "https://"를 추가
-            return `<a href="https://${url}" target="_blank">${url}</a>`;
-          } else {
-            return `<a href="${url}" target="_blank">${url}</a>`;
-          }
-        });
         
-        return escapeHTML(formattedMessage);
+        // 줄바꿈과 공백 처리 후 URL 변환
+        const formattedMessage = escapeHTML(unescapedMessage)
+          .replace(/\n/g, '<br>') // 줄바꿈을 <br>로 변환
+          .replace(/ /g, "&nbsp;") // 공백을 &nbsp;로 변환
+          .replace(urlPattern, (url) => {
+            // URL 처리
+            if (url.startsWith("www.")) {
+              return `<a href="https://${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+            } else {
+              return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+            }
+          });
+
+        return formattedMessage;
       },
       //뒤로가기
       exit(){
@@ -1091,7 +1095,6 @@
       
       async checkScrollPosition() {
         const chatContainer = this.$refs.chatContainer;
-        // 스크롤 한번에 내리기 모달
         if (chatContainer) {
               if (chatContainer.scrollTop < chatContainer.scrollHeight - chatContainer.clientHeight  - 1000 ) {
                 // 스크롤이 맨 아래가 아니면 팝업을 표시
@@ -1101,7 +1104,10 @@
                 this.showScrollPopup = false;
               }
           }
-        // 스크롤 한번에 내리기 모달 END
+
+        const isBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
+
+          //스크롤 젤 위
         if (chatContainer.scrollTop === 0 && !this.loadingPreviousMessages && this.shouldMaintainScroll) {
           this.loadingPreviousMessages = true;
           const date = new Date(this.messages[0].ins_ymdhms);
@@ -1120,6 +1126,12 @@
           } finally {
             this.loadingPreviousMessages = false;
           } 
+        }
+        
+        if(isBottom && !this.isAtBottom){ //스크롤 젤 아래
+          this.isAtBottom = true;
+        } else if (!isBottom) {
+          this.isAtBottom = false; // 스크롤이 아래가 아니면 상태를 리셋
         }
       },
       // 세션종료
@@ -1171,10 +1183,14 @@
   };
 
   function escapeHTML(html) {
-  const div = document.createElement('div');
-  div.innerText = html;
-  return div.innerHTML;
+  return html
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
+
   </script>
   
 <style scoped>
