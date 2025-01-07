@@ -891,7 +891,6 @@
       // 업로드메세지
       handleUpload(event) {
         const files = event.target.files;
-        const promises = [];
         for (let i = 0; i < files.length; i++) {
           const file = event.target.files ? event.target.files[i] : event.dataTransfer.files[i];
 
@@ -918,31 +917,21 @@
             const isImageFile = imageExtensions.includes(fileExtension);
             const token = localStorage.getItem('token');
 
-            const uploadPromise = new Promise((resolve, reject) => {
-              chatMethods.methods.uploadImageToServer(formData,token,(res) => {
-                      if(isImageFile){
-                            this.chatImgurl(res.data.fileId,'image');
-                          } else {
-                            this.chatfileUrl(res.data.fileId, originalFileName);
-                          }
-                    },
-                    (error) => { // 에러 콜백
-                      console.error("이미지 업로드 오류:", error);
-                    }
-              );
-            });
-            promises.push(uploadPromise);
+            chatMethods.methods.uploadImageToServer(formData,token,(res) => {
+                    if(isImageFile){
+                          this.chatImgurl(res.data.fileId,'image');
+                        } else {
+                          this.chatfileUrl(res.data.fileId, originalFileName);
+                        }
+                        this.loading = false;
+                  },
+                  (error) => { // 에러 콜백
+                    console.error("이미지 업로드 오류:", error);
+                  }
+            );
           }
         }
 
-        Promise.all(promises)
-        .then(() => {
-            this.loading = false;
-        })
-        .catch((error) => {
-            console.error("업로드 중 오류 발생:", error);
-            this.loading = false;
-        });
       },
       handleDrop(event) {
         const files = event.dataTransfer.files;
@@ -952,6 +941,7 @@
       },
       // 파일 메세지 전송1
       async chatfileUrl(chat_file_id, originalFileName) {
+        this.isAtBottom = true;
         if(!commons.loginCheck()) {
           this.$router.push('/login');
           return;
@@ -1014,6 +1004,7 @@
       },
       // 이미지 메세지 전송2
       async sendImageMessage(chat_file_id, chatimageUrl, imageType) {
+        this.isAtBottom = true;
         if(!commons.loginCheck()) {
           this.$router.push('/login');
           return;
