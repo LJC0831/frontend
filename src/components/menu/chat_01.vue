@@ -457,8 +457,8 @@
             kakaoMessage = {
               object_type: 'feed', // 'feed' 형식으로 메시지 전송
               content: {
-                title: imageUrl,
-                description: '', 
+                title: '이미지를 확인하세요',
+                description: imageUrl, 
                 image_url: imageUrl, // 전송할 이미지 URL
                 link: {
                   web_url: imageUrl, // 웹 링크
