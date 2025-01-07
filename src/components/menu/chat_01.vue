@@ -457,20 +457,21 @@
             kakaoMessage = {
               object_type: 'feed', // 'feed' 형식으로 메시지 전송
               content: {
-                title: `이미지을 다운로드하려면 링크를 클릭하세요:\n${imageUrl}`,
+                title: `이미지를 확인하세요.`,
                 description: '', 
                 image_url: imageUrl, // 전송할 이미지 URL
                 link: {
-                  web_url: 'https://friendtalk.netlify.app', // 웹 링크
-                  mobile_web_url: 'https://friendtalk.netlify.app', // 모바일 웹 링크
+                  web_url: imageUrl, // 웹 링크
+                  mobile_web_url: imageUrl, // 모바일 웹 링크
                 },
+                button_title: '이미지 보기' // 버튼 텍스트 추가
               },
             };
           } else if (message.chat_type==='file'){
             const fileUrl = message.chatimageUrl; // 파일 다운로드 링크
             kakaoMessage = {
               object_type: 'text', // 텍스트 형식으로 파일 링크 공유
-              text: `파일을 다운로드하려면 링크를 클릭하세요:\n${fileUrl}`,
+              text: `파일을 다운로드하려면 클릭하세요.`,
               link: {
                 web_url: fileUrl,
                 mobile_web_url: fileUrl,
