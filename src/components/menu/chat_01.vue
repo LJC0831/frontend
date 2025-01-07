@@ -464,8 +464,16 @@
                   web_url: imageUrl, // 웹 링크
                   mobile_web_url: imageUrl, // 모바일 웹 링크
                 },
-                button_title: '이미지 보기' // 버튼 텍스트 추가
               },
+              buttons: [ // 버튼 배열 사용
+                        {
+                          title: '이미지 보기',
+                          link: {
+                            web_url: imageUrl,
+                            mobile_web_url: imageUrl,
+                          },
+                        },
+                      ],
             };
           } else if (message.chat_type==='file'){
             const fileUrl = message.chatimageUrl; // 파일 다운로드 링크
