@@ -773,7 +773,6 @@
       },
       // 메세지 보내기
       async sendMessage() {
-        this.isAtBottom = true;
         this.newMessage2 = this.newMessage.trim(); // 앞뒤 공백 제거
         this.newMessage = '';
         // 도배체크
@@ -941,7 +940,6 @@
       },
       // 파일 메세지 전송1
       async chatfileUrl(chat_file_id, originalFileName) {
-        this.isAtBottom = true;
         if(!commons.loginCheck()) {
           this.$router.push('/login');
           return;
@@ -1004,7 +1002,6 @@
       },
       // 이미지 메세지 전송2
       async sendImageMessage(chat_file_id, chatimageUrl, imageType) {
-        this.isAtBottom = true;
         if(!commons.loginCheck()) {
           this.$router.push('/login');
           return;
