@@ -466,13 +466,14 @@
                 },
               },
               buttons: [
-              {
-                title: '',
-                link: {
-                  mobileWebUrl: imageUrl,
-                  webUrl: imageUrl
-                }
-              }]
+                {
+                  title: '이미지 보기',
+                  link: {
+                    web_url: imageUrl,
+                    mobile_web_url: imageUrl,
+                  },
+                },
+              ],
             };
           } else if (message.chat_type==='file'){
             const fileUrl = message.chatimageUrl; // 파일 다운로드 링크
