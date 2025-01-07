@@ -457,7 +457,7 @@
             kakaoMessage = {
               object_type: 'feed', // 'feed' 형식으로 메시지 전송
               content: {
-                title: `이미지를 확인하세요.`,
+                title: imageUrl,
                 description: '', 
                 image_url: imageUrl, // 전송할 이미지 URL
                 link: {
@@ -465,21 +465,12 @@
                   mobile_web_url: imageUrl, // 모바일 웹 링크
                 },
               },
-              buttons: [ // 버튼 배열 사용
-                        {
-                          title: '이미지 보기',
-                          link: {
-                            web_url: imageUrl,
-                            mobile_web_url: imageUrl,
-                          },
-                        },
-                      ],
             };
           } else if (message.chat_type==='file'){
             const fileUrl = message.chatimageUrl; // 파일 다운로드 링크
             kakaoMessage = {
               object_type: 'text', // 텍스트 형식으로 파일 링크 공유
-              text: `파일을 다운로드하려면 클릭하세요.`,
+              text: fileUrl,
               link: {
                 web_url: fileUrl,
                 mobile_web_url: fileUrl,
