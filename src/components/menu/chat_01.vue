@@ -337,23 +337,6 @@
         this.messages.push(...nextMessages);
       });
 
-      // 스크롤 내릴때 다음내역 가져오기
-      this.socket.on('SetAllNextMessages', (nextMessages) => {
-        // 받아온 이전 채팅 내역을 messages 배열의 앞쪽에 추가
-        for (var i = 1; i <= nextMessages.length; i ++){
-          nextMessages[nextMessages.length-i].profilePicture = this.chatUserProfileUrl(nextMessages[nextMessages.length-i].user_id);
-         }
-        this.messages.push(...nextMessages);
-        this.$nextTick(() => {
-                        setTimeout(() => {
-                          this.scrollToBottom(true);
-                        }, 50);
-        });
-      });
-
-
-      
-
       // 채팅내역찾기
       this.socket.on('messageSearch', (messages) => {
         // 받은 채팅 메시지들을 화면에 표시하는 로직
@@ -1102,15 +1085,13 @@
         }
       },
       moveBottom() {
-        const nextMessage = {
-              id: this.messages[this.messages.length-1].id,
-              chatId:this.selectedChatId,
-            };
           try {
-            this.socket.emit('GetAllNextMessages', nextMessage);
+            this.socket.emit('getLatestMessages',this.selectedChatId, this.loginUserId);
           } catch (error) {
             console.error('이후 채팅 조회 오류:', error);
-          } 
+          } finally{
+            this.chatContainer.scrollTop = 0;
+          }
       },
       async checkScrollPosition() {
         const chatContainer = this.$refs.chatContainer;
