@@ -1100,6 +1100,7 @@
           this.showModal = false; // 모달 닫기
       },
       scrollToBottom() {
+        this.isAtBottom = true;
         // chatContainer 요소가 렌더링되지 않은 경우에 대한 예외 처리
         if (this.chatContainer) {
           this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
