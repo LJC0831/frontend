@@ -106,7 +106,7 @@
     </div>
     <!-- 스크롤 다운 버튼과 팝업 컨테이너 -->
     <div v-if="showScrollPopup && !isChatTextareaFocused"  class="scroll-down-container">
-      <button @click="scrollToBottom" class="scroll-down-button">
+      <button @click="moveBottom()" class="scroll-down-button">
         <i class="fas fa-chevron-down"></i>
       </button>
     </div>
@@ -255,7 +255,7 @@
                   this.messages.push(message);
                   if(this.chatContainer.scrollTop * 2 > this.chatContainer.scrollHeight){
                       setTimeout(() => {
-                      this.scrollToBottom();
+                      this.scrollToBottom(true);
                     }, 100); // 100ms(0.1초) 후에 실행됩니다.
                   }
                   
@@ -265,7 +265,7 @@
             this.newMessage = '';
             setTimeout(() => {
               this.socket.emit('setMessageRead',message.chatId, this.loginUserId, 'Y');
-              this.scrollToBottom();
+              this.scrollToBottom(true);
             }, 300); // 100ms(0.1초) 후에 실행됩니다.
           }
         }
@@ -297,7 +297,7 @@
           setTimeout(() => {
             if(this.messages.length > 0 ){
               if(this.messages[0].type ===''){ //20개이상 안읽었을 시 
-                this.scrollToBottom();
+                this.scrollToBottom(true);
               }
             }
             this.loading = false;
@@ -335,9 +335,22 @@
           nextMessages[nextMessages.length-i].profilePicture = this.chatUserProfileUrl(nextMessages[nextMessages.length-i].user_id);
          }
         this.messages.push(...nextMessages);
-      
-        
       });
+
+      // 스크롤 내릴때 다음내역 가져오기
+      this.socket.on('SetAllNextMessages', (nextMessages) => {
+        // 받아온 이전 채팅 내역을 messages 배열의 앞쪽에 추가
+        for (var i = 1; i <= nextMessages.length; i ++){
+          nextMessages[nextMessages.length-i].profilePicture = this.chatUserProfileUrl(nextMessages[nextMessages.length-i].user_id);
+         }
+        this.messages.push(...nextMessages);
+        this.$nextTick(() => {
+                        setTimeout(() => {
+                          this.scrollToBottom(true);
+                        }, 50);
+        });
+      });
+
 
       
 
@@ -850,7 +863,7 @@
         this.sendImageMessage(baseUrl, baseUrl, 'emoticon');
                       this.$nextTick(() => {
                         setTimeout(() => {
-                          this.scrollToBottom();
+                          this.scrollToBottom(true);
                         }, 50);
         });
 
@@ -979,21 +992,11 @@
         this.socket.emit('message', messageObject);
         this.loading = false;
         this.newMessage = '';
-        this.$nextTick(() => {
-          setTimeout(() => {
-            this.scrollToBottom();
-          }, 50);
-        });
       },
       // 이미지 메세지 전송1
       async chatImgurl(chat_file_id, imageType) {
         loginMethods.methods.profileImgURL(chat_file_id,(res) => {
                       this.sendImageMessage(chat_file_id, res.data.imageUrl, imageType);
-                      this.$nextTick(() => {
-                        setTimeout(() => {
-                          this.scrollToBottom();
-                        }, 50);
-                      });
                     },
                     (error) => { // 에러 콜백
                       console.error("프로필 이미지 조회 오류:", error);
@@ -1038,11 +1041,6 @@
 
         this.socket.emit('message', messageObject);
         this.newMessage = '';
-        this.$nextTick(() => {
-          setTimeout(() => {
-            this.scrollToBottom();
-          }, 50);
-        });
       },
       // 이미지 모달 열기
       openImageModal(imageUrl, id) {
@@ -1096,25 +1094,35 @@
       closeModal() {
           this.showModal = false; // 모달 닫기
       },
-      scrollToBottom() {
-        this.isAtBottom = true;
+      scrollToBottom(isAtBottom) {
+        this.isAtBottom = isAtBottom;
         // chatContainer 요소가 렌더링되지 않은 경우에 대한 예외 처리
         if (this.chatContainer) {
           this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
         }
       },
-      
+      moveBottom() {
+        const nextMessage = {
+              id: this.messages[this.messages.length-1].id,
+              chatId:this.selectedChatId,
+            };
+          try {
+            this.socket.emit('GetAllNextMessages', nextMessage);
+          } catch (error) {
+            console.error('이후 채팅 조회 오류:', error);
+          } 
+      },
       async checkScrollPosition() {
         const chatContainer = this.$refs.chatContainer;
-        // if (chatContainer) {
-        //       if (chatContainer.scrollTop < chatContainer.scrollHeight - chatContainer.clientHeight  - 1000 ) {
-        //         // 스크롤이 맨 아래가 아니면 팝업을 표시
-        //           this.showScrollPopup = true;
-        //       } else {
-        //         // 스크롤이 맨 아래에 도달하면 팝업을 숨김
-        //         this.showScrollPopup = false;
-        //       }
-        //   }
+        if (chatContainer) {
+              if (chatContainer.scrollTop < chatContainer.scrollHeight - chatContainer.clientHeight  - 1000 ) {
+                // 스크롤이 맨 아래가 아니면 팝업을 표시
+                  this.showScrollPopup = true;
+              } else {
+                // 스크롤이 맨 아래에 도달하면 팝업을 숨김
+                this.showScrollPopup = false;
+              }
+          }
 
         const isBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
 
