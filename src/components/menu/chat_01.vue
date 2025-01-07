@@ -465,6 +465,14 @@
                   mobile_web_url: imageUrl, // 모바일 웹 링크
                 },
               },
+              buttons: [
+              {
+                title: '',
+                link: {
+                  mobileWebUrl: imageUrl,
+                  webUrl: imageUrl
+                }
+              }]
             };
           } else if (message.chat_type==='file'){
             const fileUrl = message.chatimageUrl; // 파일 다운로드 링크
