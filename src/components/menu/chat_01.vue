@@ -764,6 +764,7 @@
       },
       // 메세지 보내기
       async sendMessage() {
+        this.isAtBottom = true;
         this.newMessage2 = this.newMessage.trim(); // 앞뒤 공백 제거
         this.newMessage = '';
         // 도배체크
