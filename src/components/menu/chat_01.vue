@@ -106,7 +106,7 @@
     </div>
     <!-- 스크롤 다운 버튼과 팝업 컨테이너 -->
     <div v-if="showScrollPopup && !isChatTextareaFocused"  class="scroll-down-container">
-      <button @click="scrollToBottom" class="scroll-down-button">
+      <button @click="moveBottom()" class="scroll-down-button">
         <i class="fas fa-chevron-down"></i>
       </button>
     </div>
@@ -255,7 +255,7 @@
                   this.messages.push(message);
                   if(this.chatContainer.scrollTop * 2 > this.chatContainer.scrollHeight){
                       setTimeout(() => {
-                      this.scrollToBottom();
+                      this.scrollToBottom(true);
                     }, 100); // 100ms(0.1초) 후에 실행됩니다.
                   }
                   
@@ -265,7 +265,7 @@
             this.newMessage = '';
             setTimeout(() => {
               this.socket.emit('setMessageRead',message.chatId, this.loginUserId, 'Y');
-              this.scrollToBottom();
+              this.scrollToBottom(true);
             }, 300); // 100ms(0.1초) 후에 실행됩니다.
           }
         }
@@ -297,7 +297,7 @@
           setTimeout(() => {
             if(this.messages.length > 0 ){
               if(this.messages[0].type ===''){ //20개이상 안읽었을 시 
-                this.scrollToBottom();
+                this.scrollToBottom(true);
               }
             }
             this.loading = false;
@@ -335,11 +335,7 @@
           nextMessages[nextMessages.length-i].profilePicture = this.chatUserProfileUrl(nextMessages[nextMessages.length-i].user_id);
          }
         this.messages.push(...nextMessages);
-      
-        
       });
-
-      
 
       // 채팅내역찾기
       this.socket.on('messageSearch', (messages) => {
@@ -457,20 +453,29 @@
             kakaoMessage = {
               object_type: 'feed', // 'feed' 형식으로 메시지 전송
               content: {
-                title: `이미지을 다운로드하려면 링크를 클릭하세요:\n${imageUrl}`,
-                description: '', 
+                title: '이미지를 확인하세요',
+                description: imageUrl, 
                 image_url: imageUrl, // 전송할 이미지 URL
                 link: {
-                  web_url: 'https://friendtalk.netlify.app', // 웹 링크
-                  mobile_web_url: 'https://friendtalk.netlify.app', // 모바일 웹 링크
+                  web_url: imageUrl, // 웹 링크
+                  mobile_web_url: imageUrl, // 모바일 웹 링크
                 },
               },
+              buttons: [
+                {
+                  title: '이미지 보기',
+                  link: {
+                    web_url: imageUrl,
+                    mobile_web_url: imageUrl,
+                  },
+                },
+              ],
             };
           } else if (message.chat_type==='file'){
             const fileUrl = message.chatimageUrl; // 파일 다운로드 링크
             kakaoMessage = {
               object_type: 'text', // 텍스트 형식으로 파일 링크 공유
-              text: `파일을 다운로드하려면 링크를 클릭하세요:\n${fileUrl}`,
+              text: fileUrl,
               link: {
                 web_url: fileUrl,
                 mobile_web_url: fileUrl,
@@ -841,7 +846,7 @@
         this.sendImageMessage(baseUrl, baseUrl, 'emoticon');
                       this.$nextTick(() => {
                         setTimeout(() => {
-                          this.scrollToBottom();
+                          this.scrollToBottom(true);
                         }, 50);
         });
 
@@ -881,7 +886,6 @@
       // 업로드메세지
       handleUpload(event) {
         const files = event.target.files;
-        const promises = [];
         for (let i = 0; i < files.length; i++) {
           const file = event.target.files ? event.target.files[i] : event.dataTransfer.files[i];
 
@@ -908,31 +912,21 @@
             const isImageFile = imageExtensions.includes(fileExtension);
             const token = localStorage.getItem('token');
 
-            const uploadPromise = new Promise((resolve, reject) => {
-              chatMethods.methods.uploadImageToServer(formData,token,(res) => {
-                      if(isImageFile){
-                            this.chatImgurl(res.data.fileId,'image');
-                          } else {
-                            this.chatfileUrl(res.data.fileId, originalFileName);
-                          }
-                    },
-                    (error) => { // 에러 콜백
-                      console.error("이미지 업로드 오류:", error);
-                    }
-              );
-            });
-            promises.push(uploadPromise);
+            chatMethods.methods.uploadImageToServer(formData,token,(res) => {
+                    if(isImageFile){
+                          this.chatImgurl(res.data.fileId,'image');
+                        } else {
+                          this.chatfileUrl(res.data.fileId, originalFileName);
+                        }
+                        this.loading = false;
+                  },
+                  (error) => { // 에러 콜백
+                    console.error("이미지 업로드 오류:", error);
+                  }
+            );
           }
         }
 
-        Promise.all(promises)
-        .then(() => {
-            this.loading = false;
-        })
-        .catch((error) => {
-            console.error("업로드 중 오류 발생:", error);
-            this.loading = false;
-        });
       },
       handleDrop(event) {
         const files = event.dataTransfer.files;
@@ -981,21 +975,11 @@
         this.socket.emit('message', messageObject);
         this.loading = false;
         this.newMessage = '';
-        this.$nextTick(() => {
-          setTimeout(() => {
-            this.scrollToBottom();
-          }, 50);
-        });
       },
       // 이미지 메세지 전송1
       async chatImgurl(chat_file_id, imageType) {
         loginMethods.methods.profileImgURL(chat_file_id,(res) => {
                       this.sendImageMessage(chat_file_id, res.data.imageUrl, imageType);
-                      this.$nextTick(() => {
-                        setTimeout(() => {
-                          this.scrollToBottom();
-                        }, 50);
-                      });
                     },
                     (error) => { // 에러 콜백
                       console.error("프로필 이미지 조회 오류:", error);
@@ -1040,11 +1024,6 @@
 
         this.socket.emit('message', messageObject);
         this.newMessage = '';
-        this.$nextTick(() => {
-          setTimeout(() => {
-            this.scrollToBottom();
-          }, 50);
-        });
       },
       // 이미지 모달 열기
       openImageModal(imageUrl, id) {
@@ -1098,26 +1077,37 @@
       closeModal() {
           this.showModal = false; // 모달 닫기
       },
-      scrollToBottom() {
+      scrollToBottom(isAtBottom) {
+        this.isAtBottom = isAtBottom;
         // chatContainer 요소가 렌더링되지 않은 경우에 대한 예외 처리
         if (this.chatContainer) {
           this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
         }
       },
-      
+      moveBottom() {
+          try {
+            this.socket.emit('getLatestMessages',this.selectedChatId, this.loginUserId);
+          } catch (error) {
+            console.error('이후 채팅 조회 오류:', error);
+          } finally{
+            this.chatContainer.scrollTop = 0;
+          }
+      },
       async checkScrollPosition() {
         const chatContainer = this.$refs.chatContainer;
-        // if (chatContainer) {
-        //       if (chatContainer.scrollTop < chatContainer.scrollHeight - chatContainer.clientHeight  - 1000 ) {
-        //         // 스크롤이 맨 아래가 아니면 팝업을 표시
-        //           this.showScrollPopup = true;
-        //       } else {
-        //         // 스크롤이 맨 아래에 도달하면 팝업을 숨김
-        //         this.showScrollPopup = false;
-        //       }
-        //   }
+        let isBottom;
+        if (chatContainer) {
+              if (chatContainer.scrollTop < chatContainer.scrollHeight - chatContainer.clientHeight  - 1000 ) {
+                // 스크롤이 맨 아래가 아니면 팝업을 표시
+                  this.showScrollPopup = true;
+              } else {
+                // 스크롤이 맨 아래에 도달하면 팝업을 숨김
+                isBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
+                this.showScrollPopup = false;
+              }
+          }
 
-        const isBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
+        
 
           //스크롤 젤 위
         if (chatContainer.scrollTop === 0 && !this.loadingPreviousMessages && this.shouldMaintainScroll) {
