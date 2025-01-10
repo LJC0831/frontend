@@ -1,6 +1,6 @@
 /* eslint-disable */
 import jwtDecode from 'jwt-decode';
-export const baseURL = "https://backendserver.shop:3000";
+export const baseURL = "https://backendserver.pe.kr:3000";
 
 // 로그인체크
 export function loginCheck() {

@@ -103,7 +103,7 @@ import * as commons from '../../scripts/common.js';
 
 
 const api = axios.create({
-  baseURL: "https://backendserver.shop:3000",
+  baseURL: "https://backendserver.pe.kr:3000",
   //baseURL: "http://localhost:3000",
 });
 

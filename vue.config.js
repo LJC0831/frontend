@@ -3,7 +3,7 @@ module.exports = {
         proxy:{
             "/api":{
                 //target:"http://localhost:3000"
-                target:"https://backendserver.shop:3000",
+                target:"https://backendserver.pe.kr:3000",
                 changeOrigin: true
             }
         }
