@@ -1126,8 +1126,7 @@
             console.error('이전 채팅 조회 오류:', error);
           } 
         }
-        
-        if(isBottom && !this.isAtBottom){ //스크롤 젤 아래
+        if(isBottom && !this.isAtBottom && this.ismobile){ //스크롤 젤 아래
           this.isAtBottom = true;
           const nextMessage = {
               id: this.messages[this.messages.length-1].id,
